@@ -1,0 +1,590 @@
+@charset "UTF-8";
+.hero-card {
+  gap: 1.5em;
+}
+.hero-card .hero-animation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.hero-card .hero-animation .hero-icons i {
+  font-size: 3rem;
+}
+.hero-card .hero-animation .hero-icons i.fa-lightbulb {
+  color: yellow;
+}
+.hero-card .hero-animation .hero-icons i.fa-plus, .hero-card .hero-animation .hero-icons i.fa-equals {
+  font-size: 1.5rem;
+}
+.hero-card h4 {
+  letter-spacing: 0;
+  margin-right: 0;
+}
+.hero-card .hero-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+.hero-card .hero-btn i {
+  padding-right: 0;
+}
+.hero-card .hero-btn h3 {
+  padding-left: 0;
+}
+
+.hero-animation > div {
+  text-align: left;
+  height: 4rem;
+  line-height: 4rem;
+  overflow: hidden;
+}
+
+.hero-icons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* solution */
+div.hero-animation-services span {
+  display: block;
+}
+
+div.hero-animation-services {
+  position: relative;
+  animation: cycle ease 4s infinite;
+  padding-left: 0.5em;
+}
+
+@keyframes cycle {
+  0% {
+    top: 0;
+  }
+  5% {
+    top: 0;
+  }
+  10% {
+    top: 0;
+  }
+  15% {
+    top: 0;
+  }
+  20% {
+    top: 0;
+  }
+  25% {
+    top: -4rem;
+  }
+  30% {
+    top: -4rem;
+  }
+  35% {
+    top: -4rem;
+  }
+  40% {
+    top: -4rem;
+  }
+  45% {
+    top: -4rem;
+  }
+  50% {
+    top: -8rem;
+  }
+  55% {
+    top: -8rem;
+  }
+  60% {
+    top: -8rem;
+  }
+  65% {
+    top: -8rem;
+  }
+  70% {
+    top: -8rem;
+  }
+  75% {
+    top: -12rem;
+  }
+  80% {
+    top: -12rem;
+  }
+  90% {
+    top: -12rem;
+  }
+  95% {
+    top: -12rem;
+  }
+  100% {
+    top: -12rem;
+  }
+}
+i {
+  font-size: 1.5rem;
+  padding: 0.25em;
+}
+
+.headquarters-card.card {
+  padding: 0;
+  width: 100%;
+  max-width: 750px;
+}
+.headquarters-card.card iframe {
+  width: 100%;
+}
+
+.office-hours-card {
+  padding: 0;
+}
+
+.orb-service-navigation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  overflow-y: scroll;
+  padding: 1em;
+}
+.orb-service-navigation nav {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1000px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+  box-shadow: none;
+}
+.orb-service-navigation nav .step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.orb-service-navigation nav .step a {
+  text-decoration: none;
+}
+.orb-service-navigation nav .step a button {
+  background-color: transparent;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.orb-service-navigation nav .step a button span {
+  width: 3em;
+  height: 3em;
+  padding: 0.5em;
+}
+.orb-service-navigation nav .step a button span h3 {
+  padding: 0;
+  color: black;
+}
+.orb-service-navigation nav .step a button h4 {
+  color: black;
+  padding: 0.5em;
+}
+
+.orb-service-navigation nav .step a.active button span {
+  background-color: black;
+  border-radius: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.orb-service-navigation nav .step a.active button span h3 {
+  color: white;
+}
+
+.invoice-card.card {
+  padding: 0;
+}
+
+.payment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.payment .payment-options {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.payment .payment-options a button {
+  padding: 0.5em;
+}
+.payment .payment-options a.active button {
+  background-color: white;
+  color: black;
+  box-shadow: none;
+}
+.payment .payment-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.payment .payment-card .debit-credit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card {
+  position: relative;
+  height: 250px;
+  width: 400px;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .front {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(45deg, blueviolet, deeppink);
+  border-radius: 5px;
+  backface-visibility: hidden;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  transform: perspective(1000px) rotateY(0deg);
+  transition: transform 0.4s ease-out;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .front .image {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .front .image img {
+  height: 50px;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .front .card-number-box {
+  padding: 30px 0;
+  font-size: 22px;
+  color: #fff;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .front .flexbox {
+  display: flex;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .front .flexbox .box:nth-child(1) {
+  margin-right: auto;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .front .flexbox .box {
+  font-size: 15px;
+  color: #fff;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(45deg, blueviolet, deeppink);
+  border-radius: 5px;
+  padding: 20px 0;
+  text-align: right;
+  backface-visibility: hidden;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+  transform: perspective(1000px) rotateY(180deg);
+  transition: transform 0.4s ease-out;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .back .stripe {
+  background: #000;
+  width: 100%;
+  margin: 10px 0;
+  height: 50px;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .back .box {
+  padding: 0 20px;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .back .box span {
+  color: #fff;
+  font-size: 15px;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .back .box .cvv-box {
+  height: 50px;
+  padding: 10px;
+  margin-top: 5px;
+  color: #333;
+  background: #fff;
+  border-radius: 5px;
+  width: 100%;
+}
+.payment .payment-card .debit-credit-container .debit-credit-card .back .box img {
+  margin-top: 30px;
+  height: 30px;
+}
+.payment .payment-card .debit-credit-container .debit-credit-form {
+  display: grid;
+  grid-template-areas: "number number number" "holder holder holder" "month year cvv";
+  gap: 1rem;
+  width: 100%;
+  max-width: 300px;
+}
+.payment .payment-card .debit-credit-container .debit-credit-form input {
+  width: 100%;
+}
+.payment .payment-card .debit-credit-container .debit-credit-form input.card-number-input {
+  grid-area: number;
+}
+.payment .payment-card .debit-credit-container .debit-credit-form input.card-holder-input {
+  grid-area: holder;
+}
+.payment .payment-card .debit-credit-container .debit-credit-form input.cvv-input {
+  grid-area: cvv;
+}
+.payment .payment-card .debit-credit-container .debit-credit-form select.month-input {
+  grid-area: month;
+}
+.payment .payment-card .debit-credit-container .debit-credit-form select.year-input {
+  grid-area: year;
+}
+.payment .payment-card .debit-credit-container .stripe-card.card {
+  align-items: unset;
+  width: 100%;
+}
+.payment .payment-card .debit-credit-container .stripe-card.card button {
+  align-self: center;
+}
+.payment .payment-card .wire-transfer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+.payment .payment-card .wire-transfer-container .bank-check {
+  padding: 0.25rem;
+  width: 100%;
+  height: auto;
+  max-width: 840px;
+  max-height: 351.936px;
+  aspect-ratio: 8.75/3.666;
+}
+.payment .payment-card .wire-transfer-container .bank-check table {
+  width: 100%;
+}
+.payment .payment-card .wire-transfer-container .bank-check .check-logo {
+  text-align: left;
+}
+.payment .payment-card .wire-transfer-container .bank-check .check-number {
+  text-align: right;
+}
+.payment .payment-card .wire-transfer-container .bank-check .check-date {
+  text-align: right;
+}
+.payment .payment-card .wire-transfer-container .bank-check .check-pay-to-border {
+  border-bottom: #000 solid;
+}
+.payment .payment-card .wire-transfer-container .bank-check .check-pay-to-border .check-pay-to {
+  text-align: left;
+}
+.payment .payment-card .wire-transfer-container .bank-check .check-amount-box {
+  border: #000 solid;
+}
+.payment .payment-card .wire-transfer-container .bank-check .check-amount-box .check-amount {
+  text-align: right;
+}
+.payment .payment-card .wire-transfer-container .bank-check .amount-words-border {
+  border-bottom: #000 solid;
+}
+.payment .payment-card .wire-transfer-container .bank-check .amount-words-border .amount-words {
+  text-align: left;
+}
+.payment .payment-card .wire-transfer-container .bank-check .memo-border {
+  display: flex;
+  flex-direction: row;
+}
+.payment .payment-card .wire-transfer-container .bank-check .memo-border .memo {
+  border-bottom: #000 solid;
+  width: 100%;
+  text-align: left;
+  padding-left: 0.5rem;
+}
+.payment .payment-card .wire-transfer-container .bank-check .signature-border {
+  border-bottom: #000 solid;
+}
+.payment .payment-card .wire-transfer-container .bank-check .bank-numbers {
+  display: flex;
+  flex-direction: row;
+}
+.payment .payment-card .wire-transfer-container .bank-check .bank-numbers span {
+  padding-left: 0.5rem;
+}
+.payment .payment-card .wire-transfer-container .bank-check .bank-numbers span.routing-number:before {
+  content: "⑆";
+}
+.payment .payment-card .wire-transfer-container .bank-check .bank-numbers span.account-number:before {
+  content: "⑈";
+}
+.payment .payment-card .wire-transfer-container .wire-transfer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  width: 100%;
+  max-width: fit-content;
+}
+.payment .payment-card .crypto-container {
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.quote .quote-card.card {
+  padding: 0;
+}
+
+.service {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.orb-service {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.quote,
+.invoice,
+.schedule,
+.receipt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.quote-card.card,
+.invoice-card.card,
+.schedule-card.card,
+.receipt-card.card {
+  max-width: fit-content;
+  padding: 0;
+}
+
+thead .bill-to-label,
+thead .bill-to-due-date-label,
+thead .bill-to-total-due-label,
+thead .paid-by-label,
+thead .paid-by-paid-label,
+thead .paid-by-amount-label {
+  text-align: right;
+}
+thead .bill-to-due-date,
+thead .bill-to-total-due,
+thead .paid-by-date,
+thead .paid-by-amount {
+  text-align: left;
+}
+
+.bill-to-name,
+.bill-to-address,
+.bill-to-city,
+.bill-to-state,
+.bill-to-zipcode,
+.bill-to-phone,
+.bill-to-email,
+.paid-by-name,
+.paid-by-address,
+.paid-by-city,
+.paid-by-state,
+.paid-by-zipcode,
+.paid-by-phone,
+.paid-by-email {
+  text-align: left;
+}
+
+tfoot .subtotal-label,
+tfoot .tax-label,
+tfoot .grand-total-label,
+tfoot .amount-paid-label,
+tfoot .balance-label {
+  text-align: right;
+}
+
+.services .service-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.5em;
+  align-items: center;
+  justify-content: center;
+}
+.services .service-list .service-card {
+  min-width: 350px;
+}
+.services .service-list .service-card .service-name,
+.services .service-list .service-card .service-icon,
+.services .service-list .service-card .service-description,
+.services .service-list .service-card .service-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.services .service-list .service-card .service-icon {
+  height: 3rem;
+}
+.services .service-list .service-card .service-icon i {
+  font-size: 3rem;
+}
+.services .service-list .service-card .service-description {
+  height: 2rem;
+}
+.services .service-list .service-card .service-features {
+  height: 5rem;
+}
+.services .service-list .service-card .service-features ul li {
+  list-style: none;
+}
+.services .service-list .service-card .service-action {
+  height: 3rem;
+}
+.services .service-list .service-card .service-action .service-button {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  align-items: center;
+  justify-content: center;
+}
+.services .service-list .service-card .service-action .service-button i {
+  padding-right: 0;
+}
+.services .service-list .service-card .service-action .service-button h3 {
+  padding-left: 0;
+}
+
+table {
+  border-spacing: 0.25em;
+}
+table th {
+  background-color: black;
+  color: white;
+}
+table th,
+table td {
+  padding: 0.5em;
+}
+table .options {
+  background-color: transparent;
+}
+table .table-number {
+  text-align: right;
+}
+
+/*# sourceMappingURL=orb-services.css.map */

@@ -1,0 +1,66 @@
+.services {
+  .service-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5em;
+    align-items: center;
+    justify-content: center;
+
+    .service-card {
+      min-width: 350px;
+
+      .service-name,
+      .service-icon,
+      .service-description,
+      .service-action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .service-icon {
+        height: 3rem;
+
+        i {
+          font-size: 3rem;
+        }
+      }
+
+      .service-description {
+        height: 2rem;
+      }
+
+      .service-features {
+        height: 5rem;
+
+        ul {
+          li {
+            list-style: none;
+          }
+        }
+      }
+
+      .service-action {
+        height: 3rem;
+
+        .service-button {
+          display: flex;
+          flex-direction: row;
+          gap: 0.5em;
+          align-items: center;
+          justify-content: center;
+
+          i {
+            padding-right: 0;
+          }
+
+          h3 {
+            padding-left: 0;
+          }
+        }
+      }
+    }
+  }
+}

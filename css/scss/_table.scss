@@ -1,0 +1,21 @@
+table {
+  border-spacing: 0.25em;
+
+  th {
+    background-color: black;
+    color: white;
+  }
+  
+  th,
+  td {
+    padding: 0.5em;
+  }
+
+  .options {
+    background-color: transparent;
+  }
+  
+  .table-number {
+    text-align: right;
+  }
+}
