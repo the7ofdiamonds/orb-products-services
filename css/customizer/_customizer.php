@@ -1,5 +1,9 @@
 <?php
+namespace ORB\Services\CSS\Customizer;
+
 include 'customizer-hero.php';
+
+use ORB\Services\CSS\Customizer\Hero\ORB_Services_Hero_Customizer;
 
 class ORB_Services_Customizer
 {

@@ -1,5 +1,9 @@
 <?php
+namespace ORB\Services\CSS;
+
 include 'customizer/_customizer.php';
+
+use ORB\Services\CSS\Customizer\ORB_Services_Customizer;
 
 class ORB_Services_CSS {
     

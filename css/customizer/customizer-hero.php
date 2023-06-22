@@ -1,4 +1,6 @@
 <?php
+namespace ORB\Services\CSS\Customizer\Hero;
+
 class ORB_Services_Hero_Customizer
 {
 
@@ -33,7 +35,7 @@ class ORB_Services_Hero_Customizer
         ]);
 
         $wp_customize->add_control(
-            new WP_Customize_Color_Control(
+            new \WP_Customize_Color_Control(
                 $wp_customize,
                 'hero_card_background_color',
                 [
@@ -48,7 +50,7 @@ class ORB_Services_Hero_Customizer
         ]);
 
         $wp_customize->add_control(
-            new WP_Customize_Color_Control(
+            new \WP_Customize_Color_Control(
                 $wp_customize,
                 'hero_card_background_color_hover',
                 [
@@ -63,7 +65,7 @@ class ORB_Services_Hero_Customizer
         ]);
 
         $wp_customize->add_control(
-            new WP_Customize_Color_Control(
+            new \WP_Customize_Color_Control(
                 $wp_customize,
                 'hero_card_text_color',
                 [
@@ -78,7 +80,7 @@ class ORB_Services_Hero_Customizer
         ]);
 
         $wp_customize->add_control(
-            new WP_Customize_Color_Control(
+            new \WP_Customize_Color_Control(
                 $wp_customize,
                 'hero_card_text_color_hover',
                 [
@@ -93,7 +95,7 @@ class ORB_Services_Hero_Customizer
         ]);
 
         $wp_customize->add_control(
-            new WP_Customize_Color_Control(
+            new \WP_Customize_Color_Control(
                 $wp_customize,
                 'hero_button_background_color',
                 [
@@ -108,7 +110,7 @@ class ORB_Services_Hero_Customizer
         ]);
 
         $wp_customize->add_control(
-            new WP_Customize_Color_Control(
+            new \WP_Customize_Color_Control(
                 $wp_customize,
                 'hero_button_background_color_hover',
                 [
@@ -123,7 +125,7 @@ class ORB_Services_Hero_Customizer
         ]);
 
         $wp_customize->add_control(
-            new WP_Customize_Color_Control(
+            new \WP_Customize_Color_Control(
                 $wp_customize,
                 'hero_button_text_color',
                 [
@@ -138,7 +140,7 @@ class ORB_Services_Hero_Customizer
         ]);
 
         $wp_customize->add_control(
-            new WP_Customize_Color_Control(
+            new \WP_Customize_Color_Control(
                 $wp_customize,
                 'hero_button_text_color_hover',
                 [
@@ -153,7 +155,7 @@ class ORB_Services_Hero_Customizer
         ]);
 
         $wp_customize->add_control(
-            new WP_Customize_Color_Control(
+            new \WP_Customize_Color_Control(
                 $wp_customize,
                 'hero_button_icon_color',
                 [
@@ -168,7 +170,7 @@ class ORB_Services_Hero_Customizer
         ]);
 
         $wp_customize->add_control(
-            new WP_Customize_Color_Control(
+            new \WP_Customize_Color_Control(
                 $wp_customize,
                 'hero_button_icon_color_hover',
                 [

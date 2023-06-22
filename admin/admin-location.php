@@ -1,4 +1,5 @@
 <?php
+namespace ORB\Services\Admin\Location;
 
 class ORB_Services_Admin_Location
 {

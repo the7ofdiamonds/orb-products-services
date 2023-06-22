@@ -1,4 +1,5 @@
 <?php
+namespace ORB\Services\Tables;
 
 class ORB_Services_Tables
 {

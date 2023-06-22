@@ -1,4 +1,5 @@
 <?php
+namespace ORB\Services\Meta;
 
 class ORB_Services_Meta
 {

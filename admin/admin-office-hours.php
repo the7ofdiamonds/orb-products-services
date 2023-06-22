@@ -1,4 +1,5 @@
 <?php
+namespace ORB\Services\Admin\Office_Hours;
 
 class ORB_Services_Admin_Office_Hours
 {
