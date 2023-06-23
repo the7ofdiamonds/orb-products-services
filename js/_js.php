@@ -1,4 +1,5 @@
 <?php
+namespace ORB\Services\JS;
 
 class ORB_Services_JS
 {

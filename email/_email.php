@@ -1,36 +1,64 @@
 <?php
+namespace ORB\Services\Email;
+
+require ORB_SERVICES . '/vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
-require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
-
-class THFW_Email
+class ORB_Services_Email
 {
+    public $mailer;
 
-    public function construct()
+    public function __construct()
     {
-
-        add_action('phpmailer_init', [$this, 'thfw_smtp_email_settings']);
-        add_filter('wp_mail_from', [$this, 'thfw_wp_mail_from']);
-        new PHPMailer();
+        $this->mailer = new PHPMailer();
     }
 
-
-    // Override the default WordPress mailing function
-    function thfw_smtp_email_settings($phpmailer)
+    protected function orb_smtp_settings($mailer)
     {
-        $phpmailer->isSMTP();
-        $phpmailer->Host = SMTP_HOST;
-        $phpmailer->Port = SMTP_PORT;
-        $phpmailer->SMTPSecure = SMTP_ENCRYPTION;
-        $phpmailer->SMTPAuth = SMTP_AUTH;
-        $phpmailer->Username = SMTP_USERNAME;
-        $phpmailer->Password = SMTP_PASSWORD;
-        $phpmailer->SetFrom(SMTP_USERNAME, 'Contact');
+        $mailer->isSMTP();
+        $mailer->Host = SMTP_HOST;
+        $mailer->Port = SMTP_PORT;
+        $mailer->SMTPSecure = SMTP_ENCRYPTION;
+        $mailer->SMTPAuth = SMTP_AUTH;
+        $mailer->Username = SMTP_USERNAME;
+        $mailer->Password = SMTP_PASSWORD;
+        $mailer->setFrom(SMTP_USERNAME, 'Contact');
     }
 
-    function thfw_wp_mail_from($from_email) {
-        return SMTP_USERNAME;
+    protected function setSender($email, $name)
+    {
+        $this->mailer->setFrom($email, $name);
+        $this->mailer->addReplyTo($email, $name);
+    }
+
+    protected function addRecipient($email, $name)
+    {
+        $this->mailer->addAddress($email, $name);
+    }
+
+    protected function setSubject($subject)
+    {
+        $this->mailer->Subject = $subject;
+    }
+
+    protected function setBody($body)
+    {
+        $this->mailer->Body = $body;
+    }
+
+    public function sendEmail($fromEmail, $fromName, $toEmail, $toName, $subject, $body)
+    {
+        // $this->orb_smtp_settings($mailer);
+        $this->setSender($fromEmail, $fromName);
+        $this->addRecipient($toEmail, $toName);
+        $this->setSubject($subject);
+        $this->setBody($body);
+
+        if (!$this->mailer->send()) {
+            echo 'Email Error: ' . $this->mailer->ErrorInfo;
+        } else {
+            echo 'The email message was sent.';
+        }
     }
 }

@@ -1,5 +1,9 @@
 <?php
+namespace ORB\Services\Post_Type;
+
 include 'meta.php';
+
+use ORB\Services\Meta\ORB_Services_Meta;
 
 class ORB_Services_Post_Type
 {

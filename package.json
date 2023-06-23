@@ -15,7 +15,9 @@
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "start": "wp-scripts start",
     "test:e2e": "wp-scripts test-e2e",
-    "test:unit": "wp-scripts test-unit-js"
+    "test:unit": "wp-scripts test-unit-js",
+    "update-dev":"git push orb-services development",
+    "update-prod": "git push orb-services production"
   },
   "author": "THE7OFDIAMONDS.TECH",
   "license": "ISC",

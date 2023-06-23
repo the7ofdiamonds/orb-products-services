@@ -1,5 +1,6 @@
 <?php
-
+namespace ORB\Services\Admin\Hero;
+ 
 class ORB_Services_Admin_Hero
 {
 
