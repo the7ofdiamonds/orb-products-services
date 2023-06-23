@@ -7,8 +7,12 @@
 <<<<<<< HEAD
     "content-hash": "28c1ad7450c2c5b3c459a3cd118e72f9",
 =======
+<<<<<<< HEAD
+    "content-hash": "28c1ad7450c2c5b3c459a3cd118e72f9",
+=======
     "content-hash": "9dd77ac29368717affa7f49564443c35",
 >>>>>>> production
+>>>>>>> development
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -74,6 +78,9 @@
         },
         {
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> development
             "name": "phpmailer/phpmailer",
             "version": "v6.8.0",
             "source": {
@@ -154,8 +161,11 @@
             "time": "2023-03-06T14:43:22+00:00"
         },
         {
+<<<<<<< HEAD
+=======
 =======
 >>>>>>> production
+>>>>>>> development
             "name": "phpoption/phpoption",
             "version": "1.9.1",
             "source": {
