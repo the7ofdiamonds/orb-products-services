@@ -1,5 +1,6 @@
 <?php
 $path = $_SERVER['REQUEST_URI'];
+echo $path;
 $segments = explode('/', $path);
 $slug = $segments[2];
 $service = get_page_by_path($slug, OBJECT, 'services');

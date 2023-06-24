@@ -2,8 +2,10 @@
 namespace ORB\Services\CSS\Customizer;
 
 include 'customizer-hero.php';
+include 'customizer-services.php';
 
 use ORB\Services\CSS\Customizer\Hero\ORB_Services_Hero_Customizer;
+use ORB\Services\CSS\Customizer\Services\ORB_Services_Section_Customizer;
 
 class ORB_Services_Customizer
 {
@@ -13,7 +15,8 @@ class ORB_Services_Customizer
 		add_theme_support("custom-background");
 		add_action('wp_head', [$this, 'load_css']);
 
-		new ORB_Services_Hero_Customizer();
+		new ORB_Services_Hero_Customizer;
+		new ORB_Services_Section_Customizer;
 	}
 
 	function load_css()
@@ -30,7 +33,7 @@ class ORB_Services_Customizer
 				--orb-color-caution: yellow;
 				--orb-color-info: blue;
 				--orb-border-radius: 0.25em;
-				--orb-box-shadow: 0.25em 0.25em 0.25em rgba(0, 0, 0, 0.5);
+				--orb-box-shadow: 0 0 0.5em rgba(255, 255, 255, 0.85);
 			}
 		</style>
 <?php

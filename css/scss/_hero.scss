@@ -1,5 +1,5 @@
 .hero-card {
-  gap: 1.5em;
+  gap: 1.5rem;
 
   .hero-animation {
     display: flex;
@@ -12,7 +12,7 @@
         font-size: 3rem;
 
         &.fa-lightbulb {
-          color: yellow;
+          color: rgba(255, 240, 0, 0.85);
         }
 
         &.fa-plus,
@@ -23,17 +23,13 @@
     }
   }
 
-  h4 {
-    letter-spacing: 0;
-    margin-right: 0;
-  }
-
   .hero-btn {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 0.5em;
+    box-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.85);
 
     i {
       padding-right: 0;
@@ -46,7 +42,7 @@
 }
 
 .hero-animation > div {
-  text-align: left;
+  // text-align: left;
   height: 4rem;
   line-height: 4rem;
   overflow: hidden;
@@ -59,76 +55,28 @@
   justify-content: center;
 }
 
-/* solution */
+.hero-animation-service {
+  animation: cycle var(--animation-duration) ease infinite;
+}
+
 div.hero-animation-services span {
   display: block;
 }
 
-div.hero-animation-services {
-  position: relative;
-  animation: cycle ease 4s infinite;
-  padding-left: 0.5em;
+html {
+  scroll-behavior: smooth;
 }
 
 @keyframes cycle {
   0% {
-    top: 0;
+    transform: translateY(0%);
   }
-  5% {
-    top: 0;
-  }
-  10% {
-    top: 0;
-  }
-  15% {
-    top: 0;
-  }
-  20% {
-    top: 0;
-  }
-  25% {
-    top: -4rem;
-  }
-  30% {
-    top: -4rem;
-  }
-  35% {
-    top: -4rem;
-  }
-  40% {
-    top: -4rem;
-  }
-  45% {
-    top: -4rem;
-  }
+
   50% {
-    top: -8rem;
+    transform: translateY(-100%);
   }
-  55% {
-    top: -8rem;
-  }
-  60% {
-    top: -8rem;
-  }
-  65% {
-    top: -8rem;
-  }
-  70% {
-    top: -8rem;
-  }
-  75% {
-    top: -12rem;
-  }
-  80% {
-    top: -12rem;
-  }
-  90% {
-    top: -12rem;
-  }
-  95% {
-    top: -12rem;
-  }
+
   100% {
-    top: -12rem;
+    transform: translateY(-200%);
   }
 }

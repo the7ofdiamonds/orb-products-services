@@ -1,7 +1,8 @@
 <section id='services' class='services'>
+    
     <h2 class="title">SERVICES</h2>
 
-    <div class="service-list">
+    <div class="services-list">
         <?php
 
         $args = array('post_type' => array('services'), 'orderby' => 'menu_order', 'order' => 'ASC');
@@ -12,23 +13,23 @@
 
             foreach ($services as $service) : ?>
 
-                <div class="service-card card">
+                <div class="services-card card">
 
-                    <h3 class="service-name">
+                    <h3 class="services-name">
                         <?php echo get_the_title($service->ID); ?>
                     </h3>
 
-                    <div class="service-icon">
+                    <div class="services-icon">
                         <i class="<?php echo get_post_meta($service->ID, '_services_button_icon', true); ?>"></i>
                     </div>
 
-                    <div class="service-description">
+                    <div class="services-description">
                         <h4>
                             <?php echo $service->post_excerpt; ?>
                         </h4>
                     </div>
 
-                    <div class="service-features">
+                    <div class="services-features">
                         <ul>
                             <?php
                             $features = get_post_meta($service->ID, '_service_features', false);
@@ -46,8 +47,8 @@
                         </ul>
                     </div>
 
-                    <div class="service-action">
-                        <button onclick="location.href='<?php echo get_post_permalink($service->ID); ?>'" class="service-button">
+                    <div class="services-action">
+                        <button onclick="location.href='<?php echo get_post_permalink($service->ID); ?>'" class="services-btn">
                             <i class="<?php echo get_post_meta($service->ID, '_services_button_icon', true); ?>"></i>
                             <h3>
                                 <?php echo get_post_meta($service->ID, '_services_button', true); ?>

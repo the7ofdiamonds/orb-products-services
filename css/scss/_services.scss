@@ -1,5 +1,5 @@
 .services {
-  .service-list {
+  .services-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -7,20 +7,21 @@
     align-items: center;
     justify-content: center;
 
-    .service-card {
-      min-width: 350px;
+    .services-card {
+      min-width: 250px;
+      height: 350px;
 
-      .service-name,
-      .service-icon,
-      .service-description,
-      .service-action {
+      .services-name,
+      .services-icon,
+      .services-description,
+      .services-action {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
       }
 
-      .service-icon {
+      .services-icon {
         height: 3rem;
 
         i {
@@ -28,24 +29,27 @@
         }
       }
 
-      .service-description {
+      .services-description {
         height: 2rem;
       }
 
-      .service-features {
-        height: 5rem;
+      .services-features {
+        overflow: auto;
+        height: 10rem;
 
         ul {
           li {
             list-style: none;
+            padding: 0.5em;
           }
         }
       }
 
-      .service-action {
+      .services-action {
         height: 3rem;
+        align-self: flex-end;
 
-        .service-button {
+        .services-btn {
           display: flex;
           flex-direction: row;
           gap: 0.5em;
