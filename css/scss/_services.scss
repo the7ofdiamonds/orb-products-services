@@ -10,7 +10,8 @@
     .services-card {
       min-width: 250px;
       height: 350px;
-
+      opacity: 0.85;
+      
       .services-name,
       .services-icon,
       .services-description,
@@ -47,7 +48,6 @@
 
       .services-action {
         height: 3rem;
-        align-self: flex-end;
 
         .services-btn {
           display: flex;

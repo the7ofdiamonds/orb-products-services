@@ -72,6 +72,12 @@ i {
   font-size: 1.5rem;
   padding: 0.25em;
 }
+i.fa-brands.fa-android {
+  color: limegreen;
+}
+i.fa-solid.fa-globe {
+  color: blue;
+}
 
 .headquarters-card.card {
   padding: 0;
@@ -474,6 +480,7 @@ tfoot .balance-label {
 .services .services-list .services-card {
   min-width: 250px;
   height: 350px;
+  opacity: 0.85;
 }
 .services .services-list .services-card .services-name,
 .services .services-list .services-card .services-icon,
@@ -503,7 +510,6 @@ tfoot .balance-label {
 }
 .services .services-list .services-card .services-action {
   height: 3rem;
-  align-self: flex-end;
 }
 .services .services-list .services-card .services-action .services-btn {
   display: flex;
@@ -528,7 +534,7 @@ table th {
 }
 table th,
 table td {
-  padding: 0.5em;
+  padding: 0.25em;
 }
 table .options {
   background-color: transparent;

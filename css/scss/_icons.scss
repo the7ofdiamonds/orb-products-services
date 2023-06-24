@@ -1,4 +1,13 @@
 i {
   font-size: 1.5rem;
   padding: 0.25em;
+
+  &.fa-brands.fa-android {
+    color: limegreen;
+  }
+
+  &.fa-solid.fa-globe {
+    color: blue;
+  }
 }
+
