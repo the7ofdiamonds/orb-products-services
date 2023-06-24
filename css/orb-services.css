@@ -23,7 +23,6 @@
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-  box-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.85);
 }
 .hero-card .hero-btn i {
   padding-right: 0;
@@ -68,6 +67,13 @@ html {
     transform: translateY(-200%);
   }
 }
+.hero-btn:hover {
+  box-shadow: unset;
+}
+.hero-btn:hover i {
+  color: lime;
+}
+
 i {
   font-size: 1.5rem;
   padding: 0.25em;

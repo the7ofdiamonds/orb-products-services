@@ -81,6 +81,7 @@ class ORB_Services_Customizer_Shadow
                             } ?>;
             }
 
+            .hero-btn,
             .services-btn {
                 box-shadow: <?php
                             if (!get_theme_mod('orb_button_box_shadow')) {
@@ -100,9 +101,10 @@ class ORB_Services_Customizer_Shadow
                             } ?>;
             }
 
-            .services-input,
+            .services-input:hover,
             .services-textarea:hover,
-            .services-btn:hover {
+            .services-btn:hover,
+            .hero-card .hero-btn:hover {
                 box-shadow: unset;
             }
         </style>

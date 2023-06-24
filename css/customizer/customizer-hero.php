@@ -1,4 +1,5 @@
 <?php
+
 namespace ORB\Services\CSS\Customizer\Hero;
 
 class ORB_Services_Hero_Customizer
@@ -226,32 +227,11 @@ class ORB_Services_Hero_Customizer
                         } ?>;
             }
 
-            .hero-btn:hover {
-                background-color: <?php if (!get_theme_mod('hero_button_background_color_hover')) {
-                                        echo 'var(--orb-color-primary)';
-                                    } else {
-                                        echo esc_html(get_theme_mod('hero_button_background_color_hover'));
-                                    } ?>;
-                color: <?php if (!get_theme_mod('hero_button_text_color_hover')) {
-                            echo 'var(--orb-color-secondary)';
-                        } else {
-                            echo esc_html(get_theme_mod('hero_button_text_color_hover'));
-                        } ?>;
-            }
-
             .hero-btn i {
                 color: <?php if (!get_theme_mod('hero_button_icon_color')) {
                             echo 'var(--orb-color-tertiary)';
                         } else {
                             echo esc_html(get_theme_mod('hero_button_icon_color'));
-                        } ?>;
-            }
-
-            .hero-btn:hover i {
-                color: <?php if (!get_theme_mod('hero_button_icon_color_hover')) {
-                            echo 'var(--orb-color-quaternary)';
-                        } else {
-                            echo esc_html(get_theme_mod('hero_button_icon_color_hover'));
                         } ?>;
             }
         </style>

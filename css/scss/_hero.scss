@@ -29,7 +29,6 @@
     align-items: center;
     justify-content: center;
     gap: 0.5em;
-    box-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.85);
 
     i {
       padding-right: 0;
@@ -78,5 +77,13 @@ html {
 
   100% {
     transform: translateY(-200%);
+  }
+}
+
+.hero-btn:hover {
+  box-shadow: unset;
+  
+  i {
+    color: lime;
   }
 }
