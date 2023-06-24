@@ -73,6 +73,7 @@ $orb_services = new ORB_Services();
 register_activation_hook(__FILE__, [$orb_services, 'activate']);
 // register_deactivation_hook( __FILE__, [ $thfw, 'deactivate' ]);
 
+register_activation_hook( __FILE__, [$orb_services_pages, 'add_pages'] );
 register_activation_hook(__FILE__, [$orb_services_pages, 'add_pages']);
 
 register_activation_hook( __FILE__, [$orb_services_menus, 'create_mobile_menu'] );
