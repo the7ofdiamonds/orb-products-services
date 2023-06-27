@@ -2,60 +2,50 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   overflow-y: scroll;
   padding: 1em;
+  width: 100%;
 
-  nav {
+  .step {
     display: flex;
-    flex-direction: row;
-    width: 100%;
-    max-width: 1000px;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    gap: 1em;
-    box-shadow: none;
+    justify-content: center;
+    gap: 0.5rem;
 
-    .step {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+    a {
+      text-decoration: none;
 
-      a {
-        text-decoration: none;
+      button {
+        background-color: transparent;
+        box-shadow: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
-        button {
-          background-color: transparent;
-          box-shadow: none;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
+        span {
+          width: 3em;
+          height: 3em;
+          padding: 0.5em;
 
-          span {
-            width: 3em;
-            height: 3em;
-            padding: 0.5em;
-
-            h3 {
-              padding: 0;
-              color: black;
-            }
-          }
-
-          h4 {
+          h3 {
+            padding: 0;
             color: black;
-            padding: 0.5em;
           }
+        }
+
+        h4 {
+          color: black;
+          padding: 0.5em;
         }
       }
     }
   }
 }
 
-.orb-service-navigation nav .step a.active button span {
+.orb-service-navigation .step-number.active {
   background-color: black;
   border-radius: 2em;
   display: flex;
@@ -64,5 +54,5 @@
 
   h3 {
     color: white;
-  }  
+  }
 }

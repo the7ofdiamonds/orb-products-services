@@ -1,5 +1,13 @@
 .quote {
-  .quote-card.card {
+  .quote {
     padding: 0;
+
+    .quote-table{
+      padding: -1em;
+    }
+
+    td.description {
+      text-align: right;
+    }
   }
 }

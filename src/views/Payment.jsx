@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { NavLink, Routes, Route, useNavigate } from 'react-router-dom';
+
 import { useDispatch, useSelector } from 'react-redux';
+
 import CardPaymentComponent from './payment/Card.jsx';
 import MobileComponent from './payment/Mobile.jsx';
 
@@ -29,28 +31,31 @@ function PaymentComponent() {
   }
 
   return (
-    <div className="payment" id="payment">
-      <div className="payment-options">
-        <NavLink to="mobile">
-          <button className="mobile-btn" id="mobile-btn">
-            <h4>MOBILE</h4>
-          </button>
-        </NavLink>
+    <>
+    <h2 className="title"></h2>
+      <div className="payment" id="payment">
+        <div className="payment-options">
+          <NavLink to="mobile">
+            <button className="mobile-btn" id="mobile-btn">
+              <h4>MOBILE</h4>
+            </button>
+          </NavLink>
 
-        <NavLink to="card">
-          <button className="debit-credit-btn" id="debit-credit-btn">
-            <h4>CARD</h4>
-          </button>
-        </NavLink>
-      </div>
+          <NavLink to="card">
+            <button className="debit-credit-btn" id="debit-credit-btn">
+              <h4>CARD</h4>
+            </button>
+          </NavLink>
+        </div>
 
-      <div className="payment-card">
-        <Routes>
-          <Route path="mobile" element={<MobileComponent />} />
-          <Route path="card" element={<CardPaymentComponent />} />
-        </Routes>
+        <div className="payment-card">
+          <Routes>
+            <Route path="mobile" element={<MobileComponent />} />
+            <Route path="card" element={<CardPaymentComponent />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -11,9 +11,15 @@ const initialState = {
 
 export const createPaymentIntent = createAsyncThunk(
   'payment/createPaymentIntent',
-  async (data) => {
+  async (invoice_id, email, subtotal) => {
+
+    const formData = new FormData();
+    formData.append('invoice_id,', invoice_id);
+    formData.append('email', email);
+    formData.append('message', subtotal);
+    
     try {
-      const response = await axios.post('/wp-json/orb/v1/payment/intent', data);
+      const response = await axios.post('/wp-json/orb/v1/payment/intent', formData);
       return response.data;
     } catch (error) {
       throw new Error(error.message);

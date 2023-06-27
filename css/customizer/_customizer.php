@@ -37,7 +37,7 @@ class ORB_Services_Customizer
 				--orb-color-info: blue;
 				--orb-border-radius: 0.25em;
 				--orb-box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.85);
-				--orb-box-shadow-btn: 0 0 0.5em rgba(255, 255, 255, 0.85);
+				--orb-box-shadow-btn: 0 0 0.5em rgba(0, 0, 0, 0.85);
 			}
 		</style>
 <?php

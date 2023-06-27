@@ -22,6 +22,6 @@ class ORB_Services_JS
 
     function load_react()
     {
-        wp_enqueue_script('orb_services_react', ORB_SERVICES_URL . '/js/build/index.js', ['wp-element'], 1.0, true);
+        wp_enqueue_script('orb_services_react', ORB_SERVICES_URL . '/build/index.js', ['wp-element'], 1.0, true);
     }
 }

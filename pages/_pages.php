@@ -10,6 +10,8 @@ class ORB_Services_Pages
         add_filter('single_template', [$this, 'get_single_page_template']);
         add_filter('page_template', [$this, 'get_custom_support_page_template']);
         add_filter('page_template', [$this, 'get_custom_contact_page_template']);
+        add_action('init', [$this, 'react_rewrite_rules'], 10, 0);
+
     }
 
     function get_archive_page_template($archive_template)
@@ -91,6 +93,11 @@ class ORB_Services_Pages
 
             wp_insert_post($invoice_page, true);
         }
+    }
+
+    public function react_rewrite_rules()
+    {
+        add_rewrite_rule('^services/([^/]+)/?', 'index.php?services=$matches[1]', 'top');
     }
 }
 

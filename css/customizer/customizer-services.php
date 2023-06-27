@@ -188,13 +188,13 @@ class ORB_Services_Section_Customizer
         <style>
             .services-card.card {
                 background-color: <?php if (!get_theme_mod('services_card_background_color')) {
-                                        echo 'var(--orb-color-primary)';
+                                        echo 'var(--orb-color-secondary)';
                                     } else {
                                         echo esc_html(get_theme_mod('services_card_background_color'));
                                     } ?>;
 
                 color: <?php if (!get_theme_mod('services_card_text_color')) {
-                            echo 'var(--orb-color-secondary)';
+                            echo 'var(--orb-color-primary)';
                         } else {
                             echo esc_html(get_theme_mod('services_card_text_color'));
                         } ?>;

@@ -11,30 +11,24 @@ function QuoteComponent() {
   const parsedPath = window.location.pathname.split('/');
   const service = parsedPath[2];
 
-  const { loading, error } = useSelector((state) => state.service);
-  const { features, cost } = useSelector(
-    (state) => state.service.service
-  );
-
-  const {subtotal} = useSelector((state) => state.invoice);
+  const { loading, error, services } = useSelector((state) => state.services);
+  const { cost } = useSelector((state) => state.services.services);
+  const { subtotal } = useSelector((state) => state.invoice);
   const { selections } = useSelector((state) => state.invoice);
-  const [checkedItems, setCheckedItems] = useState([]);
-console.log(selections)
+  console.log(services);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(fetchService(service));
-  }, []);
+  const [checkedItems, setCheckedItems] = useState([]);
 
-  const handleCheckboxChange = (event, feature) => {
+  const handleCheckboxChange = (event, service) => {
     const isChecked = event.target.checked;
 
     setCheckedItems((prevItems) => {
       if (isChecked) {
-        return [...prevItems, feature];
+        return [...prevItems, service];
       } else {
-        return prevItems.filter((item) => item !== feature);
+        return prevItems.filter((item) => item !== service);
       }
     });
   };
@@ -44,13 +38,11 @@ console.log(selections)
   }, [checkedItems]);
 
   useEffect(() => {
-    if (selections.length > 0) {
-      dispatch(calculateSelections(cost));
-    }
+    dispatch(calculateSelections(services.cost));
   }, [checkedItems]);
 
   const handleClick = () => {
-    navigate('/schedule');
+    navigate('/services/schedule');
   };
 
   if (error) {
@@ -62,22 +54,16 @@ console.log(selections)
   }
 
   return (
-    <div className="quote">
-      <div className="quote-card card">
+    <>
+      <h2>QUOTE</h2>
+      
+      <div className="quote">
         <form method="POST" className="quote-form" id="quote_form">
           <table className="quote-table" id="quote_total">
             <thead className="quote-table-head">
               <tr>
-                <th className="options">
-                  <input
-                    type="checkbox"
-                    name="checkbox"
-                    id="checkbox"
-                    defaultChecked
-                  />
-                </th>
-                <th className="features">
-                  <h4>FEATURE</h4>
+                <th className="description" colSpan={2}>
+                  <h4>DESCRIPTION</h4>
                 </th>
                 <th className="costs">
                   <h4>COST</h4>
@@ -86,28 +72,29 @@ console.log(selections)
             </thead>
 
             <tbody className="quote-table-body">
-              {features && features.length ? (
+              {services && services.length ? (
                 <React.Fragment>
-                  {features.map((feature) => (
+                  {services.map((service) => (
                     <tr id="quote_option">
                       <td>
                         <input
                           className="input selection feature-selection"
                           type="checkbox"
                           name="quote[checkbox][]"
-                          checked={checkedItems.includes(feature)}
+                          checked={checkedItems.includes(service)}
                           onChange={(event) =>
-                            handleCheckboxChange(event, feature)
+                            handleCheckboxChange(event, service)
                           }
                         />
                       </td>
-                      <td className="feature-name" id="feature_name">
-                        {feature.name}
-                      </td>
+                      <td className="description">{service.description}</td>
                       <td
                         className="feature-cost table-number"
                         id="feature_cost">
-                        {feature.cost}
+                        {new Intl.NumberFormat('us', {
+                          style: 'currency',
+                          currency: 'USD',
+                        }).format(service.cost)}
                       </td>
                     </tr>
                   ))}
@@ -125,12 +112,16 @@ console.log(selections)
 
             <tfoot className="quote-table-foot">
               <tr>
-                <td></td>
-                <th className="total-due-label">
+                <th className="total-due-label" colSpan={2}>
                   <h4>TOTAL DUE</h4>
                 </th>
                 <th className="total-due table-number">
-                  <h4>{subtotal == 0 ? cost : subtotal}</h4>
+                  <h4>
+                    {new Intl.NumberFormat('us', {
+                      style: 'currency',
+                      currency: 'USD',
+                    }).format(subtotal)}
+                  </h4>
                 </th>
               </tr>
             </tfoot>
@@ -141,7 +132,7 @@ console.log(selections)
       <button id="schedule_button" onClick={handleClick}>
         <h3>SCHEDULE</h3>
       </button>
-    </div>
+    </>
   );
 }
 
