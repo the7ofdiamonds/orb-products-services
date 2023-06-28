@@ -4,7 +4,8 @@
   "description": "",
   "main": "js/index.js",
   "devDependencies": {
-    "@wordpress/scripts": "^26.5.0"
+    "@wordpress/scripts": "^26.5.0",
+    "webpack": "^5.50.0"
   },
   "scripts": {
     "build": "wp-scripts build",
@@ -16,7 +17,7 @@
     "start": "wp-scripts start",
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js",
-    "update-dev":"git push orb-services development",
+    "update-dev": "git push orb-services development",
     "update-prod": "git push orb-services production"
   },
   "author": "THE7OFDIAMONDS.TECH",
@@ -29,6 +30,9 @@
     "@stripe/react-stripe-js": "^2.1.1",
     "@stripe/stripe-js": "^1.54.0",
     "cors": "^2.8.5",
+    "crypto-browserify": "^3.12.0",
+    "dotenv": "^16.3.1",
+    "path-browserify": "^1.0.1",
     "react-redux": "^8.0.7",
     "react-router-dom": "^6.11.2",
     "react-select": "^5.7.3"

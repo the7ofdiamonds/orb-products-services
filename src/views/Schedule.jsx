@@ -13,6 +13,7 @@ function ScheduleComponent() {
   const { payment_intent_id } = useSelector((state) => state.payment);
 
   const [email, setEmail] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState('');
   const [availableTimes, setAvailableTimes] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
@@ -70,7 +71,7 @@ function ScheduleComponent() {
 
   useEffect(() => {
     getAvailableTimes();
-  }, [selectedDate]);
+  }, [selectedIndex]);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -181,13 +182,14 @@ function ScheduleComponent() {
                     name="date"
                     id="date_select"
                     ref={dateSelectRef}
-                    onChange={handleDateChange}>
+                    onChange={handleDateChange}
+                    defaultValue={'Choose a date'}>
                     {events ? (
                       events.map((event, index) => (
                         <option
                           key={event.id}
                           value={event.start.dateTime}
-                          name={index}>
+                          name={index + 1}>
                           {new Date(event.start.dateTime).toLocaleDateString(
                             undefined,
                             {

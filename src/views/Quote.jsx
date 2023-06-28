@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchService } from '../controllers/serviceSlice.js';
+import { fetchServices } from '../controllers/servicesSlice.js';
 import {
   addSelections,
   calculateSelections,
@@ -20,6 +20,10 @@ function QuoteComponent() {
   const navigate = useNavigate();
 
   const [checkedItems, setCheckedItems] = useState([]);
+
+  useEffect(() => {
+      dispatch(fetchServices());
+  }, []);
 
   const handleCheckboxChange = (event, service) => {
     const isChecked = event.target.checked;
@@ -56,7 +60,7 @@ function QuoteComponent() {
   return (
     <>
       <h2>QUOTE</h2>
-      
+
       <div className="quote">
         <form method="POST" className="quote-form" id="quote_form">
           <table className="quote-table" id="quote_total">

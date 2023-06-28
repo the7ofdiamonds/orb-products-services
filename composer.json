@@ -16,6 +16,7 @@
     },
     "autoload": {
         "psr-4": {
+            "ORBServices\\": "",
             "Stripe\\": "lib/"
         }
     },
@@ -26,5 +27,8 @@
                 "tests/Stripe/"
             ]
         }
+    },
+    "config": {
+        "optimize-autoloader": true
     }
 }
