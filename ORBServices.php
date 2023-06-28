@@ -23,16 +23,6 @@ define('ORB_SERVICES', WP_PLUGIN_DIR . '/orb-services');
 define('ORB_SERVICES_URL', WP_PLUGIN_URL . '/orb-services');
 
 require_once __DIR__ . '/vendor/autoload.php';
-// include_once 'admin/_admin.php';
-// include_once 'api/_api.php';
-// include_once 'css/_css.php';
-// include_once 'email/_email.php';
-// include_once 'js/_js.php';
-// include_once 'menus/_menus.php';
-// include_once 'pages/_pages.php';
-// include_once 'post-types/_post-types.php';
-// include_once 'shortcodes/_shortcodes.php';
-// include_once 'tables/_tables.php';
 
 use Dotenv\Dotenv;
 use ORBServices\Admin\Admin;

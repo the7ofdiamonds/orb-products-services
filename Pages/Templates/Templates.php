@@ -68,5 +68,3 @@ class Templates
         return $page_template;
     }
 }
-
-$orb_services_pages = new Templates();

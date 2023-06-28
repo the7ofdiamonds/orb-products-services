@@ -104,15 +104,21 @@ class Meta
 <?php
     }
 
-    function save_post_services_button()
+    function save_post_services_button($post_id)
     {
-        global $post;
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
 
-        update_post_meta($post->ID, "_services_button", sanitize_text_field($_POST["_services_button"]));
+        // Check if the post exists
+        if (!get_post($post_id)) {
+            return;
+        }
+
+        // Update the post meta
+        update_post_meta($post_id, "_services_button", sanitize_text_field($_POST["_services_button"]));
     }
+
 
     function save_post_services_button_icon()
     {

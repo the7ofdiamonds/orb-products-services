@@ -5,7 +5,7 @@ $post_title = $post->post_title;
 $post_id = $post->ID;
 $page_content = $post->post_content;
 ?>
-<section class="support">
+<section class="faq">
 
     <h2 class="title"><?php echo $post_title; ?></h2>
 
