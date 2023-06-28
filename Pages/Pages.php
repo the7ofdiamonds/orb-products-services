@@ -12,30 +12,29 @@ class Pages
         add_action('init', [$this, 'react_rewrite_rules'], 10, 0);
     }
 
-    public function add_pages()
+    function add_pages()
     {
-        $pages = array(
-            'services' => 'SERVICES',
-            'faq' => 'FAQ',
-            'support' => 'SUPPORT',
-            'contact' => 'CONTACT',
-        );
+        global $wpdb;
 
-        foreach ($pages as $slug => $title) {
-            if (!post_exists($title)) {
-                $page = array(
-                    'post_title' => $title,
-                    'post_type' => 'page',
+        $page_titles = [
+            'SERVICES',
+            'FAQ',
+            'SUPPORT',
+            'CONTACT',
+        ];
+
+        foreach ($page_titles as $page_title) {
+            $page_exists = $wpdb->get_var($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type = 'page'", $page_title));
+
+            if (!$page_exists) {
+                $page_data = array(
+                    'post_title'   => $page_title,
+                    'post_type'    => 'page',
                     'post_content' => '',
-                    'post_status' => 'publish',
-                    'post_name' => $slug,
+                    'post_status'  => 'publish',
                 );
 
-                $result = wp_insert_post($page, true);
-
-                if (is_wp_error($result)) {
-                    echo $result->get_error_message();
-                }
+                wp_insert_post($page_data);
             }
         }
     }
