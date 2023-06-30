@@ -20,7 +20,7 @@ class Menus
         }
 
         $this->add_to_menu($menu_id, 'SERVICES', '/services', 20);
-        $this->add_to_menu($menu_id, 'FAQ', '/services', 30);
+        $this->add_to_menu($menu_id, 'FAQ', '/faq', 30);
         $this->add_to_menu($menu_id, 'SUPPORT', '/support', 40);
         $this->add_to_menu($menu_id, 'CONTACT', '/contact', 50);
     }

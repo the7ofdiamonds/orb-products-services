@@ -8,6 +8,8 @@ import QuoteComponent from './views/Quote.jsx';
 import InvoiceComponent from './views/Invoice.jsx';
 import ScheduleComponent from './views/Schedule.jsx';
 import PaymentComponent from './views/Payment.jsx';
+import CardPaymentComponent from './views/payment/Card.jsx';
+import MobileComponent from './views/payment/Mobile.jsx';
 import ReceiptComponent from './views/receipt.jsx';
 import ErrorComponent from './views/Error.jsx';
 
@@ -24,6 +26,8 @@ function App() {
           <Route path="services/schedule" element={<ScheduleComponent />} />
           <Route path="services/invoice/:id" element={<InvoiceComponent />} />
           <Route path="services/payment/:id" element={<PaymentComponent />} />
+          <Route path="services/payment/:id/card" element={<CardPaymentComponent />} />
+          <Route path="services/payment/:id/mobile" element={<MobileComponent />} />
           <Route path="services/receipt/:id" element={<ReceiptComponent />} />
           <Route path="services/error" element={<ErrorComponent />} />
         </Routes>

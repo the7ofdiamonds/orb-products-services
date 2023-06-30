@@ -26,7 +26,7 @@ function InvoiceComponent() {
     grand_total,
     payment_intent_id,
   } = useSelector((state) => state.invoice);
-
+console.log(selections);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -128,9 +128,9 @@ function InvoiceComponent() {
                 selections.length > 0 &&
                 selections.map((selection) => (
                   <tr id="quote_option">
-                    <td className="feature-id">1</td>
+                    <td className="feature-id">{selection.id}</td>
                     <td className="feature-name" id="feature_name" colSpan={4}>
-                      {selection.name}
+                      {selection.description}
                     </td>
                     <td
                       className="feature-cost  table-number"

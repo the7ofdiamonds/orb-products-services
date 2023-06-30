@@ -9,6 +9,9 @@ class Templates
     {
         add_filter('page_template', [$this, 'get_archive_page_template']);
         add_filter('single_template', [$this, 'get_single_page_template']);
+        add_filter('template_include', [$this, 'get_custom_invoice_page_template']);
+        add_filter('template_include', [$this, 'get_custom_payment_page_template']);
+        add_filter('template_include', [$this, 'get_custom_receipt_page_template']);
         add_filter('page_template', [$this, 'get_custom_faq_page_template']);
         add_filter('page_template', [$this, 'get_custom_support_page_template']);
         add_filter('page_template', [$this, 'get_custom_contact_page_template']);
@@ -35,6 +38,48 @@ class Templates
         }
 
         return $single_template;
+    }
+
+    function get_custom_invoice_page_template($template)
+    {
+        $services_invoice = get_page_by_path('services/invoice');
+
+        if ($services_invoice && is_page($services_invoice->ID)) {
+            $custom_template = ORB_SERVICES . '/pages/templates/page-invoice.php';
+
+            if (file_exists($custom_template)) {
+                return $custom_template;
+            }
+        }
+        return $template;
+    }
+
+    function get_custom_payment_page_template($template)
+    {
+        $services_payment = get_page_by_path('services/payment');
+
+        if ($services_payment && is_page($services_payment->ID)) {
+            $custom_template = ORB_SERVICES . '/pages/templates/page-payment.php';
+
+            if (file_exists($custom_template)) {
+                return $custom_template;
+            }
+        }
+        return $template;
+    }
+
+    function get_custom_receipt_page_template($template)
+    {
+        $services_receipt = get_page_by_path('services/receipt');
+
+        if ($services_receipt && is_page($services_receipt->ID)) {
+            $custom_template = ORB_SERVICES . '/pages/templates/page-receipt.php';
+
+            if (file_exists($custom_template)) {
+                return $custom_template;
+            }
+        }
+        return $template;
     }
 
     function get_custom_faq_page_template($page_template)

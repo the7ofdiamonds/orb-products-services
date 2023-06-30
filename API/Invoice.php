@@ -18,7 +18,7 @@ class Invoice
         $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/invoice', [
+            register_rest_route('orb/v1', '/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'POST',
                 'callback' => [$this, 'create_invoice'],
                 'permission_callback' => '__return_true',
@@ -26,9 +26,9 @@ class Invoice
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/invoice/create/(?P<slug>[a-zA-Z0-9-_]+)', [
+            register_rest_route('orb/v1', '/invoice', [
                 'methods' => 'POST',
-                'callback' => [$this, 'create_invoice'],
+                'callback' => [$this, 'post_invoice'],
                 'permission_callback' => '__return_true',
             ]);
         });
@@ -48,37 +48,81 @@ class Invoice
                 'permission_callback' => '__return_true',
             ]);
         });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/invoice/(?P<slug>[a-zA-Z0-9-_]+)/finalize/', [
+                'methods' => 'POST',
+                'callback' => [$this, 'finalize_invoice'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
     }
 
+    public function create_invoice(WP_REST_Request $request)
+    {
+        $customer_id = $request->get_param('slug');
+        $selections = $request['selections'];
+    
+        if (empty($customer_id)) {
+            return new WP_Error('invalid_customer_id', 'Customer ID is required', array('status' => 400));
+        }
+    
+        $stripe_invoice = $this->stripeClient->invoices->create([
+            'customer' => $customer_id,
+        ]);
+    
+        foreach ($selections as $selection) {
+            $description = $selection['description'];
+            $cost = $selection['cost'];
+            $id = $selection['id'];
+    
+            $product = $this->stripeClient->products->create([
+                'name' => $description,
+            ]);
+    
+            $price = $this->stripeClient->prices->create([
+                'unit_amount' => str_replace('.', '', $cost),
+                'currency' => 'usd',
+                'product' => $product->id,
+            ]);
+    
+            $this->stripeClient->invoiceItems->create([
+                'customer' => $customer_id,
+                'price' => $price->id,
+                'invoice' => $stripe_invoice->id,
+                'metadata' => [
+                    'id' => $id,
+                ],
+            ]);
+        }
+    
+        return new WP_REST_Response($stripe_invoice->id, 200);
+    }
+    
     public function post_invoice(WP_REST_Request $request)
     {
         global $wpdb;
 
-        $request_data = $request->get_json_params();
-
-        if (empty($request_data)) {
-            return new WP_Error('empty_invoice', 'Invoice cannot be empty', array('status' => 400));
-        }
-
-        $name = $request_data['name'];
-        $email = $request_data['email'];
-        $start_date = $request_data['start_date'];
-        $start_time = $request_data['start_time'];
-        $street_address = $request_data['street_address'];
-        $city = $request_data['city'];
-        $state = $request_data['state'];
-        $zipcode = $request_data['zipcode'];
-        $phone = $request_data['phone'];
-        $selections = $request_data['selections'];
-        $subtotal = $request_data['subtotal'];
-        $tax = $request_data['tax'];
-        $grand_total = $request_data['grand_total'];
+        $name = $request['name'];
+        $email = $request['email'];
+        $start_date = $request['start_date'];
+        $start_time = $request['start_time'];
+        $street_address = $request['street_address'];
+        $city = $request['city'];
+        $state = $request['state'];
+        $zipcode = $request['zipcode'];
+        $phone = $request['phone'];
+        $selections = $request['selections'];
+        $subtotal = $request['subtotal'];
+        $tax = $request['tax'];
+        $grand_total = $request['grand_total'];
+        $stripe_invoice_id = $request['stripe_invoice_id'];
         $payment_intent_id = $request['payment_intent_id'];
 
-        $serialized_selections = serialize($selections);
+        $serialized_selections = json_encode($selections);
 
         $table_name = 'orb_invoice';
-        $wpdb->insert(
+        $result = $wpdb->insert(
             $table_name,
             [
                 'name' => $name,
@@ -94,43 +138,21 @@ class Invoice
                 'city' => $city,
                 'state' => $state,
                 'zipcode' => $zipcode,
+                'stripe_invoice_id' => $stripe_invoice_id,
                 'payment_intent_id' => $payment_intent_id
             ]
         );
 
-        $invoice_id = $wpdb->insert_id;
+        if (!$result) {
+            $error_message = $wpdb->last_error;
+            return new WP_Error($error_message);
+        }
 
+        $invoice_id = $wpdb->insert_id;
 
         return new WP_REST_Response($invoice_id, 200);
     }
 
-    public function create_invoice(WP_REST_Request $request)
-    {
-        global $wpdb;
-
-        // $request_data = $request->get_body();
-
-        $customer_id =  $request['customer_id'];
-        $amount = $request['amount'];
-
-        if (empty($customer_id)) {
-            return new WP_Error('invalid_customer_id', 'Customer ID is required', array('status' => 400));
-        }
-
-        $invoice = $this->stripeClient->invoices->create([
-            'customer' =>  $customer_id,
-        ]);
-
-        $invoice_item = $this->stripeClient->invoiceItems->create([
-            'customer' => $customer_id,
-            'price' => $amount,
-            'invoice' => $invoice->id
-        ]);
-
-        
-
-        return new WP_REST_Response($success, 200);
-    }
 
     public function get_invoice(WP_REST_Request $request)
     {
@@ -159,7 +181,7 @@ class Invoice
             'name' => $invoice->name,
             'email' => $invoice->email,
             'phone' => $invoice->phone,
-            'selections' => unserialize($invoice->selections),
+            'selections' => json_decode($invoice->selections, true),
             'subtotal' => $invoice->subtotal,
             'tax' => $invoice->tax,
             'grand_total' => $invoice->grand_total,
@@ -205,5 +227,61 @@ class Invoice
         $invoice_id = $wpdb->insert_id;
 
         return new WP_REST_Response($request_data, 200);
+    }
+
+    public function finalize_invoice(WP_REST_Request $request)
+    {
+        $status_code = 200;
+        $error_message = '';
+
+        try {
+            $stripe_invoice_id = $request['stripe_invoice_id'];
+
+            if ($stripe_invoice_id) {
+
+                $invoice = $this->stripeClient->invoices->finalizeInvoice(
+                    $stripe_invoice_id,
+                    ['expand' => ['payment_intent']]
+                );
+
+                $payment_intent = $invoice->payment_intent;
+
+                return new WP_REST_Response($payment_intent, $status_code);
+            } else {
+                $error_message = 'Invalid Stripe ID Number.';
+                $status_code = 400;
+            }
+        } catch (\Stripe\Exception\CardException $e) {
+            // Handle specific CardException
+            $error_message = 'Card declined.';
+            $status_code = 400;
+        } catch (\Stripe\Exception\RateLimitException $e) {
+            // Handle specific RateLimitException
+            $error_message = 'Too many requests. Please try again later.';
+            $status_code = 429;
+        } catch (\Stripe\Exception\InvalidRequestException $e) {
+            // Handle specific InvalidRequestException
+            $error_message = 'Invalid request. Please check your input.';
+            $status_code = 400;
+        } catch (\Stripe\Exception\AuthenticationException $e) {
+            // Handle specific AuthenticationException
+            $error_message = 'Authentication failed. Please check your API credentials.';
+            $status_code = 401;
+        } catch (\Stripe\Exception\ApiConnectionException $e) {
+            // Handle specific ApiConnectionException
+            $error_message = 'Network error occurred. Please try again later.';
+            $status_code = 500;
+        } catch (\Exception $e) {
+            // Handle any other generic exceptions
+            $error_message = 'An error occurred while creating the payment intent.';
+            $status_code = 500;
+        }
+
+        $data = array(
+            'status' => $status_code,
+            'message' => $error_message,
+        );
+
+        return new WP_Error('rest_error', $error_message, $data);
     }
 }

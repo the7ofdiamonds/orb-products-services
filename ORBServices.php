@@ -33,6 +33,7 @@ use ORBServices\JS\JS;
 use ORBServices\Menus\Menus;
 use ORBServices\Pages\Pages;
 use ORBServices\PostTypes\Services;
+// use ORBServices\Roles\Roles;
 use ORBServices\Shortcodes\Shortcodes;
 use ORBServices\Tables\Tables;
 
@@ -50,6 +51,7 @@ class ORBServices
         new Email;
         new JS;
         new Pages;
+        // new Roles;
         new Services;
         new Shortcodes;
         new Tables;
@@ -67,6 +69,7 @@ register_activation_hook(__FILE__, [$orb_services, 'activate']);
 
 $orb_services_pages = new Pages();
 register_activation_hook( __FILE__, [$orb_services_pages, 'add_pages'] );
+register_activation_hook( __FILE__, [$orb_services_pages, 'add_services_subpages'] );
 
 $orb_services_menus = new Menus();
 register_activation_hook( __FILE__, [$orb_services_menus, 'create_mobile_menu'] );

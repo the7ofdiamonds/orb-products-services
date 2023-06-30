@@ -5,6 +5,9 @@ const initialState = {
   error: '',
   invoice_id: '',
   selections: [],
+  ids: [],
+  descriptions: [],
+  costs: [],
   subtotal: '',
   tax: '',
   grand_total: '',
@@ -65,7 +68,9 @@ export const selectionSlice = createSlice({
       }
     },
     addSelections: (state, action) => {
-      state.selections = action.payload;
+      state.ids = action.payload.id;
+      state.descriptions = action.payload.description;
+      state.costs = action.payload.cost;
     },
   },
 });

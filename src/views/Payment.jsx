@@ -1,26 +1,31 @@
 import { useEffect } from 'react';
-import { NavLink, Routes, Route, useNavigate } from 'react-router-dom';
-
+import { NavLink, Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CardPaymentComponent from './payment/Card.jsx';
 import MobileComponent from './payment/Mobile.jsx';
 
-function PaymentComponent() {
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const queryParams = Object.fromEntries(urlSearchParams.entries());
-  const invoiceNumber = queryParams['invoice'];
+import { getInvoice } from '../controllers/invoiceSlice.js';
 
-  const { loading, payment_intent, client_secret, error } = useSelector(
-    (state) => state.payment
-  );
-  const { subtotal } = useSelector((state) => state.invoice);
+function PaymentComponent() {
+  const { id } = useParams();
+
+  const { invoice_id, subtotal } = useSelector((state) => state.invoice);
+  const { loading, error } = useSelector((state) => state.payment);
+  const { receipt_id } = useSelector((state) => state.receipt);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate('/receipt');
-  };
+  useEffect(() => {
+    dispatch(getInvoice(id));
+  }, []);
+
+  useEffect(() => {
+    if (receipt_id > 0) {
+      navigate(`/receipt/${receipt_id}`);
+    }
+  }, [receipt_id]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -32,7 +37,7 @@ function PaymentComponent() {
 
   return (
     <>
-    <h2 className="title"></h2>
+      <h2 className="title">PAYMENT</h2>
       <div className="payment" id="payment">
         <div className="payment-options">
           <NavLink to="mobile">
@@ -50,8 +55,8 @@ function PaymentComponent() {
 
         <div className="payment-card">
           <Routes>
-            <Route path="mobile" element={<MobileComponent />} />
-            <Route path="card" element={<CardPaymentComponent />} />
+            <Route path="services/payment/:id/mobile" element={<MobileComponent />} />
+            <Route path="/:id/card" element={<CardPaymentComponent />} />
           </Routes>
         </div>
       </div>

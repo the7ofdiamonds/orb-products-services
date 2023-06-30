@@ -1,5 +1,8 @@
 import React from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useSelector } from 'react-redux';
+
+// const { client_secret } = useSelector((state) => state.payment);
 
 const CardPaymentComponent = () => {
   const stripe = useStripe();
@@ -24,17 +27,14 @@ const CardPaymentComponent = () => {
       return;
     }
 
-    const result = await stripe.confirmCardPayment(
-      'pi_3NKaMzKNsWPbtVUM0VKgWKcz_secret_CvbgFvMJVorZWYNyl3eS89zBw',
-      {
-        payment_method: {
-          card: elements.getElement(CardElement),
-          billing_details: {
-            name: 'Jenny Rosen',
-          },
+    const result = await stripe.confirmCardPayment(client_secret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+        billing_details: {
+          name: 'Jenny Rosen',
         },
-      }
-    );
+      },
+    });
 
     if (result.error) {
       // Show error to your customer (for example, insufficient funds)

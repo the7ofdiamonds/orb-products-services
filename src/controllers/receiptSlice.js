@@ -4,7 +4,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   error: '',
-  receipt: {}
+  receipt: '',
+  receipt_id: ''
 };
 
 export const postReceipt = createAsyncThunk('receipt/postReceipt', async (invoice) => {

@@ -2,27 +2,42 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCalendarEvents } from '../controllers/scheduleSlice.js';
-import { createPaymentIntent } from '../controllers/paymentSlice.js';
-import { postInvoice } from '../controllers/invoiceSlice.js';
+import {
+  updateEmail,
+  updateDate,
+  updateTime,
+  updateName,
+  updateStreetAddress,
+  updateCity,
+  updateState,
+  updateZipcode,
+  updatePhone,
+  createInvoice,
+  postInvoice,
+} from '../controllers/invoiceSlice.js';
+import { addClient } from '../controllers/clientSlice.js';
+import { createCustomer } from '../controllers/customerSlice.js';
 
 function ScheduleComponent() {
   const { loading, events, error } = useSelector((state) => state.schedule);
-  const { invoice_id, selections, subtotal, tax, grand_total } = useSelector(
-    (state) => state.invoice
-  );
+  const { client_id } = useSelector((state) => state.client);
+  const { customer_id } = useSelector((state) => state.customer);
+  const {
+    // client_id,
+    // customer_id,
+    stripe_invoice_id,
+    invoice_id,
+    selections,
+    subtotal,
+    tax,
+    grand_total,
+  } = useSelector((state) => state.invoice);
   const { payment_intent_id } = useSelector((state) => state.payment);
 
-  const [email, setEmail] = useState('');
   const [selectedIndex, setSelectedIndex] = useState('');
   const [availableTimes, setAvailableTimes] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
-  const [name, setName] = useState('');
-  const [streetAddress, setStreetAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [zipcode, setZipcode] = useState('');
-  const [phone, setPhone] = useState('');
 
   const dateSelectRef = useRef(null);
 
@@ -74,7 +89,7 @@ function ScheduleComponent() {
   }, [selectedIndex]);
 
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+    dispatch(updateEmail(event.target.value));
   };
 
   const handleDateChange = (event) => {
@@ -85,60 +100,71 @@ function ScheduleComponent() {
       day: 'numeric',
     });
 
-    setSelectedDate(date);
+    dispatch(updateDate(date));
   };
 
   const handleTimeChange = (event) => {
-    setSelectedTime(event.target.value);
+    dispatch(updateTime(event.target.value));
   };
 
   const handleNameChange = (event) => {
-    setName(event.target.value);
+    dispatch(updateName(event.target.value));
   };
 
   const handleStreetAddressChange = (event) => {
-    setStreetAddress(event.target.value);
+    dispatch(updateStreetAddress(event.target.value));
   };
 
   const handleCityChange = (event) => {
-    setCity(event.target.value);
+    dispatch(updateCity(event.target.value));
   };
 
   const handleStateChange = (event) => {
-    setState(event.target.value);
+    dispatch(updateState(event.target.value));
   };
 
   const handleZipcodeChange = (event) => {
-    setZipcode(event.target.value);
+    dispatch(updateZipcode(event.target.value));
   };
 
   const handlePhoneChange = (event) => {
-    setPhone(event.target.value);
+    dispatch(updatePhone(event.target.value));
+  };
+
+  const client_data = {
+    username: 'client2',
+    password: 'password',
+    email: 'jamel.c.lyons@outlook.com',
   };
 
   const handleClick = async () => {
-    const invoiceData = {
-      email: email,
-      start_date: selectedDate,
-      start_time: selectedTime,
-      name: name,
-      street_address: streetAddress,
-      city: city,
-      state: state,
-      zipcode: zipcode,
-      phone: phone,
-      selections: selections,
-      subtotal: subtotal,
-      tax: tax,
-      grand_total: grand_total,
-    };
-
-    try {
-      dispatch(postInvoice(invoiceData));
-    } catch (error) {
-      console.log('Error posting invoice:', error.message);
+    if (client_data) {
+      try {
+        dispatch(addClient(client_data));
+      } catch (error) {
+        console.log('Error creating client:', error.message);
+      }
     }
   };
+
+  useEffect(() => {
+    if (client_id) {
+      dispatch(createCustomer());
+    }
+  }, [dispatch, client_id]);
+
+  console.log(selections)
+  useEffect(() => {
+    if (customer_id) {
+      dispatch(createInvoice({customer_id: customer_id, selections: selections}));
+    }
+  }, [dispatch, customer_id]);
+
+  useEffect(() => {
+    if (stripe_invoice_id) {
+      dispatch(postInvoice());
+    }
+  }, [dispatch, stripe_invoice_id]);
 
   useEffect(() => {
     if (invoice_id) {

@@ -19,11 +19,12 @@ class Tables
         $sql = "CREATE TABLE {$table_name} (
             id INT NOT NULL AUTO_INCREMENT,
             created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            stripe_invoice_id VARCHAR(255) DEFAULT NULL,
             payment_intent_id VARCHAR(255) DEFAULT NULL,
             name VARCHAR(255) DEFAULT NULL,
             email VARCHAR(255) DEFAULT NULL,
             phone VARCHAR(255) DEFAULT NULL,
-            selections VARCHAR(255) DEFAULT NULL,
+            selections JSON DEFAULT NULL,
             subtotal VARCHAR(255) DEFAULT NULL,
             tax VARCHAR(255) DEFAULT NULL,
             grand_total VARCHAR(255) DEFAULT NULL,

@@ -4,9 +4,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   error: '',
-  client_secret: '',
+  payment_intent: '',
   payment_intent_id: '',
-  payment_intent: ''
+  client_secret: '',
 };
 
 export const createPaymentIntent = createAsyncThunk(

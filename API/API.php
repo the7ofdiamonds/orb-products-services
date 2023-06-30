@@ -2,17 +2,12 @@
 
 namespace ORBServices\API;
 
-// require_once '1_service.php';
-// require_once '2_customer.php';
-// require_once '2_invoice.php';
-// require_once '3_payment.php';
-// require_once '4_receipt.php';
-
 use ORBServices\API\Service;
-use ORBServices\API\Customer;
+use ORBServices\API\Client;
 use ORBServices\API\Invoice;
 use ORBServices\API\Payment;
 use ORBServices\API\Receipt;
+
 use WP_REST_Request;
 use WP_Error;
 use WP_REST_Response;
@@ -33,7 +28,7 @@ class API
         });
 
         new Service;
-        new Customer;
+        new Client;
         new Invoice;
         new Payment;
         new Receipt;
@@ -86,14 +81,14 @@ class API
                 $services->the_post();
                 $post_data[] = array(
                     'id' => get_the_ID(),
-                    'title' => get_the_title(),
                     'description' => get_the_excerpt(),
+                    'cost' => get_post_meta(get_the_ID(), '_service_cost', true),
+                    'title' => get_the_title(),
                     'content' => get_the_content(),
                     'features' => get_post_meta(get_the_ID(), '_service_features', true),
                     'icon' => get_post_meta(get_the_ID(), '_services_button_icon', true),
                     'action_word' => get_post_meta(get_the_ID(), '_services_button', true),
                     'slug' => get_post_field( 'post_name', get_the_ID() ),
-                    'cost' => get_post_meta(get_the_ID(), '_service_cost', true),
                 );
             }
 

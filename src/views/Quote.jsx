@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchServices } from '../controllers/servicesSlice.js';
 import {
@@ -8,31 +8,27 @@ import {
 } from '../controllers/invoiceSlice.js';
 
 function QuoteComponent() {
-  const parsedPath = window.location.pathname.split('/');
-  const service = parsedPath[2];
-
   const { loading, error, services } = useSelector((state) => state.services);
-  const { cost } = useSelector((state) => state.services.services);
   const { subtotal } = useSelector((state) => state.invoice);
-  const { selections } = useSelector((state) => state.invoice);
-  console.log(services);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [checkedItems, setCheckedItems] = useState([]);
 
   useEffect(() => {
-      dispatch(fetchServices());
+    dispatch(fetchServices());
   }, []);
 
-  const handleCheckboxChange = (event, service) => {
+  const handleCheckboxChange = (event, id, description, cost) => {
     const isChecked = event.target.checked;
 
     setCheckedItems((prevItems) => {
       if (isChecked) {
-        return [...prevItems, service];
+        const newItem = { id, description, cost };
+        return [...prevItems, newItem];
       } else {
-        return prevItems.filter((item) => item !== service);
+        return prevItems.filter((item) => item.id !== id);
       }
     });
   };
@@ -46,7 +42,9 @@ function QuoteComponent() {
   }, [checkedItems]);
 
   const handleClick = () => {
-    navigate('/services/schedule');
+    if (subtotal > 0) {
+      navigate('/services/schedule');
+    }
   };
 
   if (error) {
@@ -78,30 +76,36 @@ function QuoteComponent() {
             <tbody className="quote-table-body">
               {services && services.length ? (
                 <React.Fragment>
-                  {services.map((service) => (
-                    <tr id="quote_option">
-                      <td>
-                        <input
-                          className="input selection feature-selection"
-                          type="checkbox"
-                          name="quote[checkbox][]"
-                          checked={checkedItems.includes(service)}
-                          onChange={(event) =>
-                            handleCheckboxChange(event, service)
-                          }
-                        />
-                      </td>
-                      <td className="description">{service.description}</td>
-                      <td
-                        className="feature-cost table-number"
-                        id="feature_cost">
-                        {new Intl.NumberFormat('us', {
-                          style: 'currency',
-                          currency: 'USD',
-                        }).format(service.cost)}
-                      </td>
-                    </tr>
-                  ))}
+                  {services.map((service) => {
+                    const { id, description, cost } = service; // Destructure the desired properties
+
+                    return (
+                      <tr key={id} id="quote_option">
+                        <td>
+                          <input
+                            className="input selection feature-selection"
+                            type="checkbox"
+                            name="quote[checkbox][]"
+                            checked={checkedItems.some(
+                              (item) => item.id === id
+                            )}
+                            onChange={(event) =>
+                              handleCheckboxChange(event, id, description, cost)
+                            }
+                          />
+                        </td>
+                        <td className="description">{description}</td>
+                        <td
+                          className="feature-cost table-number"
+                          id="feature_cost">
+                          {new Intl.NumberFormat('us', {
+                            style: 'currency',
+                            currency: 'USD',
+                          }).format(cost)}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </React.Fragment>
               ) : (
                 <tr>
