@@ -4,15 +4,23 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
     loading: false,
     error: '',
-    username: '',
-    password: '',
-    email: '',
-    client_id: ''
+    client_id: '',
+    company_name: '',
+    first_name: '',
+    last_name: '',
+    user_email: '',
+    phone: '',
+    address_line_1: '',
+    address_line_2: '',
+    city: '',
+    state: '',
+    zipcode: '',
+    country: ''
 };
 
-export const addClient = createAsyncThunk('client/addClient', async (client_data) => {
+export const createCustomer = createAsyncThunk('customer/createCustomer', async (customer_data) => {
     try {
-        const response = await axios.post('/wp-json/orb/v1/clients', client_data);
+        const response = await axios.post('/wp-json/orb/v1/customers', customer_data);
         return response.data;
     } catch (error) {
         throw new Error(error.message);
@@ -24,15 +32,15 @@ export const clientSlice = createSlice({
     initialState,
     extraReducers: (builder) => {
         builder
-            .addCase(addClient.pending, (state) => {
+            .addCase(createCustomer.pending, (state) => {
                 state.loading = true
                 state.error = null
             })
-            .addCase(addClient.fulfilled, (state, action) => {
+            .addCase(createCustomer.fulfilled, (state, action) => {
                 state.loading = false
-                state.client_id = action.payload
+                state.customer_id = action.payload
             })
-            .addCase(addClient.rejected, (state, action) => {
+            .addCase(createCustomer.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.error.message
             })

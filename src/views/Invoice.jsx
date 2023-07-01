@@ -2,15 +2,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getInvoice } from '../controllers/invoiceSlice.js';
-import { createPaymentIntent } from '../controllers/paymentSlice.js';
+import { getInvoice, finalizeInvoice } from '../controllers/invoiceSlice.js';
 
 function InvoiceComponent() {
   const { id } = useParams();
   const {
     loading,
     error,
-    invoice_id,
+    stripe_invoice_id,
+    payment_intent_id,
     email,
     name,
     street_address,
@@ -24,9 +24,8 @@ function InvoiceComponent() {
     subtotal,
     tax,
     grand_total,
-    payment_intent_id,
   } = useSelector((state) => state.invoice);
-console.log(selections);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,7 +34,7 @@ console.log(selections);
   }, []);
 
   const handleClick = () => {
-    dispatch(createPaymentIntent(invoice_id, email, subtotal));
+    dispatch(finalizeInvoice(stripe_invoice_id));
   };
 
   useEffect(() => {

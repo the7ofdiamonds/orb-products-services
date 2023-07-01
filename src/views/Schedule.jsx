@@ -16,7 +16,7 @@ import {
   postInvoice,
 } from '../controllers/invoiceSlice.js';
 import { addClient } from '../controllers/clientSlice.js';
-import { createCustomer } from '../controllers/customerSlice.js';
+import { createCustomer } from '../controllers/usersSlice.js';
 
 function ScheduleComponent() {
   const { loading, events, error } = useSelector((state) => state.schedule);
@@ -131,10 +131,13 @@ function ScheduleComponent() {
     dispatch(updatePhone(event.target.value));
   };
 
+  // Create Login & Signup
   const client_data = {
-    username: 'client2',
-    password: 'password',
-    email: 'jamel.c.lyons@outlook.com',
+    user_login: 'client2',
+    user_pass: 'password',
+    user_email: 'jamel.c.lyons@outlook.com',
+    first_name: first_name,
+    last_name: last_name,
   };
 
   const handleClick = async () => {
@@ -147,13 +150,13 @@ function ScheduleComponent() {
     }
   };
 
+  //Create client form page 
   useEffect(() => {
     if (client_id) {
       dispatch(createCustomer());
     }
   }, [dispatch, client_id]);
 
-  console.log(selections)
   useEffect(() => {
     if (customer_id) {
       dispatch(createInvoice({customer_id: customer_id, selections: selections}));

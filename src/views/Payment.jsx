@@ -1,16 +1,22 @@
 import { useEffect } from 'react';
-import { NavLink, Routes, Route, useNavigate, useParams } from 'react-router-dom';
+import {
+  NavLink,
+  Routes,
+  Route,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CardPaymentComponent from './payment/Card.jsx';
 import MobileComponent from './payment/Mobile.jsx';
 
-import { getInvoice } from '../controllers/invoiceSlice.js';
+import { finalizeInvoice } from '../controllers/invoiceSlice.js';
 
 function PaymentComponent() {
   const { id } = useParams();
 
-  const { invoice_id, subtotal } = useSelector((state) => state.invoice);
+  const { stripe_invoice_id } = useSelector((state) => state.invoice);
   const { loading, error } = useSelector((state) => state.payment);
   const { receipt_id } = useSelector((state) => state.receipt);
 
@@ -18,8 +24,10 @@ function PaymentComponent() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getInvoice(id));
-  }, []);
+    if (stripe_invoice_id) {
+      dispatch(finalizeInvoice(stripe_invoice_id));
+    }
+  }, [dispatch, stripe_invoice_id]);
 
   useEffect(() => {
     if (receipt_id > 0) {
@@ -55,7 +63,10 @@ function PaymentComponent() {
 
         <div className="payment-card">
           <Routes>
-            <Route path="services/payment/:id/mobile" element={<MobileComponent />} />
+            <Route
+              path="services/payment/:id/mobile"
+              element={<MobileComponent />}
+            />
             <Route path="/:id/card" element={<CardPaymentComponent />} />
           </Routes>
         </div>

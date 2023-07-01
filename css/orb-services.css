@@ -389,13 +389,11 @@ i.fa-solid.fa-globe {
   padding: 1rem;
 }
 
-.quote .quote {
-  padding: 0;
+.total-due-label {
+  text-align: right;
 }
-.quote .quote .quote-table {
-  padding: -1em;
-}
-.quote .quote td.description {
+
+.total-due {
   text-align: right;
 }
 

@@ -9,6 +9,8 @@ class Templates
     {
         add_filter('page_template', [$this, 'get_archive_page_template']);
         add_filter('single_template', [$this, 'get_single_page_template']);
+        add_filter('template_include', [$this, 'get_custom_start_page_template']);
+        add_filter('template_include', [$this, 'get_custom_quote_page_template']);
         add_filter('template_include', [$this, 'get_custom_invoice_page_template']);
         add_filter('template_include', [$this, 'get_custom_payment_page_template']);
         add_filter('template_include', [$this, 'get_custom_receipt_page_template']);
@@ -38,6 +40,34 @@ class Templates
         }
 
         return $single_template;
+    }
+
+    function get_custom_start_page_template($template)
+    {
+        $start_page = get_page_by_path('services/start');
+
+        if ($start_page && is_page($start_page->ID)) {
+            $custom_template = ORB_SERVICES . '/pages/templates/page-start.php';
+
+            if (file_exists($custom_template)) {
+                return $custom_template;
+            }
+        }
+        return $template;
+    }
+
+    function get_custom_quote_page_template($template)
+    {
+        $quote_page = get_page_by_path('services/quote');
+
+        if ($quote_page && is_page($quote_page->ID)) {
+            $custom_template = ORB_SERVICES . '/pages/templates/page-quote.php';
+
+            if (file_exists($custom_template)) {
+                return $custom_template;
+            }
+        }
+        return $template;
     }
 
     function get_custom_invoice_page_template($template)

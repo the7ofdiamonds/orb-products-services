@@ -1,15 +1,16 @@
-import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { fetchServices } from '../controllers/servicesSlice.js';
 import {
   addSelections,
   calculateSelections,
-} from '../controllers/invoiceSlice.js';
+} from '../controllers/quoteSlice.js';
 
 function QuoteComponent() {
   const { loading, error, services } = useSelector((state) => state.services);
-  const { subtotal } = useSelector((state) => state.invoice);
+  const { subtotal } = useSelector((state) => state.quote);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,10 +41,10 @@ function QuoteComponent() {
   useEffect(() => {
     dispatch(calculateSelections(services.cost));
   }, [checkedItems]);
-
+// Add dynamic id number
   const handleClick = () => {
     if (subtotal > 0) {
-      navigate('/services/schedule');
+      navigate('/services/invoice');
     }
   };
 
@@ -121,7 +122,7 @@ function QuoteComponent() {
             <tfoot className="quote-table-foot">
               <tr>
                 <th className="total-due-label" colSpan={2}>
-                  <h4>TOTAL DUE</h4>
+                  <h4>SUBTOTAL</h4>
                 </th>
                 <th className="total-due table-number">
                   <h4>
@@ -137,8 +138,8 @@ function QuoteComponent() {
         </form>
       </div>
 
-      <button id="schedule_button" onClick={handleClick}>
-        <h3>SCHEDULE</h3>
+      <button onClick={handleClick}>
+        <h3>INVOICE</h3>
       </button>
     </>
   );

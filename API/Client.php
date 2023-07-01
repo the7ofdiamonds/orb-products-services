@@ -5,7 +5,6 @@ namespace ORBServices\API;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
-use WP_User;
 
 use Dotenv\Dotenv;
 
@@ -52,19 +51,32 @@ class Client
 
     function create_client($request)
     {
-        // Retrieve the user data from the request
-        $username = $request->get_param('username');
-        $email = $request->get_param('email');
-        $password = $request->get_param('password');
+        $first_name = $request['first_name'];
+        $last_name = $request['last_name'];
+        $user_login = $request['user_login'];
+        $user_email = $request['user_email'];
+        $user_pass = $request['user_pass'];
 
-        // Create the user using wp_create_user() or other appropriate methods
-        $client_id = wp_create_user($username, $password, $email);
+        $user = get_user_by('email', $user_email);
 
-        $user = new WP_User($client_id);
-        $user->add_role('subscriber');
-        $user->add_role('client');
+        if ($user && $user->exists()) {
+            $user->add_role('subscriber');
+            $user->add_role('client');
 
-        // Return the created user data or an appropriate response
+            return rest_ensure_response($user->ID);
+        }
+
+        $clientData = array(
+            'user_login' => $user_login,
+            'user_pass'  => $user_pass,
+            'user_email' => $user_email,
+            'first_name' => $first_name,
+            'last_name'  => $last_name,
+            'role'       => 'client'
+        );
+
+        $client_id = wp_insert_user($clientData);
+
         if (!is_wp_error($client_id)) {
             return rest_ensure_response($client_id);
         } else {
@@ -79,27 +91,32 @@ class Client
         $error_message = '';
 
         try {
-            $customer_id = $request['customer_id'];
-            $name = $request['name'];
-            $email = $request['email'];
+            $client_id = $request['client_id'];
+            $first_name = $request['first_name'];
+            $last_name = $request['last_name'];
+            $user_email = $request['user_email'];
             $phone = $request['phone'];
-            $address_line1 = $request['line1'];
-            $address_line2 = $request['line2'];
+            $address_line_1 = $request['address_line_1'];
+            $address_line_2 = $request['address_line_2'];
             $city = $request['city'];
             $state = $request['state'];
             $zipcode = $request['zipcode'];
             $country = $request['country'];
-            $description = $request['description'];
+
+            // Make this dynamic
+            $company_name = 'J.C. LYONS ENTERPRISES LLC';
+            $website = 'THE7OFDIAMONDS.TECH';
+            $description = "Account at" . $company_name . 'D.B.A' . $website;
 
             if ($request) {
 
                 $customer = $this->stripeClient->customers->create([
-                    'name' => $name,
-                    'email' => $email,
+                    'name' => $first_name . ' ' . $last_name,
+                    'email' => $user_email,
                     'phone' => $phone,
                     'address' => [
-                        'line1' => $address_line1,
-                        'line2' => $address_line2,
+                        'line1' => $address_line_1,
+                        'line2' => $address_line_2,
                         'city' => $city,
                         'state' => $state,
                         'postal_code' => $zipcode,
@@ -107,7 +124,7 @@ class Client
                     ],
                     'description' => $description,
                     'metadata' => [
-                        'customer_id' => $customer_id
+                        'client_id' => $client_id
                     ]
                 ]);
 

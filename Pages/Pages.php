@@ -44,6 +44,9 @@ class Pages
         global $wpdb;
 
         $page_titles = [
+            'SERVICE',
+            'START',
+            'QUOTE',
             'INVOICE',
             'PAYMENT',
             'RECEIPT',
@@ -69,14 +72,21 @@ class Pages
 
     public function react_rewrite_rules()
     {
+        $service_page_id = get_page_by_path('services/service')->ID;
+
+        add_rewrite_rule('^services/([0-9]+)/([^/]+)/?$', 'index.php?page_id=' . $service_page_id , 'top');
+
         $services_page_id = get_page_by_path('services')->ID;
+        $start_page_id = get_page_by_path('services/start')->ID;
+        $quote_page_id = get_page_by_path('services/quote')->ID;
         $invoice_page_id = get_page_by_path('services/invoice')->ID;
         $payment_page_id = get_page_by_path('services/payment')->ID;
         $receipt_page_id = get_page_by_path('services/receipt')->ID;
 
-        if ($services_page_id && $invoice_page_id && $payment_page_id && $receipt_page_id) {
+        if ($services_page_id && $start_page_id && $quote_page_id && $invoice_page_id && $payment_page_id && $receipt_page_id) {
 
             $custom_routes = [
+                'start' => 'start',
                 'quote'   => 'quote',
                 'schedule' => 'schedule',
             ];
@@ -85,13 +95,14 @@ class Pages
                 add_rewrite_rule('^services/' . $route . '/?$', 'index.php?page_id=' . $services_page_id . '&custom_route=' . $slug, 'top');
             }
 
-            add_rewrite_rule('^services/payment/([0-9]+)/([^/]+)/?$', 'index.php?page_id=' . $services_page_id . '&custom_route=payment&id=$matches[1]&extra_param=$matches[2]', 'top');
 
             if ($invoice_page_id && $payment_page_id && $receipt_page_id) {
                 add_rewrite_rule('^services/invoice/([0-9]+)/?$', 'index.php?page_id=' . $invoice_page_id . '&id=$matches[1]', 'top');
                 add_rewrite_rule('^services/payment/([0-9]+)/?$', 'index.php?page_id=' . $payment_page_id . '&id=$matches[1]', 'top');
                 add_rewrite_rule('^services/receipt/([0-9]+)/?$', 'index.php?page_id=' . $receipt_page_id . '&id=$matches[1]', 'top');
             }
+
+            add_rewrite_rule('^services/payment/([0-9]+)/([^/]+)/?$', 'index.php?page_id=' . $payment_page_id . '&custom_route=payment&id=$matches[1]&extra_param=$matches[2]', 'top');
         }
     }
 }

@@ -7,7 +7,6 @@ const initialState = {
   service: []
 }
 
-// Generates pending, fulfilled and rejected action types
 export const fetchService = createAsyncThunk('service/serviceSlice', async (serviceSlug) => {
   try {
     const response = await axios.get(`/wp-json/orb/v1/services/${serviceSlug}`);

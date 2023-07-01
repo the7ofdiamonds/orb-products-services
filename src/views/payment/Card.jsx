@@ -2,9 +2,9 @@ import React from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useSelector } from 'react-redux';
 
-// const { client_secret } = useSelector((state) => state.payment);
-
 const CardPaymentComponent = () => {
+const {client_secret} = useSelector((state) => state.payment)
+
   const stripe = useStripe();
   const elements = useElements();
 

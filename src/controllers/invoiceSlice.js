@@ -4,24 +4,21 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   error: '',
-  selections: [],
   client_id: '',
-  customer_id: '',
+  stripe_customer_id: '',
   stripe_invoice_id: '',
-  invoice_id: '',
-  email: '',
-  name: '',
-  street_address: '',
-  city: '',
-  state: '',
-  zipcode: '',
+  payment_intent_id: '',
+  user_email: '',
   phone: '',
+  company_name: '',
+  first_name: '',
+  last_name: '',
   start_date: '',
   start_time: '',
+  selections: [],
   subtotal: '',
   tax: '',
   grand_total: '',
-  payment_intent_id: '',
 };
 
 export const addSelections = (selections) => {
@@ -38,9 +35,9 @@ export const populateInvoice = (invoice) => {
   };
 };
 
-export const createInvoice = createAsyncThunk('invoice/createInvoice', async ({customer_id, selections}) => {
+export const createInvoice = createAsyncThunk('invoice/createInvoice', async ({ customer_id, selections }) => {
   try {
-    const response = await axios.post(`/wp-json/orb/v1/invoice/${customer_id}`, {selections});
+    const response = await axios.post(`/wp-json/orb/v1/invoice/${customer_id}`, { selections });
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -49,13 +46,15 @@ export const createInvoice = createAsyncThunk('invoice/createInvoice', async ({c
 
 export const postInvoice = createAsyncThunk('invoice/postInvoice', async (_, { getState }) => {
   const {
-    email,
-    name,
-    street_address,
-    city,
-    state,
-    zipcode,
+    client_id,
+    stripe_customer_id,
+    stripe_invoice_id,
+    payment_intent_id,
+    user_email,
     phone,
+    company_name,
+    first_name,
+    last_name,    
     start_date,
     start_time,
     selections,
@@ -65,13 +64,15 @@ export const postInvoice = createAsyncThunk('invoice/postInvoice', async (_, { g
   } = getState().invoice;
 
   const invoice = {
-    email: email,
-    name: name,
-    street_address: street_address,
-    city: city,
-    state: state,
-    zipcode: zipcode,
+    client_id: client_id,
+    customer_id: stripe_customer_id,
+    invoice_id: stripe_invoice_id,
+    payment_intent_id: payment_intent_id,
+    email: user_email,
     phone: phone,
+    company_name: company_name,
+    first_name: first_name,
+    last_name: last_name,
     start_date: start_date,
     start_time: start_time,
     selections: selections,
@@ -79,7 +80,7 @@ export const postInvoice = createAsyncThunk('invoice/postInvoice', async (_, { g
     tax: tax,
     grand_total: grand_total,
   };
-  console.log(invoice);
+
   const response = await axios.post('/wp-json/orb/v1/invoice', invoice);
 
   try {
@@ -92,6 +93,15 @@ export const postInvoice = createAsyncThunk('invoice/postInvoice', async (_, { g
 export const getInvoice = createAsyncThunk('invoice/getInvoice', async (id) => {
   try {
     const response = await axios.get(`/wp-json/orb/v1/invoice/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
+export const finalizeInvoice = createAsyncThunk('invoice/finalizeInvoice', async (stripe_invoice_id) => {
+  try {
+    const response = await axios.post(`/wp-json/orb/v1/invoice/${stripe_invoice_id}/finalize`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);

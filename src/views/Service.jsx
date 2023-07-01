@@ -19,7 +19,7 @@ function ServiceComponent() {
   }, [servicePath]);
 
   const handleClick = () => {
-    navigate('/services/quote');
+    navigate('/services/start');
   };
 
   if (error) {
@@ -78,7 +78,7 @@ function ServiceComponent() {
       </div>
 
       <button id="schedule_button" onClick={handleClick}>
-        <h3>QUOTE</h3>
+        <h3>START</h3>
       </button>
     </>
   );

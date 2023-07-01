@@ -7,6 +7,7 @@ const initialState = {
   error: null,
 };
 
+// Add the apikey and calendarid to the .env file
 const apiKey = 'AIzaSyCxrvBdk7ykEDhAU7ECUXTsG59SNEvEZ_A';
 const calendarId = 'jclyonsenterprises@gmail.com';
 const timeNow = new Date();
@@ -29,6 +30,7 @@ export const fetchCalendarEvents = createAsyncThunk(
   return response.data.items;
 });
 
+// Add confirmation for date and time
 export const scheduleSlice = createSlice({
   name: 'schedule',
   initialState,

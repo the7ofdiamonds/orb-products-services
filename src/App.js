@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 import ServicesComponent from './views/Services.jsx';
 import ServiceComponent from './views/Service.jsx';
 import QuoteComponent from './views/Quote.jsx';
+import StartComponent from './views/Start.jsx';
+import ClientComponent from './views/Client.jsx';
 import InvoiceComponent from './views/Invoice.jsx';
 import ScheduleComponent from './views/Schedule.jsx';
 import PaymentComponent from './views/Payment.jsx';
@@ -23,6 +25,8 @@ function App() {
           <Route index path="/" element={<ServicesComponent />} />
           <Route path="services/:service" element={<ServiceComponent />} />
           <Route path="services/quote" element={<QuoteComponent />} />
+          <Route path="services/start" element={<StartComponent />} />
+          <Route path="services/start/client" element={<ClientComponent />} />
           <Route path="services/schedule" element={<ScheduleComponent />} />
           <Route path="services/invoice/:id" element={<InvoiceComponent />} />
           <Route path="services/payment/:id" element={<PaymentComponent />} />
