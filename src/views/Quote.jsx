@@ -11,6 +11,10 @@ import {
 function QuoteComponent() {
   const { loading, error, services } = useSelector((state) => state.services);
   const { subtotal } = useSelector((state) => state.quote);
+  const quoteData = useSelector((state) => state.quote);
+  const { client_id, stripe_customer_id, stripe_invoice_id, invoice_id, selections } = useSelector(
+    (state) => state.invoice
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,12 +45,34 @@ function QuoteComponent() {
   useEffect(() => {
     dispatch(calculateSelections(services.cost));
   }, [checkedItems]);
-// Add dynamic id number
-  const handleClick = () => {
-    if (subtotal > 0) {
-      navigate('/services/invoice');
+
+  dispatch(quoteToInvoice(quoteData));
+
+  useEffect(() => {
+    if (client_id) {
+      dispatch(createCustomer());
     }
-  };
+  }, [dispatch, client_id]);
+
+  useEffect(() => {
+    if (stripe_customer_id) {
+      dispatch(
+        createInvoice({ customer_id: stripe_customer_id, selections: selections })
+      );
+    }
+  }, [dispatch, stripe_customer_id]);
+
+  useEffect(() => {
+    if (stripe_invoice_id) {
+      dispatch(postInvoice());
+    }
+  }, [dispatch, stripe_invoice_id]);
+
+  useEffect(() => {
+    if (invoice_id) {
+      navigate(`/services/invoice/${invoice_id}`);
+    }
+  }, [dispatch, invoice_id]);
 
   if (error) {
     return <div>Error: {error}</div>;

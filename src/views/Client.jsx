@@ -14,13 +14,16 @@ import {
   updateCity,
   updateState,
   updateZipcode,
-} from '../controllers/invoiceSlice.js';
+} from '../controllers/clientSlice.js';
 import { addClient } from '../controllers/usersSlice.js';
 import { createCustomer } from '../controllers/clientSlice.js';
+import { clientToInvoice } from '../controllers/invoiceSlice.js';
 
 function ClientComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const clientData = useSelector((state) => state.client);
 
   const {
     loading,
@@ -82,6 +85,7 @@ function ClientComponent() {
     dispatch(updateZipcode(event.target.value));
   };
 
+  dispatch(clientToInvoice(clientData));
   // Create Login & Signup
   const client_data = {
     user_login: 'client2',
@@ -125,7 +129,7 @@ function ClientComponent() {
             <thead></thead>
             <tbody>
               <tr>
-                <td>
+                <td colSpan={2}>
                   <input
                     className="input schedule"
                     name="user_email"
@@ -139,7 +143,7 @@ function ClientComponent() {
                     className="input"
                     name="phone"
                     type="tel"
-                    placeholder="Telephone"
+                    placeholder="Phone"
                     onChange={handlePhoneChange}
                   />
                 </td>
@@ -148,8 +152,8 @@ function ClientComponent() {
                 <td colSpan={2}>
                   <input
                     className="input"
-                    name="name"
-                    id="name"
+                    name="company_name"
+                    id="company_name"
                     placeholder="Company Name"
                     onChange={handleCompanyNameChange}
                   />

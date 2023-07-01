@@ -6,6 +6,7 @@ const initialState = {
     error: '',
     client_id: '',
     company_name: '',
+    tax_id: '',
     first_name: '',
     last_name: '',
     user_email: '',
@@ -30,6 +31,41 @@ export const createCustomer = createAsyncThunk('customer/createCustomer', async 
 export const clientSlice = createSlice({
     name: 'client',
     initialState,
+    reducers: {
+        updateEmail: (state, action) => {
+            state.user_email = action.payload;
+        },
+        updatePhone: (state, action) => {
+            state.phone = action.payload;
+        },
+        updateCompanyName: (state, action) => {
+            state.company_name = action.payload;
+        },
+        updateTaxID: (state, action) => {
+            state.tax_id = action.payload;
+        },
+        updateFirstName: (state, action) => {
+            state.first_name = action.payload;
+        },
+        updateLastName: (state, action) => {
+            state.last_name = action.payload;
+        },
+        updateAddress: (state, action) => {
+            state.address_line_1 = action.payload;
+        },
+        updateAddress2: (state, action) => {
+            state.address_line_2 = action.payload;
+        },
+        updateCity: (state, action) => {
+            state.city = action.payload;
+        },
+        updateState: (state, action) => {
+            state.state = action.payload;
+        },
+        updateZipcode: (state, action) => {
+            state.zipcode = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(createCustomer.pending, (state) => {
@@ -47,4 +83,17 @@ export const clientSlice = createSlice({
     }
 })
 
+export const {
+    updateEmail,
+    updatePhone,
+    updateCompanyName,
+    updateTaxID,
+    updateFirstName,
+    updateLastName,
+    updateAddress,
+    updateAddress2,
+    updateCity,
+    updateState,
+    updateZipcode,
+} = clientSlice.actions;
 export default clientSlice;

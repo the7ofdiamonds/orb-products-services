@@ -7,6 +7,7 @@ const initialState = {
   client_id: '',
   stripe_customer_id: '',
   stripe_invoice_id: '',
+  invoice_id: '',
   payment_intent_id: '',
   user_email: '',
   phone: '',
@@ -21,16 +22,16 @@ const initialState = {
   grand_total: '',
 };
 
-export const addSelections = (selections) => {
+export const clientToInvoice = (invoice) => {
   return {
-    type: 'invoice/addSelections',
-    payload: selections,
+    type: 'invoice/clientToInvoice',
+    payload: invoice
   };
 };
 
-export const populateInvoice = (invoice) => {
+export const quoteToInvoice = (invoice) => {
   return {
-    type: 'invoice/populateInvoice',
+    type: 'invoice/quoteToInvoice',
     payload: invoice
   };
 };
@@ -54,7 +55,7 @@ export const postInvoice = createAsyncThunk('invoice/postInvoice', async (_, { g
     phone,
     company_name,
     first_name,
-    last_name,    
+    last_name,
     start_date,
     start_time,
     selections,
@@ -121,55 +122,30 @@ export const invoiceSlice = createSlice({
   name: 'invoice',
   initialState,
   reducers: {
-    addSelections: (state, action) => {
-      state.selections = action.payload;
+    clientToInvoice: (state, action) => {
+      state.user_email = action.payload.user_email;
+      state.phone = action.payload.phone;
+      state.company_name = action.payload.company_name;
+      state.tax_id = action.payload.tax_id;
+      state.first_name = action.payload.first_name;
+      state.last_name = action.payload.last_name;
+      state.street_address_1 = action.payload.street_address_1;
+      state.street_address_2 = action.payload.street_address_2;
+      state.city = action.payload.city;
+      state.state = action.payload.state;
+      state.zipcode = action.payload.zipcode;
     },
-    calculateSelections: (state) => {
-      let subtotal = 0.00;
-
-      state.selections.forEach((item) => {
-        const serviceCost = parseFloat(item.cost);
-
-        if (isNaN(serviceCost)) {
-          subtotal += 0;
-        } else {
-          subtotal += serviceCost;
-        }
-      });
-
-      let tax = subtotal * 0.33;
-      let grandTotal = subtotal + tax;
-
-      state.subtotal = subtotal;
-      state.tax = tax;
-      state.grand_total = grandTotal;
-    },
-    updateEmail: (state, action) => {
-      state.email = action.payload;
+    quoteToInvoice: (state, action) => {
+      state.selections = action.payload.selections;
+      state.subtotal = action.payload.subtotal;
+      state.tax = action.payload.tax;
+      state.grand_total = action.payload.grand_total;
     },
     updateDate: (state, action) => {
       state.start_date = action.payload;
     },
     updateTime: (state, action) => {
       state.start_time = action.payload;
-    },
-    updateName: (state, action) => {
-      state.name = action.payload;
-    },
-    updateStreetAddress: (state, action) => {
-      state.street_address = action.payload;
-    },
-    updateCity: (state, action) => {
-      state.city = action.payload;
-    },
-    updateState: (state, action) => {
-      state.state = action.payload;
-    },
-    updateZipcode: (state, action) => {
-      state.zipcode = action.payload;
-    },
-    updatePhone: (state, action) => {
-      state.phone = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -239,16 +215,5 @@ export const invoiceSlice = createSlice({
   }
 });
 
-export const {
-  calculateSelections,
-  updateEmail,
-  updateDate,
-  updateTime,
-  updateName,
-  updateStreetAddress,
-  updateCity,
-  updateState,
-  updateZipcode,
-  updatePhone,
-} = invoiceSlice.actions;
+export const { updateDate, updateTime } = invoiceSlice.actions;
 export default invoiceSlice;
