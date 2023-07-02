@@ -29,37 +29,39 @@ function ScheduleComponent() {
 
   const getAvailableTimes = () => {
     const hours = [];
-
     setAvailableTimes([]);
 
     const selectedIndex = dateSelectRef.current.selectedIndex;
-    if (selectedIndex >= 0) {
+    if (selectedIndex >= 0 && events && events.length > selectedIndex) {
       const selectedDate = events[selectedIndex];
       const startDateTime = selectedDate.start.dateTime;
-      const startTime = startDateTime.split('T')[1];
       const endDateTime = selectedDate.end.dateTime;
-      const endTime = endDateTime.split('T')[1];
-      const startHour = parseInt(startTime, 10);
-      const endHour = parseInt(endTime, 10);
 
-      for (let i = startHour; i <= endHour; i++) {
-        hours.push(i);
+      if (startDateTime && endDateTime) {
+        const startTime = startDateTime.split('T')[1];
+        const endTime = endDateTime.split('T')[1];
+        const startHour = parseInt(startTime, 10);
+        const endHour = parseInt(endTime, 10);
+
+        for (let i = startHour; i <= endHour; i++) {
+          hours.push(i);
+        }
+
+        const newAvailableTimes = hours.map((hr) => {
+          const time = new Date(0, 0, 0, hr, 0, 0, 0).toLocaleTimeString(
+            'en-US',
+            {
+              hour12: true,
+              hour: '2-digit',
+              minute: '2-digit',
+            }
+          );
+
+          return { label: time, value: time };
+        });
+
+        setAvailableTimes(newAvailableTimes);
       }
-
-      const newAvailableTimes = hours.map((hr) => {
-        const time = new Date(0, 0, 0, hr, 0, 0, 0).toLocaleTimeString(
-          'en-US',
-          {
-            hour12: true,
-            hour: '2-digit',
-            minute: '2-digit',
-          }
-        );
-
-        return { label: time, value: time };
-      });
-
-      setAvailableTimes(newAvailableTimes);
     }
   };
 
@@ -79,6 +81,7 @@ function ScheduleComponent() {
   };
 
   const handleTimeChange = (event) => {
+    setSelectedTime(event.target.value);
     dispatch(updateTime(event.target.value));
   };
 
@@ -104,76 +107,66 @@ function ScheduleComponent() {
     <>
       <h2 className="title">SCHEDULE</h2>
       <div className="schedule" id="schedule">
-        <form
-          className="schedule-card card"
-          action=""
-          method="POST"
-          id="schedule_form">
-          <table>
-            <thead></thead>
-            <tbody>
-              <tr>
-                <td>
-                  <select
-                    type="text"
-                    name="date"
-                    id="date_select"
-                    ref={dateSelectRef}
-                    onChange={handleDateChange}
-                    defaultValue={'Choose a date'}>
-                    {events ? (
-                      events.map((event, index) => (
-                        <option
-                          key={event.id}
-                          value={event.start.dateTime}
-                          name={index + 1}>
-                          {new Date(event.start.dateTime).toLocaleDateString(
-                            undefined,
-                            {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric',
-                            }
-                          )}
-                        </option>
-                      ))
-                    ) : (
-                      <option>Dates Unavailable</option>
+        <div className="schedule-select">
+          <div className="date-select card">
+            <label htmlFor="date">Choose a Date</label>
+            <select
+              type="text"
+              name="date"
+              id="date_select"
+              ref={dateSelectRef}
+              onChange={handleDateChange}
+              defaultValue={selectedDate}>
+              {events && events.length > 0 ? (
+                events.map((event, index) => (
+                  <option
+                    key={event.id}
+                    value={event.start.dateTime}
+                    name={index}>
+                    {new Date(event.start.dateTime).toLocaleDateString(
+                      undefined,
+                      {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      }
                     )}
-                  </select>
-                </td>
-                <td>
-                  <select
-                    type="time"
-                    name="time"
-                    id="time_select"
-                    value={selectedTime}
-                    ref={timeSelectRef}
-                    onChange={handleTimeChange}>
-                    {availableTimes ? (
-                      availableTimes.map((time, index) => (
-                        <option
-                          key={index}
-                          name={time.value}
-                          selected={time.value === selectedTime}>
-                          {time.label}
-                        </option>
-                      ))
-                    ) : (
-                      <option>Time Unavailable</option>
-                    )}
-                  </select>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot></tfoot>
-          </table>
-        </form>
-
-        <button onClick={handleClick}>
-          <h3>INVOICE</h3>
-        </button>
+                  </option>
+                ))
+              ) : (
+                <option>Dates Unavailable</option>
+              )}
+            </select>
+          </div>
+          <div className="time-select card">
+            <label htmlFor="time">Choose a Time</label>
+            <select
+              type="time"
+              name="time"
+              id="time_select"
+              ref={timeSelectRef}
+              value={selectedTime}
+              onChange={handleTimeChange}>
+              {availableTimes ? (
+                availableTimes.map((time) => (
+                  <option
+                    key={time.value}
+                    name={time.value}
+                    selected={time.value === selectedTime}>
+                    {time.label}
+                  </option>
+                ))
+              ) : (
+                <option>Time Unavailable</option>
+              )}
+            </select>
+          </div>
+        </div>
       </div>
+
+      <button onClick={handleClick}>
+        <h3>CONFIRM</h3>
+      </button>
     </>
   );
 }

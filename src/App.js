@@ -27,12 +27,12 @@ function App() {
           <Route path="services/quote" element={<QuoteComponent />} />
           <Route path="services/start" element={<StartComponent />} />
           <Route path="services/start/client" element={<ClientComponent />} />
-          <Route path="services/schedule" element={<ScheduleComponent />} />
           <Route path="services/invoice/:id" element={<InvoiceComponent />} />
-          <Route path="services/payment/:id" element={<PaymentComponent />} />
+          <Route path="services/payment/:id/*" element={<PaymentComponent />} />
           <Route path="services/payment/:id/card" element={<CardPaymentComponent />} />
           <Route path="services/payment/:id/mobile" element={<MobileComponent />} />
           <Route path="services/receipt/:id" element={<ReceiptComponent />} />
+          <Route path="services/schedule/:id" element={<ScheduleComponent />} />
           <Route path="services/error" element={<ErrorComponent />} />
         </Routes>
       </Router>

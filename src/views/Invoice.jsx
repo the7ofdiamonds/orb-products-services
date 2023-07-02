@@ -2,7 +2,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getInvoice, finalizeInvoice } from '../controllers/invoiceSlice.js';
+import { getInvoice, updateInvoice } from '../controllers/invoiceSlice.js';
+import { finalizeInvoice } from '../controllers/paymentSlice.js';
 
 function InvoiceComponent() {
   const { id } = useParams();
@@ -10,10 +11,11 @@ function InvoiceComponent() {
     loading,
     error,
     stripe_invoice_id,
-    payment_intent_id,
-    email,
-    name,
-    street_address,
+    user_email,
+    first_name,
+    last_name,
+    address_line_1,
+    address_line_2,
     city,
     state,
     zipcode,
@@ -25,6 +27,7 @@ function InvoiceComponent() {
     tax,
     grand_total,
   } = useSelector((state) => state.invoice);
+  const { client_secret } = useSelector((state) => state.payment);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,10 +41,16 @@ function InvoiceComponent() {
   };
 
   useEffect(() => {
-    if (payment_intent_id) {
-    navigate(`/services/payment/${id}`);
+    if (client_secret) {
+      dispatch(updateInvoice(id, user_email, client_secret));
     }
-  }, [payment_intent_id]);
+  }, [client_secret]);
+
+  useEffect(() => {
+    if (client_secret) {
+      navigate(`/services/payment/${id}`);
+    }
+  }, [client_secret]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -53,7 +62,7 @@ function InvoiceComponent() {
 
   return (
     <>
-      <h2 className="title">INVOICE</h2>      
+      <h2 className="title">INVOICE</h2>
       <div className="invoice" id="invoice">
         <div className="invoice-card card">
           <table className="invoice-table" id="service_invoice">
@@ -63,14 +72,14 @@ function InvoiceComponent() {
                   <h4>BILL TO:</h4>
                 </th>
                 <td className="bill-to-name" colSpan={4}>
-                  {name}
+                  {first_name} {last_name}
                 </td>
               </tr>
               <tr className="bill-to-address">
                 <td></td>
                 <td></td>
-                <td colSpan={3}>{street_address}</td>
-                <td></td>
+                <td colSpan={2}>{address_line_1}</td>
+                <td>{address_line_2}</td>
               </tr>
               <tr>
                 <td></td>
@@ -90,9 +99,8 @@ function InvoiceComponent() {
                 <td></td>
                 <td></td>
                 <td className="bill-to-email" colSpan={2}>
-                  {email}
+                  {user_email}
                 </td>
-                <td></td>
                 <td></td>
               </tr>
               <tr>

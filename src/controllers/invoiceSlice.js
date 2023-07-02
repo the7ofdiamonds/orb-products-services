@@ -8,12 +8,20 @@ const initialState = {
   stripe_customer_id: '',
   stripe_invoice_id: '',
   invoice_id: '',
-  payment_intent_id: '',
   user_email: '',
   phone: '',
   company_name: '',
+  tax_id: '',
   first_name: '',
   last_name: '',
+  user_email: '',
+  phone: '',
+  address_line_1: '',
+  address_line_2: '',
+  city: '',
+  state: '',
+  zipcode: '',
+  country: '',
   start_date: '',
   start_time: '',
   selections: [],
@@ -50,12 +58,17 @@ export const postInvoice = createAsyncThunk('invoice/postInvoice', async (_, { g
     client_id,
     stripe_customer_id,
     stripe_invoice_id,
-    payment_intent_id,
     user_email,
     phone,
     company_name,
     first_name,
     last_name,
+    address_line_1,
+    address_line_2,
+    city,
+    state,
+    zipcode,
+    country,
     start_date,
     start_time,
     selections,
@@ -66,14 +79,19 @@ export const postInvoice = createAsyncThunk('invoice/postInvoice', async (_, { g
 
   const invoice = {
     client_id: client_id,
-    customer_id: stripe_customer_id,
-    invoice_id: stripe_invoice_id,
-    payment_intent_id: payment_intent_id,
-    email: user_email,
+    stripe_customer_id: stripe_customer_id,
+    stripe_invoice_id: stripe_invoice_id,
+    user_email: user_email,
     phone: phone,
     company_name: company_name,
     first_name: first_name,
     last_name: last_name,
+    address_line_1: address_line_1,
+    address_line_2: address_line_2,
+    city: city,
+    state: state,
+    zipcode: zipcode,
+    country: country,
     start_date: start_date,
     start_time: start_time,
     selections: selections,
@@ -100,18 +118,17 @@ export const getInvoice = createAsyncThunk('invoice/getInvoice', async (id) => {
   }
 });
 
-export const finalizeInvoice = createAsyncThunk('invoice/finalizeInvoice', async (stripe_invoice_id) => {
+export const updateInvoice = createAsyncThunk('invoice/updateInvoice', async (id, { getState }) => {
   try {
-    const response = await axios.post(`/wp-json/orb/v1/invoice/${stripe_invoice_id}/finalize`);
-    return response.data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-});
+    const { user_email } = getState().invoice;
+    const { client_secret } = getState().payment;
 
-export const updateInvoice = createAsyncThunk('invoice/updateInvoice', async (id) => {
-  try {
-    const response = await axios.get(`/wp-json/orb/v1/invoice/${id}`);
+    const update = {
+      client_secret: client_secret,
+      user_email: user_email,
+    };
+
+    const response = await axios.patch(`/wp-json/orb/v1/invoice/${id}`, update);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -129,11 +146,12 @@ export const invoiceSlice = createSlice({
       state.tax_id = action.payload.tax_id;
       state.first_name = action.payload.first_name;
       state.last_name = action.payload.last_name;
-      state.street_address_1 = action.payload.street_address_1;
-      state.street_address_2 = action.payload.street_address_2;
+      state.address_line_1 = action.payload.address_line_1;
+      state.address_line_2 = action.payload.address_line_2;
       state.city = action.payload.city;
       state.state = action.payload.state;
       state.zipcode = action.payload.zipcode;
+      state.client_id = action.payload.client_id;
     },
     quoteToInvoice: (state, action) => {
       state.selections = action.payload.selections;
@@ -180,11 +198,16 @@ export const invoiceSlice = createSlice({
       })
       .addCase(getInvoice.fulfilled, (state, action) => {
         state.loading = false;
+        state.client_id = action.payload.client_id;
+        state.stripe_customer_id = action.payload.stripe_customer_id;
+        state.stripe_invoice_id = action.payload.stripe_invoice_id;
         state.invoice_id = action.payload.id;
-        state.payment_intent_id = action.payload.payment_intent_id;
-        state.name = action.payload.name;
-        state.email = action.payload.email;
-        state.street_address = action.payload.street_address;
+        state.client_secret = action.payload.client_secret;
+        state.first_name = action.payload.first_name;
+        state.last_name = action.payload.last_name;
+        state.user_email = action.payload.user_email;
+        state.address_line_1 = action.payload.address_line_1;
+        state.address_line_2 = action.payload.address_line_2;
         state.city = action.payload.city;
         state.state = action.payload.state;
         state.zipcode = action.payload.zipcode;
@@ -206,7 +229,7 @@ export const invoiceSlice = createSlice({
       })
       .addCase(updateInvoice.fulfilled, (state, action) => {
         state.loading = false;
-        state.payment_intent_id = action.payload;
+        state.client_secret = action.payload;
       })
       .addCase(updateInvoice.rejected, (state, action) => {
         state.loading = false;

@@ -103,11 +103,6 @@ class Client
             $zipcode = $request['zipcode'];
             $country = $request['country'];
 
-            // Make this dynamic
-            $company_name = 'J.C. LYONS ENTERPRISES LLC';
-            $website = 'THE7OFDIAMONDS.TECH';
-            $description = "Account at" . $company_name . 'D.B.A' . $website;
-
             if ($request) {
 
                 $customer = $this->stripeClient->customers->create([
@@ -122,7 +117,6 @@ class Client
                         'postal_code' => $zipcode,
                         'country' => $country
                     ],
-                    'description' => $description,
                     'metadata' => [
                         'client_id' => $client_id
                     ]

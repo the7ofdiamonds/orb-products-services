@@ -22,269 +22,252 @@
     }
   }
 
-  .payment-card {
+  .debit-credit-card {
+    // margin-bottom: -150px;
+    position: relative;
+    height: 250px;
+    width: 400px;
+
+    .front {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background: black;
+      border-radius: 5px;
+      backface-visibility: hidden;
+      padding: 20px;
+      transform: perspective(1000px) rotateY(0deg);
+      transition: transform 0.4s ease-out;
+
+      .image {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 10px;
+      }
+
+      .image img {
+        height: 50px;
+      }
+
+      .card-number-box {
+        padding: 30px 0;
+        font-size: 22px;
+        color: #fff;
+      }
+
+      .flexbox {
+        display: flex;
+      }
+
+      .flexbox .box:nth-child(1) {
+        margin-right: auto;
+      }
+
+      .flexbox .box {
+        font-size: 15px;
+        color: #fff;
+      }
+    }
+
+    .back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(45deg, blueviolet, deeppink);
+      border-radius: 5px;
+      padding: 20px 0;
+      text-align: right;
+      backface-visibility: hidden;
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+      transform: perspective(1000px) rotateY(180deg);
+      transition: transform 0.4s ease-out;
+
+      .stripe {
+        background: #000;
+        width: 100%;
+        margin: 10px 0;
+        height: 50px;
+      }
+
+      .box {
+        padding: 0 20px;
+      }
+
+      .box span {
+        color: #fff;
+        font-size: 15px;
+      }
+
+      .box .cvv-box {
+        height: 50px;
+        padding: 10px;
+        margin-top: 5px;
+        color: #333;
+        background: #fff;
+        border-radius: 5px;
+        width: 100%;
+      }
+
+      .box img {
+        margin-top: 30px;
+        height: 30px;
+      }
+    }
+  }
+
+  .debit-credit-form {
+    display: grid;
+    grid-template-areas:
+      'number number number'
+      'holder holder holder'
+      'month year cvv';
+    gap: 1rem;
+    width: 100%;
+    max-width: 15rem;
+
+    input {
+      width: 100%;
+
+      &.card-number-input {
+        grid-area: number;
+      }
+
+      &.card-holder-input {
+        grid-area: holder;
+      }
+
+      &.cvv-input {
+        grid-area: cvv;
+      }
+    }
+
+    select {
+      &.month-input {
+        grid-area: month;
+      }
+
+      &.year-input {
+        grid-area: year;
+      }
+    }
+  }
+
+  .stripe-card.card {
+    align-items: unset;
+    width: 100%;
+    max-width: 20rem;
+
+    button {
+      align-self: center;
+    }
+  }
+
+  .wire-transfer-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1rem;
     width: 100%;
 
-    .debit-credit-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      align-items: center;
-      justify-content: center;
+    .bank-check {
+      padding: 0.25rem;
       width: 100%;
-      height: 100%;
+      height: auto;
+      max-width: 840px;
+      max-height: 351.936px;
+      aspect-ratio: 8.75/3.666;
 
-      .debit-credit-card {
-        // margin-bottom: -150px;
-        position: relative;
-        height: 250px;
-        width: 400px;
-
-        .front {
-          position: absolute;
-          height: 100%;
-          width: 100%;
-          top: 0;
-          left: 0;
-          background: linear-gradient(45deg, blueviolet, deeppink);
-          border-radius: 5px;
-          backface-visibility: hidden;
-          box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-          padding: 20px;
-          transform: perspective(1000px) rotateY(0deg);
-          transition: transform 0.4s ease-out;
-
-          .image {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-top: 10px;
-          }
-
-          .image img {
-            height: 50px;
-          }
-
-          .card-number-box {
-            padding: 30px 0;
-            font-size: 22px;
-            color: #fff;
-          }
-
-          .flexbox {
-            display: flex;
-          }
-
-          .flexbox .box:nth-child(1) {
-            margin-right: auto;
-          }
-
-          .flexbox .box {
-            font-size: 15px;
-            color: #fff;
-          }
-        }
-
-        .back {
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 100%;
-          width: 100%;
-          background: linear-gradient(45deg, blueviolet, deeppink);
-          border-radius: 5px;
-          padding: 20px 0;
-          text-align: right;
-          backface-visibility: hidden;
-          box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-          transform: perspective(1000px) rotateY(180deg);
-          transition: transform 0.4s ease-out;
-
-          .stripe {
-            background: #000;
-            width: 100%;
-            margin: 10px 0;
-            height: 50px;
-          }
-
-          .box {
-            padding: 0 20px;
-          }
-
-          .box span {
-            color: #fff;
-            font-size: 15px;
-          }
-
-          .box .cvv-box {
-            height: 50px;
-            padding: 10px;
-            margin-top: 5px;
-            color: #333;
-            background: #fff;
-            border-radius: 5px;
-            width: 100%;
-          }
-
-          .box img {
-            margin-top: 30px;
-            height: 30px;
-          }
-        }
+      table {
+        width: 100%;
       }
 
-      .debit-credit-form {
-        display: grid;
-        grid-template-areas:
-          'number number number'
-          'holder holder holder'
-          'month year cvv';
-        gap: 1rem;
-        width: 100%;
-        max-width: 300px;
-
-        input {
-          width: 100%;
-
-          &.card-number-input {
-            grid-area: number;
-          }
-
-          &.card-holder-input {
-            grid-area: holder;
-          }
-
-          &.cvv-input {
-            grid-area: cvv;
-          }
-        }
-
-        select {
-          &.month-input {
-            grid-area: month;
-          }
-
-          &.year-input {
-            grid-area: year;
-          }
-        }
+      .check-logo {
+        text-align: left;
       }
 
-      .stripe-card.card {
-        align-items: unset;
-        width: 100%;
-
-        button {
-          align-self: center;
-        }
+      .check-number {
+        text-align: right;
       }
-    }
 
-    .wire-transfer-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      width: 100%;
+      .check-date {
+        text-align: right;
+      }
 
-      .bank-check {
-        padding: 0.25rem;
-        width: 100%;
-        height: auto;
-        max-width: 840px;
-        max-height: 351.936px;
-        aspect-ratio: 8.75/3.666;
+      .check-pay-to-border {
+        border-bottom: #000 solid;
 
-        table {
-          width: 100%;
-        }
-
-        .check-logo {
+        .check-pay-to {
           text-align: left;
         }
+      }
 
-        .check-number {
+      .check-amount-box {
+        border: #000 solid;
+
+        .check-amount {
           text-align: right;
-        }
-
-        .check-date {
-          text-align: right;
-        }
-
-        .check-pay-to-border {
-          border-bottom: #000 solid;
-
-          .check-pay-to {
-            text-align: left;
-          }
-        }
-
-        .check-amount-box {
-          border: #000 solid;
-
-          .check-amount {
-            text-align: right;
-          }
-        }
-
-        .amount-words-border {
-          border-bottom: #000 solid;
-
-          .amount-words {
-            text-align: left;
-          }
-        }
-
-        .memo-border {
-          display: flex;
-          flex-direction: row;
-
-          .memo {
-            border-bottom: #000 solid;
-            width: 100%;
-            text-align: left;
-            padding-left: 0.5rem;
-          }
-        }
-
-        .signature-border {
-          border-bottom: #000 solid;
-        }
-
-        .bank-numbers {
-          display: flex;
-          flex-direction: row;
-
-          span {
-            padding-left: 0.5rem;
-
-            &.routing-number:before {
-              content: '\2446';
-            }
-
-            &.account-number:before {
-              content: '\2448';
-            }
-          }
         }
       }
 
-      .wire-transfer {
+      .amount-words-border {
+        border-bottom: #000 solid;
+
+        .amount-words {
+          text-align: left;
+        }
+      }
+
+      .memo-border {
         display: flex;
         flex-direction: row;
-        gap: 1rem;
-        width: 100%;
-        max-width: fit-content;
+
+        .memo {
+          border-bottom: #000 solid;
+          width: 100%;
+          text-align: left;
+          padding-left: 0.5rem;
+        }
+      }
+
+      .signature-border {
+        border-bottom: #000 solid;
+      }
+
+      .bank-numbers {
+        display: flex;
+        flex-direction: row;
+
+        span {
+          padding-left: 0.5rem;
+
+          &.routing-number:before {
+            content: '\2446';
+          }
+
+          &.account-number:before {
+            content: '\2448';
+          }
+        }
       }
     }
 
-    .crypto-container {
-      flex-direction: column;
+    .wire-transfer {
+      display: flex;
+      flex-direction: row;
       gap: 1rem;
-      padding: 1rem;
+      width: 100%;
+      max-width: fit-content;
     }
+  }
+
+  .crypto-container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
   }
 }

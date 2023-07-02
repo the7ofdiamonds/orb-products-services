@@ -4,7 +4,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
     loading: false,
     error: '',
-    client_id: '',
+    stripe_customer_id: '',
     company_name: '',
     tax_id: '',
     first_name: '',
@@ -74,7 +74,7 @@ export const clientSlice = createSlice({
             })
             .addCase(createCustomer.fulfilled, (state, action) => {
                 state.loading = false
-                state.customer_id = action.payload
+                state.stripe_customer_id = action.payload
             })
             .addCase(createCustomer.rejected, (state, action) => {
                 state.loading = false

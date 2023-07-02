@@ -1,38 +1,39 @@
-import React from 'react';
+import { React, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
+import PaymentNavigationComponent from './Navigation';
+
+import { getInvoice } from '../../controllers/invoiceSlice';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useSelector } from 'react-redux';
 
 const CardPaymentComponent = () => {
-const {client_secret} = useSelector((state) => state.payment)
+  const { id } = useParams();
+
+  const { first_name, last_name, client_secret } = useSelector(
+    (state) => state.invoice
+  );
+
+  const dispatch = useDispatch();
 
   const stripe = useStripe();
   const elements = useElements();
 
-  const appearance = {
-    style: {
-      base: {
-        boxShadow: 'inset 0.25em 0.25em 0.25em rgba(0, 0, 0, 0.5)',
-      },
-    },
-  };
+  useEffect(() => {
+    dispatch(getInvoice(id));
+  }, []);
 
+  console.log(client_secret);
   const handleSubmit = async (event) => {
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
     event.preventDefault();
-
+    console.log('button works');
     if (!stripe || !elements) {
-      // Stripe.js hasn't yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
 
     const result = await stripe.confirmCardPayment(client_secret, {
       payment_method: {
         card: elements.getElement(CardElement),
-        billing_details: {
-          name: 'Jenny Rosen',
-        },
       },
     });
 
@@ -53,34 +54,33 @@ const {client_secret} = useSelector((state) => state.payment)
 
   return (
     <>
-      <div className="debit-credit-container">
-        <div className="debit-credit-card card">
-          <div className="front">
-            <div className="image">
-              <img src="" alt="" />
-              <img src="" alt="" />
+      <PaymentNavigationComponent />
+      <div className="debit-credit-card card">
+        <div className="front">
+          <div className="image">
+            <img src="" alt="" />
+            <img src="" alt="" />
+          </div>
+
+          <div className="card-number-box">#### #### #### ####</div>
+
+          <div className="flexbox">
+            <div className="box">
+              <div className="card-holder-name">
+                {first_name} {last_name}
+              </div>
             </div>
 
-            <div className="card-number-box">#### #### #### ####</div>
-
-            <div className="flexbox">
-              <div className="box">
-                <div className="card-holder-name">Card Holder</div>
-              </div>
-
-              <div className="box">
-                <span>VALID THRU</span>
-                <div className="expiration">
-                  <span className="exp-month">Month</span> /
-                  <span className="exp-year">Year</span>
-                </div>
+            <div className="box">
+              <span>VALID THRU</span>
+              <div className="expiration">
+                <span className="exp-month">Month</span> /
+                <span className="exp-year">Year</span>
               </div>
             </div>
           </div>
 
           <div className="back">
-            <div className="stripe"></div>
-
             <div className="box">
               <span>cvv</span>
               <div className="cvv-box"></div>
@@ -88,14 +88,15 @@ const {client_secret} = useSelector((state) => state.payment)
             </div>
           </div>
         </div>
-
-        <form className="stripe-card card" onSubmit={handleSubmit}>
-          <CardElement style={appearance} />
-          <button disabled={!stripe}>
-            <h3>PAY</h3>
-          </button>
-        </form>
       </div>
+
+      <form className="stripe-card card" onSubmit={handleSubmit}>
+        <CardElement />
+      </form>
+
+      <button type="submit" disabled={!stripe} onClick={handleSubmit}>
+        <h3>PAY</h3>
+      </button>
     </>
   );
 };

@@ -23,12 +23,12 @@ function ClientComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const {client_id} = useSelector((state) => state.users);
   const clientData = useSelector((state) => state.client);
 
   const {
     loading,
     error,
-    client_id,
     first_name,
     last_name,
     user_email,
@@ -85,7 +85,6 @@ function ClientComponent() {
     dispatch(updateZipcode(event.target.value));
   };
 
-  dispatch(clientToInvoice(clientData));
   // Create Login & Signup
   const client_data = {
     user_login: 'client2',
@@ -105,10 +104,11 @@ function ClientComponent() {
     }
   };
 
-  //Create client form page
+  dispatch(clientToInvoice(clientData));
+
   useEffect(() => {
     if (client_id) {
-      dispatch(createCustomer());
+      navigate('/services/quote');
     }
   }, [dispatch, client_id]);
 
@@ -242,6 +242,10 @@ function ClientComponent() {
           </table>
         </form>
       </div>
+
+      <button id="quote_button" onClick={handleClick}>
+        <h3>QUOTE</h3>
+      </button>
     </>
   );
 }

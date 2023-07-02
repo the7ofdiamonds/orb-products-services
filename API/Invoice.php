@@ -42,7 +42,7 @@ class Invoice
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/invoice/(?P<slug>[a-zA-Z0-9-_]+)/finalize/', [
+            register_rest_route('orb/v1', '/invoice/finalize/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'POST',
                 'callback' => [$this, 'finalize_invoice'],
                 'permission_callback' => '__return_true',
@@ -62,30 +62,30 @@ class Invoice
     {
         $customer_id = $request->get_param('slug');
         $selections = $request['selections'];
-    
+
         if (empty($customer_id)) {
             return new WP_Error('invalid_customer_id', 'Customer ID is required', array('status' => 400));
         }
-    
+
         $stripe_invoice = $this->stripeClient->invoices->create([
             'customer' => $customer_id,
         ]);
-    
+
         foreach ($selections as $selection) {
             $description = $selection['description'];
             $cost = $selection['cost'];
             $id = $selection['id'];
-    
+
             $product = $this->stripeClient->products->create([
                 'name' => $description,
             ]);
-    
+
             $price = $this->stripeClient->prices->create([
                 'unit_amount' => str_replace('.', '', $cost),
                 'currency' => 'usd',
                 'product' => $product->id,
             ]);
-    
+
             $this->stripeClient->invoiceItems->create([
                 'customer' => $customer_id,
                 'price' => $price->id,
@@ -95,19 +95,21 @@ class Invoice
                 ],
             ]);
         }
-    
+
         return new WP_REST_Response($stripe_invoice->id, 200);
     }
-    
+
     public function post_invoice(WP_REST_Request $request)
     {
         global $wpdb;
 
-        $name = $request['name'];
-        $email = $request['email'];
+        $first_name = $request['first_name'];
+        $last_name = $request['last_name'];
+        $user_email = $request['user_email'];
         $start_date = $request['start_date'];
         $start_time = $request['start_time'];
-        $street_address = $request['street_address'];
+        $address_line_1 = $request['address_line_1'];
+        $address_line_2 = $request['address_line_2'];
         $city = $request['city'];
         $state = $request['state'];
         $zipcode = $request['zipcode'];
@@ -117,7 +119,7 @@ class Invoice
         $tax = $request['tax'];
         $grand_total = $request['grand_total'];
         $stripe_invoice_id = $request['stripe_invoice_id'];
-        $payment_intent_id = $request['payment_intent_id'];
+        $client_secret = $request['client_secret'];
 
         $serialized_selections = json_encode($selections);
 
@@ -125,8 +127,9 @@ class Invoice
         $result = $wpdb->insert(
             $table_name,
             [
-                'name' => $name,
-                'email' => $email,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'user_email' => $user_email,
                 'phone' => $phone,
                 'selections' => $serialized_selections,
                 'subtotal' => $subtotal,
@@ -134,12 +137,13 @@ class Invoice
                 'grand_total' => $grand_total,
                 'start_date' => $start_date,
                 'start_time' => $start_time,
-                'street_address' => $street_address,
+                'address_line_1' => $address_line_1,
+                'address_line_2' => $address_line_2,
                 'city' => $city,
                 'state' => $state,
                 'zipcode' => $zipcode,
                 'stripe_invoice_id' => $stripe_invoice_id,
-                'payment_intent_id' => $payment_intent_id
+                'client_secret' => $client_secret
             ]
         );
 
@@ -177,9 +181,13 @@ class Invoice
         $get_data = [
             'id' => $invoice->id,
             'created_at' => $invoice->created_at,
-            'payment_intent_id' => $invoice->payment_intent_id,
-            'name' => $invoice->name,
-            'email' => $invoice->email,
+            'client_id' => $invoice->client_id,
+            'stripe_customer_id' => $invoice->stripe_customer_id,
+            'stripe_invoice_id' => $invoice->stripe_invoice_id,
+            'client_secret' => $invoice->client_secret,
+            'first_name' => $invoice->first_name,
+            'last_name' => $invoice->last_name,
+            'user_email' => $invoice->user_email,
             'phone' => $invoice->phone,
             'selections' => json_decode($invoice->selections, true),
             'subtotal' => $invoice->subtotal,
@@ -187,7 +195,8 @@ class Invoice
             'grand_total' => $invoice->grand_total,
             'start_date' => $invoice->start_date,
             'start_time' => $invoice->start_time,
-            'street_address' => $invoice->street_address,
+            'address_line_1' => $invoice->address_line_1,
+            'address_line_2' => $invoice->address_line_2,
             'city' => $invoice->city,
             'state' => $invoice->state,
             'zipcode' => $invoice->zipcode,
@@ -198,11 +207,12 @@ class Invoice
 
     public function finalize_invoice(WP_REST_Request $request)
     {
+        $stripe_invoice_id = $request->get_param('slug');
+
         $status_code = 200;
         $error_message = '';
 
         try {
-            $stripe_invoice_id = $request['stripe_invoice_id'];
 
             if ($stripe_invoice_id) {
 
@@ -213,7 +223,7 @@ class Invoice
 
                 $payment_intent = $invoice->payment_intent;
 
-                return new WP_REST_Response($payment_intent->id, $status_code);
+                return new WP_REST_Response($payment_intent, $status_code);
             } else {
                 $error_message = 'Invalid Stripe ID Number.';
                 $status_code = 400;
@@ -256,32 +266,35 @@ class Invoice
     {
         global $wpdb;
         $id = $request->get_param('slug');
-        $request_data = $request->get_body_params();
 
-        if ($request_data && isset($request_data['email']) && isset($request_data['payment_intent_id'])) {
-            $email = $request_data['email'];
-            $payment_intent_id = $request_data['payment_intent_id'];
+        if ($request) {
+            $email = $request['user_email'];
+            $client_secret = $request['client_secret'];
         } else {
             return new WP_Error('data_missing', 'Required data is missing', array('status' => 400));
         }
 
         $table_name = 'orb_invoice';
         $data = [
-            'payment_intent_id' => $payment_intent_id,
+            'client_secret' => $client_secret,
         ];
         $where = [
             'id' => $id,
-            'email' => $email
+            'user_email' => $email
         ];
 
-        $invoice = $wpdb->update($table_name, $data, $where);
+        $updated = $wpdb->update($table_name, $data, $where);
 
-        if ($invoice === false) {
+        if ($updated === false) {
             return new WP_Error('invoice_not_found', 'Invoice not found', array('status' => 404));
         }
 
-        $invoice_id = $wpdb->insert_id;
+        $message = 'Invoice updated successfully.';
+        $data = [
+            'status' => 200,
+            'message' => $message,
+        ];
 
-        return new WP_REST_Response($request_data, 200);
+        return new WP_REST_Response($data, 200);
     }
 }

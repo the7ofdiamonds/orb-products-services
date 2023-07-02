@@ -14,6 +14,7 @@ class Templates
         add_filter('template_include', [$this, 'get_custom_invoice_page_template']);
         add_filter('template_include', [$this, 'get_custom_payment_page_template']);
         add_filter('template_include', [$this, 'get_custom_receipt_page_template']);
+        add_filter('template_include', [$this, 'get_custom_schedule_page_template']);
         add_filter('page_template', [$this, 'get_custom_faq_page_template']);
         add_filter('page_template', [$this, 'get_custom_support_page_template']);
         add_filter('page_template', [$this, 'get_custom_contact_page_template']);
@@ -104,6 +105,20 @@ class Templates
 
         if ($services_receipt && is_page($services_receipt->ID)) {
             $custom_template = ORB_SERVICES . '/pages/templates/page-receipt.php';
+
+            if (file_exists($custom_template)) {
+                return $custom_template;
+            }
+        }
+        return $template;
+    }
+
+    function get_custom_schedule_page_template($template)
+    {
+        $services_schedule = get_page_by_path('services/schedule');
+
+        if ($services_schedule && is_page($services_schedule->ID)) {
+            $custom_template = ORB_SERVICES . '/pages/templates/page-schedule.php';
 
             if (file_exists($custom_template)) {
                 return $custom_template;

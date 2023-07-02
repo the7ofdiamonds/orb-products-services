@@ -1,0 +1,16 @@
+.schedule-select {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+
+  .date-select.card,
+  .time-select.card {
+    padding: 0;
+    gap: unset;
+    label {
+      background-color: black;
+      color: white;
+      padding: 0.25em;
+    }
+  }
+}

@@ -7,12 +7,20 @@ import {
   addSelections,
   calculateSelections,
 } from '../controllers/quoteSlice.js';
+import { createCustomer } from '../controllers/clientSlice.js';
+import {
+  quoteToInvoice,
+  createInvoice,
+  postInvoice,
+} from '../controllers/invoiceSlice.js';
 
 function QuoteComponent() {
   const { loading, error, services } = useSelector((state) => state.services);
   const { subtotal } = useSelector((state) => state.quote);
   const quoteData = useSelector((state) => state.quote);
-  const { client_id, stripe_customer_id, stripe_invoice_id, invoice_id, selections } = useSelector(
+  const { client_id } = useSelector((state) => state.users);
+  const { stripe_customer_id } = useSelector((state) => state.client);
+  const { stripe_invoice_id, invoice_id, selections } = useSelector(
     (state) => state.invoice
   );
 
@@ -48,16 +56,19 @@ function QuoteComponent() {
 
   dispatch(quoteToInvoice(quoteData));
 
-  useEffect(() => {
-    if (client_id) {
+  const handleClick = () => {
+    if (client_id && subtotal > 0) {
       dispatch(createCustomer());
     }
-  }, [dispatch, client_id]);
+  };
 
   useEffect(() => {
     if (stripe_customer_id) {
       dispatch(
-        createInvoice({ customer_id: stripe_customer_id, selections: selections })
+        createInvoice({
+          customer_id: stripe_customer_id,
+          selections: selections,
+        })
       );
     }
   }, [dispatch, stripe_customer_id]);

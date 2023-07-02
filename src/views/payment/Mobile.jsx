@@ -4,6 +4,7 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
+import PaymentNavigationComponent from './Navigation';
 
 const MobileComponent = () => {
   const stripe = useStripe();
@@ -38,6 +39,7 @@ const MobileComponent = () => {
 
   return (
     <>
+      <PaymentNavigationComponent />
       {paymentRequest && (
         <PaymentRequestButtonElement options={{ paymentRequest }} />
       )}

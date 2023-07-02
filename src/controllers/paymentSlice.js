@@ -9,6 +9,15 @@ const initialState = {
   client_secret: '',
 };
 
+export const finalizeInvoice = createAsyncThunk('payment/finalizeInvoice', async (stripe_invoice_id) => {
+  try {
+    const response = await axios.post(`/wp-json/orb/v1/invoice/finalize/${stripe_invoice_id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
 export const createPaymentIntent = createAsyncThunk(
   'payment/createPaymentIntent',
   async (invoice_id, email, subtotal) => {
@@ -17,7 +26,7 @@ export const createPaymentIntent = createAsyncThunk(
     formData.append('invoice_id,', invoice_id);
     formData.append('email', email);
     formData.append('message', subtotal);
-    
+
     try {
       const response = await axios.post('/wp-json/orb/v1/payment/intent', formData);
       return response.data;
@@ -50,6 +59,20 @@ export const paymentSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
+      .addCase(finalizeInvoice.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(finalizeInvoice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.payment_intent = action.payload;
+        state.payment_intent_id = action.payload.id;
+        state.client_secret = action.payload.client_secret;
+      })
+      .addCase(finalizeInvoice.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       .addCase(createPaymentIntent.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -62,7 +85,7 @@ export const paymentSlice = createSlice({
       })
       .addCase(createPaymentIntent.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(updatePaymentIntent.pending, (state) => {
         state.loading = true;
@@ -74,7 +97,7 @@ export const paymentSlice = createSlice({
       })
       .addCase(updatePaymentIntent.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       });
   }
 });
