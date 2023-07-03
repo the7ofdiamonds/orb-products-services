@@ -4,9 +4,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   error: '',
-  payment_intent: '',
-  payment_intent_id: '',
   client_secret: '',
+  status: ''
 };
 
 export const finalizeInvoice = createAsyncThunk('payment/finalizeInvoice', async (stripe_invoice_id) => {
@@ -17,6 +16,13 @@ export const finalizeInvoice = createAsyncThunk('payment/finalizeInvoice', async
     throw new Error(error.message);
   }
 });
+
+export const updateStatus = (status) => {
+  return {
+    type: 'payment/updateStatus',
+    payload: status
+  };
+};
 
 export const createPaymentIntent = createAsyncThunk(
   'payment/createPaymentIntent',
@@ -57,6 +63,11 @@ export const updatePaymentIntent = createAsyncThunk('payment/updatePaymentIntent
 export const paymentSlice = createSlice({
   name: 'payment',
   initialState,
+  reducers: {
+    updateStatus: (state, action) => {
+      state.status = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(finalizeInvoice.pending, (state) => {
@@ -65,9 +76,7 @@ export const paymentSlice = createSlice({
       })
       .addCase(finalizeInvoice.fulfilled, (state, action) => {
         state.loading = false;
-        state.payment_intent = action.payload;
-        state.payment_intent_id = action.payload.id;
-        state.client_secret = action.payload.client_secret;
+        state.client_secret = action.payload;
       })
       .addCase(finalizeInvoice.rejected, (state, action) => {
         state.loading = false;

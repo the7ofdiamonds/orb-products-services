@@ -23,6 +23,7 @@ class Tables
             stripe_customer_id VARCHAR(255) DEFAULT NULL,
             stripe_invoice_id VARCHAR(255) DEFAULT NULL,
             client_secret VARCHAR(255) DEFAULT NULL,
+            status VARCHAR(255) DEFAULT NULL,
             first_name VARCHAR(255) DEFAULT NULL,
             last_name VARCHAR(255) DEFAULT NULL,
             user_email VARCHAR(255) DEFAULT NULL,

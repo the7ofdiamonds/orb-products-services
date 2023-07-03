@@ -1,32 +1,39 @@
-import { React, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import PaymentNavigationComponent from './Navigation';
 
-import { getInvoice } from '../../controllers/invoiceSlice';
+import {
+  getInvoice,
+  updateInvoiceStatus,
+} from '../../controllers/invoiceSlice';
+import { updateStatus } from '../../controllers/paymentSlice';
+
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 const CardPaymentComponent = () => {
   const { id } = useParams();
 
-  const { first_name, last_name, client_secret } = useSelector(
+  const { user_email, first_name, last_name, client_secret, status } = useSelector(
     (state) => state.invoice
   );
 
+  const [messageType, setMessageType] = useState('');
+  const [message, setMessage] = useState('');
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const stripe = useStripe();
   const elements = useElements();
 
   useEffect(() => {
     dispatch(getInvoice(id));
-  }, []);
+  }, [dispatch, id]);
 
-  console.log(client_secret);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('button works');
     if (!stripe || !elements) {
       return;
     }
@@ -37,20 +44,44 @@ const CardPaymentComponent = () => {
       },
     });
 
-    if (result.error) {
-      // Show error to your customer (for example, insufficient funds)
-      console.log(result.error.message);
-    } else {
-      // The payment has been processed!
-      if (result.paymentIntent.status === 'succeeded') {
-        // Show a success message to your customer
-        // There's a risk of the customer closing the window before callback
-        // execution. Set up a webhook or plugin to listen for the
-        // payment_intent.succeeded event that handles any business critical
-        // post-payment actions.
-      }
+    if (result.error) {    
+      setMessage(result.error.message);
+      setMessageType('error');
+    }
+
+    if (result.paymentIntent) {
+      const update = {
+        id: id,
+        client_secret: client_secret,
+        user_email: user_email,
+        status: result.paymentIntent.status,
+      };
+
+      dispatch(updateInvoiceStatus(update));
     }
   };
+
+  useEffect(() => {
+    if (status === 'succeeded') {
+      setMessageType('success');
+    } else if (
+      status === 'requires_payment_method' ||
+      status === 'requires_confirmation' ||
+      status === 'requires_action' ||
+      status === 'processing' ||
+      status === 'requires_capture'
+    ) {
+      setMessageType('caution');
+    } else if (status === 'canceled') {
+      setMessageType('error');
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (status === 'succeeded') {
+      navigate(`/services/receipt/${id}`);
+    }
+  }, [status, id]);
 
   return (
     <>
@@ -79,13 +110,13 @@ const CardPaymentComponent = () => {
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="back">
-            <div className="box">
-              <span>cvv</span>
-              <div className="cvv-box"></div>
-              <img src="" alt="" />
-            </div>
+        <div className="back">
+          <div className="box">
+            <span>cvv</span>
+            <div className="cvv-box"></div>
+            <img src="" alt="" />
           </div>
         </div>
       </div>
@@ -93,6 +124,14 @@ const CardPaymentComponent = () => {
       <form className="stripe-card card" onSubmit={handleSubmit}>
         <CardElement />
       </form>
+
+      {(status || message) && (
+        <div className="status-bar card">
+          <span className={`${messageType}`}>
+            {status || message}
+          </span>
+        </div>
+      )}
 
       <button type="submit" disabled={!stripe} onClick={handleSubmit}>
         <h3>PAY</h3>

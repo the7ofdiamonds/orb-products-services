@@ -9359,7 +9359,6 @@ __webpack_require__.r(__webpack_exports__);
 const initialState = {
   loading: false,
   error: '',
-  stripe_customer_id: '',
   company_name: '',
   tax_id: '',
   first_name: '',
@@ -9371,7 +9370,8 @@ const initialState = {
   city: '',
   state: '',
   zipcode: '',
-  country: ''
+  country: '',
+  stripe_customer_id: ''
 };
 const createCustomer = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('customer/createCustomer', async customer_data => {
   try {
@@ -9465,8 +9465,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   invoiceSlice: () => (/* binding */ invoiceSlice),
 /* harmony export */   postInvoice: () => (/* binding */ postInvoice),
 /* harmony export */   quoteToInvoice: () => (/* binding */ quoteToInvoice),
+/* harmony export */   updateClientID: () => (/* binding */ updateClientID),
 /* harmony export */   updateDate: () => (/* binding */ updateDate),
 /* harmony export */   updateInvoice: () => (/* binding */ updateInvoice),
+/* harmony export */   updateInvoiceStatus: () => (/* binding */ updateInvoiceStatus),
 /* harmony export */   updateTime: () => (/* binding */ updateTime)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -9478,29 +9480,29 @@ const initialState = {
   loading: false,
   error: '',
   client_id: '',
-  stripe_customer_id: '',
-  stripe_invoice_id: '',
-  invoice_id: '',
   user_email: '',
   phone: '',
   company_name: '',
   tax_id: '',
   first_name: '',
   last_name: '',
-  user_email: '',
-  phone: '',
   address_line_1: '',
   address_line_2: '',
   city: '',
   state: '',
   zipcode: '',
   country: '',
-  start_date: '',
-  start_time: '',
+  stripe_customer_id: '',
   selections: [],
   subtotal: '',
   tax: '',
-  grand_total: ''
+  grand_total: '',
+  stripe_invoice_id: '',
+  invoice_id: '',
+  client_secret: '',
+  status: '',
+  start_date: '',
+  start_time: ''
 };
 const clientToInvoice = invoice => {
   return {
@@ -9531,9 +9533,9 @@ const postInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
   getState
 }) => {
   const {
-    client_id,
-    stripe_customer_id,
-    stripe_invoice_id,
+    client_id
+  } = getState().users;
+  const {
     user_email,
     phone,
     company_name,
@@ -9545,17 +9547,15 @@ const postInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
     state,
     zipcode,
     country,
-    start_date,
-    start_time,
+    stripe_customer_id,
     selections,
     subtotal,
     tax,
-    grand_total
+    grand_total,
+    stripe_invoice_id
   } = getState().invoice;
   const invoice = {
     client_id: client_id,
-    stripe_customer_id: stripe_customer_id,
-    stripe_invoice_id: stripe_invoice_id,
     user_email: user_email,
     phone: phone,
     company_name: company_name,
@@ -9567,12 +9567,12 @@ const postInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
     state: state,
     zipcode: zipcode,
     country: country,
-    start_date: start_date,
-    start_time: start_time,
+    stripe_customer_id: stripe_customer_id,
     selections: selections,
     subtotal: subtotal,
     tax: tax,
-    grand_total: grand_total
+    grand_total: grand_total,
+    stripe_invoice_id: stripe_invoice_id
   };
   const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/invoice', invoice);
   try {
@@ -9589,22 +9589,54 @@ const getInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncT
     throw new Error(error.message);
   }
 });
-const updateInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/updateInvoice', async (id, {
-  getState
+const updateInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/updateInvoice', async ({
+  id,
+  user_email,
+  client_secret
 }) => {
   try {
-    const {
-      user_email
-    } = getState().invoice;
-    const {
-      client_secret
-    } = getState().payment;
-    const update = {
-      client_secret: client_secret,
-      user_email: user_email
-    };
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().patch(`/wp-json/orb/v1/invoice/${id}`, update);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/invoice/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_email,
+        client_secret
+      })
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update invoice');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const updateInvoiceStatus = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/updateInvoiceStatus', async ({
+  id,
+  user_email,
+  client_secret,
+  status
+}) => {
+  try {
+    const response = await fetch(`/wp-json/orb/v1/invoice/status/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_email,
+        client_secret,
+        status
+      })
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update invoice');
+    }
+    const data = await response.json();
+    return data;
   } catch (error) {
     throw new Error(error.message);
   }
@@ -9613,6 +9645,9 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
   name: 'invoice',
   initialState,
   reducers: {
+    updateClientID: (state, action) => {
+      state.client_id = action.payload;
+    },
     clientToInvoice: (state, action) => {
       state.user_email = action.payload.user_email;
       state.phone = action.payload.phone;
@@ -9625,7 +9660,8 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.city = action.payload.city;
       state.state = action.payload.state;
       state.zipcode = action.payload.zipcode;
-      state.client_id = action.payload.client_id;
+      state.country = action.payload.country;
+      state.stripe_customer_id = action.payload.stripe_customer_id;
     },
     quoteToInvoice: (state, action) => {
       state.selections = action.payload.selections;
@@ -9665,25 +9701,29 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
     }).addCase(getInvoice.fulfilled, (state, action) => {
       state.loading = false;
       state.client_id = action.payload.client_id;
-      state.stripe_customer_id = action.payload.stripe_customer_id;
-      state.stripe_invoice_id = action.payload.stripe_invoice_id;
-      state.invoice_id = action.payload.id;
-      state.client_secret = action.payload.client_secret;
+      state.user_email = action.payload.user_email;
+      state.phone = action.payload.phone;
+      state.company_name = action.payload.company_name;
+      state.tax_id = action.payload.tax_id;
       state.first_name = action.payload.first_name;
       state.last_name = action.payload.last_name;
-      state.user_email = action.payload.user_email;
       state.address_line_1 = action.payload.address_line_1;
       state.address_line_2 = action.payload.address_line_2;
       state.city = action.payload.city;
       state.state = action.payload.state;
       state.zipcode = action.payload.zipcode;
-      state.phone = action.payload.phone;
-      state.start_date = action.payload.start_date;
-      state.start_time = action.payload.start_time;
+      state.country = action.payload.country;
+      state.stripe_customer_id = action.payload.stripe_customer_id;
       state.selections = action.payload.selections;
       state.subtotal = action.payload.subtotal;
       state.tax = action.payload.tax;
       state.grand_total = action.payload.grand_total;
+      state.stripe_invoice_id = action.payload.stripe_invoice_id;
+      state.invoice_id = action.payload.id;
+      state.status = action.payload.status;
+      state.client_secret = action.payload.client_secret;
+      state.start_date = action.payload.start_date;
+      state.start_time = action.payload.start_time;
     }).addCase(getInvoice.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
@@ -9692,14 +9732,22 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.error = null;
     }).addCase(updateInvoice.fulfilled, (state, action) => {
       state.loading = false;
-      state.client_secret = action.payload;
     }).addCase(updateInvoice.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    }).addCase(updateInvoiceStatus.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(updateInvoiceStatus.fulfilled, (state, action) => {
+      state.status = action.payload;
+    }).addCase(updateInvoiceStatus.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     });
   }
 });
 const {
+  updateClientID,
   updateDate,
   updateTime
 } = invoiceSlice.actions;
@@ -9719,7 +9767,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   createPaymentIntent: () => (/* binding */ createPaymentIntent),
 /* harmony export */   finalizeInvoice: () => (/* binding */ finalizeInvoice),
 /* harmony export */   paymentSlice: () => (/* binding */ paymentSlice),
-/* harmony export */   updatePaymentIntent: () => (/* binding */ updatePaymentIntent)
+/* harmony export */   updatePaymentIntent: () => (/* binding */ updatePaymentIntent),
+/* harmony export */   updateStatus: () => (/* binding */ updateStatus)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
@@ -9729,9 +9778,8 @@ __webpack_require__.r(__webpack_exports__);
 const initialState = {
   loading: false,
   error: '',
-  payment_intent: '',
-  payment_intent_id: '',
-  client_secret: ''
+  client_secret: '',
+  status: ''
 };
 const finalizeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('payment/finalizeInvoice', async stripe_invoice_id => {
   try {
@@ -9741,6 +9789,12 @@ const finalizeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createA
     throw new Error(error.message);
   }
 });
+const updateStatus = status => {
+  return {
+    type: 'payment/updateStatus',
+    payload: status
+  };
+};
 const createPaymentIntent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('payment/createPaymentIntent', async (invoice_id, email, subtotal) => {
   const formData = new FormData();
   formData.append('invoice_id,', invoice_id);
@@ -9770,15 +9824,18 @@ const updatePaymentIntent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.cre
 const paymentSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
   name: 'payment',
   initialState,
+  reducers: {
+    updateStatus: (state, action) => {
+      state.status = action.payload;
+    }
+  },
   extraReducers: builder => {
     builder.addCase(finalizeInvoice.pending, state => {
       state.loading = true;
       state.error = null;
     }).addCase(finalizeInvoice.fulfilled, (state, action) => {
       state.loading = false;
-      state.payment_intent = action.payload;
-      state.payment_intent_id = action.payload.id;
-      state.client_secret = action.payload.client_secret;
+      state.client_secret = action.payload;
     }).addCase(finalizeInvoice.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
@@ -10118,7 +10175,7 @@ const initialState = {
   user_email: '',
   first_name: '',
   last_name: '',
-  client_id: ''
+  client_id: 17
 };
 const addClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('users/addClient', async client_data => {
   try {
@@ -10230,10 +10287,11 @@ function ClientComponent() {
   const {
     client_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.users);
-  const clientData = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
     loading,
     error,
+    company_name,
+    tax_id,
     first_name,
     last_name,
     user_email,
@@ -10243,14 +10301,9 @@ function ClientComponent() {
     city,
     state,
     zipcode,
-    country
+    country,
+    stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
-  const handleEmailChange = event => {
-    dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateEmail)(event.target.value));
-  };
-  const handlePhoneChange = event => {
-    dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.updatePhone)(event.target.value));
-  };
   const handleCompanyNameChange = event => {
     dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateCompanyName)(event.target.value));
   };
@@ -10262,6 +10315,12 @@ function ClientComponent() {
   };
   const handleLastNameChange = event => {
     dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateLastName)(event.target.value));
+  };
+  const handleEmailChange = event => {
+    dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateEmail)(event.target.value));
+  };
+  const handlePhoneChange = event => {
+    dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.updatePhone)(event.target.value));
   };
   const handleAddressChange = event => {
     dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateAddress)(event.target.value));
@@ -10285,9 +10344,10 @@ function ClientComponent() {
     user_pass: 'password',
     user_email: 'jamel.c.lyons@outlook.com',
     first_name: first_name,
-    last_name: last_name
+    last_name: last_name,
+    client_id: 17
   };
-  const handleClick = async () => {
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (client_data) {
       try {
         dispatch((0,_controllers_usersSlice_js__WEBPACK_IMPORTED_MODULE_4__.addClient)(client_data));
@@ -10295,13 +10355,39 @@ function ClientComponent() {
         console.log('Error creating client:', error.message);
       }
     }
-  };
-  dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.clientToInvoice)(clientData));
+  }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (client_id) {
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.updateClientID)(client_id));
+    }
+  }, [client_id]);
+  const customer_data = {
+    company_name: company_name,
+    tax_id: tax_id,
+    first_name: first_name,
+    last_name: last_name,
+    user_email: user_email,
+    phone: phone,
+    address_line_1: address_line_1,
+    address_line_2: address_line_2,
+    city: city,
+    state: state,
+    zipcode: zipcode,
+    country: country,
+    stripe_customer_id: stripe_customer_id
+  };
+  const isFormCompleted = first_name && last_name && user_email && phone && address_line_1 && city && state && zipcode;
+  const handleClick = () => {
+    if (isFormCompleted && client_id) {
+      dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.createCustomer)(customer_data));
+    }
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (isFormCompleted && stripe_customer_id) {
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.clientToInvoice)(customer_data));
       navigate('/services/quote');
     }
-  }, [dispatch, client_id]);
+  }, [stripe_customer_id]);
   if (error) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Error: ", error);
   }
@@ -10486,18 +10572,25 @@ function InvoiceComponent() {
     dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_3__.getInvoice)(id));
   }, []);
   const handleClick = () => {
-    dispatch((0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_4__.finalizeInvoice)(stripe_invoice_id));
+    if (stripe_invoice_id) {
+      dispatch((0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_4__.finalizeInvoice)(stripe_invoice_id));
+    }
+  };
+  const update = {
+    id: id,
+    client_secret: client_secret,
+    user_email: user_email
   };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (client_secret) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateInvoice)(id, user_email, client_secret));
+    if (client_secret && client_secret !== '') {
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateInvoice)(update));
     }
-  }, [client_secret]);
+  }, [dispatch, client_secret, id, user_email]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (client_secret) {
       navigate(`/services/payment/${id}`);
     }
-  }, [client_secret]);
+  }, [dispatch, client_secret]);
   if (error) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Error: ", error);
   }
@@ -10601,15 +10694,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _payment_Card_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./payment/Card.jsx */ "./src/views/payment/Card.jsx");
-/* harmony import */ var _payment_Mobile_jsx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./payment/Mobile.jsx */ "./src/views/payment/Mobile.jsx");
-/* harmony import */ var _controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../controllers/paymentSlice.js */ "./src/controllers/paymentSlice.js");
-/* harmony import */ var _payment_Navigation_jsx__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./payment/Navigation.jsx */ "./src/views/payment/Navigation.jsx");
-
-
-
+/* harmony import */ var _payment_Navigation_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./payment/Navigation.jsx */ "./src/views/payment/Navigation.jsx");
 
 
 
@@ -10618,10 +10705,7 @@ __webpack_require__.r(__webpack_exports__);
 function PaymentComponent() {
   const {
     id
-  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useParams)();
-  const {
-    stripe_invoice_id
-  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
+  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useParams)();
   const {
     loading,
     error
@@ -10630,14 +10714,7 @@ function PaymentComponent() {
     receipt_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.receipt);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useNavigate)();
-
-  // useEffect(() => {
-  //   if (stripe_invoice_id) {
-  //     dispatch(finalizeInvoice(stripe_invoice_id));
-  //   }
-  // }, [dispatch, stripe_invoice_id]);
-
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useNavigate)();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (receipt_id > 0) {
       navigate(`/receipt/${receipt_id}`);
@@ -10649,7 +10726,7 @@ function PaymentComponent() {
   if (loading) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
   }
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_payment_Navigation_jsx__WEBPACK_IMPORTED_MODULE_6__["default"], null));
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_payment_Navigation_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PaymentComponent);
 
@@ -10670,13 +10747,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _controllers_servicesSlice_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/servicesSlice.js */ "./src/controllers/servicesSlice.js");
 /* harmony import */ var _controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/quoteSlice.js */ "./src/controllers/quoteSlice.js");
-/* harmony import */ var _controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../controllers/clientSlice.js */ "./src/controllers/clientSlice.js");
-/* harmony import */ var _controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../controllers/invoiceSlice.js */ "./src/controllers/invoiceSlice.js");
-
+/* harmony import */ var _controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../controllers/invoiceSlice.js */ "./src/controllers/invoiceSlice.js");
 
 
 
@@ -10691,22 +10766,17 @@ function QuoteComponent() {
     services
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.services);
   const {
-    subtotal
+    subtotal,
+    selections
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.quote);
   const quoteData = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.quote);
   const {
-    client_id
-  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.users);
-  const {
-    stripe_customer_id
-  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
-  const {
+    stripe_customer_id,
     stripe_invoice_id,
-    invoice_id,
-    selections
+    invoice_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useNavigate)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_6__.useNavigate)();
   const [checkedItems, setCheckedItems] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     dispatch((0,_controllers_servicesSlice_js__WEBPACK_IMPORTED_MODULE_3__.fetchServices)());
@@ -10732,30 +10802,25 @@ function QuoteComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_4__.calculateSelections)(services.cost));
   }, [checkedItems]);
-  dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.quoteToInvoice)(quoteData));
   const handleClick = () => {
-    if (client_id && subtotal > 0) {
-      dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_5__.createCustomer)());
-    }
-  };
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (stripe_customer_id) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.createInvoice)({
+    if (stripe_customer_id && subtotal > 0) {
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.quoteToInvoice)(quoteData));
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.createInvoice)({
         customer_id: stripe_customer_id,
         selections: selections
       }));
     }
-  }, [dispatch, stripe_customer_id]);
+  };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_invoice_id) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.postInvoice)());
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.postInvoice)());
     }
   }, [dispatch, stripe_invoice_id]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (invoice_id) {
       navigate(`/services/invoice/${invoice_id}`);
     }
-  }, [dispatch, invoice_id]);
+  }, [invoice_id]);
   if (error) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Error: ", error);
   }
@@ -11177,12 +11242,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _Navigation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Navigation */ "./src/views/payment/Navigation.jsx");
 /* harmony import */ var _controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../controllers/invoiceSlice */ "./src/controllers/invoiceSlice.js");
-/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @stripe/react-stripe-js */ "./node_modules/@stripe/react-stripe-js/dist/react-stripe.umd.js");
-/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _controllers_paymentSlice__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../controllers/paymentSlice */ "./src/controllers/paymentSlice.js");
+/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @stripe/react-stripe-js */ "./node_modules/@stripe/react-stripe-js/dist/react-stripe.umd.js");
+/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__);
+
 
 
 
@@ -11193,44 +11260,61 @@ __webpack_require__.r(__webpack_exports__);
 const CardPaymentComponent = () => {
   const {
     id
-  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_6__.useParams)();
+  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useParams)();
   const {
+    user_email,
     first_name,
     last_name,
-    client_secret
+    client_secret,
+    status
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
+  const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const stripe = (0,_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__.useStripe)();
-  const elements = (0,_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__.useElements)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useNavigate)();
+  const stripe = (0,_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__.useStripe)();
+  const elements = (0,_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__.useElements)();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_4__.getInvoice)(id));
-  }, []);
-  console.log(client_secret);
+  }, [dispatch, id]);
   const handleSubmit = async event => {
     event.preventDefault();
-    console.log('button works');
     if (!stripe || !elements) {
       return;
     }
     const result = await stripe.confirmCardPayment(client_secret, {
       payment_method: {
-        card: elements.getElement(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__.CardElement)
+        card: elements.getElement(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__.CardElement)
       }
     });
     if (result.error) {
-      // Show error to your customer (for example, insufficient funds)
-      console.log(result.error.message);
-    } else {
-      // The payment has been processed!
-      if (result.paymentIntent.status === 'succeeded') {
-        // Show a success message to your customer
-        // There's a risk of the customer closing the window before callback
-        // execution. Set up a webhook or plugin to listen for the
-        // payment_intent.succeeded event that handles any business critical
-        // post-payment actions.
-      }
+      setMessage(result.error.message);
+      setMessageType('error');
+    }
+    if (result.paymentIntent) {
+      const update = {
+        id: id,
+        client_secret: client_secret,
+        user_email: user_email,
+        status: result.paymentIntent.status
+      };
+      dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_4__.updateInvoiceStatus)(update));
     }
   };
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (status === 'succeeded') {
+      setMessageType('success');
+    } else if (status === 'requires_payment_method' || status === 'requires_confirmation' || status === 'requires_action' || status === 'processing' || status === 'requires_capture') {
+      setMessageType('caution');
+    } else if (status === 'canceled') {
+      setMessageType('error');
+    }
+  }, [status]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (status === 'succeeded') {
+      navigate(`/services/receipt/${id}`);
+    }
+  }, [status, id]);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Navigation__WEBPACK_IMPORTED_MODULE_3__["default"], null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "debit-credit-card card"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -11259,7 +11343,7 @@ const CardPaymentComponent = () => {
     className: "exp-month"
   }, "Month"), " /", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "exp-year"
-  }, "Year")))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, "Year"))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "back"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "box"
@@ -11268,10 +11352,14 @@ const CardPaymentComponent = () => {
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: "",
     alt: ""
-  }))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
+  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
     className: "stripe-card card",
     onSubmit: handleSubmit
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__.CardElement, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__.CardElement, null)), (status || message) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "status-bar card"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    className: `${messageType}`
+  }, status || message)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     type: "submit",
     disabled: !stripe,
     onClick: handleSubmit

@@ -17,18 +17,22 @@ import {
 } from '../controllers/clientSlice.js';
 import { addClient } from '../controllers/usersSlice.js';
 import { createCustomer } from '../controllers/clientSlice.js';
-import { clientToInvoice } from '../controllers/invoiceSlice.js';
+import {
+  clientToInvoice,
+  updateClientID,
+} from '../controllers/invoiceSlice.js';
 
 function ClientComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {client_id} = useSelector((state) => state.users);
-  const clientData = useSelector((state) => state.client);
+  const { client_id } = useSelector((state) => state.users);
 
   const {
     loading,
     error,
+    company_name,
+    tax_id,
     first_name,
     last_name,
     user_email,
@@ -39,15 +43,8 @@ function ClientComponent() {
     state,
     zipcode,
     country,
+    stripe_customer_id,
   } = useSelector((state) => state.client);
-
-  const handleEmailChange = (event) => {
-    dispatch(updateEmail(event.target.value));
-  };
-
-  const handlePhoneChange = (event) => {
-    dispatch(updatePhone(event.target.value));
-  };
 
   const handleCompanyNameChange = (event) => {
     dispatch(updateCompanyName(event.target.value));
@@ -63,6 +60,14 @@ function ClientComponent() {
 
   const handleLastNameChange = (event) => {
     dispatch(updateLastName(event.target.value));
+  };
+
+  const handleEmailChange = (event) => {
+    dispatch(updateEmail(event.target.value));
+  };
+
+  const handlePhoneChange = (event) => {
+    dispatch(updatePhone(event.target.value));
   };
 
   const handleAddressChange = (event) => {
@@ -92,9 +97,10 @@ function ClientComponent() {
     user_email: 'jamel.c.lyons@outlook.com',
     first_name: first_name,
     last_name: last_name,
+    client_id: 17,
   };
 
-  const handleClick = async () => {
+  useEffect(() => {
     if (client_data) {
       try {
         dispatch(addClient(client_data));
@@ -102,15 +108,52 @@ function ClientComponent() {
         console.log('Error creating client:', error.message);
       }
     }
-  };
-
-  dispatch(clientToInvoice(clientData));
+  }, []);
 
   useEffect(() => {
     if (client_id) {
+      dispatch(updateClientID(client_id));
+    }
+  }, [client_id]);
+
+  const customer_data = {
+    company_name: company_name,
+    tax_id: tax_id,
+    first_name: first_name,
+    last_name: last_name,
+    user_email: user_email,
+    phone: phone,
+    address_line_1: address_line_1,
+    address_line_2: address_line_2,
+    city: city,
+    state: state,
+    zipcode: zipcode,
+    country: country,
+    stripe_customer_id: stripe_customer_id,
+  };
+
+  const isFormCompleted =
+    first_name &&
+    last_name &&
+    user_email &&
+    phone &&
+    address_line_1 &&
+    city &&
+    state &&
+    zipcode;
+
+  const handleClick = () => {
+    if (isFormCompleted && client_id) {
+      dispatch(createCustomer(customer_data));
+    }
+  };
+
+  useEffect(() => {
+    if (isFormCompleted && stripe_customer_id) {
+      dispatch(clientToInvoice(customer_data));
       navigate('/services/quote');
     }
-  }, [dispatch, client_id]);
+  }, [stripe_customer_id]);
 
   if (error) {
     return <div>Error: {error}</div>;

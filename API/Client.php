@@ -92,6 +92,8 @@ class Client
 
         try {
             $client_id = $request['client_id'];
+            $company_name = $request['company_name'];
+            $tax_id = $request['tax_id'];
             $first_name = $request['first_name'];
             $last_name = $request['last_name'];
             $user_email = $request['user_email'];
@@ -103,38 +105,36 @@ class Client
             $zipcode = $request['zipcode'];
             $country = $request['country'];
 
-            if ($request) {
-
-                $customer = $this->stripeClient->customers->create([
-                    'name' => $first_name . ' ' . $last_name,
-                    'email' => $user_email,
-                    'phone' => $phone,
-                    'address' => [
-                        'line1' => $address_line_1,
-                        'line2' => $address_line_2,
-                        'city' => $city,
-                        'state' => $state,
-                        'postal_code' => $zipcode,
-                        'country' => $country
-                    ],
-                    'metadata' => [
-                        'client_id' => $client_id
-                    ]
-                ]);
-
-                return new WP_REST_Response($customer->id, $status_code);
+            if ($company_name) {
+                $name = $company_name;
             } else {
-                $error_message = 'Invalid amount. Please provide a positive value.';
-                $status_code = 400;
+                $name = $first_name . ' ' . $last_name;
             }
-        } catch (\Stripe\Exception\CardException $e) {
-            // Handle specific CardException
-            $error_message = 'Card declined.';
-            $status_code = 400;
-        } catch (\Stripe\Exception\RateLimitException $e) {
-            // Handle specific RateLimitException
-            $error_message = 'Too many requests. Please try again later.';
-            $status_code = 429;
+
+            $customer = $this->stripeClient->customers->create([
+                'name' => $name,
+                'email' => $user_email,
+                'phone' => $phone,
+                'address' => [
+                    'line1' => $address_line_1,
+                    'line2' => $address_line_2,
+                    'city' => $city,
+                    'state' => $state,
+                    'postal_code' => $zipcode,
+                    'country' => $country
+                ],
+                'tax_id_data' => [
+                    [
+                        'type' => 'us_ein',
+                        'value' => $tax_id
+                    ]
+                ],
+                'metadata' => [
+                    'client_id' => $client_id
+                ]
+            ]);
+
+            return new WP_REST_Response($customer->id, $status_code);
         } catch (\Stripe\Exception\InvalidRequestException $e) {
             // Handle specific InvalidRequestException
             $error_message = 'Invalid request. Please check your input.';

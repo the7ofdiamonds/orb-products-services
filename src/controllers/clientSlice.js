@@ -4,7 +4,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
     loading: false,
     error: '',
-    stripe_customer_id: '',
     company_name: '',
     tax_id: '',
     first_name: '',
@@ -16,7 +15,8 @@ const initialState = {
     city: '',
     state: '',
     zipcode: '',
-    country: ''
+    country: '',
+    stripe_customer_id: '',
 };
 
 export const createCustomer = createAsyncThunk('customer/createCustomer', async (customer_data) => {

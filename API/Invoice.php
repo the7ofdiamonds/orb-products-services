@@ -56,6 +56,14 @@ class Invoice
                 'permission_callback' => '__return_true',
             ]);
         });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/invoice/status/(?P<slug>[a-z0-9-]+)', [
+                'methods' => 'PATCH',
+                'callback' => [$this, 'update_invoice_status'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
     }
 
     public function create_invoice(WP_REST_Request $request)
@@ -118,8 +126,9 @@ class Invoice
         $subtotal = $request['subtotal'];
         $tax = $request['tax'];
         $grand_total = $request['grand_total'];
+        $stripe_customer_id = $request['stripe_customer_id'];
         $stripe_invoice_id = $request['stripe_invoice_id'];
-        $client_secret = $request['client_secret'];
+        $client_id = $request['client_id'];
 
         $serialized_selections = json_encode($selections);
 
@@ -127,6 +136,7 @@ class Invoice
         $result = $wpdb->insert(
             $table_name,
             [
+                'client_id' => $client_id,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
                 'user_email' => $user_email,
@@ -143,7 +153,7 @@ class Invoice
                 'state' => $state,
                 'zipcode' => $zipcode,
                 'stripe_invoice_id' => $stripe_invoice_id,
-                'client_secret' => $client_secret
+                'stripe_customer_id' => $stripe_customer_id,
             ]
         );
 
@@ -185,6 +195,7 @@ class Invoice
             'stripe_customer_id' => $invoice->stripe_customer_id,
             'stripe_invoice_id' => $invoice->stripe_invoice_id,
             'client_secret' => $invoice->client_secret,
+            'status' => $invoice->status,
             'first_name' => $invoice->first_name,
             'last_name' => $invoice->last_name,
             'user_email' => $invoice->user_email,
@@ -223,7 +234,7 @@ class Invoice
 
                 $payment_intent = $invoice->payment_intent;
 
-                return new WP_REST_Response($payment_intent, $status_code);
+                return new WP_REST_Response($payment_intent->client_secret, $status_code);
             } else {
                 $error_message = 'Invalid Stripe ID Number.';
                 $status_code = 400;
@@ -262,26 +273,32 @@ class Invoice
         return new WP_Error('rest_error', $error_message, $data);
     }
 
-    public function update_invoice(WP_REST_Request $request)
+    function update_invoice(WP_REST_Request $request)
     {
         global $wpdb;
         $id = $request->get_param('slug');
 
-        if ($request) {
-            $email = $request['user_email'];
-            $client_secret = $request['client_secret'];
-        } else {
+        $request_body = $request->get_json_params();
+
+        if (empty($request_body)) {
+            return new WP_Error('data_missing', 'Required data is missing', array('status' => 400));
+        }
+
+        $user_email = isset($request_body['user_email']) ? sanitize_email($request_body['user_email']) : '';
+        $client_secret = isset($request_body['client_secret']) ? sanitize_text_field($request_body['client_secret']) : '';
+
+        if (!$user_email || !$client_secret) {
             return new WP_Error('data_missing', 'Required data is missing', array('status' => 400));
         }
 
         $table_name = 'orb_invoice';
-        $data = [
+        $data = array(
             'client_secret' => $client_secret,
-        ];
-        $where = [
+        );
+        $where = array(
             'id' => $id,
-            'user_email' => $email
-        ];
+            'user_email' => $user_email
+        );
 
         $updated = $wpdb->update($table_name, $data, $where);
 
@@ -289,12 +306,44 @@ class Invoice
             return new WP_Error('invoice_not_found', 'Invoice not found', array('status' => 404));
         }
 
-        $message = 'Invoice updated successfully.';
-        $data = [
-            'status' => 200,
-            'message' => $message,
-        ];
+        return new WP_REST_Response($client_secret, 200);
+    }
 
-        return new WP_REST_Response($data, 200);
+    function update_invoice_status(WP_REST_Request $request)
+    {
+        global $wpdb;
+        $id = $request->get_param('slug');
+
+        $request_body = $request->get_json_params();
+
+        if (empty($request_body)) {
+            return new WP_Error('data_missing', 'Required data is missing', array('status' => 400));
+        }
+
+        $user_email = $request_body['user_email'];
+        $client_secret = $request_body['client_secret'];
+        $status = $request_body['status'];
+
+        if (!$user_email || !$client_secret || !$status) {
+            return new WP_Error('data_missing', 'Required data is missing', array('status' => 400));
+        }
+
+        $table_name = 'orb_invoice';
+        $data = array(
+            'status' => $status
+        );
+        $where = array(
+            'id' => $id,
+            'user_email' => $user_email,
+            'client_secret' => $client_secret,
+        );
+
+        $updated = $wpdb->update($table_name, $data, $where);
+
+        if ($updated === false) {
+            return new WP_Error('update_failed', 'Failed to update invoice status.', array('status' => 500));
+        }
+
+        return new WP_REST_Response($status, 200);
     }
 }

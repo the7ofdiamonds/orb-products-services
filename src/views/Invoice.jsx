@@ -37,20 +37,28 @@ function InvoiceComponent() {
   }, []);
 
   const handleClick = () => {
-    dispatch(finalizeInvoice(stripe_invoice_id));
+    if (stripe_invoice_id) {
+      dispatch(finalizeInvoice(stripe_invoice_id));
+    }
+  };
+
+  const update = {
+    id: id,
+    client_secret: client_secret,
+    user_email: user_email,
   };
 
   useEffect(() => {
-    if (client_secret) {
-      dispatch(updateInvoice(id, user_email, client_secret));
+    if (client_secret && client_secret !== '') {
+      dispatch(updateInvoice(update));
     }
-  }, [client_secret]);
+  }, [dispatch, client_secret, id, user_email]);
 
   useEffect(() => {
     if (client_secret) {
       navigate(`/services/payment/${id}`);
     }
-  }, [client_secret]);
+  }, [dispatch, client_secret]);
 
   if (error) {
     return <div>Error: {error}</div>;

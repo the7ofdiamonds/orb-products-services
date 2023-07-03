@@ -154,32 +154,26 @@ i.fa-solid.fa-globe {
   padding: 0;
 }
 
-.payment {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-}
-.payment .payment-options {
+.payment-options {
   display: flex;
   flex-direction: row;
   gap: 1rem;
 }
-.payment .payment-options a button {
+.payment-options a button {
   padding: 0.5em;
 }
-.payment .payment-options a.active button {
+.payment-options a.active button {
   background-color: white;
   color: black;
   box-shadow: none;
 }
-.payment .debit-credit-card {
+
+.debit-credit-card {
   position: relative;
   height: 250px;
   width: 400px;
 }
-.payment .debit-credit-card .front {
+.debit-credit-card .front {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -192,31 +186,31 @@ i.fa-solid.fa-globe {
   transform: perspective(1000px) rotateY(0deg);
   transition: transform 0.4s ease-out;
 }
-.payment .debit-credit-card .front .image {
+.debit-credit-card .front .image {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-top: 10px;
 }
-.payment .debit-credit-card .front .image img {
+.debit-credit-card .front .image img {
   height: 50px;
 }
-.payment .debit-credit-card .front .card-number-box {
+.debit-credit-card .front .card-number-box {
   padding: 30px 0;
   font-size: 22px;
   color: #fff;
 }
-.payment .debit-credit-card .front .flexbox {
+.debit-credit-card .front .flexbox {
   display: flex;
 }
-.payment .debit-credit-card .front .flexbox .box:nth-child(1) {
+.debit-credit-card .front .flexbox .box:nth-child(1) {
   margin-right: auto;
 }
-.payment .debit-credit-card .front .flexbox .box {
+.debit-credit-card .front .flexbox .box {
   font-size: 15px;
   color: #fff;
 }
-.payment .debit-credit-card .back {
+.debit-credit-card .back {
   position: absolute;
   top: 0;
   left: 0;
@@ -231,20 +225,20 @@ i.fa-solid.fa-globe {
   transform: perspective(1000px) rotateY(180deg);
   transition: transform 0.4s ease-out;
 }
-.payment .debit-credit-card .back .stripe {
+.debit-credit-card .back .stripe {
   background: #000;
   width: 100%;
   margin: 10px 0;
   height: 50px;
 }
-.payment .debit-credit-card .back .box {
+.debit-credit-card .back .box {
   padding: 0 20px;
 }
-.payment .debit-credit-card .back .box span {
+.debit-credit-card .back .box span {
   color: #fff;
   font-size: 15px;
 }
-.payment .debit-credit-card .back .box .cvv-box {
+.debit-credit-card .back .box .cvv-box {
   height: 50px;
   padding: 10px;
   margin-top: 5px;
@@ -253,51 +247,54 @@ i.fa-solid.fa-globe {
   border-radius: 5px;
   width: 100%;
 }
-.payment .debit-credit-card .back .box img {
+.debit-credit-card .back .box img {
   margin-top: 30px;
   height: 30px;
 }
-.payment .debit-credit-form {
+
+.debit-credit-form {
   display: grid;
   grid-template-areas: "number number number" "holder holder holder" "month year cvv";
   gap: 1rem;
   width: 100%;
   max-width: 15rem;
 }
-.payment .debit-credit-form input {
+.debit-credit-form input {
   width: 100%;
 }
-.payment .debit-credit-form input.card-number-input {
+.debit-credit-form input.card-number-input {
   grid-area: number;
 }
-.payment .debit-credit-form input.card-holder-input {
+.debit-credit-form input.card-holder-input {
   grid-area: holder;
 }
-.payment .debit-credit-form input.cvv-input {
+.debit-credit-form input.cvv-input {
   grid-area: cvv;
 }
-.payment .debit-credit-form select.month-input {
+.debit-credit-form select.month-input {
   grid-area: month;
 }
-.payment .debit-credit-form select.year-input {
+.debit-credit-form select.year-input {
   grid-area: year;
 }
-.payment .stripe-card.card {
+
+.stripe-card.card {
   align-items: unset;
   width: 100%;
   max-width: 20rem;
 }
-.payment .stripe-card.card button {
+.stripe-card.card button {
   align-self: center;
 }
-.payment .wire-transfer-container {
+
+.wire-transfer-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
   width: 100%;
 }
-.payment .wire-transfer-container .bank-check {
+.wire-transfer-container .bank-check {
   padding: 0.25rem;
   width: 100%;
   height: auto;
@@ -305,73 +302,90 @@ i.fa-solid.fa-globe {
   max-height: 351.936px;
   aspect-ratio: 8.75/3.666;
 }
-.payment .wire-transfer-container .bank-check table {
+.wire-transfer-container .bank-check table {
   width: 100%;
 }
-.payment .wire-transfer-container .bank-check .check-logo {
+.wire-transfer-container .bank-check .check-logo {
   text-align: left;
 }
-.payment .wire-transfer-container .bank-check .check-number {
+.wire-transfer-container .bank-check .check-number {
   text-align: right;
 }
-.payment .wire-transfer-container .bank-check .check-date {
+.wire-transfer-container .bank-check .check-date {
   text-align: right;
 }
-.payment .wire-transfer-container .bank-check .check-pay-to-border {
+.wire-transfer-container .bank-check .check-pay-to-border {
   border-bottom: #000 solid;
 }
-.payment .wire-transfer-container .bank-check .check-pay-to-border .check-pay-to {
+.wire-transfer-container .bank-check .check-pay-to-border .check-pay-to {
   text-align: left;
 }
-.payment .wire-transfer-container .bank-check .check-amount-box {
+.wire-transfer-container .bank-check .check-amount-box {
   border: #000 solid;
 }
-.payment .wire-transfer-container .bank-check .check-amount-box .check-amount {
+.wire-transfer-container .bank-check .check-amount-box .check-amount {
   text-align: right;
 }
-.payment .wire-transfer-container .bank-check .amount-words-border {
+.wire-transfer-container .bank-check .amount-words-border {
   border-bottom: #000 solid;
 }
-.payment .wire-transfer-container .bank-check .amount-words-border .amount-words {
+.wire-transfer-container .bank-check .amount-words-border .amount-words {
   text-align: left;
 }
-.payment .wire-transfer-container .bank-check .memo-border {
+.wire-transfer-container .bank-check .memo-border {
   display: flex;
   flex-direction: row;
 }
-.payment .wire-transfer-container .bank-check .memo-border .memo {
+.wire-transfer-container .bank-check .memo-border .memo {
   border-bottom: #000 solid;
   width: 100%;
   text-align: left;
   padding-left: 0.5rem;
 }
-.payment .wire-transfer-container .bank-check .signature-border {
+.wire-transfer-container .bank-check .signature-border {
   border-bottom: #000 solid;
 }
-.payment .wire-transfer-container .bank-check .bank-numbers {
+.wire-transfer-container .bank-check .bank-numbers {
   display: flex;
   flex-direction: row;
 }
-.payment .wire-transfer-container .bank-check .bank-numbers span {
+.wire-transfer-container .bank-check .bank-numbers span {
   padding-left: 0.5rem;
 }
-.payment .wire-transfer-container .bank-check .bank-numbers span.routing-number:before {
+.wire-transfer-container .bank-check .bank-numbers span.routing-number:before {
   content: "⑆";
 }
-.payment .wire-transfer-container .bank-check .bank-numbers span.account-number:before {
+.wire-transfer-container .bank-check .bank-numbers span.account-number:before {
   content: "⑈";
 }
-.payment .wire-transfer-container .wire-transfer {
+.wire-transfer-container .wire-transfer {
   display: flex;
   flex-direction: row;
   gap: 1rem;
   width: 100%;
   max-width: fit-content;
 }
-.payment .crypto-container {
+
+.crypto-container {
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
+}
+
+.status-bar {
+  background-color: black;
+}
+.status-bar span.info {
+  color: blue;
+}
+.status-bar span.caution {
+  color: yellow;
+}
+.status-bar span.error {
+  color: red;
+}
+.status-bar span.success {
+  color: green;
 }
 
 .total-due-label {
