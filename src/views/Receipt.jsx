@@ -1,20 +1,47 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { getInvoice } from '../controllers/invoiceSlice.js';
 import { getReceipt } from '../controllers/receiptSlice.js';
 
 function ReceiptComponent() {
   const { id } = useParams();
 
-  const { loading, error, receipt } = useSelector((state) => state.receipt);
+  const {
+    invoice_id,
+    tax_id,
+    company_name,
+    first_name,
+    last_name,
+    address_line_1,
+    address_line_2,
+    city,
+    state,
+    zipcode,
+    phone,
+    user_email,
+    selections,
+    subtotal,
+    tax,
+    grand_total,
+  } = useSelector((state) => state.invoice);
+  const {
+    loading,
+    error,
+    receipt_id,
+    payment_date,
+    payment_time,
+    payment_amount,
+    payment_method,
+    balance,
+  } = useSelector((state) => state.receipt);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getInvoice(id));
     dispatch(getReceipt(id));
-  }, [dispatch]);
-
-  // const navigate = useNavigate();
+  }, [dispatch, id]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -26,164 +53,158 @@ function ReceiptComponent() {
 
   return (
     <>
-    <h2 className="title">RECEIPT</h2>
-      <div className="receipt" id="receipt">
-        <div className="receipt-card card">
-          <table className="receipt-table" id="service_receipt">
-            {receipt && (
-              <>
-                <thead className="receipt-table-head" id="service-total-header">
-                  <tr>
-                    <th className="paid-by-label" colSpan={'2'}>
-                      <h4>PAID BY:</h4>
-                    </th>
-                    <td className="paid-by-name" colSpan={'4'}>
-                      {receipt.name}
-                    </td>
-                  </tr>
-                  <tr className="paid-by-address">
-                    <td></td>
-                    <td></td>
-                    <td colSpan={'3'}>{receipt.street_address}</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td className="paid-by-city">{receipt.city}</td>
-                    <td className="paid-by-state">{receipt.state}</td>
-                    <td className="paid-by-zipcode">{receipt.zipcode}</td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td className="paid-by-phone" colSpan={'2'}>
-                      {receipt.phone}
-                    </td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td className="paid-by-email" colSpan={'2'}>
-                      {receipt.email}
-                    </td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <th className="paid-by-paid-label" colSpan={'2'}>
-                      <h4>PAID ON</h4>
-                    </th>
-                    <td className="paid-by-date" colSpan={'2'}>
-                      {receipt.start_date} @ {receipt.start_time}
-                    </td>
-                    <th className="paid-by-amount-label">
-                      <h4>AMOUNT</h4>
-                    </th>
-                    <th className="paid-by-amount">
-                      <h4>{receipt.payment_amount}</h4>
-                    </th>
-                  </tr>
-                  <tr>
-                    <th className="invoice-item-number-label">
-                      <h4>NO.</h4>
-                    </th>
-                    <th
-                      className="invoice-item-description-label"
-                      colSpan={'4'}>
-                      <h4>DESCRIPTION</h4>
-                    </th>
-                    <th className="invoice-item-total-label">
-                      <h4>TOTAL</h4>
-                    </th>
-                  </tr>
-                </thead>
+      <h2 className="title">RECEIPT</h2>
+      <div className="receipt-card card">
+        <div className="thead">
+          <div className="tr">
+            <div className="th">
+              <h4>RECEIPT NUMBER</h4>
+            </div>
+            <div className="td">{receipt_id}1</div>
+            <div className="th">
+              <h4>PAYMENT METHOD</h4>
+            </div>
+            <div className="td">{payment_method}</div>
+          </div>
+          <div className="tr">
+            <div className="th">
+              <h4>INVOICE NUMBER</h4>
+            </div>
+            <div className="td">{invoice_id}</div>
+          </div>
+          <div className="tr">
+            <div className="th" colSpan={2}>
+              <h4>PAID BY</h4>
+            </div>
+          </div>
+          <div className="tr client-details">
+            <div className="td">
+              {first_name} {last_name} O/B/O {company_name} {tax_id} US EIN 27-1234567
+            </div>
+          </div>
+          <div className="tr address">
+            <div className="td">{address_line_1}</div>
+          </div>
+          <div className="tr address">
+            <div className="td">{address_line_2}</div>
+          </div>
+          <div className="tr address">
+            <div className="td">{city}</div>
+          </div>
+          <div className="tr address">
+            <div className="td">{state}</div>
+          </div>
+          <div className="tr address">
+            <div className="td">{zipcode}</div>
+          </div>
+          <div className="tr">
+            <div className="td">{phone}</div>
+          </div>
+          <div className="tr">
+            <div className="td">{user_email}</div>
+          </div>
+          <div className="tr">
+            <div className="th">
+              <h4>PAYMENT DATE</h4>
+            </div>
+            <div className="td">
+              {payment_date} @ {payment_time}
+            </div>
+          </div>
+        </div>
 
-                <tbody className="invoice-table-body">
-                  <tr id="quote_option">
-                    <td className="feature-id">1</td>
-                    <td
-                      className="feature-name"
-                      id="feature_name"
-                      colSpan={'4'}>
-                      Theme
-                    </td>
-                    <td
-                      className="feature-cost  table-number"
-                      id="feature_cost">
-                      <h4>$40.00</h4>
-                    </td>
-                  </tr>
-                </tbody>
+        <div className="tbody">
+          <div className="tr">
+            <div className="th">
+              <h4>NO.</h4>
+            </div>
+            <div className="th">
+              <h4>DESCRIPTION</h4>
+            </div>
+            <div className="th">
+              <h4>TOTAL</h4>
+            </div>
+          </div>
+          {selections &&
+            selections.length > 0 &&
+            selections.map((selection) => (
+              <div className="tr">
+                <div className="td">{selection.id}</div>
+                <div className="td">{selection.description}</div>
+                <div className="td">
+                  {new Intl.NumberFormat('us', {
+                    style: 'currency',
+                    currency: 'USD',
+                  }).format(selection.cost)}
+                </div>
+              </div>
+            ))}
+        </div>
 
-                <tfoot className="invoice-table-footer">
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <th className="subtotal-label">
-                      <h4>SUBTOTAL</h4>
-                    </th>
-                    <td className="subtotal table-number">
-                      <h4>{receipt.subtotal}</h4>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <th className="tax-label">
-                      <h4>TAX</h4>
-                    </th>
-                    <td className="tax table-number">
-                      <h4>{receipt.tax}</h4>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <th className="grand-total-label">
-                      <h4>GRAND TOTAL</h4>
-                    </th>
-                    <td className="grand-total table-number">
-                      <h4>{receipt.grand_total}</h4>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <th className="amount-paid-label">
-                      <h4>AMOUNT PAID</h4>
-                    </th>
-                    <td className="amount-paid table-number">
-                      <h4>{receipt.payment_amount}</h4>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <th className="balance-label">
-                      <h4>BALANCE</h4>
-                    </th>
-                    <th className="balance table-number">
-                      <h4>{receipt.balance}</h4>
-                    </th>
-                  </tr>
-                </tfoot>
-              </>
-            )}
-          </table>
+        <div className="tfoot">
+          <div className="tr">
+            <div className="th">
+              <h4>SUBTOTAL</h4>
+            </div>
+            <div className="subtotal">
+              <h4>
+                {new Intl.NumberFormat('us', {
+                  style: 'currency',
+                  currency: 'USD',
+                }).format(subtotal)}
+              </h4>
+            </div>
+          </div>
+          <div className="tr">
+            <div className="th">
+              <h4>TAX</h4>
+            </div>
+            <div className="td">
+              <h4>
+                {new Intl.NumberFormat('us', {
+                  style: 'currency',
+                  currency: 'USD',
+                }).format(tax)}
+              </h4>
+            </div>
+          </div>
+          <div className="tr">
+            <div className="th">
+              <h4>GRAND TOTAL</h4>
+            </div>
+            <div className="th grand-total">
+              <h4>
+                {new Intl.NumberFormat('us', {
+                  style: 'currency',
+                  currency: 'USD',
+                }).format(grand_total)}
+              </h4>
+            </div>
+            <div className="th">
+              <h4>AMOUNT PAID</h4>
+            </div>
+            <div className="th amount-paid">
+              <h4>
+                {new Intl.NumberFormat('us', {
+                  style: 'currency',
+                  currency: 'USD',
+                }).format(payment_amount)}
+              </h4>
+            </div>
+          </div>
+          <div className="tr">
+            <div className="th">
+              <h4>BALANCE</h4>
+            </div>
+            <div className="th balance">
+              <h4>
+                {new Intl.NumberFormat('us', {
+                  style: 'currency',
+                  currency: 'USD',
+                }).format(balance)}
+              </h4>
+            </div>
+          </div>
         </div>
       </div>
     </>

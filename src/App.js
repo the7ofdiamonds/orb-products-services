@@ -12,7 +12,7 @@ import ScheduleComponent from './views/Schedule.jsx';
 import PaymentComponent from './views/Payment.jsx';
 import CardPaymentComponent from './views/payment/Card.jsx';
 import MobileComponent from './views/payment/Mobile.jsx';
-import ReceiptComponent from './views/receipt.jsx';
+import ReceiptComponent from './views/Receipt.jsx';
 import ErrorComponent from './views/Error.jsx';
 
 function App() {

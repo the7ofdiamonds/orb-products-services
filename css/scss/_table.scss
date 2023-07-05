@@ -1,21 +1,78 @@
-table {
+.receipt-card.card {
+  display: grid;
+  grid-template-areas:
+    'receipt-number'
+    'payment-method';
   border-spacing: 0.25em;
+  min-width: 25rem;
+  width: 100%;
+  overflow: hidden;
 
-  th {
-    background-color: black;
-    color: white;
+  span.th,
+  span.td {
+    display: block;
   }
-  
-  th,
-  td {
+
+  span.td {
     padding: 0.25em;
   }
 
-  .options {
-    background-color: transparent;
+  .th {
+    h4 {
+      background-color: black;
+      color: white;
+    }
   }
-  
-  .table-number {
-    text-align: right;
+
+  .thead,
+  .tbody,
+  .tfoot {
+    width: 100%;
   }
+
+  .thead {
+    .client-details {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      .address {
+        display: flex;
+        flex-direction: row;
+      }
+    }
+  }
+
+  .tbody {
+    display: none;
+  }
+
+  .tfoot {
+    .th {
+      &.subtotal,
+      &.grand-total,
+      &.amount-paid,
+      &.balance {
+        h4 {
+          background-color: white;
+          color: black;
+        }
+      }
+    }
+  }
+}
+
+.invoice-card.card,
+.receipt-card.card {
+  gap: 0;
+}
+
+.receipt-number {
+  grid-area: receipt-number;
+}
+
+.payment-method {
+  grid-area: payment-method;
 }

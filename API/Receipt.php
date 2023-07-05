@@ -1,4 +1,5 @@
 <?php
+
 namespace ORBServices\API;
 
 use WP_REST_Request;
@@ -31,47 +32,33 @@ class Receipt
         global $wpdb;
         $id = $request->get_param('slug');
 
-        if (!empty($id)) {
-            $receipt = $wpdb->get_row(
-                $wpdb->prepare(
-                    "SELECT  * FROM orb_receipt WHERE id = %d",
-                    $id
-                )
-            );
-
-            $invoice = $wpdb->get_row(
-                $wpdb->prepare(
-                    "SELECT  * FROM orb_invoice WHERE id = %d",
-                    $receipt->invoice_id
-                )
-            );
-
-            $get_data = [
-                'id' => $id,
-                'created_at' => $receipt->created_at,
-                'invoice_id' => $receipt->invoice_id,
-                'name' => $invoice->name,
-                'email' => $invoice->email,
-                'phone' => $invoice->phone,
-                'selections' => $invoice->selections,
-                'subtotal' => $invoice->subtotal,
-                'tax' => $invoice->tax,
-                'grand_total' => $invoice->grand_total,
-                'start_date' =>  $invoice->start_date,
-                'start_time' => $invoice->start_time,
-                'street_address' => $invoice->street_address,
-                'city' => $invoice->city,
-                'state' =>  $invoice->state,
-                'zipcode' => $invoice->zipcode,
-                'payment_date' => $receipt->payment_date,
-                'payment_amount' => $receipt->payment_amount,
-                'balance' => $receipt->balance
-            ];
-
-            return new WP_REST_Response($get_data, 200);
-        } else {
-            return new WP_Error('post_not_found', 'Receipt not found', array('status' => 404));
+        if (empty($id)) {
+            return new WP_Error('invalid_receipt_id', 'Invalid receipt ID', array('status' => 400));
         }
+
+        $receipt = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM orb_receipt WHERE id = %d",
+                $id
+            )
+        );
+
+        if (!$receipt) {
+            return new WP_Error('receipt_not_found', 'Recceipt not found', array('status' => 404));
+        }
+
+        $get_data = [
+            'id' => $receipt->id,
+            'created_at' => $receipt->created_at,
+            'invoice_id' => $receipt->invoice_id,
+            'payment_date' => $receipt->payment_date,
+            'payment_time' => $receipt->payment_time,
+            'payment_amount' => $receipt->payment_amount,
+            'payment_method' => $receipt->payment_method,
+            'balance' => $receipt->balance,
+        ];
+
+        return new WP_REST_Response($get_data, 200);
     }
 
     function post_receipt(WP_REST_Request $request)

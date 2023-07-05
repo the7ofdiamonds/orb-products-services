@@ -396,6 +396,13 @@ i.fa-solid.fa-globe {
   text-align: right;
 }
 
+.receipt-card.card table thead th h4 {
+  width: fit-content;
+}
+.receipt-card.card table thead td {
+  text-align: left;
+}
+
 .schedule-select {
   display: flex;
   flex-direction: row;
@@ -466,46 +473,6 @@ i.fa-solid.fa-globe {
   padding: 0;
 }
 
-thead .bill-to-label,
-thead .bill-to-due-date-label,
-thead .bill-to-total-due-label,
-thead .paid-by-label,
-thead .paid-by-paid-label,
-thead .paid-by-amount-label {
-  text-align: right;
-}
-thead .bill-to-due-date,
-thead .bill-to-total-due,
-thead .paid-by-date,
-thead .paid-by-amount {
-  text-align: left;
-}
-
-.bill-to-name,
-.bill-to-address,
-.bill-to-city,
-.bill-to-state,
-.bill-to-zipcode,
-.bill-to-phone,
-.bill-to-email,
-.paid-by-name,
-.paid-by-address,
-.paid-by-city,
-.paid-by-state,
-.paid-by-zipcode,
-.paid-by-phone,
-.paid-by-email {
-  text-align: left;
-}
-
-tfoot .subtotal-label,
-tfoot .tax-label,
-tfoot .grand-total-label,
-tfoot .amount-paid-label,
-tfoot .balance-label {
-  text-align: right;
-}
-
 .services .services-list {
   display: flex;
   flex-direction: row;
@@ -557,22 +524,61 @@ tfoot .balance-label {
   padding-left: 0;
 }
 
-table {
+.receipt-card.card {
+  display: grid;
+  grid-template-areas: "receipt-number" "payment-method";
   border-spacing: 0.25em;
+  min-width: 25rem;
+  width: 100%;
+  overflow: hidden;
 }
-table th {
+.receipt-card.card span.th,
+.receipt-card.card span.td {
+  display: block;
+}
+.receipt-card.card span.td {
+  padding: 0.25em;
+}
+.receipt-card.card .th h4 {
   background-color: black;
   color: white;
 }
-table th,
-table td {
-  padding: 0.25em;
+.receipt-card.card .thead,
+.receipt-card.card .tbody,
+.receipt-card.card .tfoot {
+  width: 100%;
 }
-table .options {
-  background-color: transparent;
+.receipt-card.card .thead .client-details {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
-table .table-number {
-  text-align: right;
+.receipt-card.card .thead .client-details .address {
+  display: flex;
+  flex-direction: row;
+}
+.receipt-card.card .tbody {
+  display: none;
+}
+.receipt-card.card .tfoot .th.subtotal h4, .receipt-card.card .tfoot .th.grand-total h4, .receipt-card.card .tfoot .th.amount-paid h4, .receipt-card.card .tfoot .th.balance h4 {
+  background-color: white;
+  color: black;
+}
+
+.invoice-card.card,
+.receipt-card.card {
+  gap: 0;
+}
+
+.receipt-number {
+  grid-area: receipt-number;
+}
+
+.payment-method {
+  grid-area: payment-method;
 }
 
 /*# sourceMappingURL=orb-services.css.map */

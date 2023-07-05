@@ -4,8 +4,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   error: '',
-  receipt: '',
-  receipt_id: ''
+  receipt_id: '',
+  payment_date: '',
+  payment_time: '',
+  payment_amount: '',
+  payment_method: '',
+  balance: ''
 };
 
 export const postReceipt = createAsyncThunk('receipt/postReceipt', async (invoice) => {
@@ -18,13 +22,12 @@ export const postReceipt = createAsyncThunk('receipt/postReceipt', async (invoic
 });
 
 export const getReceipt = createAsyncThunk('receipt/getReceipt', async (id) => {
+  const response = await axios.get(`/wp-json/orb/v1/receipt/${id}`);
   try {
-    const response = await axios.get(`/wp-json/orb/v1/receipt/${id}`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
-  }
-});
+  }});
 
 export const receiptSlice = createSlice({
   name: 'receipt',
@@ -49,11 +52,16 @@ export const receiptSlice = createSlice({
       })
       .addCase(getReceipt.fulfilled, (state, action) => {
         state.loading = false;
-        state.receipt = action.payload;
+        state.receipt_id = action.payload.receipt_id;
+        state.payment_date = action.payload.payment_date;
+        state.payment_time = action.payload.payment_time;
+        state.payment_amount = action.payload.payment_amount;
+        state.payment_method = action.payload.payment_method;
+        state.balance = action.payload.balance;
       })
       .addCase(getReceipt.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
-    }
+  }
 });

@@ -11,7 +11,8 @@ function InvoiceComponent() {
     loading,
     error,
     stripe_invoice_id,
-    user_email,
+    tax_id,
+    company_name,
     first_name,
     last_name,
     address_line_1,
@@ -20,8 +21,10 @@ function InvoiceComponent() {
     state,
     zipcode,
     phone,
-    start_date,
-    start_time,
+    user_email,
+    date_due,
+    time_due,
+    amount_due,
     selections,
     subtotal,
     tax,
@@ -116,13 +119,13 @@ function InvoiceComponent() {
                   <h4>DUE DATE</h4>
                 </th>
                 <td className="bill-to-due-date" colSpan={2}>
-                  {start_date} @ {start_time}
+                  {date_due} @ {time_due}
                 </td>
                 <th className="bill-to-total-due-label">
                   <h4>TOTAL DUE</h4>
                 </th>
                 <th className="bill-to-total-due">
-                  <h4>$10,000.00</h4>
+                  <h4>{amount_due}</h4>
                 </th>
               </tr>
               <tr>
