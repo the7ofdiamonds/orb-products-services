@@ -396,13 +396,6 @@ i.fa-solid.fa-globe {
   text-align: right;
 }
 
-.receipt-card.card table thead th h4 {
-  width: fit-content;
-}
-.receipt-card.card table thead td {
-  text-align: left;
-}
-
 .schedule-select {
   display: flex;
   flex-direction: row;
@@ -526,59 +519,172 @@ i.fa-solid.fa-globe {
 
 .receipt-card.card {
   display: grid;
-  grid-template-areas: "receipt-number" "payment-method";
-  border-spacing: 0.25em;
+  gap: 0.25em;
   min-width: 25rem;
   width: 100%;
   overflow: hidden;
 }
-.receipt-card.card span.th,
-.receipt-card.card span.td {
-  display: block;
-}
-.receipt-card.card span.td {
-  padding: 0.25em;
-}
-.receipt-card.card .th h4 {
+.receipt-card.card .th h4,
+.receipt-card.card th h4 {
+  padding: 0.25em 0;
   background-color: black;
   color: white;
+}
+.receipt-card.card .td h5,
+.receipt-card.card td h5 {
+  padding: 0.25em;
 }
 .receipt-card.card .thead,
 .receipt-card.card .tbody,
 .receipt-card.card .tfoot {
   width: 100%;
 }
-.receipt-card.card .thead .client-details {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-.receipt-card.card .thead .client-details .address {
+.receipt-card.card .thead .address-line-1,
+.receipt-card.card .thead .address-line-2 {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
-.receipt-card.card .tbody {
-  display: none;
+.receipt-card.card .thead .tr.payment-method {
+  grid-area: payment-method;
 }
-.receipt-card.card .tfoot .th.subtotal h4, .receipt-card.card .tfoot .th.grand-total h4, .receipt-card.card .tfoot .th.amount-paid h4, .receipt-card.card .tfoot .th.balance h4 {
-  background-color: white;
-  color: black;
-}
-
-.invoice-card.card,
-.receipt-card.card {
-  gap: 0;
-}
-
-.receipt-number {
+.receipt-card.card .thead .tr.receipt-number {
   grid-area: receipt-number;
 }
+.receipt-card.card .thead .tr.client-details {
+  grid-area: client-details;
+}
+.receipt-card.card .thead .tr.payment-date {
+  grid-area: payment-date;
+}
+.receipt-card.card table {
+  display: none;
+}
+.receipt-card.card table th {
+  text-align: center;
+}
+.receipt-card.card table tbody td.selections-cost {
+  text-align: end;
+}
+.receipt-card.card .tfoot .tr.subtotal {
+  grid-area: subtotal;
+}
+.receipt-card.card .tfoot .tr.tax {
+  grid-area: tax;
+}
+.receipt-card.card .tfoot .tr.grand-total {
+  grid-area: grand-total;
+}
+.receipt-card.card .tfoot .tr.amount-paid {
+  grid-area: amount-paid;
+}
+.receipt-card.card .tfoot .tr.balance {
+  grid-area: balance;
+}
 
-.payment-method {
-  grid-area: payment-method;
+@media (min-width: 700px) {
+  .receipt-card.card .tr {
+    width: fit-content;
+  }
+  .receipt-card.card .thead {
+    display: grid;
+    grid-template-areas: "receipt-number receipt-number" "payment-date payment-date" "payment-method payment-method" "client-details client-details";
+    gap: 0.25em;
+  }
+  .receipt-card.card .thead .receipt-number,
+.receipt-card.card .thead .payment-date,
+.receipt-card.card .thead .payment-method {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25em;
+  }
+  .receipt-card.card .thead .receipt-number h4,
+.receipt-card.card .thead .payment-date h4,
+.receipt-card.card .thead .payment-method h4 {
+    padding: 0.25em;
+  }
+  .receipt-card.card .thead .client-details {
+    width: 100%;
+  }
+  .receipt-card.card .thead .client-details .address-line-1,
+.receipt-card.card .thead .client-details .address-line-2,
+.receipt-card.card .thead .client-details .phone,
+.receipt-card.card .thead .client-details .email {
+    width: 100%;
+  }
+  .receipt-card.card .tfoot {
+    display: grid;
+    grid-template-areas: "subtotal-label subtotal-number" "tax-label tax-number" "grand-total-label grand-total-number" "amount-paid-label amount-paid-number" "balance-label balance-number";
+    justify-content: end;
+    gap: 0.25em;
+  }
+  .receipt-card.card .tfoot .subtotal,
+.receipt-card.card .tfoot .tax,
+.receipt-card.card .tfoot .grand-total,
+.receipt-card.card .tfoot .amount-paid,
+.receipt-card.card .tfoot .balance {
+    display: contents;
+  }
+  .receipt-card.card .tfoot .th {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+  .receipt-card.card .tfoot .th h4 {
+    padding: 0.25em;
+  }
+  .receipt-card.card .tfoot .th.subtotal-label {
+    grid-area: subtotal-label;
+  }
+  .receipt-card.card .tfoot .th.tax-label {
+    grid-area: tax-label;
+  }
+  .receipt-card.card .tfoot .th.grand-total-label {
+    grid-area: grand-total-label;
+  }
+  .receipt-card.card .tfoot .th.amount-paid-label {
+    grid-area: amount-paid-label;
+  }
+  .receipt-card.card .tfoot .th.balance-label {
+    grid-area: balance-label;
+  }
+  .receipt-card.card .tfoot .td {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+  .receipt-card.card .tfoot .td.subtotal-number {
+    grid-area: subtotal-number;
+  }
+  .receipt-card.card .tfoot .td.tax-number {
+    grid-area: tax-number;
+  }
+  .receipt-card.card .tfoot .td.grand-total-number {
+    grid-area: grand-total-number;
+  }
+  .receipt-card.card .tfoot .td.amount-paid-number {
+    grid-area: amount-paid-number;
+  }
+  .receipt-card.card .tfoot .td.balance-number {
+    grid-area: balance-number;
+  }
+}
+@media (min-width: 900px) {
+  .receipt-card.card .thead {
+    grid-template-areas: "receipt-number receipt-number" "payment-date payment-date" "payment-method payment-method" "client-details";
+    gap: 0.25em;
+  }
+  .receipt-card.card .thead .payment-date {
+    align-items: start;
+  }
+  .receipt-card.card .thead .payment-date td {
+    align-items: center;
+  }
+  .receipt-card.card table {
+    display: table;
+  }
 }
 
 /*# sourceMappingURL=orb-services.css.map */

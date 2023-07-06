@@ -56,153 +56,174 @@ function ReceiptComponent() {
       <h2 className="title">RECEIPT</h2>
       <div className="receipt-card card">
         <div className="thead">
-          <div className="tr">
+          <div className="tr receipt-number">
             <div className="th">
               <h4>RECEIPT NUMBER</h4>
             </div>
-            <div className="td">{receipt_id}1</div>
-            <div className="th">
-              <h4>PAYMENT METHOD</h4>
-            </div>
-            <div className="td">{payment_method}</div>
-          </div>
-          <div className="tr">
-            <div className="th">
-              <h4>INVOICE NUMBER</h4>
-            </div>
-            <div className="td">{invoice_id}</div>
-          </div>
-          <div className="tr">
-            <div className="th" colSpan={2}>
-              <h4>PAID BY</h4>
-            </div>
-          </div>
-          <div className="tr client-details">
             <div className="td">
-              {first_name} {last_name} O/B/O {company_name} {tax_id} US EIN 27-1234567
+              <h5>{receipt_id}1</h5>
             </div>
           </div>
-          <div className="tr address">
-            <div className="td">{address_line_1}</div>
-          </div>
-          <div className="tr address">
-            <div className="td">{address_line_2}</div>
-          </div>
-          <div className="tr address">
-            <div className="td">{city}</div>
-          </div>
-          <div className="tr address">
-            <div className="td">{state}</div>
-          </div>
-          <div className="tr address">
-            <div className="td">{zipcode}</div>
-          </div>
-          <div className="tr">
-            <div className="td">{phone}</div>
-          </div>
-          <div className="tr">
-            <div className="td">{user_email}</div>
-          </div>
-          <div className="tr">
+          <div className="tr payment-date">
             <div className="th">
               <h4>PAYMENT DATE</h4>
             </div>
             <div className="td">
-              {payment_date} @ {payment_time}
+              <h5>
+                {payment_date} @ {payment_time}
+              </h5>
+            </div>
+          </div>
+          <div className="tr payment-method">
+            <div className="th">
+              <h4>PAYMENT METHOD</h4>
+            </div>
+            <div className="td">
+              <h5>{payment_method}</h5>
+            </div>
+          </div>
+          <div className="tr client-details">
+            <div className="th">
+              <h4>PAID BY</h4>
+            </div>
+            <div className="td">
+              <h5>
+                {first_name} {last_name} O/B/O {company_name} {tax_id} US EIN
+                27-1234567
+              </h5>
+            </div>
+            <div className="tr address-line-1">
+              <div className="td">
+                <h5>{address_line_1}</h5>
+              </div>
+              <div className="td">
+                <h5>{address_line_2}</h5>
+              </div>
+            </div>
+            <div className="tr address-line-2">
+              <div className="td">
+                <h5>{city}</h5>
+              </div>
+              <div className="td">
+                <h5>{state}</h5>
+              </div>
+              <div className="td">
+                <h5>{zipcode}</h5>
+              </div>
+            </div>
+            <div className="tr phone">
+              <div className="td">
+                <h5>{phone}</h5>
+              </div>
+            </div>
+            <div className="tr email">
+              <div className="td">
+                <h5>{user_email}</h5>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="tbody">
-          <div className="tr">
-            <div className="th">
+        <table>
+          <thead>
+            <th>
               <h4>NO.</h4>
-            </div>
-            <div className="th">
+            </th>
+            <th>
               <h4>DESCRIPTION</h4>
-            </div>
-            <div className="th">
+            </th>
+            <th>
               <h4>TOTAL</h4>
-            </div>
-          </div>
-          {selections &&
-            selections.length > 0 &&
-            selections.map((selection) => (
-              <div className="tr">
-                <div className="td">{selection.id}</div>
-                <div className="td">{selection.description}</div>
-                <div className="td">
-                  {new Intl.NumberFormat('us', {
-                    style: 'currency',
-                    currency: 'USD',
-                  }).format(selection.cost)}
-                </div>
-              </div>
-            ))}
-        </div>
+            </th>
+          </thead>
+          <tbody>
+            {selections &&
+              selections.length > 0 &&
+              selections.map((selection) => (
+                <tr>
+                  <td>
+                    <h5>{selection.id}</h5>
+                  </td>
+                  <td>
+                    <h5>{selection.description}</h5>
+                  </td>
+                  <td className="selections-cost">
+                    <h5>
+                      {new Intl.NumberFormat('us', {
+                        style: 'currency',
+                        currency: 'USD',
+                      }).format(selection.cost)}
+                    </h5>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
 
         <div className="tfoot">
-          <div className="tr">
-            <div className="th">
+          <div className="tr subtotal">
+            <div className="th subtotal-label">
               <h4>SUBTOTAL</h4>
             </div>
-            <div className="subtotal">
-              <h4>
+            <div className="td subtotal-number">
+              <h5>
                 {new Intl.NumberFormat('us', {
                   style: 'currency',
                   currency: 'USD',
                 }).format(subtotal)}
-              </h4>
+              </h5>
             </div>
           </div>
-          <div className="tr">
-            <div className="th">
+          <div className="tr tax">
+            <div className="th tax-label">
               <h4>TAX</h4>
             </div>
-            <div className="td">
-              <h4>
+            <div className="td tax-number">
+              <h5>
                 {new Intl.NumberFormat('us', {
                   style: 'currency',
                   currency: 'USD',
                 }).format(tax)}
-              </h4>
+              </h5>
             </div>
           </div>
-          <div className="tr">
-            <div className="th">
+          <div className="tr grand-total">
+            <div className="th grand-total-label">
               <h4>GRAND TOTAL</h4>
             </div>
-            <div className="th grand-total">
-              <h4>
+            <div className="td grand-total-number">
+              <h5>
                 {new Intl.NumberFormat('us', {
                   style: 'currency',
                   currency: 'USD',
                 }).format(grand_total)}
-              </h4>
+              </h5>
             </div>
-            <div className="th">
+          </div>
+          <div className="tr amount-paid">
+            <div className="th amount-paid-label">
               <h4>AMOUNT PAID</h4>
             </div>
-            <div className="th amount-paid">
-              <h4>
+            <div className="td amount-paid-number">
+              <h5>
                 {new Intl.NumberFormat('us', {
                   style: 'currency',
                   currency: 'USD',
                 }).format(payment_amount)}
-              </h4>
+              </h5>
             </div>
           </div>
-          <div className="tr">
-            <div className="th">
+          <div className="tr balance">
+            <div className="th balance-label">
               <h4>BALANCE</h4>
             </div>
-            <div className="th balance">
-              <h4>
+            <div className="td balance-number">
+              <h5>
                 {new Intl.NumberFormat('us', {
                   style: 'currency',
                   currency: 'USD',
                 }).format(balance)}
-              </h4>
+              </h5>
             </div>
           </div>
         </div>

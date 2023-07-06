@@ -1,26 +1,23 @@
 .receipt-card.card {
   display: grid;
-  grid-template-areas:
-    'receipt-number'
-    'payment-method';
-  border-spacing: 0.25em;
+  gap: 0.25em;
   min-width: 25rem;
   width: 100%;
   overflow: hidden;
 
-  span.th,
-  span.td {
-    display: block;
-  }
-
-  span.td {
-    padding: 0.25em;
-  }
-
-  .th {
+  .th,
+  th {
     h4 {
+      padding: 0.25em 0;
       background-color: black;
       color: white;
+    }
+  }
+
+  .td,
+  td {
+    h5 {
+      padding: 0.25em;
     }
   }
 
@@ -31,48 +28,202 @@
   }
 
   .thead {
-    .client-details {
+    .address-line-1,
+    .address-line-2 {
       display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      align-items: center;
+      flex-direction: row;
       justify-content: center;
-      width: 100%;
-      .address {
-        display: flex;
-        flex-direction: row;
+    }
+
+    .tr {
+      &.payment-method {
+        grid-area: payment-method;
+      }
+
+      &.receipt-number {
+        grid-area: receipt-number;
+      }
+
+      &.client-details {
+        grid-area: client-details;
+      }
+
+      &.payment-date {
+        grid-area: payment-date;
       }
     }
   }
 
-  .tbody {
+  table {
     display: none;
+
+    th {
+      text-align: center;
+    }
+
+    tbody {
+      td.selections-cost {
+        text-align: end;
+      }
+    }
   }
 
   .tfoot {
-    .th {
-      &.subtotal,
-      &.grand-total,
-      &.amount-paid,
+    .tr {
+      &.subtotal {
+        grid-area: subtotal;
+      }
+
+      &.tax {
+        grid-area: tax;
+      }
+
+      &.grand-total {
+        grid-area: grand-total;
+      }
+
+      &.amount-paid {
+        grid-area: amount-paid;
+      }
+
       &.balance {
+        grid-area: balance;
+      }
+    }
+  }
+}
+
+@media (min-width: 700px) {
+  .receipt-card.card {
+    .tr {
+      width: fit-content;
+    }
+    .thead {
+      display: grid;
+      grid-template-areas:
+        'receipt-number receipt-number'
+        'payment-date payment-date'
+        'payment-method payment-method'
+        'client-details client-details';
+      gap: 0.25em;
+
+      .receipt-number,
+      .payment-date,
+      .payment-method {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25em;
+
         h4 {
-          background-color: white;
-          color: black;
+          padding: 0.25em;
+        }
+      }
+
+      .client-details {
+        width: 100%;
+
+        .address-line-1,
+        .address-line-2,
+        .phone,
+        .email {
+          width: 100%;
+        }
+      }
+    }
+
+    .tfoot {
+      display: grid;
+      grid-template-areas:
+        'subtotal-label subtotal-number'
+        'tax-label tax-number'
+        'grand-total-label grand-total-number'
+        'amount-paid-label amount-paid-number'
+        'balance-label balance-number';
+      justify-content: end;
+      gap: 0.25em;
+
+      .subtotal,
+      .tax,
+      .grand-total,
+      .amount-paid,
+      .balance {
+        display: contents;
+      }
+
+      .th {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+
+        h4 {
+          padding: 0.25em;
+        }
+
+        &.subtotal-label {
+          grid-area: subtotal-label;
+        }
+        &.tax-label {
+          grid-area: tax-label;
+        }
+        &.grand-total-label {
+          grid-area: grand-total-label;
+        }
+        &.amount-paid-label {
+          grid-area: amount-paid-label;
+        }
+        &.balance-label {
+          grid-area: balance-label;
+        }
+      }
+
+      .td {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+
+        &.subtotal-number {
+          grid-area: subtotal-number;
+        }
+        &.tax-number {
+          grid-area: tax-number;
+        }
+        &.grand-total-number {
+          grid-area: grand-total-number;
+        }
+        &.amount-paid-number {
+          grid-area: amount-paid-number;
+        }
+        &.balance-number {
+          grid-area: balance-number;
         }
       }
     }
   }
 }
 
-.invoice-card.card,
-.receipt-card.card {
-  gap: 0;
-}
+@media (min-width: 900px) {
+  .receipt-card.card {
+    .thead {
+      grid-template-areas:
+        'receipt-number receipt-number'
+        'payment-date payment-date'
+        'payment-method payment-method'
+        'client-details';
+        gap: 0.25em;
 
-.receipt-number {
-  grid-area: receipt-number;
-}
+        .payment-date{
+          align-items: start;
 
-.payment-method {
-  grid-area: payment-method;
+          td{
+            align-items: center;
+          }
+        }
+    }
+
+    table {
+      display: table;
+    }
+  }
 }
