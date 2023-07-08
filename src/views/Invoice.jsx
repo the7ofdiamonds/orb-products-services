@@ -23,14 +23,15 @@ function InvoiceComponent() {
     phone,
     user_email,
     date_due,
-    time_due,
     amount_due,
     selections,
     subtotal,
     tax,
     grand_total,
   } = useSelector((state) => state.invoice);
-  const { client_secret } = useSelector((state) => state.payment);
+  const { payment_intent_id, client_secret } = useSelector(
+    (state) => state.payment
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,21 +42,15 @@ function InvoiceComponent() {
 
   const handleClick = () => {
     if (stripe_invoice_id) {
-      dispatch(finalizeInvoice(stripe_invoice_id));
+      dispatch(finalizeInvoice());
     }
-  };
-
-  const update = {
-    id: id,
-    client_secret: client_secret,
-    user_email: user_email,
   };
 
   useEffect(() => {
-    if (client_secret && client_secret !== '') {
-      dispatch(updateInvoice(update));
+    if (payment_intent_id) {
+      dispatch(updateInvoice());
     }
-  }, [dispatch, client_secret, id, user_email]);
+  }, [dispatch, payment_intent_id]);
 
   useEffect(() => {
     if (client_secret) {
@@ -119,7 +114,7 @@ function InvoiceComponent() {
                   <h4>DUE DATE</h4>
                 </th>
                 <td className="bill-to-due-date" colSpan={2}>
-                  {date_due} @ {time_due}
+                  {date_due}
                 </td>
                 <th className="bill-to-total-due-label">
                   <h4>TOTAL DUE</h4>

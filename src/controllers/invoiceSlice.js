@@ -23,11 +23,14 @@ const initialState = {
   tax: '',
   grand_total: '',
   stripe_invoice_id: '',
+  payment_intent_id: '',
   invoice_id: '',
   client_secret: '',
   status: '',
-  start_date: '',
-  start_time: '',
+  amount_due: '',
+  amount_paid: '',
+  amount_remaining: '',
+  payment_date: ''
 };
 
 export const clientToInvoice = (invoice) => {
@@ -59,6 +62,7 @@ export const postInvoice = createAsyncThunk('invoice/postInvoice', async (_, { g
     user_email,
     phone,
     company_name,
+    tax_id,
     first_name,
     last_name,
     address_line_1,
@@ -73,6 +77,8 @@ export const postInvoice = createAsyncThunk('invoice/postInvoice', async (_, { g
     tax,
     grand_total,
     stripe_invoice_id,
+    due_date,
+    amount_due
   } = getState().invoice;
 
   const invoice = {
@@ -80,6 +86,7 @@ export const postInvoice = createAsyncThunk('invoice/postInvoice', async (_, { g
     user_email: user_email,
     phone: phone,
     company_name: company_name,
+    tax_id: tax_id,
     first_name: first_name,
     last_name: last_name,
     address_line_1: address_line_1,
@@ -94,6 +101,8 @@ export const postInvoice = createAsyncThunk('invoice/postInvoice', async (_, { g
     tax: tax,
     grand_total: grand_total,
     stripe_invoice_id: stripe_invoice_id,
+    date_due: due_date,
+    amount_due: amount_due
   };
 
   const response = await axios.post('/wp-json/orb/v1/invoice', invoice);
@@ -114,29 +123,34 @@ export const getInvoice = createAsyncThunk('invoice/getInvoice', async (id) => {
   }
 });
 
-export const updateInvoice = createAsyncThunk(
-  'invoice/updateInvoice',
-  async ({ id, user_email, client_secret }) => {
-    try {
-      const response = await fetch(`/wp-json/orb/v1/invoice/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ user_email, client_secret }),
-      });
+export const updateInvoice = createAsyncThunk('invoice/updateInvoice', async (_, { getState }) => {
+  const { invoice_id, user_email } = getState().invoice;
+  const { payment_intent_id, client_secret, date_due, amount_due } = getState().payment;
 
-      if (!response.ok) {
-        throw new Error('Failed to update invoice');
+  try {
+    const response = await axios.patch(`/wp-json/orb/v1/invoice/${invoice_id}`, {
+      user_email: user_email,
+      payment_intent_id: payment_intent_id,
+      client_secret: client_secret,
+      date_due: date_due,
+      amount_due: amount_due,
+    });
+
+    if (response.status !== 200) {
+      if (response.status === 400) {
+        throw new Error('Bad request');
+      } else if (response.status === 404) {
+        throw new Error('Invoice not found');
+      } else {
+        throw new Error(`HTTP error! Status: ${response.statusText}`);
       }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      throw new Error(error.message);
     }
+
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
   }
-);
+});
 
 export const updateInvoiceStatus = createAsyncThunk('invoice/updateInvoiceStatus',
   async ({ id, user_email, client_secret, status }) => {
@@ -160,6 +174,18 @@ export const updateInvoiceStatus = createAsyncThunk('invoice/updateInvoiceStatus
     }
   }
 );
+
+export const getStripeInvoice = createAsyncThunk('invoice/getStripeInvoice', async (_, { getState }) => {
+  const { stripe_invoice_id } = getState().invoice;
+
+  try {
+    const response = await axios.get(`/wp-json/orb/v1/invoice/stripe/${stripe_invoice_id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
 
 export const invoiceSlice = createSlice({
   name: 'invoice',
@@ -248,10 +274,9 @@ export const invoiceSlice = createSlice({
         state.grand_total = action.payload.grand_total;
         state.stripe_invoice_id = action.payload.stripe_invoice_id;
         state.invoice_id = action.payload.id;
+        state.payment_intent_id = action.payload.payment_intent_id;
         state.status = action.payload.status;
         state.client_secret = action.payload.client_secret;
-        state.start_date = action.payload.start_date;
-        state.start_time = action.payload.start_time;
       })
       .addCase(getInvoice.rejected, (state, action) => {
         state.loading = false;
@@ -276,6 +301,20 @@ export const invoiceSlice = createSlice({
         state.status = action.payload;
       })
       .addCase(updateInvoiceStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getStripeInvoice.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getStripeInvoice.fulfilled, (state, action) => {
+        state.amount_due = action.payload.amount_due;
+        state.amount_paid = action.payload.amount_paid;
+        state.amount_remaining = action.payload.amount_remaining;
+        state.payment_date = action.payload.status_transitions.paid_at;
+      })
+      .addCase(getStripeInvoice.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

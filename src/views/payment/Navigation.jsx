@@ -21,12 +21,6 @@ function PaymentNavigationComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (receipt_id > 0) {
-      navigate(`/receipt/${receipt_id}`);
-    }
-  }, [receipt_id]);
-
   if (error) {
     return <div>Error: {error}</div>;
   }

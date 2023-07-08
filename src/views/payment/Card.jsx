@@ -8,16 +8,27 @@ import {
   getInvoice,
   updateInvoiceStatus,
 } from '../../controllers/invoiceSlice';
-import { updateStatus } from '../../controllers/paymentSlice';
+import { getPaymentIntent } from '../../controllers/paymentSlice';
+import { postReceipt, getReceipt } from '../../controllers/receiptSlice';
 
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 const CardPaymentComponent = () => {
   const { id } = useParams();
 
-  const { user_email, first_name, last_name, client_secret, status } = useSelector(
+  const { user_email, first_name, last_name, client_secret } = useSelector(
     (state) => state.invoice
   );
+  const { loading, error, status, payment_method_id } = useSelector(
+    (state) => state.payment
+  );
+  const {
+    receipt_id,
+    invoice_id,
+    amount_paid,
+    amount_remaining,
+    payment_date,
+  } = useSelector((state) => state.receipt);
 
   const [messageType, setMessageType] = useState('');
   const [message, setMessage] = useState('');
@@ -27,10 +38,6 @@ const CardPaymentComponent = () => {
 
   const stripe = useStripe();
   const elements = useElements();
-
-  useEffect(() => {
-    dispatch(getInvoice(id));
-  }, [dispatch, id]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -44,7 +51,7 @@ const CardPaymentComponent = () => {
       },
     });
 
-    if (result.error) {    
+    if (result.error) {
       setMessage(result.error.message);
       setMessageType('error');
     }
@@ -52,49 +59,72 @@ const CardPaymentComponent = () => {
     if (result.paymentIntent) {
       const update = {
         id: id,
-        client_secret: client_secret,
-        user_email: user_email,
+        client_secret: result.paymentIntent.client_secret,
+        user_email: result.paymentIntent.receipt_email,
         status: result.paymentIntent.status,
       };
 
       dispatch(updateInvoiceStatus(update));
+      let status = result.paymentIntent.status;
+
+      if (status === 'succeeded') {
+        setMessageType('success');
+
+        console.log(result.paymentIntent.payment_method.card);
+      }
+
+      if (
+        status === 'requires_confirmation' ||
+        status === 'requires_action' ||
+        status === 'processing' ||
+        status === 'requires_capture'
+      ) {
+        setMessageType('caution');
+      } 
+      
+      if (status === 'canceled') {
+        setMessageType('error');
+        navigate(`/services/quote`);
+      }
     }
   };
 
-  useEffect(() => {
-    if (status === 'succeeded') {
-      setMessageType('success');
-    } else if (
-      status === 'requires_payment_method' ||
-      status === 'requires_confirmation' ||
-      status === 'requires_action' ||
-      status === 'processing' ||
-      status === 'requires_capture'
-    ) {
-      setMessageType('caution');
-    } else if (status === 'canceled') {
-      setMessageType('error');
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   dispatch(postReceipt());
+  // }, [
+  //   dispatch,
+  //   invoice_id,
+  //   payment_method_id,
+  //   amount_paid,
+  //   amount_remaining,
+  //   payment_date,
+  // ]);
 
   useEffect(() => {
-    if (status === 'succeeded') {
-      navigate(`/services/receipt/${id}`);
+    if (receipt_id) {
+      navigate(`/services/receipt/${receipt_id}`);
     }
-  }, [status, id]);
+  }, [dispatch, receipt_id]);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <PaymentNavigationComponent />
       <div className="debit-credit-card card">
         <div className="front">
+          n{' '}
           <div className="image">
             <img src="" alt="" />
             <img src="" alt="" />
           </div>
-
           <div className="card-number-box">#### #### #### ####</div>
-
           <div className="flexbox">
             <div className="box">
               <div className="card-holder-name">
@@ -127,9 +157,7 @@ const CardPaymentComponent = () => {
 
       {(status || message) && (
         <div className="status-bar card">
-          <span className={`${messageType}`}>
-            {status || message}
-          </span>
+          <span className={`${messageType}`}>{status || message}</span>
         </div>
       )}
 

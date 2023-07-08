@@ -375,6 +375,9 @@ i.fa-solid.fa-globe {
 .status-bar {
   background-color: black;
 }
+.status-bar span {
+  color: white;
+}
 .status-bar span.info {
   color: blue;
 }

@@ -8,7 +8,6 @@ function ReceiptComponent() {
   const { id } = useParams();
 
   const {
-    invoice_id,
     tax_id,
     company_name,
     first_name,
@@ -28,20 +27,23 @@ function ReceiptComponent() {
   const {
     loading,
     error,
-    receipt_id,
+    invoice_id,
     payment_date,
-    payment_time,
-    payment_amount,
-    payment_method,
+    amount_paid,
+    card,
+    last4,
     balance,
   } = useSelector((state) => state.receipt);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getInvoice(id));
     dispatch(getReceipt(id));
   }, [dispatch, id]);
+
+  useEffect(() => {
+    dispatch(getInvoice(invoice_id));
+  }, [dispatch, invoice_id]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -61,7 +63,7 @@ function ReceiptComponent() {
               <h4>RECEIPT NUMBER</h4>
             </div>
             <div className="td">
-              <h5>{receipt_id}1</h5>
+              <h5>{id}</h5>
             </div>
           </div>
           <div className="tr payment-date">
@@ -70,7 +72,7 @@ function ReceiptComponent() {
             </div>
             <div className="td">
               <h5>
-                {payment_date} @ {payment_time}
+                {payment_date}
               </h5>
             </div>
           </div>
@@ -79,7 +81,7 @@ function ReceiptComponent() {
               <h4>PAYMENT METHOD</h4>
             </div>
             <div className="td">
-              <h5>{payment_method}</h5>
+              <h5>{card} {last4}</h5>
             </div>
           </div>
           <div className="tr client-details">
@@ -209,7 +211,7 @@ function ReceiptComponent() {
                 {new Intl.NumberFormat('us', {
                   style: 'currency',
                   currency: 'USD',
-                }).format(payment_amount)}
+                }).format(amount_paid)}
               </h5>
             </div>
           </div>

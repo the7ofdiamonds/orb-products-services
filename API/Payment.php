@@ -34,8 +34,24 @@ class Payment
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/payment/intent/(?P<slug>[a-zA-Z0-9-_]+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'getPaymentIntent'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/payment/intent/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'POST',
                 'callback' => [$this, 'updatePaymentIntent'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/payment/method/(?P<slug>[a-zA-Z0-9-_]+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'getPaymentMethod'],
                 'permission_callback' => '__return_true',
             ]);
         });
@@ -73,6 +89,54 @@ class Payment
                 $error_message = 'Invalid amount. Please provide a positive value.';
                 $status_code = 400;
             }
+        } catch (\Stripe\Exception\CardException $e) {
+            // Handle specific CardException
+            $error_message = 'Card declined.';
+            $status_code = 400;
+        } catch (\Stripe\Exception\RateLimitException $e) {
+            // Handle specific RateLimitException
+            $error_message = 'Too many requests. Please try again later.';
+            $status_code = 429;
+        } catch (\Stripe\Exception\InvalidRequestException $e) {
+            // Handle specific InvalidRequestException
+            $error_message = 'Invalid request. Please check your input.';
+            $status_code = 400;
+        } catch (\Stripe\Exception\AuthenticationException $e) {
+            // Handle specific AuthenticationException
+            $error_message = 'Authentication failed. Please check your API credentials.';
+            $status_code = 401;
+        } catch (\Stripe\Exception\ApiConnectionException $e) {
+            // Handle specific ApiConnectionException
+            $error_message = 'Network error occurred. Please try again later.';
+            $status_code = 500;
+        } catch (\Exception $e) {
+            // Handle any other generic exceptions
+            $error_message = 'An error occurred while creating the payment intent.';
+            $status_code = 500;
+        }
+
+        $data = array(
+            'status' => $status_code,
+            'message' => $error_message,
+        );
+
+        return new WP_Error('rest_error', $error_message, $data);
+    }
+
+    public function getPaymentIntent(WP_REST_Request $request)
+    {
+        $payment_intent_id = $request->get_param('slug');
+
+        $status_code = 200;
+        $error_message = '';
+
+        try {
+
+            $payment_intent = $this->stripeClient->paymentIntents->retrieve(
+                $payment_intent_id,
+                []
+            );
+            return new WP_REST_Response($payment_intent, $status_code);
         } catch (\Stripe\Exception\CardException $e) {
             // Handle specific CardException
             $error_message = 'Card declined.';
@@ -156,6 +220,53 @@ class Payment
         } catch (\Exception $e) {
             // Handle any other generic exceptions
             $error_message = 'An error occurred while updating the payment intent.';
+            $status_code = 500;
+        }
+
+        $data = array(
+            'status' => $status_code,
+            'message' => $error_message,
+        );
+
+        return new WP_Error('rest_error', $error_message, $data);
+    }
+
+    public function getPaymentMethod(WP_REST_Request $request)
+    {
+        $payment_method_id = $request->get_param('slug');
+
+        $status_code = 200;
+        $error_message = '';
+
+        try {
+            $payment_method = $this->stripeClient->paymentMethods->retrieve(
+                $payment_method_id,
+                []
+            );
+            return new WP_REST_Response($payment_method, $status_code);
+        } catch (\Stripe\Exception\CardException $e) {
+            // Handle specific CardException
+            $error_message = 'Card declined.';
+            $status_code = 400;
+        } catch (\Stripe\Exception\RateLimitException $e) {
+            // Handle specific RateLimitException
+            $error_message = 'Too many requests. Please try again later.';
+            $status_code = 429;
+        } catch (\Stripe\Exception\InvalidRequestException $e) {
+            // Handle specific InvalidRequestException
+            $error_message = 'Invalid request. Please check your input.';
+            $status_code = 400;
+        } catch (\Stripe\Exception\AuthenticationException $e) {
+            // Handle specific AuthenticationException
+            $error_message = 'Authentication failed. Please check your API credentials.';
+            $status_code = 401;
+        } catch (\Stripe\Exception\ApiConnectionException $e) {
+            // Handle specific ApiConnectionException
+            $error_message = 'Network error occurred. Please try again later.';
+            $status_code = 500;
+        } catch (\Exception $e) {
+            // Handle any other generic exceptions
+            $error_message = 'An error occurred while creating the payment intent.';
             $status_code = 500;
         }
 
