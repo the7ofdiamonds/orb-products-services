@@ -36,6 +36,7 @@ use ORBServices\PostTypes\Services;
 // use ORBServices\Roles\Roles;
 use ORBServices\Shortcodes\Shortcodes;
 use ORBServices\Tables\Tables;
+use ORBServices\Templates\Templates;
 
 class ORBServices
 {
@@ -55,6 +56,7 @@ class ORBServices
         new Services;
         new Shortcodes;
         new Tables;
+        new Templates;
     }
 
     public function activate()

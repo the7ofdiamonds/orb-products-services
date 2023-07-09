@@ -2,13 +2,10 @@
 
 namespace ORBServices\Pages;
 
-use ORBServices\Pages\Templates\Templates;
-
 class Pages
 {
     public function __construct()
     {
-        new Templates();
         add_action('init', [$this, 'react_rewrite_rules'], 10, 0);
     }
 
@@ -87,17 +84,9 @@ class Pages
 
         if ($services_page_id && $start_page_id && $quote_page_id && $invoice_page_id && $payment_page_id && $receipt_page_id && $schedule_page_id) {
 
-            $custom_routes = [
-                'start' => 'start',
-                'quote'   => 'quote',
-            ];
-
-            foreach ($custom_routes as $route => $slug) {
-                add_rewrite_rule('^services/' . $route . '/?$', 'index.php?page_id=' . $services_page_id . '&custom_route=' . $slug, 'top');
-            }
-
-
-            if ($invoice_page_id && $payment_page_id && $receipt_page_id && $schedule_page_id) {
+            if ($start_page_id && $quote_page_id && $invoice_page_id && $payment_page_id && $receipt_page_id && $schedule_page_id) {
+                add_rewrite_rule('^services/start/([0-9]+)/?$', 'index.php?page_id=' . $start_page_id . '&id=$matches[1]', 'top');
+                add_rewrite_rule('^services/quote/([0-9]+)/?$', 'index.php?page_id=' . $quote_page_id . '&id=$matches[1]', 'top');
                 add_rewrite_rule('^services/invoice/([0-9]+)/?$', 'index.php?page_id=' . $invoice_page_id . '&id=$matches[1]', 'top');
                 add_rewrite_rule('^services/payment/([0-9]+)/?$', 'index.php?page_id=' . $payment_page_id . '&id=$matches[1]', 'top');
                 add_rewrite_rule('^services/receipt/([0-9]+)/?$', 'index.php?page_id=' . $receipt_page_id . '&id=$matches[1]', 'top');

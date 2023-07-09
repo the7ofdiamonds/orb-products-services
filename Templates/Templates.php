@@ -1,6 +1,6 @@
 <?php
 
-namespace ORBServices\Pages\Templates;
+namespace ORBServices\Templates;
 
 class Templates
 {
@@ -26,7 +26,7 @@ class Templates
         $path_segments = explode('/', $request_path);
 
         if ($path_segments[1] === 'services') {
-            $single_template = ORB_SERVICES . '/pages/templates/archive-services.php';
+            $single_template = ORB_SERVICES . '/pages/archive-services.php';
         }
 
         return $single_template;
@@ -37,7 +37,7 @@ class Templates
         global $post;
 
         if ($post->post_type === 'services') {
-            $single_template = ORB_SERVICES . '/pages/templates/single-services.php';
+            $single_template = ORB_SERVICES . '/pages/single-services.php';
         }
 
         return $single_template;
@@ -48,7 +48,7 @@ class Templates
         $start_page = get_page_by_path('services/start');
 
         if ($start_page && is_page($start_page->ID)) {
-            $custom_template = ORB_SERVICES . '/pages/templates/page-start.php';
+            $custom_template = ORB_SERVICES . '/pages/page-start.php';
 
             if (file_exists($custom_template)) {
                 return $custom_template;
@@ -62,7 +62,7 @@ class Templates
         $quote_page = get_page_by_path('services/quote');
 
         if ($quote_page && is_page($quote_page->ID)) {
-            $custom_template = ORB_SERVICES . '/pages/templates/page-quote.php';
+            $custom_template = ORB_SERVICES . '/pages/page-quote.php';
 
             if (file_exists($custom_template)) {
                 return $custom_template;
@@ -76,7 +76,7 @@ class Templates
         $services_invoice = get_page_by_path('services/invoice');
 
         if ($services_invoice && is_page($services_invoice->ID)) {
-            $custom_template = ORB_SERVICES . '/pages/templates/page-invoice.php';
+            $custom_template = ORB_SERVICES . '/pages/page-invoice.php';
 
             if (file_exists($custom_template)) {
                 return $custom_template;
@@ -90,7 +90,7 @@ class Templates
         $services_payment = get_page_by_path('services/payment');
 
         if ($services_payment && is_page($services_payment->ID)) {
-            $custom_template = ORB_SERVICES . '/pages/templates/page-payment.php';
+            $custom_template = ORB_SERVICES . '/pages/page-payment.php';
 
             if (file_exists($custom_template)) {
                 return $custom_template;
@@ -104,7 +104,7 @@ class Templates
         $services_receipt = get_page_by_path('services/receipt');
 
         if ($services_receipt && is_page($services_receipt->ID)) {
-            $custom_template = ORB_SERVICES . '/pages/templates/page-receipt.php';
+            $custom_template = ORB_SERVICES . '/pages/page-receipt.php';
 
             if (file_exists($custom_template)) {
                 return $custom_template;
@@ -118,7 +118,7 @@ class Templates
         $services_schedule = get_page_by_path('services/schedule');
 
         if ($services_schedule && is_page($services_schedule->ID)) {
-            $custom_template = ORB_SERVICES . '/pages/templates/page-schedule.php';
+            $custom_template = ORB_SERVICES . '/pages/page-schedule.php';
 
             if (file_exists($custom_template)) {
                 return $custom_template;
@@ -131,7 +131,7 @@ class Templates
     {
 
         if (is_page('faq')) {
-            $page_template = ORB_SERVICES . '/pages/templates/page-faq.php';
+            $page_template = ORB_SERVICES . '/pages/page-faq.php';
         }
 
         return $page_template;
@@ -141,7 +141,7 @@ class Templates
     {
 
         if (is_page('support')) {
-            $page_template = ORB_SERVICES . '/pages/templates/page-support.php';
+            $page_template = ORB_SERVICES . '/pages/page-support.php';
         }
 
         return $page_template;
@@ -152,7 +152,7 @@ class Templates
     {
 
         if (is_page('contact')) {
-            $page_template = ORB_SERVICES . '/pages/templates/page-contact.php';
+            $page_template = ORB_SERVICES . '/pages/page-contact.php';
         }
 
         return $page_template;

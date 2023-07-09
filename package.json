@@ -8,6 +8,8 @@
     "webpack": "^5.50.0"
   },
   "scripts": {
+    "dev": "npm-run-all --parallel sync start watch:sass",
+    "sync": "browser-sync start -p 'http://localhost:8000'",
     "build": "wp-scripts build",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
@@ -18,7 +20,8 @@
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js",
     "update-dev": "git push orb-services development",
-    "update-prod": "git push orb-services production"
+    "update-prod": "git push orb-services production",
+    "watch:sass": "sass --watch ./CSS/scss/main.scss ./CSS/orb-services.css"
   },
   "author": "THE7OFDIAMONDS.TECH",
   "license": "ISC",
@@ -32,7 +35,9 @@
     "cors": "^2.8.5",
     "crypto-browserify": "^3.12.0",
     "dotenv": "^16.3.1",
+    "firebase": "^10.0.0",
     "path-browserify": "^1.0.1",
+    "react": "^18.2.0",
     "react-redux": "^8.0.7",
     "react-router-dom": "^6.11.2",
     "react-select": "^5.7.3"

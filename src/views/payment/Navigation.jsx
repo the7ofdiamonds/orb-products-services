@@ -1,34 +1,6 @@
-import { useEffect } from 'react';
-import {
-  Routes,
-  Route,
-  useNavigate,
-  useParams,
-  NavLink,
-} from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-
-import CardPaymentComponent from './Card.jsx';
-import MobileComponent from './Mobile.jsx';
+import { NavLink } from 'react-router-dom';
 
 function PaymentNavigationComponent() {
-  const { id } = useParams();
-
-  const { stripe_invoice_id } = useSelector((state) => state.invoice);
-  const { loading, error } = useSelector((state) => state.payment);
-  const { receipt_id } = useSelector((state) => state.receipt);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       <h2 className="title">PAYMENT</h2>

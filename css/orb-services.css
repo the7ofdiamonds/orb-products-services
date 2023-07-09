@@ -595,8 +595,8 @@ i.fa-solid.fa-globe {
     gap: 0.25em;
   }
   .receipt-card.card .thead .receipt-number,
-.receipt-card.card .thead .payment-date,
-.receipt-card.card .thead .payment-method {
+  .receipt-card.card .thead .payment-date,
+  .receipt-card.card .thead .payment-method {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -604,17 +604,17 @@ i.fa-solid.fa-globe {
     gap: 0.25em;
   }
   .receipt-card.card .thead .receipt-number h4,
-.receipt-card.card .thead .payment-date h4,
-.receipt-card.card .thead .payment-method h4 {
+  .receipt-card.card .thead .payment-date h4,
+  .receipt-card.card .thead .payment-method h4 {
     padding: 0.25em;
   }
   .receipt-card.card .thead .client-details {
     width: 100%;
   }
   .receipt-card.card .thead .client-details .address-line-1,
-.receipt-card.card .thead .client-details .address-line-2,
-.receipt-card.card .thead .client-details .phone,
-.receipt-card.card .thead .client-details .email {
+  .receipt-card.card .thead .client-details .address-line-2,
+  .receipt-card.card .thead .client-details .phone,
+  .receipt-card.card .thead .client-details .email {
     width: 100%;
   }
   .receipt-card.card .tfoot {
@@ -624,10 +624,10 @@ i.fa-solid.fa-globe {
     gap: 0.25em;
   }
   .receipt-card.card .tfoot .subtotal,
-.receipt-card.card .tfoot .tax,
-.receipt-card.card .tfoot .grand-total,
-.receipt-card.card .tfoot .amount-paid,
-.receipt-card.card .tfoot .balance {
+  .receipt-card.card .tfoot .tax,
+  .receipt-card.card .tfoot .grand-total,
+  .receipt-card.card .tfoot .amount-paid,
+  .receipt-card.card .tfoot .balance {
     display: contents;
   }
   .receipt-card.card .tfoot .th {
@@ -688,6 +688,9 @@ i.fa-solid.fa-globe {
   .receipt-card.card table {
     display: table;
   }
+}
+.client-details form table tbody td {
+  padding: 0.375em;
 }
 
 /*# sourceMappingURL=orb-services.css.map */
