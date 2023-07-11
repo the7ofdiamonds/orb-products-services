@@ -16,7 +16,7 @@ function ServiceComponent() {
 
   useEffect(() => {
     dispatch(fetchService(servicePath));
-  }, [servicePath]);
+  }, [dispatch, servicePath]);
 
   const handleClick = () => {
     navigate('/services/start');

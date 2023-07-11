@@ -19,8 +19,8 @@ Licensing Info Here
 */
 
 defined('ABSPATH') or die('Hey, what are you doing here? You silly human!');
-define('ORB_SERVICES', WP_PLUGIN_DIR . '/orb-services');
-define('ORB_SERVICES_URL', WP_PLUGIN_URL . '/orb-services');
+define('ORB_SERVICES', WP_PLUGIN_DIR . '/orb-services/');
+define('ORB_SERVICES_URL', WP_PLUGIN_URL . '/orb-services/');
 
 require_once __DIR__ . '/vendor/autoload.php';
 

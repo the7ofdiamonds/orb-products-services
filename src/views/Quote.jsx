@@ -17,8 +17,9 @@ function QuoteComponent() {
   const { loading, error, services } = useSelector((state) => state.services);
   const { subtotal, selections } = useSelector((state) => state.quote);
   const quoteData = useSelector((state) => state.quote);
-  const { stripe_customer_id, stripe_invoice_id, invoice_id } =
-    useSelector((state) => state.invoice);
+  const { stripe_customer_id, stripe_invoice_id, invoice_id } = useSelector(
+    (state) => state.invoice
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function QuoteComponent() {
 
   useEffect(() => {
     dispatch(fetchServices());
-  }, []);
+  }, [dispatch]);
 
   const handleCheckboxChange = (event, id, description, cost) => {
     const isChecked = event.target.checked;
@@ -44,11 +45,11 @@ function QuoteComponent() {
 
   useEffect(() => {
     dispatch(addSelections(checkedItems));
-  }, [checkedItems]);
+  }, [dispatch, checkedItems]);
 
   useEffect(() => {
     dispatch(calculateSelections(services.cost));
-  }, [checkedItems]);
+  }, [dispatch, services.cost, checkedItems]);
 
   const handleClick = () => {
     if (stripe_customer_id && subtotal > 0) {
@@ -72,7 +73,7 @@ function QuoteComponent() {
     if (invoice_id) {
       navigate(`/services/invoice/${invoice_id}`);
     }
-  }, [invoice_id]);
+  }, [navigate, invoice_id]);
 
   if (error) {
     return <div>Error: {error}</div>;

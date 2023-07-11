@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { projectAuth } from "../services/firebase/config";
+import { projectAuth } from "../../Services/src/services/firebase/config";
 
 const PrivateRoutes = () => {
 

@@ -11,8 +11,8 @@ function ServicesComponent() {
 
   useEffect(() => {
     dispatch(fetchServices());
-  }, []);
-  
+  }, [dispatch]);
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -27,7 +27,7 @@ function ServicesComponent() {
 
   return (
     <>
-      <h2 class="title">SERVICES</h2>
+      <h2 className="title">SERVICES</h2>
       <div className="services-list">
         {services && services.length ? (
           <React.Fragment>
@@ -50,7 +50,15 @@ function ServicesComponent() {
                 </div>
 
                 <div className="services-description">
-                  <h4>Starting at {new Intl.NumberFormat("us", { style: "currency", currency: "USD"}).format(service.cost)}</h4>
+                  <h4>
+                    Starting at{' '}
+                    {new Intl.NumberFormat('us', {
+                      style: 'currency',
+                      currency: 'USD',
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    }).format(service.cost)}
+                  </h4>
                 </div>
                 <div className="services-action">
                   <button

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -108,13 +108,13 @@ function ClientComponent() {
         console.log('Error creating client:', error.message);
       }
     }
-  }, []);
+  }, [dispatch, client_data]);
 
   useEffect(() => {
     if (client_id) {
       dispatch(updateClientID(client_id));
     }
-  }, [client_id]);
+  }, [client_id, dispatch]);
 
   const customer_data = {
     company_name: company_name,
@@ -153,7 +153,7 @@ function ClientComponent() {
       dispatch(clientToInvoice(customer_data));
       navigate('/services/quote');
     }
-  }, [stripe_customer_id]);
+  }, [isFormCompleted, stripe_customer_id, dispatch, customer_data, navigate]);
 
   if (error) {
     return <div>Error: {error}</div>;

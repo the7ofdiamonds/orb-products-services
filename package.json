@@ -5,10 +5,11 @@
   "main": "js/index.js",
   "devDependencies": {
     "@wordpress/scripts": "^26.5.0",
+    "vite": "^4.4.2",
     "webpack": "^5.50.0"
   },
   "scripts": {
-    "dev": "npm-run-all --parallel sync start watch:sass",
+    "dev": "npm-run-all --parallel sync watch:sass vite",
     "sync": "browser-sync start -p 'http://localhost:8000'",
     "build": "wp-scripts build",
     "check-engines": "wp-scripts check-engines",
@@ -21,6 +22,7 @@
     "test:unit": "wp-scripts test-unit-js",
     "update-dev": "git push orb-services development",
     "update-prod": "git push orb-services production",
+    "vite": "vite start",
     "watch:sass": "sass --watch ./CSS/scss/main.scss ./CSS/orb-services.css"
   },
   "author": "THE7OFDIAMONDS.TECH",

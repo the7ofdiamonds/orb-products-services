@@ -1,4 +1,5 @@
 <?php
+
 namespace ORBServices\JS;
 
 class JS
@@ -11,17 +12,53 @@ class JS
         add_action('wp_enqueue_scripts', [$this, 'load_react']);
     }
 
-    function load_js()
+    function get_js_files($directory)
     {
-        wp_enqueue_script('orb_services_js', ORB_SERVICES_URL . '/js/orb-services.js');
+        $jsFiles = array();
+        $files = scandir($directory);
+
+        foreach ($files as $file) {
+            if (pathinfo($file, PATHINFO_EXTENSION) === 'js') {
+                $jsFiles[] = $file;
+            }
+        }
+        return $jsFiles;
     }
 
-    function load_hero_js() {
-        wp_enqueue_script('orb_services_hero_js', ORB_SERVICES_URL . '/js/orb-services-hero.js');
+    function load_js()
+    {
+        wp_enqueue_script('orb_services_js', ORB_SERVICES_URL . 'js/orb-services.js');
+    }
+
+    function load_hero_js()
+    {
+        wp_enqueue_script('orb_services_hero_js', ORB_SERVICES_URL . 'js/orb-services-hero.js');
     }
 
     function load_react()
     {
-        wp_enqueue_script('orb_services_react', ORB_SERVICES_URL . '/build/index.js', ['wp-element'], 1.0, true);
+        $directory = ORB_SERVICES . 'build';
+        $jsFiles = [];
+        $pages = [
+            'services',
+            'services/start',
+            'services/quote',
+            'services/invoice',
+            'services/payment',
+            'services/receipt',  
+        ];
+
+        foreach ($pages as $page) {
+            if (is_front_page() || is_singular('services') || is_page($page)) {
+                $jsFiles = $this->get_js_files($directory);
+            }
+        }
+
+        if ($jsFiles) {
+            foreach ($jsFiles as $jsFile) {
+                $handle = 'orb_services_react_' . basename($jsFile);
+                wp_enqueue_script($handle, ORB_SERVICES_URL . 'build/' . $jsFile, ['wp-element'], 1.0, true);
+            }
+        }
     }
 }

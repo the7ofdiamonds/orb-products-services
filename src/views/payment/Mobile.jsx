@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   PaymentRequestButtonElement,
   useStripe,
@@ -31,11 +31,7 @@ const MobileComponent = () => {
         setPaymentRequest(paymentRequest);
       }
     });
-  }, [stripe, elements]);
-
-  const paymentRequestButtonOptions = {
-    paymentRequest: paymentRequest,
-  };
+  }, [stripe, elements, setPaymentRequest]);
 
   return (
     <>

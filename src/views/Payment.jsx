@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
-  Routes,
-  Route,
   useNavigate,
   useParams,
-  NavLink,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,7 +9,7 @@ import PaymentNavigationComponent from './payment/Navigation.jsx';
 
 import { getInvoice, getStripeInvoice } from '../controllers/invoiceSlice.js';
 import { getPaymentIntent } from '../controllers/paymentSlice.js';
-import { getPaymentMethod, postReceipt } from '../controllers/receiptSlice.js';
+import { getPaymentMethod } from '../controllers/receiptSlice.js';
 
 function PaymentComponent() {
   const { id } = useParams();
@@ -21,10 +18,6 @@ function PaymentComponent() {
     user_email,
     stripe_invoice_id,
     payment_intent_id,
-    invoice_id,
-    amount_paid,
-    amount_remaining,
-    payment_date,
   } = useSelector((state) => state.invoice);
   const { loading, error, status, payment_method_id } =
     useSelector((state) => state.payment);
@@ -61,7 +54,7 @@ function PaymentComponent() {
       setMessageType('error');
       setMessage('This transaction has been canceled');
     }
-  }, [dispatch, status]);
+  }, [dispatch, status, user_email]);
 
   useEffect(() => {
     if (payment_method_id) {

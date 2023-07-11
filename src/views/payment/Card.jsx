@@ -1,33 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import PaymentNavigationComponent from './Navigation';
 
-import {
-  getInvoice,
-  updateInvoiceStatus,
-} from '../../controllers/invoiceSlice';
-import { getPaymentIntent } from '../../controllers/paymentSlice';
-import { postReceipt, getReceipt } from '../../controllers/receiptSlice';
+import { updateInvoiceStatus } from '../../controllers/invoiceSlice';
 
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 const CardPaymentComponent = () => {
   const { id } = useParams();
 
-  const { user_email, first_name, last_name, client_secret } = useSelector(
+  const { first_name, last_name, client_secret } = useSelector(
     (state) => state.invoice
   );
-  const { loading, error, status, payment_method_id } = useSelector(
+  const { loading, error, status } = useSelector(
     (state) => state.payment
   );
   const {
     receipt_id,
-    invoice_id,
-    amount_paid,
-    amount_remaining,
-    payment_date,
   } = useSelector((state) => state.receipt);
 
   const [messageType, setMessageType] = useState('');
@@ -80,8 +71,8 @@ const CardPaymentComponent = () => {
         status === 'requires_capture'
       ) {
         setMessageType('caution');
-      } 
-      
+      }
+
       if (status === 'canceled') {
         setMessageType('error');
         navigate(`/services/quote`);
@@ -104,7 +95,7 @@ const CardPaymentComponent = () => {
     if (receipt_id) {
       navigate(`/services/receipt/${receipt_id}`);
     }
-  }, [dispatch, receipt_id]);
+  }, [receipt_id, navigate]);
 
   if (error) {
     return <div>Error: {error}</div>;

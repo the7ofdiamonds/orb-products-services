@@ -7,7 +7,7 @@ const initialState = {
   services: {}
 }
 
-export const fetchServices = createAsyncThunk('services/servicesSlice', async (serviceSlug) => {
+export const fetchServices = createAsyncThunk('services/servicesSlice', async () => {
   try {
     const response = await axios.get(`/wp-json/orb/v1/services`);
     return response.data;

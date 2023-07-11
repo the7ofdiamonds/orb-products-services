@@ -1,11 +1,6 @@
 <?php
 namespace ORBServices\Admin;
 
-// include 'admin-email.php';
-// include 'admin-hero.php';
-// include 'admin-location.php';
-// include 'admin-office-hours.php';
-
 use ORBServices\Admin\AdminEmail;
 use ORBServices\Admin\AdminHero;
 use ORBServices\Admin\AdminLocation;

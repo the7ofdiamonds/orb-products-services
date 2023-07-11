@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getInvoice, updateInvoice } from '../controllers/invoiceSlice.js';
@@ -38,7 +38,7 @@ function InvoiceComponent() {
 
   useEffect(() => {
     dispatch(getInvoice(id));
-  }, []);
+  }, [dispatch, id]);
 
   const handleClick = () => {
     if (stripe_invoice_id) {
@@ -56,7 +56,7 @@ function InvoiceComponent() {
     if (client_secret) {
       navigate(`/services/payment/${id}`);
     }
-  }, [dispatch, client_secret]);
+  }, [dispatch, client_secret, navigate, id]);
 
   if (error) {
     return <div>Error: {error}</div>;

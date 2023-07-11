@@ -1,5 +1,4 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 // Components
 import ServicesComponent from './views/Services.jsx';
@@ -16,7 +15,7 @@ import ReceiptComponent from './views/Receipt.jsx';
 import ErrorComponent from './views/Error.jsx';
 
 //Utilities
-import PrivateRoutes from './utils/PrivateRoutes.jsx';
+// import PrivateRoutes from './utils/PrivateRoutes.jsx';
 
 function App() {
 
@@ -28,7 +27,7 @@ function App() {
           <Route index path="/" element={<ServicesComponent />} />
           <Route path="services/:service" element={<ServiceComponent />} />
           <Route path="services/quote" element={<QuoteComponent />} />
-          <Route element={<PrivateRoutes />}>
+          {/* <Route element={<PrivateRoutes />}> */}
             <Route path="services/start" element={<StartComponent />} />
             <Route path="services/start/client" element={<ClientComponent />} />
             <Route path="services/invoice/:id" element={<InvoiceComponent />} />
@@ -37,7 +36,7 @@ function App() {
             <Route path="services/payment/:id/mobile" element={<MobileComponent />} />
             <Route path="services/receipt/:id" element={<ReceiptComponent />} />
             <Route path="services/schedule/:id" element={<ScheduleComponent />} />
-          </Route>
+          {/* </Route> */}
           <Route path="services/*" element={<ErrorComponent />} />
         </Routes>
       </Router>
