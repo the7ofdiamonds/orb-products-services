@@ -1,7 +1,14 @@
-.total-due-label {
+.feature-cost,
+.subtotal {
   text-align: right;
 }
 
-.total-due {
+.description-label,
+.subtotal-label {
+  margin: 0 0.1775em 0 0;
+}
+
+.feature-description,
+.subtotal-label {
   text-align: right;
 }

@@ -211,19 +211,37 @@
         'payment-date payment-date'
         'payment-method payment-method'
         'client-details';
-        gap: 0.25em;
+      gap: 0.25em;
 
-        .payment-date{
-          align-items: start;
+      .payment-date {
+        align-items: start;
 
-          td{
-            align-items: center;
-          }
+        td {
+          align-items: center;
         }
+      }
     }
 
     table {
-      display: table;
+      display: quote-table;
     }
   }
+}
+
+table {
+  border-spacing: 0.375em;
+  border-collapse: collapse;
+}
+
+thead,
+tfoot {
+  h4 {
+    background-color: black;
+    color: white;
+    padding: 0.375em;
+  }
+}
+
+td {
+  padding: 0.375em;
 }

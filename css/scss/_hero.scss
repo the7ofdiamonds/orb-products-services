@@ -22,22 +22,6 @@
       }
     }
   }
-
-  .hero-btn {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5em;
-
-    i {
-      padding-right: 0;
-    }
-
-    h3 {
-      padding-left: 0;
-    }
-  }
 }
 
 .hero-animation > div {
@@ -80,10 +64,26 @@ html {
   }
 }
 
-.hero-btn:hover {
+.start-btn:hover {
   box-shadow: unset;
   
   i {
     color: lime;
+  }
+}
+
+.start-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+
+  i {
+    padding-right: 0;
+  }
+
+  h3 {
+    padding-left: 0;
   }
 }

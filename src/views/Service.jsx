@@ -73,11 +73,14 @@ function ServiceComponent() {
           {new Intl.NumberFormat('us', {
             style: 'currency',
             currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
           }).format(cost)}
         </h4>
       </div>
 
-      <button id="schedule_button" onClick={handleClick}>
+      <button className="start-btn" onClick={handleClick}>
+        <i class="fas fa-power-off"></i>
         <h3>START</h3>
       </button>
     </>

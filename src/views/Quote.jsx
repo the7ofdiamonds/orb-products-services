@@ -87,82 +87,74 @@ function QuoteComponent() {
     <>
       <h2>QUOTE</h2>
 
-      <div className="quote">
-        <form method="POST" className="quote-form" id="quote_form">
-          <table className="quote-table" id="quote_total">
-            <thead className="quote-table-head">
+      <div className="quote-card card">
+        <table>
+          <thead>
+            <tr>
+              <th colSpan={2}>
+                <h4 className="description-label">DESCRIPTION</h4>
+              </th>
+              <th>
+                <h4 className="cost-label">COST</h4>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {services && services.length ? (
+              <React.Fragment>
+                {services.map((service) => {
+                  const { id, description, cost } = service;
+
+                  return (
+                    <tr key={id} id="quote_option">
+                      <td>
+                        <input
+                          className="input selection feature-selection"
+                          type="checkbox"
+                          name="quote[checkbox][]"
+                          checked={checkedItems.some((item) => item.id === id)}
+                          onChange={(event) =>
+                            handleCheckboxChange(event, id, description, cost)
+                          }
+                        />
+                      </td>
+                      <td className='feature-description'>{description}</td>
+                      <td
+                        className="feature-cost table-number"
+                        id="feature_cost">
+                        {new Intl.NumberFormat('us', {
+                          style: 'currency',
+                          currency: 'USD',
+                        }).format(cost)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </React.Fragment>
+            ) : (
               <tr>
-                <th className="description" colSpan={2}>
-                  <h4>DESCRIPTION</h4>
-                </th>
-                <th className="costs">
-                  <h4>COST</h4>
-                </th>
+                <td colSpan={3}>
+                  <h3>No features to show yet</h3>
+                </td>
               </tr>
-            </thead>
-
-            <tbody className="quote-table-body">
-              {services && services.length ? (
-                <React.Fragment>
-                  {services.map((service) => {
-                    const { id, description, cost } = service; // Destructure the desired properties
-
-                    return (
-                      <tr key={id} id="quote_option">
-                        <td>
-                          <input
-                            className="input selection feature-selection"
-                            type="checkbox"
-                            name="quote[checkbox][]"
-                            checked={checkedItems.some(
-                              (item) => item.id === id
-                            )}
-                            onChange={(event) =>
-                              handleCheckboxChange(event, id, description, cost)
-                            }
-                          />
-                        </td>
-                        <td className="description">{description}</td>
-                        <td
-                          className="feature-cost table-number"
-                          id="feature_cost">
-                          {new Intl.NumberFormat('us', {
-                            style: 'currency',
-                            currency: 'USD',
-                          }).format(cost)}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </React.Fragment>
-              ) : (
-                <tr>
-                  <td></td>
-                  <td>
-                    <h3>No features to show yet</h3>
-                  </td>
-                  <td></td>
-                </tr>
-              )}
-            </tbody>
-
-            <tfoot className="quote-table-foot">
-              <tr>
-                <th className="total-due-label" colSpan={2}>
-                  <h4>SUBTOTAL</h4>
-                </th>
-                <th className="total-due table-number">
-                  <h4>
-                    {new Intl.NumberFormat('us', {
-                      style: 'currency',
-                      currency: 'USD',
-                    }).format(subtotal)}
-                  </h4>
-                </th>
-              </tr>
-            </tfoot>
-          </table>
-        </form>
+            )}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colSpan={2}>
+                <h4 className="subtotal-label">SUBTOTAL</h4>
+              </th>
+              <th>
+                <h4 className="subtotal">
+                  {new Intl.NumberFormat('us', {
+                    style: 'currency',
+                    currency: 'USD',
+                  }).format(subtotal)}
+                </h4>
+              </th>
+            </tr>
+          </tfoot>
+        </table>
       </div>
 
       <button onClick={handleClick}>

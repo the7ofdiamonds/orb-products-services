@@ -8,7 +8,7 @@
 
     <?php include_once ORB_SERVICES . '/includes/main-hero-animation.php'; ?>
 
-    <button class="hero-btn" onclick="window.location.href='<?php echo esc_attr(get_option('hero-button-link')); ?>'">
+    <button class="start-btn" onclick="window.location.href='<?php echo esc_attr(get_option('hero-button-link')); ?>'">
       <i class="fas fa-power-off"></i>
       <h3>
         <?php echo esc_attr(get_option('hero-button-text')); ?>

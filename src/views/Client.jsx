@@ -166,7 +166,7 @@ function ClientComponent() {
   return (
     <>
       <h2 className="title">CLIENT DETAILS</h2>
-      <div className="client-details" id="client-details">
+      <div className="client-details card" id="client-details">
         <form>
           <table>
             <thead></thead>

@@ -213,7 +213,7 @@ class HeroCustomizer
 
             }
 
-            .hero-btn {
+            .start-btn {
                 background-color: <?php if (!get_theme_mod('hero_button_background_color')) {
                                         echo 'var(--orb-color-primary)';
                                     } else {
@@ -227,7 +227,7 @@ class HeroCustomizer
                         } ?>;
             }
 
-            .hero-btn i {
+            .start-btn i {
                 color: <?php if (!get_theme_mod('hero_button_icon_color')) {
                             echo 'var(--orb-color-tertiary)';
                         } else {

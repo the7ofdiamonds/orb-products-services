@@ -17,19 +17,6 @@
 .hero-card .hero-animation .hero-icons i.fa-plus, .hero-card .hero-animation .hero-icons i.fa-equals {
   font-size: 1.5rem;
 }
-.hero-card .hero-btn {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
-}
-.hero-card .hero-btn i {
-  padding-right: 0;
-}
-.hero-card .hero-btn h3 {
-  padding-left: 0;
-}
 
 .hero-animation > div {
   height: 4rem;
@@ -67,11 +54,25 @@ html {
     transform: translateY(-200%);
   }
 }
-.hero-btn:hover {
+.start-btn:hover {
   box-shadow: unset;
 }
-.hero-btn:hover i {
+.start-btn:hover i {
   color: lime;
+}
+
+.start-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+.start-btn i {
+  padding-right: 0;
+}
+.start-btn h3 {
+  padding-left: 0;
 }
 
 i {
@@ -96,11 +97,6 @@ i.fa-solid.fa-globe {
 
 .office-hours-card {
   padding: 0;
-}
-
-.mission-statement-card.card {
-  background-color: black;
-  color: blue;
 }
 
 .orb-service-navigation {
@@ -396,11 +392,18 @@ i.fa-solid.fa-globe {
   color: green;
 }
 
-.total-due-label {
+.feature-cost,
+.subtotal {
   text-align: right;
 }
 
-.total-due {
+.description-label,
+.subtotal-label {
+  margin: 0 0.1775em 0 0;
+}
+
+.feature-description,
+.subtotal-label {
   text-align: right;
 }
 
@@ -456,7 +459,6 @@ i.fa-solid.fa-globe {
   padding: 0.5em;
 }
 
-.quote,
 .invoice,
 .receipt {
   display: flex;
@@ -691,9 +693,25 @@ i.fa-solid.fa-globe {
     align-items: center;
   }
   .receipt-card.card table {
-    display: table;
+    display: quote-table;
   }
 }
+table {
+  border-spacing: 0.375em;
+  border-collapse: collapse;
+}
+
+thead h4,
+tfoot h4 {
+  background-color: black;
+  color: white;
+  padding: 0.375em;
+}
+
+td {
+  padding: 0.375em;
+}
+
 .client-details form table tbody td {
   padding: 0.375em;
 }
