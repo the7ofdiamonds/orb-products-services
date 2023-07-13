@@ -1,6 +1,12 @@
 import { NavLink } from 'react-router-dom';
+import {
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 
 function PaymentNavigationComponent() {
+  const { id } = useParams();
+
   return (
     <>
       <h2 className="title">PAYMENT</h2>

@@ -100,15 +100,15 @@ function ClientComponent() {
     client_id: 17,
   };
 
-  useEffect(() => {
-    if (client_data) {
-      try {
-        dispatch(addClient(client_data));
-      } catch (error) {
-        console.log('Error creating client:', error.message);
-      }
-    }
-  }, [dispatch, client_data]);
+  // useEffect(() => {
+  //   if (client_data) {
+  //     try {
+  //       dispatch(addClient(client_data));
+  //     } catch (error) {
+  //       console.log('Error creating client:', error.message);
+  //     }
+  //   }
+  // }, [dispatch, client_data]);
 
   useEffect(() => {
     if (client_id) {

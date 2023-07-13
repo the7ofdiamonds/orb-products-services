@@ -26,7 +26,7 @@ class Client
         $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/clients', array(
+            register_rest_route('orb/v1', '/users/clients', array(
                 'methods' => 'POST',
                 'callback' => [$this, 'create_client'],
                 'permission_callback' => '__return_true',
@@ -34,9 +34,17 @@ class Client
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/customers', [
+            register_rest_route('orb/v1', '/users/customers', [
                 'methods' => 'POST',
                 'callback' => [$this, 'create_customer'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/users/customers/stripe/(?P<slug>[a-zA-Z0-9-_]+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_customer'],
                 'permission_callback' => '__return_true',
             ]);
         });
@@ -105,14 +113,12 @@ class Client
             $zipcode = $request['zipcode'];
             $country = $request['country'];
 
-            if ($company_name) {
-                $name = $company_name;
-            } else {
-                $name = $first_name . ' ' . $last_name;
+            if (!$company_name) {
+                $company_name = $first_name . ' ' . $last_name;
             }
 
             $customer = $this->stripeClient->customers->create([
-                'name' => $name,
+                'name' => $company_name,
                 'email' => $user_email,
                 'phone' => $phone,
                 'address' => [
@@ -130,11 +136,53 @@ class Client
                     ]
                 ],
                 'metadata' => [
-                    'client_id' => $client_id
+                    'client_id' => $client_id,
+                    'client_name' => $first_name . ' ' . $last_name
                 ]
             ]);
 
             return new WP_REST_Response($customer->id, $status_code);
+        } catch (\Stripe\Exception\InvalidRequestException $e) {
+            // Handle specific InvalidRequestException
+            $error_message = 'Invalid request. Please check your input.';
+            $status_code = 400;
+        } catch (\Stripe\Exception\AuthenticationException $e) {
+            // Handle specific AuthenticationException
+            $error_message = 'Authentication failed. Please check your API credentials.';
+            $status_code = 401;
+        } catch (\Stripe\Exception\ApiConnectionException $e) {
+            // Handle specific ApiConnectionException
+            $error_message = 'Network error occurred. Please try again later.';
+            $status_code = 500;
+        } catch (\Exception $e) {
+            // Handle any other generic exceptions
+            $error_message = 'An error occurred while creating the payment intent.';
+            $status_code = 500;
+        }
+
+        $data = array(
+            'status' => $status_code,
+            'message' => $error_message,
+        );
+
+        return new WP_Error('rest_error', $error_message, $data);
+    }
+
+    public function get_customer(WP_REST_Request $request)
+    {
+        $status_code = 200;
+        $error_message = '';
+
+        $customer_id = $request->get_param('slug');
+
+        try {
+
+            $customer = $this->stripeClient->customers->retrieve(
+                $customer_id,
+                []
+            );
+
+            return new WP_REST_Response($customer, $status_code);
         } catch (\Stripe\Exception\InvalidRequestException $e) {
             // Handle specific InvalidRequestException
             $error_message = 'Invalid request. Please check your input.';

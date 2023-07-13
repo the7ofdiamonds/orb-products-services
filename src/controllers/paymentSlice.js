@@ -4,12 +4,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   error: '',
-  payment_intent_id: '',
+  payment_intent: '',
   amount_due: '',
   date_due: '',
   client_secret: '',
   status: '',
-  payment_method_id: '',
+  payment_method: '',
 };
 
 export const finalizeInvoice = createAsyncThunk('payment/finalizeInvoice', async (_, { getState }) => {
@@ -48,12 +48,10 @@ export const createPaymentIntent = createAsyncThunk(
   }
 );
 
-export const getPaymentIntent = createAsyncThunk('payment/getPaymentIntent',
-  async (_, { getState }) => {
-    const { payment_intent_id } = getState().invoice;
+export const getPaymentIntent = createAsyncThunk('payment/getPaymentIntent', async (payment_intent) => {
 
     try {
-      const response = await axios.get(`/wp-json/orb/v1/payment/intent/${payment_intent_id}`);
+      const response = await axios.get(`/wp-json/orb/v1/payment/intent/${payment_intent}`);
       return response.data;
     } catch (error) {
       throw new Error(error.message);
@@ -67,17 +65,16 @@ export const updatePaymentIntent = createAsyncThunk('payment/updatePaymentIntent
       'Content-Type': 'multipart/form-data'
     }
   };
-  const { payment_intent_id } = getState().invoice;
+  const { payment_intent } = getState().invoice;
 
   const response = await axios.post(
-    `/wp-json/orb/v1/payment/intent/${payment_intent_id}`,
+    `/wp-json/orb/v1/payment/intent/${payment_intent}`,
     update,
     config
   );
 
   return response.data;
 });
-
 
 export const paymentSlice = createSlice({
   name: 'payment',
@@ -95,7 +92,7 @@ export const paymentSlice = createSlice({
       })
       .addCase(finalizeInvoice.fulfilled, (state, action) => {
         state.loading = false;
-        state.payment_intent_id = action.payload.id;
+        state.payment_intent = action.payload.id;
         state.amount_due = action.payload.amount_due;
         state.date_due = action.payload.date_due;
         state.client_secret = action.payload.client_secret;
@@ -110,12 +107,13 @@ export const paymentSlice = createSlice({
       })
       .addCase(getPaymentIntent.fulfilled, (state, action) => {
         state.loading = false;
-        state.payment_intent_id = action.payload.id;
+        state.error = null;
+        state.payment_intent = action.payload.id;
         state.amount_due = action.payload.amount_due;
         state.date_due = action.payload.date_due;
         state.client_secret = action.payload.client_secret;
         state.status = action.payload.status;
-        state.payment_method_id = action.payload.payment_method;
+        state.payment_method = action.payload.payment_method;
       })
       .addCase(getPaymentIntent.rejected, (state, action) => {
         state.loading = false;
@@ -127,7 +125,7 @@ export const paymentSlice = createSlice({
       })
       .addCase(createPaymentIntent.fulfilled, (state, action) => {
         state.loading = false;
-        state.payment_intent_id = action.payload.id;
+        state.payment_intent = action.payload.id;
         state.client_secret = action.payload.client_secret;
         state.payment_intent = action.payload;
       })

@@ -8,6 +8,7 @@ const initialState = {
   user_email: '',
   phone: '',
   company_name: '',
+  name: '',
   tax_id: '',
   first_name: '',
   last_name: '',
@@ -21,16 +22,16 @@ const initialState = {
   selections: [],
   subtotal: '',
   tax: '',
-  grand_total: '',
   stripe_invoice_id: '',
-  payment_intent_id: '',
+  payment_intent: '',
   invoice_id: '',
   client_secret: '',
   status: '',
   amount_due: '',
   amount_paid: '',
   amount_remaining: '',
-  payment_date: ''
+  payment_date: '',
+  customer: ''
 };
 
 export const clientToInvoice = (invoice) => {
@@ -175,8 +176,7 @@ export const updateInvoiceStatus = createAsyncThunk('invoice/updateInvoiceStatus
   }
 );
 
-export const getStripeInvoice = createAsyncThunk('invoice/getStripeInvoice', async (_, { getState }) => {
-  const { stripe_invoice_id } = getState().invoice;
+export const getStripeInvoice = createAsyncThunk('invoice/getStripeInvoice', async (stripe_invoice_id) => {
 
   try {
     const response = await axios.get(`/wp-json/orb/v1/invoice/stripe/${stripe_invoice_id}`);
@@ -211,9 +211,6 @@ export const invoiceSlice = createSlice({
     },
     quoteToInvoice: (state, action) => {
       state.selections = action.payload.selections;
-      state.subtotal = action.payload.subtotal;
-      state.tax = action.payload.tax;
-      state.grand_total = action.payload.grand_total;
     },
     updateDate: (state, action) => {
       state.start_date = action.payload;
@@ -230,7 +227,10 @@ export const invoiceSlice = createSlice({
       })
       .addCase(createInvoice.fulfilled, (state, action) => {
         state.loading = false;
-        state.stripe_invoice_id = action.payload;
+        state.stripe_invoice_id = action.payload.id;
+        state.subtotal = action.payload.subtotal;
+        state.tax = action.payload.tax;
+        state.amount_due = action.payload.amount_due;
       })
       .addCase(createInvoice.rejected, (state, action) => {
         state.loading = false;
@@ -270,11 +270,9 @@ export const invoiceSlice = createSlice({
         state.stripe_customer_id = action.payload.stripe_customer_id;
         state.selections = action.payload.selections;
         state.subtotal = action.payload.subtotal;
-        state.tax = action.payload.tax;
-        state.grand_total = action.payload.grand_total;
         state.stripe_invoice_id = action.payload.stripe_invoice_id;
         state.invoice_id = action.payload.id;
-        state.payment_intent_id = action.payload.payment_intent_id;
+        state.payment_intent = action.payload.payment_intent_id;
         state.status = action.payload.status;
         state.client_secret = action.payload.client_secret;
       })
@@ -309,10 +307,16 @@ export const invoiceSlice = createSlice({
         state.error = null;
       })
       .addCase(getStripeInvoice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.name = action.payload.name;
+        state.subtotal = action.payload.subtotal;
+        state.tax = action.payload.tax;
         state.amount_due = action.payload.amount_due;
         state.amount_paid = action.payload.amount_paid;
         state.amount_remaining = action.payload.amount_remaining;
         state.payment_date = action.payload.status_transitions.paid_at;
+        state.customer = action.payload.customer;
       })
       .addCase(getStripeInvoice.rejected, (state, action) => {
         state.loading = false;

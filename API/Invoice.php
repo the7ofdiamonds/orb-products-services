@@ -112,13 +112,14 @@ class Invoice
             ]);
         }
 
-        return new WP_REST_Response($stripe_invoice->id, 200);
+        return new WP_REST_Response($stripe_invoice, 200);
     }
 
     public function post_invoice(WP_REST_Request $request)
     {
         global $wpdb;
-
+        $company_name = $request['company_name'];
+        $tax_id = $request['tax_id'];
         $first_name = $request['first_name'];
         $last_name = $request['last_name'];
         $user_email = $request['user_email'];
@@ -144,6 +145,8 @@ class Invoice
             $table_name,
             [
                 'client_id' => $client_id,
+                'tax_id' => $tax_id,
+                'company_name' => $company_name,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
                 'user_email' => $user_email,
@@ -210,8 +213,6 @@ class Invoice
             'subtotal' => $invoice->subtotal,
             'tax' => $invoice->tax,
             'grand_total' => $invoice->grand_total,
-            'start_date' => $invoice->start_date,
-            'start_time' => $invoice->start_time,
             'address_line_1' => $invoice->address_line_1,
             'address_line_2' => $invoice->address_line_2,
             'city' => $invoice->city,

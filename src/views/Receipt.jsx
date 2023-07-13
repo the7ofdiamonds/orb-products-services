@@ -1,39 +1,40 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getInvoice } from '../controllers/invoiceSlice.js';
-import { getReceipt } from '../controllers/receiptSlice.js';
+import { getInvoice, getStripeInvoice } from '../controllers/invoiceSlice.js';
+import { getPaymentIntent } from '../controllers/paymentSlice.js';
+import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
+import { getStripeCustomer } from '../controllers/clientSlice.js';
 
 function ReceiptComponent() {
   const { id } = useParams();
-
+  const { name, address_line_1, address_line_2, city, state, zipcode, phone, email } =
+    useSelector((state) => state.client);
   const {
-    tax_id,
-    company_name,
-    first_name,
-    last_name,
-    address_line_1,
-    address_line_2,
-    city,
-    state,
-    zipcode,
-    phone,
     user_email,
     selections,
     subtotal,
     tax,
-    grand_total,
-  } = useSelector((state) => state.invoice);
-  const {
-    loading,
-    error,
-    invoice_id,
-    payment_date,
+    amount_due,
     amount_paid,
-    card,
-    last4,
-    balance,
-  } = useSelector((state) => state.receipt);
+    amount_remaining,
+    payment_date,
+    stripe_invoice_id,
+    payment_intent,
+    customer
+  } = useSelector((state) => state.invoice);
+  const { payment_method } = useSelector((state) => state.payment);
+  const { loading, error, invoice_id, type, brand, last4 } = useSelector(
+    (state) => state.receipt
+  );
+
+  const timestamp = payment_date * 1000;
+  const paymentDate = new Date(timestamp);
+  const Subtotal = subtotal / 100;
+  const Tax = tax / 100;
+  const amountDue = amount_due / 100;
+  const amountPaid = amount_paid / 100;
+  const Balance = amount_remaining / 100;
 
   const dispatch = useDispatch();
 
@@ -42,8 +43,36 @@ function ReceiptComponent() {
   }, [dispatch, id]);
 
   useEffect(() => {
-    dispatch(getInvoice(invoice_id));
+    if (invoice_id !== '') {
+      dispatch(getInvoice(invoice_id));
+    }
   }, [dispatch, invoice_id]);
+
+  useEffect(() => {
+    if (stripe_invoice_id !== '') {
+      dispatch(getStripeInvoice(stripe_invoice_id));
+    }
+  }, [dispatch, stripe_invoice_id]);
+
+  useEffect(() => {
+    if (customer) {
+      dispatch(getStripeCustomer(customer));
+    }
+  }, [dispatch, customer]);
+
+  useEffect(() => {
+    if (payment_intent !== '') {
+      dispatch(getPaymentIntent(payment_intent));
+    }
+  }, [dispatch, payment_intent]);
+
+  useEffect(() => {
+    if (payment_method !== '') {
+      dispatch(getPaymentMethod(payment_method));
+    }
+  }, [dispatch, payment_method]);
+
+  const paymentMethod = type === 'card' ? `${brand} - ${last4}` : null;
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -71,9 +100,7 @@ function ReceiptComponent() {
               <h4>PAYMENT DATE</h4>
             </div>
             <div className="td">
-              <h5>
-                {payment_date}
-              </h5>
+              <h5>{paymentDate.toLocaleString()}</h5>
             </div>
           </div>
           <div className="tr payment-method">
@@ -81,7 +108,9 @@ function ReceiptComponent() {
               <h4>PAYMENT METHOD</h4>
             </div>
             <div className="td">
-              <h5>{card} {last4}</h5>
+              <h5 className="payment-method">
+                {paymentMethod ? paymentMethod : 'No Payment Method Provided'}
+              </h5>
             </div>
           </div>
           <div className="tr client-details">
@@ -89,10 +118,7 @@ function ReceiptComponent() {
               <h4>PAID BY</h4>
             </div>
             <div className="td">
-              <h5>
-                {first_name} {last_name} O/B/O {company_name} {tax_id} US EIN
-                27-1234567
-              </h5>
+              <h5>{name}</h5>
             </div>
             <div className="tr address-line-1">
               <div className="td">
@@ -172,7 +198,7 @@ function ReceiptComponent() {
                 {new Intl.NumberFormat('us', {
                   style: 'currency',
                   currency: 'USD',
-                }).format(subtotal)}
+                }).format(Subtotal)}
               </h5>
             </div>
           </div>
@@ -185,7 +211,7 @@ function ReceiptComponent() {
                 {new Intl.NumberFormat('us', {
                   style: 'currency',
                   currency: 'USD',
-                }).format(tax)}
+                }).format(Tax)}
               </h5>
             </div>
           </div>
@@ -198,7 +224,7 @@ function ReceiptComponent() {
                 {new Intl.NumberFormat('us', {
                   style: 'currency',
                   currency: 'USD',
-                }).format(grand_total)}
+                }).format(amountDue)}
               </h5>
             </div>
           </div>
@@ -211,7 +237,7 @@ function ReceiptComponent() {
                 {new Intl.NumberFormat('us', {
                   style: 'currency',
                   currency: 'USD',
-                }).format(amount_paid)}
+                }).format(amountPaid)}
               </h5>
             </div>
           </div>
@@ -224,7 +250,7 @@ function ReceiptComponent() {
                 {new Intl.NumberFormat('us', {
                   style: 'currency',
                   currency: 'USD',
-                }).format(balance)}
+                }).format(Balance)}
               </h5>
             </div>
           </div>

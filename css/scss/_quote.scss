@@ -1,14 +1,16 @@
-.feature-cost,
-.subtotal {
-  text-align: right;
-}
+.quote-card.card {
+  .feature-cost,
+  .subtotal {
+    text-align: right;
+  }
 
-.description-label,
-.subtotal-label {
-  margin: 0 0.1775em 0 0;
-}
+  .description-label,
+  .subtotal-label {
+    margin: 0 0.1775em 0 0;
+  }
 
-.feature-description,
-.subtotal-label {
-  text-align: right;
+  .feature-description,
+  .subtotal-label {
+    text-align: right;
+  }
 }

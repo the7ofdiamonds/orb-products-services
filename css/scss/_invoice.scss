@@ -1,3 +1,47 @@
+section.invoice {
+  overflow-y: auto;
+}
+
 .invoice-card.card {
-    padding: 0;
-}     
+  .bill-to-name,
+  .bill-to-address,
+  .bill-to-city,
+  .bill-to-state,
+  .bill-to-zipcode,
+  .bill-to-phone,
+  .bill-to-email {
+    text-align: left;
+  }
+
+  tr.bill-to-due {
+    th {
+      h4 {
+        margin-bottom: 0.1775em;
+      }
+    }
+  }
+
+  .number-label,
+  .description-label,
+  .grand-total-label {
+    margin: 0 0.1775em 0 0;
+  }
+
+  .subtotal-label,
+  .tax-label {
+    margin: 0 0.1775em 0.1775em 0;
+  }
+
+  .feature-cost,
+  .subtotal,
+  .tax,
+  .grand-total {
+    text-align: right;
+  }
+
+  .subtotal-label,
+  .tax-label,
+  .grand-total-label {
+    text-align: right;
+  }
+}

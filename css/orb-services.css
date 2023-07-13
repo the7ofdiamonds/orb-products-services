@@ -151,8 +151,41 @@ i.fa-solid.fa-globe {
   color: white;
 }
 
-.invoice-card.card {
-  padding: 0;
+section.invoice {
+  overflow-y: auto;
+}
+
+.invoice-card.card .bill-to-name,
+.invoice-card.card .bill-to-address,
+.invoice-card.card .bill-to-city,
+.invoice-card.card .bill-to-state,
+.invoice-card.card .bill-to-zipcode,
+.invoice-card.card .bill-to-phone,
+.invoice-card.card .bill-to-email {
+  text-align: left;
+}
+.invoice-card.card tr.bill-to-due th h4 {
+  margin-bottom: 0.1775em;
+}
+.invoice-card.card .number-label,
+.invoice-card.card .description-label,
+.invoice-card.card .grand-total-label {
+  margin: 0 0.1775em 0 0;
+}
+.invoice-card.card .subtotal-label,
+.invoice-card.card .tax-label {
+  margin: 0 0.1775em 0.1775em 0;
+}
+.invoice-card.card .feature-cost,
+.invoice-card.card .subtotal,
+.invoice-card.card .tax,
+.invoice-card.card .grand-total {
+  text-align: right;
+}
+.invoice-card.card .subtotal-label,
+.invoice-card.card .tax-label,
+.invoice-card.card .grand-total-label {
+  text-align: right;
 }
 
 .payment-options {
@@ -392,19 +425,21 @@ i.fa-solid.fa-globe {
   color: green;
 }
 
-.feature-cost,
-.subtotal {
+.quote-card.card .feature-cost,
+.quote-card.card .subtotal {
   text-align: right;
 }
-
-.description-label,
-.subtotal-label {
+.quote-card.card .description-label,
+.quote-card.card .subtotal-label {
   margin: 0 0.1775em 0 0;
 }
-
-.feature-description,
-.subtotal-label {
+.quote-card.card .feature-description,
+.quote-card.card .subtotal-label {
   text-align: right;
+}
+
+.payment-method {
+  text-transform: uppercase;
 }
 
 .schedule-select {
@@ -701,8 +736,8 @@ table {
   border-collapse: collapse;
 }
 
-thead h4,
-tfoot h4 {
+thead th h4,
+tfoot th h4 {
   background-color: black;
   color: white;
   padding: 0.375em;

@@ -235,10 +235,12 @@ table {
 
 thead,
 tfoot {
-  h4 {
-    background-color: black;
-    color: white;
-    padding: 0.375em;
+  th {
+    h4 {
+      background-color: black;
+      color: white;
+      padding: 0.375em;
+    }
   }
 }
 

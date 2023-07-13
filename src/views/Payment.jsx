@@ -1,30 +1,27 @@
 import { useEffect, useState } from 'react';
-import {
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PaymentNavigationComponent from './payment/Navigation.jsx';
 
 import { getInvoice, getStripeInvoice } from '../controllers/invoiceSlice.js';
 import { getPaymentIntent } from '../controllers/paymentSlice.js';
-import { getPaymentMethod } from '../controllers/receiptSlice.js';
+import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
+import { displayStatus, displayStatusType } from '../utils/DisplayStatus.js';
 
 function PaymentComponent() {
   const { id } = useParams();
 
-  const {
-    user_email,
-    stripe_invoice_id,
-    payment_intent_id,
-  } = useSelector((state) => state.invoice);
-  const { loading, error, status, payment_method_id } =
-    useSelector((state) => state.payment);
+  const { stripe_invoice_id, payment_intent_id } = useSelector(
+    (state) => state.invoice
+  );
+  const { loading, error, status, payment_method_id } = useSelector(
+    (state) => state.payment
+  );
   const { receipt_id } = useSelector((state) => state.receipt);
 
   const [messageType, setMessageType] = useState('');
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState('Choose a payment method');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,21 +37,11 @@ function PaymentComponent() {
   }, [dispatch, payment_intent_id]);
 
   useEffect(() => {
-    if (status === 'succeeded') {
-      setMessageType('success');
-      setMessage(`Your transaction was successful. Thank you.`);
-    } else if (status === 'requires_payment_method') {
-      setMessage('Choose a payment method');
-    } else if (status === 'processing') {
-      setMessageType('caution');
-      setMessage(
-        `This transaction is currently processing you may revisit this page at a later time for an update and a confirmation will be sent to ${user_email}.`
-      );
-    } else if (status === 'canceled') {
-      setMessageType('error');
-      setMessage('This transaction has been canceled');
+    if (status) {
+      setMessage(displayStatus(status));
+      setMessageType(displayStatusType(status));
     }
-  }, [dispatch, status, user_email]);
+  }, [status]);
 
   useEffect(() => {
     if (payment_method_id) {
@@ -68,29 +55,20 @@ function PaymentComponent() {
     }
   }, [dispatch, stripe_invoice_id]);
 
-  // useEffect(() => {
-  //   dispatch(postReceipt());
-  // }, [
-  //   dispatch,
-  //   invoice_id,
-  //   payment_method_id,
-  //   amount_paid,
-  //   amount_remaining,
-  //   payment_date,
-  // ]);
+  useEffect(() => {
+    dispatch(getReceipt(receipt_id))
+  }, [dispatch, receipt_id]);
 
-  const handleClick = () => {
-    if (receipt_id) {
-      navigate(`/services/receipt/${receipt_id}`);
-    }
-  };
+  if (receipt_id) {
+    navigate(`/services/receipt/${receipt_id}`);
+  }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <main>Error: {error}</main>;
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <main>Loading...</main>;
   }
 
   return (

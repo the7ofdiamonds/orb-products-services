@@ -6,44 +6,29 @@ const initialState = {
   error: '',
   receipt_id: '',
   invoice_id: '',
-  payment_method_id: '',
   amount_paid: '',
   payment_date: '',
-  card: '',
+  type: '',
+  brand: '',
   last4: '',
   payment_method: '',
-  balance: '',
+  amount_remaining: '',
 };
 
-export const getPaymentMethod = createAsyncThunk('receipt/getPaymentMethod', async (_, { getState }) => {
-  const { payment_method_id } = getState().payment;
+export const getPaymentMethod = createAsyncThunk('receipt/getPaymentMethod', async (payment_method) => {
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/payment/method/${payment_method_id}`);
+    const response = await axios.get(`/wp-json/orb/v1/payment/method/${payment_method}`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
   }
 });
 
-export const postReceipt = createAsyncThunk('receipt/postReceipt', async (_, { getState }) => {
-  const { invoice_id, amount_paid, balance, payment_date } = getState().invoice;
-  const { payment_method_id } = getState().payment;
-  const { card, last4 } = getState().receipt;
-
-  const payment_method_card = `${card} ${last4}`;
-
-  const receipt = {
-    invoice_id: invoice_id,
-    payment_method_id: payment_method_id,
-    amount_paid: amount_paid,
-    balance: balance,
-    payment_date: payment_date,
-    payment_method: payment_method_card,
-  };
+export const postReceipt = createAsyncThunk('receipt/postReceipt', async (payment) => {
 
   try {
-    const response = await axios.post('/wp-json/orb/v1/receipt', receipt);
+    const response = await axios.post('/wp-json/orb/v1/receipt', payment);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -70,7 +55,9 @@ export const receiptSlice = createSlice({
       })
       .addCase(getPaymentMethod.fulfilled, (state, action) => {
         state.loading = false;
-        state.card = action.payload.card.brand;
+        state.payment_method = action.payload.id;
+        state.type = action.payload.type;
+        state.brand = action.payload.card.brand;
         state.last4 = action.payload.card.last4;
       })
       .addCase(getPaymentMethod.rejected, (state, action) => {
@@ -98,9 +85,9 @@ export const receiptSlice = createSlice({
         state.invoice_id = action.payload.invoice_id;
         state.payment_date = action.payload.payment_date;
         state.amount_due = action.payload.payment_amount;
-        state.payment_method_id = action.payload.payment_method;
-        state.balance = action.payload.balance;
         state.payment_method = action.payload.payment_method;
+        state.amount_remaining = action.payload.balance;
+        state.amount_paid = action.payload.amount_paid;
       })
       .addCase(getReceipt.rejected, (state, action) => {
         state.loading = false;

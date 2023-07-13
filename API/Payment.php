@@ -10,9 +10,6 @@ use Dotenv\Dotenv;
 require ORB_SERVICES . '/vendor/autoload.php';
 require_once ABSPATH . 'wp-load.php';
 
-// $dotenv = Dotenv::createImmutable(ORB_SERVICES);
-// $dotenv->load(__DIR__);
-
 class Payment
 {
     private $stripeSecretKey;
