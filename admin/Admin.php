@@ -21,7 +21,7 @@ class Admin
 
     function register_custom_menu_page()
     {
-        if (!is_plugin_active('thfw/thfw.php')) {
+        if (!is_plugin_active('thfw/THFW.php')) {
             add_menu_page('Admin', 'Admin', 'menu_options', 'thfw_admin', 'thfw_admin', 'dashicons-info', 3);
         }
     }

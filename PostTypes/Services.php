@@ -1,7 +1,7 @@
 <?php
 namespace ORBServices\PostTypes;
 
-// use ORBServices\PostTypes\Meta;
+use ORBServices\PostTypes\Meta;
 
 class Services
 {
@@ -9,7 +9,7 @@ class Services
     {
         add_action('init', [$this, 'services_custom_post_type']);
         
-        // new Meta;
+        new Meta;
     }
 
     public function services_custom_post_type()
