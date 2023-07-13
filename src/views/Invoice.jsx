@@ -7,10 +7,14 @@ import {
   getStripeInvoice,
   updateInvoice,
 } from '../controllers/invoiceSlice.js';
-import { finalizeInvoice } from '../controllers/paymentSlice.js';
+import {
+  finalizeInvoice,
+  getPaymentIntent,
+} from '../controllers/paymentSlice.js';
 
 function InvoiceComponent() {
   const { id } = useParams();
+
   const {
     loading,
     error,
@@ -32,13 +36,13 @@ function InvoiceComponent() {
     subtotal,
     tax,
   } = useSelector((state) => state.invoice);
-  const { payment_intent_id, client_secret } = useSelector(
+  const { payment_intent, client_secret } = useSelector(
     (state) => state.payment
   );
-
-  const subTotal = subtotal/100;
-  const Tax = tax/100;
-  const grandTotal = amount_due/100;
+  const amountDue = amount_due / 100;
+  const subTotal = subtotal / 100;
+  const Tax = tax / 100;
+  const grandTotal = amount_due / 100;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -49,21 +53,27 @@ function InvoiceComponent() {
 
   useEffect(() => {
     if (stripe_invoice_id) {
-      dispatch(getStripeInvoice());
+      dispatch(getStripeInvoice(stripe_invoice_id));
     }
-  }, [stripe_invoice_id]);
+  }, [dispatch, stripe_invoice_id]);
 
   const handleClick = () => {
     if (stripe_invoice_id) {
-      dispatch(finalizeInvoice());
+      dispatch(finalizeInvoice(stripe_invoice_id));
     }
   };
 
   useEffect(() => {
-    if (payment_intent_id) {
+    if (payment_intent) {
+      dispatch(getPaymentIntent(payment_intent));
+    }
+  }, [dispatch, payment_intent]);
+
+  useEffect(() => {
+    if (payment_intent && client_secret) {
       dispatch(updateInvoice());
     }
-  }, [dispatch, payment_intent_id]);
+  }, [dispatch, payment_intent]);
 
   useEffect(() => {
     if (client_secret) {
@@ -132,12 +142,14 @@ function InvoiceComponent() {
                 <h4>TOTAL DUE</h4>
               </th>
               <td className="bill-to-total-due">
-                {amount_due
-                  ? new Intl.NumberFormat('us', {
-                      style: 'currency',
-                      currency: 'USD',
-                    }).format(amount_due)
-                  : 'N/A'}
+                <h4>
+                  {amount_due
+                    ? new Intl.NumberFormat('us', {
+                        style: 'currency',
+                        currency: 'USD',
+                      }).format(amountDue)
+                    : 'N/A'}
+                </h4>
               </td>
             </tr>
             <tr className="invoice-labels">
@@ -163,10 +175,12 @@ function InvoiceComponent() {
                     {selection.description}
                   </td>
                   <td className="feature-cost  table-number" id="feature_cost">
-                    {new Intl.NumberFormat('us', {
-                      style: 'currency',
-                      currency: 'USD',
-                    }).format(selection.cost)}
+                    <h4>
+                      {new Intl.NumberFormat('us', {
+                        style: 'currency',
+                        currency: 'USD',
+                      }).format(selection.cost)}
+                    </h4>
                   </td>
                 </tr>
               ))}

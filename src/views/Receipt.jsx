@@ -6,10 +6,20 @@ import { getPaymentIntent } from '../controllers/paymentSlice.js';
 import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
 import { getStripeCustomer } from '../controllers/clientSlice.js';
 
+import formatPhoneNumber from '../utils/PhoneNumberFormatter.js';
+
 function ReceiptComponent() {
   const { id } = useParams();
-  const { name, address_line_1, address_line_2, city, state, zipcode, phone, email } =
-    useSelector((state) => state.client);
+  const {
+    name,
+    address_line_1,
+    address_line_2,
+    city,
+    state,
+    zipcode,
+    phone,
+    email,
+  } = useSelector((state) => state.client);
   const {
     user_email,
     selections,
@@ -21,15 +31,15 @@ function ReceiptComponent() {
     payment_date,
     stripe_invoice_id,
     payment_intent,
-    customer
+    customer,
   } = useSelector((state) => state.invoice);
   const { payment_method } = useSelector((state) => state.payment);
   const { loading, error, invoice_id, type, brand, last4 } = useSelector(
     (state) => state.receipt
   );
-
   const timestamp = payment_date * 1000;
   const paymentDate = new Date(timestamp);
+  const formattedPhone = formatPhoneNumber(phone);
   const Subtotal = subtotal / 100;
   const Tax = tax / 100;
   const amountDue = amount_due / 100;
@@ -130,7 +140,7 @@ function ReceiptComponent() {
             </div>
             <div className="tr address-line-2">
               <div className="td">
-                <h5>{city}</h5>
+                <h5>{`${city},`}</h5>
               </div>
               <div className="td">
                 <h5>{state}</h5>
@@ -141,7 +151,9 @@ function ReceiptComponent() {
             </div>
             <div className="tr phone">
               <div className="td">
-                <h5>{phone}</h5>
+                <a href={`tel:${phone}`}>
+                  <h5>{formattedPhone}</h5>
+                </a>
               </div>
             </div>
             <div className="tr email">

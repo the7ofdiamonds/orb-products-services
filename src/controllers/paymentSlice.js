@@ -12,8 +12,7 @@ const initialState = {
   payment_method: '',
 };
 
-export const finalizeInvoice = createAsyncThunk('payment/finalizeInvoice', async (_, { getState }) => {
-  const { stripe_invoice_id } = getState().invoice;
+export const finalizeInvoice = createAsyncThunk('payment/finalizeInvoice', async (stripe_invoice_id) => {
 
   try {
     const response = await axios.post(`/wp-json/orb/v1/invoice/finalize/${stripe_invoice_id}`);

@@ -11,8 +11,10 @@ import {
 } from '../../controllers/invoiceSlice';
 import { getPaymentIntent } from '../../controllers/paymentSlice';
 import { postReceipt, getPaymentMethod } from '../../controllers/receiptSlice';
+
 import { displayStatus, displayStatusType } from '../../utils/DisplayStatus';
 
+// Stripe
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 const CardPaymentComponent = () => {
@@ -21,12 +23,11 @@ const CardPaymentComponent = () => {
   const {
     first_name,
     last_name,
-    client_secret,
-    payment_intent_id,
     stripe_invoice_id,
     amount_paid,
   } = useSelector((state) => state.invoice);
-  const { loading, error, status, payment_method_id } = useSelector((state) => state.payment);
+  const { loading, error, status, payment_method_id, client_secret, payment_intent } =
+    useSelector((state) => state.payment);
   const {
     receipt_id,
     balance,
@@ -86,20 +87,21 @@ const CardPaymentComponent = () => {
       dispatch(updateInvoiceStatus(update));
       setMessage(displayStatus(status));
       setMessageType(displayStatusType(status));
+      dispatch(getStripeInvoice(stripe_invoice_id));
     }
   };
 
   useEffect(() => {
     if (stripe_invoice_id) {
-      dispatch(getStripeInvoice());
+      dispatch(getStripeInvoice(stripe_invoice_id));
     }
   }, [dispatch, stripe_invoice_id]);
 
   useEffect(() => {
-    if (payment_intent_id) {
-      dispatch(getPaymentIntent(payment_intent_id));
+    if (payment_intent) {
+      dispatch(getPaymentIntent(payment_intent));
     }
-  }, [dispatch, payment_intent_id]);
+  }, [dispatch, payment_intent]);
 
   useEffect(() => {
     if (status) {
@@ -109,10 +111,10 @@ const CardPaymentComponent = () => {
   }, [status]);
 
   useEffect(() => {
-    if (payment_method_id) {
-      dispatch(getPaymentMethod(payment_method_id));
+    if (payment_method) {
+      dispatch(getPaymentMethod(payment_method));
     }
-  }, [dispatch, payment_method_id]);
+  }, [dispatch, payment_method]);
 
   const payment_method_card = card && last4 ? `${card} - ${last4}` : '';
 

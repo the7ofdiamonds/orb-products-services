@@ -51,12 +51,14 @@ function PaymentComponent() {
 
   useEffect(() => {
     if (stripe_invoice_id) {
-      dispatch(getStripeInvoice());
+      dispatch(getStripeInvoice(stripe_invoice_id));
     }
   }, [dispatch, stripe_invoice_id]);
 
   useEffect(() => {
-    dispatch(getReceipt(receipt_id))
+    if (receipt_id) {
+      dispatch(getReceipt(receipt_id));
+    }
   }, [dispatch, receipt_id]);
 
   if (receipt_id) {

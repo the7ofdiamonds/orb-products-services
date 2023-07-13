@@ -126,12 +126,12 @@ export const getInvoice = createAsyncThunk('invoice/getInvoice', async (id) => {
 
 export const updateInvoice = createAsyncThunk('invoice/updateInvoice', async (_, { getState }) => {
   const { invoice_id, user_email } = getState().invoice;
-  const { payment_intent_id, client_secret, date_due, amount_due } = getState().payment;
+  const { payment_intent, client_secret, date_due, amount_due } = getState().payment;
 
   try {
     const response = await axios.patch(`/wp-json/orb/v1/invoice/${invoice_id}`, {
       user_email: user_email,
-      payment_intent_id: payment_intent_id,
+      payment_intent_id: payment_intent,
       client_secret: client_secret,
       date_due: date_due,
       amount_due: amount_due,

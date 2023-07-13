@@ -34,7 +34,7 @@ class Invoice
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/invoice/(?P<slug>[a-z0-9-]+)', [
+            register_rest_route('orb/v1', '/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_invoice'],
                 'permission_callback' => '__return_true',
