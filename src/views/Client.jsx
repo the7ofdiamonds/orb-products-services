@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { addClient } from '../controllers/clientSlice';
 import {
   updateEmail,
   updatePhone,
@@ -14,9 +15,8 @@ import {
   updateCity,
   updateState,
   updateZipcode,
-} from '../controllers/clientSlice.js';
-import { addClient } from '../controllers/usersSlice.js';
-import { createCustomer } from '../controllers/clientSlice.js';
+  addStripeCustomer,
+} from '../controllers/customerSlice.js';
 import {
   clientToInvoice,
   updateClientID,
@@ -26,8 +26,7 @@ function ClientComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { client_id } = useSelector((state) => state.users);
-
+  const { client_id } = useSelector((state) => state.client);
   const {
     loading,
     error,
@@ -44,7 +43,7 @@ function ClientComponent() {
     zipcode,
     country,
     stripe_customer_id,
-  } = useSelector((state) => state.client);
+  } = useSelector((state) => state.customer);
 
   const handleCompanyNameChange = (event) => {
     dispatch(updateCompanyName(event.target.value));
@@ -90,70 +89,45 @@ function ClientComponent() {
     dispatch(updateZipcode(event.target.value));
   };
 
-  // Create Login & Signup
-  const client_data = {
-    user_login: 'client2',
-    user_pass: 'password',
-    user_email: 'jamel.c.lyons@outlook.com',
-    first_name: first_name,
-    last_name: last_name,
-    client_id: 17,
-  };
-
+  useEffect(() => {
+    if (user_email) {
+      dispatch(addClient(user_email));
+    }
+  }, [dispatch, user_email]);
+//If not a user send to signup
   // useEffect(() => {
-  //   if (client_data) {
-  //     try {
-  //       dispatch(addClient(client_data));
-  //     } catch (error) {
-  //       console.log('Error creating client:', error.message);
-  //     }
+  //   if (client_id == false) {
+  //     navigate('/signup/?redirectTo=start');
   //   }
-  // }, [dispatch, client_data]);
+  // }, [navigate, client_id]);
 
   useEffect(() => {
-    if (client_id) {
+    if (client_id > 0) {
       dispatch(updateClientID(client_id));
     }
-  }, [client_id, dispatch]);
+  }, [dispatch, client_id]);
 
-  const customer_data = {
-    company_name: company_name,
-    tax_id: tax_id,
-    first_name: first_name,
-    last_name: last_name,
-    user_email: user_email,
-    phone: phone,
-    address_line_1: address_line_1,
-    address_line_2: address_line_2,
-    city: city,
-    state: state,
-    zipcode: zipcode,
-    country: country,
-    stripe_customer_id: stripe_customer_id,
-  };
-
-  const isFormCompleted =
-    first_name &&
-    last_name &&
-    user_email &&
-    phone &&
-    address_line_1 &&
-    city &&
-    state &&
-    zipcode;
-
+//Check if form is valid and completed
+  // const isFormCompleted =
+  //   first_name &&
+  //   last_name &&
+  //   user_email &&
+  //   phone &&
+  //   address_line_1 &&
+  //   city &&
+  //   state &&
+  //   zipcode;
   const handleClick = () => {
-    if (isFormCompleted && client_id) {
-      dispatch(createCustomer(customer_data));
+    if (client_id > 0) {
+      dispatch(addStripeCustomer());
     }
   };
 
   useEffect(() => {
-    if (isFormCompleted && stripe_customer_id) {
-      dispatch(clientToInvoice(customer_data));
+    if (stripe_customer_id) {
       navigate('/services/quote');
     }
-  }, [isFormCompleted, stripe_customer_id, dispatch, customer_data, navigate]);
+  }, [dispatch, stripe_customer_id, navigate]);
 
   if (error) {
     return <div>Error: {error}</div>;

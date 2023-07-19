@@ -18,14 +18,27 @@ const initialState = {
 export const getPaymentMethod = createAsyncThunk('receipt/getPaymentMethod', async (payment_method) => {
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/payment/method/${payment_method}`);
+    const response = await axios.get(`/wp-json/orb/v1/stripe/payment_methods/${payment_method}`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
   }
 });
 
-export const postReceipt = createAsyncThunk('receipt/postReceipt', async (payment) => {
+export const updatePaymentMethod = (paymentMethod) => {
+  return {
+    type: 'receipt/updatePaymentMethod',
+    payload: paymentMethod
+  };
+};
+
+export const postReceipt = createAsyncThunk('receipt/postReceipt', async (_, { getState }) => {
+  const { invoice_id, stripe_invoice_id } = getState().invoice;
+
+  const payment = {
+    stripe_invoice_id: stripe_invoice_id,
+    invoice_id: invoice_id,
+  };
 
   try {
     const response = await axios.post('/wp-json/orb/v1/receipt', payment);
@@ -33,7 +46,8 @@ export const postReceipt = createAsyncThunk('receipt/postReceipt', async (paymen
   } catch (error) {
     throw new Error(error.message);
   }
-});
+}
+);
 
 export const getReceipt = createAsyncThunk('receipt/getReceipt', async (id) => {
   const response = await axios.get(`/wp-json/orb/v1/receipt/${id}`);
@@ -47,6 +61,11 @@ export const getReceipt = createAsyncThunk('receipt/getReceipt', async (id) => {
 export const receiptSlice = createSlice({
   name: 'receipt',
   initialState,
+  reducers: {
+    updatePaymentMethod: (state, action) => {
+      state.payment_method = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getPaymentMethod.pending, (state) => {
@@ -55,7 +74,6 @@ export const receiptSlice = createSlice({
       })
       .addCase(getPaymentMethod.fulfilled, (state, action) => {
         state.loading = false;
-        state.payment_method = action.payload.id;
         state.type = action.payload.type;
         state.brand = action.payload.card.brand;
         state.last4 = action.payload.card.last4;

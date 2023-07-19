@@ -12,10 +12,10 @@ import { displayStatus, displayStatusType } from '../utils/DisplayStatus.js';
 function PaymentComponent() {
   const { id } = useParams();
 
-  const { stripe_invoice_id, payment_intent_id } = useSelector(
+  const { stripe_invoice_id } = useSelector(
     (state) => state.invoice
   );
-  const { loading, error, status, payment_method_id } = useSelector(
+  const { loading, error, status, payment_method_id, payment_intent } = useSelector(
     (state) => state.payment
   );
   const { receipt_id } = useSelector((state) => state.receipt);
@@ -31,10 +31,10 @@ function PaymentComponent() {
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (payment_intent_id) {
+    if (payment_intent) {
       dispatch(getPaymentIntent());
     }
-  }, [dispatch, payment_intent_id]);
+  }, [dispatch, payment_intent]);
 
   useEffect(() => {
     if (status) {

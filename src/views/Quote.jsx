@@ -10,14 +10,13 @@ import {
 import {
   quoteToInvoice,
   createInvoice,
-  postInvoice,
 } from '../controllers/invoiceSlice.js';
 
 function QuoteComponent() {
   const { loading, error, services } = useSelector((state) => state.services);
+  const { stripe_customer_id } = useSelector((state) => state.customer);
   const { subtotal, selections } = useSelector((state) => state.quote);
-  const quoteData = useSelector((state) => state.quote);
-  const { stripe_customer_id, stripe_invoice_id, invoice_id } = useSelector(
+  const { stripe_invoice_id, invoice_id } = useSelector(
     (state) => state.invoice
   );
 
@@ -25,20 +24,20 @@ function QuoteComponent() {
   const navigate = useNavigate();
 
   const [checkedItems, setCheckedItems] = useState([]);
-
+//Needs to come from stripe
   useEffect(() => {
     dispatch(fetchServices());
   }, [dispatch]);
 
-  const handleCheckboxChange = (event, id, description, cost) => {
+  const handleCheckboxChange = (event, price_id, description, cost) => {
     const isChecked = event.target.checked;
 
     setCheckedItems((prevItems) => {
       if (isChecked) {
-        const newItem = { id, description, cost };
+        const newItem = { price_id, description, cost };
         return [...prevItems, newItem];
       } else {
-        return prevItems.filter((item) => item.id !== id);
+        return prevItems.filter((item) => item.price_id !== price_id);
       }
     });
   };
@@ -53,21 +52,10 @@ function QuoteComponent() {
 
   const handleClick = () => {
     if (stripe_customer_id && subtotal > 0) {
-      dispatch(quoteToInvoice(quoteData));
-      dispatch(
-        createInvoice({
-          customer_id: stripe_customer_id,
-          selections: selections,
-        })
-      );
+      dispatch(quoteToInvoice(selections));
+      dispatch(createInvoice());
     }
   };
-
-  useEffect(() => {
-    if (stripe_invoice_id) {
-      dispatch(postInvoice());
-    }
-  }, [dispatch, stripe_invoice_id]);
 
   useEffect(() => {
     if (invoice_id) {
@@ -103,22 +91,22 @@ function QuoteComponent() {
             {services && services.length ? (
               <React.Fragment>
                 {services.map((service) => {
-                  const { id, description, cost } = service;
+                  const { price_id, description, cost } = service;
 
                   return (
-                    <tr key={id} id="quote_option">
+                    <tr key={price_id} id="quote_option">
                       <td>
                         <input
                           className="input selection feature-selection"
                           type="checkbox"
                           name="quote[checkbox][]"
-                          checked={checkedItems.some((item) => item.id === id)}
+                          checked={checkedItems.some((item) => item.price_id === price_id)}
                           onChange={(event) =>
-                            handleCheckboxChange(event, id, description, cost)
+                            handleCheckboxChange(event, price_id, description, cost)
                           }
                         />
                       </td>
-                      <td className='feature-description'>{description}</td>
+                      <td className="feature-description">{description}</td>
                       <td
                         className="feature-cost table-number"
                         id="feature_cost">

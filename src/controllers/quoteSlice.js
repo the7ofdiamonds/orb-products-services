@@ -5,8 +5,6 @@ const initialState = {
   error: '',
   selections: [],
   subtotal: '',
-  tax: '',
-  grand_total: '',
 };
 
 export const quoteSlice = createSlice({

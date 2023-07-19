@@ -60,7 +60,7 @@ function ServiceComponent() {
 
       <div className="details-card card">
         <h4>
-          {description} {action_word}
+          {description}
         </h4>
         <div className="details">
           <p>{content}</p>

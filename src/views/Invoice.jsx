@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  getInvoice,
   getStripeInvoice,
+  getInvoice,
   updateInvoice,
 } from '../controllers/invoiceSlice.js';
 import {
@@ -59,7 +59,7 @@ function InvoiceComponent() {
 
   const handleClick = () => {
     if (stripe_invoice_id) {
-      dispatch(finalizeInvoice(stripe_invoice_id));
+      dispatch(finalizeInvoice());
     }
   };
 
@@ -73,7 +73,7 @@ function InvoiceComponent() {
     if (payment_intent && client_secret) {
       dispatch(updateInvoice());
     }
-  }, [dispatch, payment_intent]);
+  }, [dispatch, payment_intent, client_secret]);
 
   useEffect(() => {
     if (client_secret) {

@@ -1,5 +1,4 @@
 <?php
-
 namespace ORBServices\JS;
 
 class JS
@@ -27,12 +26,12 @@ class JS
 
     function load_js()
     {
-        wp_enqueue_script('orb_services_js', ORB_SERVICES_URL . 'js/orb-services.js');
+        wp_enqueue_script('orb_services_js', ORB_SERVICES_URL . 'JS/orb-services.js');
     }
 
     function load_hero_js()
     {
-        wp_enqueue_script('orb_services_hero_js', ORB_SERVICES_URL . 'js/orb-services-hero.js');
+        wp_enqueue_script('orb_services_hero_js', ORB_SERVICES_URL . 'JS/orb-services-hero.js');
     }
 
     function load_react()

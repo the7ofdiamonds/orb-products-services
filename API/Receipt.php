@@ -8,8 +8,15 @@ use WP_REST_Response;
 
 class Receipt
 {
+    private $stripeSecretKey;
+    private $stripeClient;
+
     public function __construct()
     {
+        $this->stripeSecretKey = $_ENV['STRIPE_SECRET_KEY'];
+        \Stripe\Stripe::setApiKey($this->stripeSecretKey);
+        $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
+
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/receipt', [
                 'methods' => 'POST',
@@ -32,12 +39,25 @@ class Receipt
         global $wpdb;
 
         $invoice_id = $request['invoice_id'];
-        $payment_method_id = $request['payment_method_id'];
-        $amount_paid = $request['amount_paid'];
-        $payment_date = $request['payment_date'];
-        $payment_method = $request['payment_method'];
-        $balance = $request['balance'];
+        $stripe_invoice_id = $request['stripe_invoice_id'];
 
+        $stripe_invoice = $this->stripeClient->invoices->retrieve(
+            $stripe_invoice_id,
+            []
+        );
+
+        $payment_intent_id = $stripe_invoice->payment_intent;
+        $payment_date = $stripe_invoice->status_transitions['paid_at'];
+        $amount_paid = $stripe_invoice->amount_paid;
+        $balance = $stripe_invoice->amount_remaining;
+
+        $payment_intent = $this->stripeClient->paymentIntents->retrieve(
+            $payment_intent_id,
+            []
+        );
+
+        $payment_method_id = $payment_intent->payment_method;
+        
         $table_name = 'orb_receipt';
         $result = $wpdb->insert(
             $table_name,
@@ -46,7 +66,6 @@ class Receipt
                 'payment_method_id' => $payment_method_id,
                 'amount_paid' => $amount_paid,
                 'payment_date' => $payment_date,
-                'payment_method' => $payment_method,
                 'balance' => $balance,
             ]
         );

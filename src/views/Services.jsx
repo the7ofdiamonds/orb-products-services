@@ -32,7 +32,7 @@ function ServicesComponent() {
         {services && services.length ? (
           <React.Fragment>
             {services.map((service) => (
-              <div className="services-card card" key={service.id}>
+              <div className="services-card card" key={service.price_id}>
                 <h3 className="services-name">{service.title}</h3>
 
                 <div className="services-icon">

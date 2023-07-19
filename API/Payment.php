@@ -22,7 +22,7 @@ class Payment
         $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/payment/intent', [
+            register_rest_route('orb/v1', '/stripe/payment_intents', [
                 'methods' => 'POST',
                 'callback' => [$this, 'createPaymentIntent'],
                 'permission_callback' => '__return_true',
@@ -30,7 +30,7 @@ class Payment
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/payment/intent/(?P<slug>[a-zA-Z0-9-_]+)', [
+            register_rest_route('orb/v1', '/stripe/payment_intents/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'GET',
                 'callback' => [$this, 'getPaymentIntent'],
                 'permission_callback' => '__return_true',
@@ -38,15 +38,15 @@ class Payment
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/payment/intent/(?P<slug>[a-zA-Z0-9-_]+)', [
-                'methods' => 'POST',
+            register_rest_route('orb/v1', '/stripe/payment_intents/(?P<slug>[a-zA-Z0-9-_]+)', [
+                'methods' => 'PATCH',
                 'callback' => [$this, 'updatePaymentIntent'],
                 'permission_callback' => '__return_true',
             ]);
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/payment/method/(?P<slug>[a-zA-Z0-9-_]+)', [
+            register_rest_route('orb/v1', '/stripe/payment_methods/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'GET',
                 'callback' => [$this, 'getPaymentMethod'],
                 'permission_callback' => '__return_true',
@@ -133,7 +133,8 @@ class Payment
                 $payment_intent_id,
                 []
             );
-            return new WP_REST_Response($payment_intent, $status_code);
+
+            return rest_ensure_response($payment_intent);
         } catch (\Stripe\Exception\CardException $e) {
             // Handle specific CardException
             $error_message = 'Card declined.';

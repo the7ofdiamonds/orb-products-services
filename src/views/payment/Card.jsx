@@ -4,13 +4,18 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import PaymentNavigationComponent from './Navigation';
 
+import { getClient } from '../../controllers/clientSlice';
 import {
   getInvoice,
   getStripeInvoice,
   updateInvoiceStatus,
 } from '../../controllers/invoiceSlice';
 import { getPaymentIntent } from '../../controllers/paymentSlice';
-import { postReceipt, getPaymentMethod } from '../../controllers/receiptSlice';
+import {
+  postReceipt,
+  getPaymentMethod,
+  updatePaymentMethod,
+} from '../../controllers/receiptSlice';
 
 import { displayStatus, displayStatusType } from '../../utils/DisplayStatus';
 
@@ -20,23 +25,17 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 const CardPaymentComponent = () => {
   const { id } = useParams();
 
-  const {
-    first_name,
-    last_name,
-    stripe_invoice_id,
-    amount_paid,
-  } = useSelector((state) => state.invoice);
-  const { loading, error, status, payment_method_id, client_secret, payment_intent } =
-    useSelector((state) => state.payment);
-  const {
-    receipt_id,
-    balance,
-    payment_date,
-    payment_type,
-    card,
-    last4,
-    payment_method,
-  } = useSelector((state) => state.receipt);
+  const { client_id, first_name, last_name } = useSelector(
+    (state) => state.client
+  );
+  const { stripe_invoice_id, status, amount_paid, remaining_balance } =
+    useSelector((state) => state.invoice);
+  const { loading, error, client_secret, payment_intent } = useSelector(
+    (state) => state.payment
+  );
+  const { receipt_id, balance, payment_date, type, card, last4 } = useSelector(
+    (state) => state.receipt
+  );
 
   const [messageType, setMessageType] = useState('');
   const [message, setMessage] = useState('Choose a payment method');
@@ -47,6 +46,8 @@ const CardPaymentComponent = () => {
   const [validThruYear, setValidThruYear] = useState('');
   const [CVC, setCVC] = useState('');
 
+  const [paymentMethodID, setPaymentMethodID] = useState('');
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -54,8 +55,45 @@ const CardPaymentComponent = () => {
   const elements = useElements();
 
   useEffect(() => {
+    if (client_id) {
+      dispatch(getClient());
+    }
+  }, [dispatch, client_id]);
+
+  useEffect(() => {
     dispatch(getInvoice(id));
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (stripe_invoice_id) {
+      dispatch(getStripeInvoice());
+    }
+  }, [dispatch, stripe_invoice_id]);
+
+  useEffect(() => {
+    if (payment_intent) {
+      dispatch(getPaymentIntent());
+    }
+  }, [dispatch, payment_intent]);
+
+  useEffect(() => {
+    if (status) {
+      dispatch(updateInvoiceStatus());
+    }
+  }, [dispatch, status]);
+
+  useEffect(() => {
+    if (status) {
+      setMessage(displayStatus(status));
+      setMessageType(displayStatusType(status));
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (receipt_id) {
+      navigate(`/services/receipt/${receipt_id}`);
+    }
+  }, [receipt_id, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -77,67 +115,38 @@ const CardPaymentComponent = () => {
     if (result.paymentIntent) {
       let status = result.paymentIntent.status;
 
-      const update = {
-        id: id,
-        client_secret: result.paymentIntent.client_secret,
-        user_email: result.paymentIntent.receipt_email,
-        status: status,
-      };
-
-      dispatch(updateInvoiceStatus(update));
       setMessage(displayStatus(status));
       setMessageType(displayStatusType(status));
-      dispatch(getStripeInvoice(stripe_invoice_id));
+
+      setPaymentMethodID(result.paymentIntent.payment_method);
     }
   };
 
   useEffect(() => {
-    if (stripe_invoice_id) {
-      dispatch(getStripeInvoice(stripe_invoice_id));
+    if (paymentMethodID !== '') {
+      dispatch(getPaymentMethod(paymentMethodID));
     }
-  }, [dispatch, stripe_invoice_id]);
+  }, [dispatch, paymentMethodID]);
 
   useEffect(() => {
-    if (payment_intent) {
-      dispatch(getPaymentIntent(payment_intent));
+    if (card !== '' && last4 !== '') {
+      const paymentMethodCard = card && last4 ? `${card} - ${last4}` : '';
+
+      updatePaymentMethod(paymentMethodCard);
     }
-  }, [dispatch, payment_intent]);
+  }, [dispatch, card, last4]);
 
   useEffect(() => {
-    if (status) {
-      setMessage(displayStatus(status));
-      setMessageType(displayStatusType(status));
+    if (type) {
+      dispatch(getStripeInvoice());
     }
-  }, [status]);
+  }, [dispatch, type]);
 
   useEffect(() => {
-    if (payment_method) {
-      dispatch(getPaymentMethod(payment_method));
+    if (status === 'paid') {
+      dispatch(postReceipt());
     }
-  }, [dispatch, payment_method]);
-
-  const payment_method_card = card && last4 ? `${card} - ${last4}` : '';
-
-  const payment = {
-    invoice_id: id,
-    payment_method_id: payment_method,
-    amount_paid: amount_paid,
-    balance: balance,
-    payment_date: payment_date,
-    payment_method: payment_method_card,
-  };
-
-  useEffect(() => {
-    if (amount_paid > 0) {
-      dispatch(postReceipt(payment));
-    }
-  }, [dispatch, amount_paid]);
-
-  useEffect(() => {
-    if (receipt_id !== '') {
-      navigate(`/services/receipt/${receipt_id}`);
-    }
-  }, [receipt_id, navigate]);
+  }, [dispatch, status]);
 
   if (error) {
     return <div>Error: {error}</div>;

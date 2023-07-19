@@ -4,7 +4,10 @@
   "description": "",
   "main": "js/index.js",
   "devDependencies": {
+    "@types/jest": "^26.0.23",
     "@wordpress/scripts": "^26.5.0",
+    "cypress": "^7.4.0",
+    "jest": "^27.0.3",
     "vite": "^4.4.2",
     "webpack": "^5.50.0"
   },
@@ -23,7 +26,9 @@
     "update-dev": "git push orb-services development",
     "update-prod": "git push orb-services production",
     "vite": "vite start",
-    "watch:sass": "sass --watch ./CSS/scss/main.scss ./CSS/orb-services.css"
+    "watch:sass": "sass --watch ./CSS/scss/main.scss ./CSS/orb-services.css",
+    "test": "jest --watchAll --verbose",
+    "e2e": "cypress open"
   },
   "author": "THE7OFDIAMONDS.TECH",
   "license": "ISC",
@@ -40,6 +45,7 @@
     "firebase": "^10.0.0",
     "path-browserify": "^1.0.1",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-redux": "^8.0.7",
     "react-router-dom": "^6.11.2",
     "react-select": "^5.7.3"

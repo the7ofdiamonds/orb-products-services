@@ -9,7 +9,7 @@ const initialState = {
     user_email: '',
     first_name: '',
     last_name: '',
-    client_id: 17
+    client_id: ''
 };
 
 export const addClient = createAsyncThunk('users/addClient', async (client_data) => {

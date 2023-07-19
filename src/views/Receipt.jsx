@@ -1,27 +1,29 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getInvoice, getStripeInvoice } from '../controllers/invoiceSlice.js';
+
+import { getClient } from '../controllers/clientSlice.js';
+import { getStripeCustomer } from '../controllers/customerSlice.js';
+import {
+  getInvoice,
+  getStripeInvoice,
+  updateInvoice,
+} from '../controllers/invoiceSlice.js';
 import { getPaymentIntent } from '../controllers/paymentSlice.js';
 import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
-import { getStripeCustomer } from '../controllers/clientSlice.js';
 
 import formatPhoneNumber from '../utils/PhoneNumberFormatter.js';
 
 function ReceiptComponent() {
   const { id } = useParams();
+  const { client_id, user_email, first_name, last_name } = useSelector(
+    (state) => state.client
+  );
+  const { name, address_line_1, address_line_2, city, state, zipcode, phone } =
+    useSelector((state) => state.customer);
   const {
-    name,
-    address_line_1,
-    address_line_2,
-    city,
-    state,
-    zipcode,
-    phone,
-    email,
-  } = useSelector((state) => state.client);
-  const {
-    user_email,
+    stripe_customer_id,
+    stripe_invoice_id,
     selections,
     subtotal,
     tax,
@@ -29,9 +31,7 @@ function ReceiptComponent() {
     amount_paid,
     amount_remaining,
     payment_date,
-    stripe_invoice_id,
     payment_intent,
-    customer,
   } = useSelector((state) => state.invoice);
   const { payment_method } = useSelector((state) => state.payment);
   const { loading, error, invoice_id, type, brand, last4 } = useSelector(
@@ -40,11 +40,11 @@ function ReceiptComponent() {
   const timestamp = payment_date * 1000;
   const paymentDate = new Date(timestamp);
   const formattedPhone = formatPhoneNumber(phone);
-  const Subtotal = subtotal / 100;
-  const Tax = tax / 100;
-  const amountDue = amount_due / 100;
-  const amountPaid = amount_paid / 100;
-  const Balance = amount_remaining / 100;
+  const Subtotal = subtotal;
+  const Tax = tax;
+  const amountDue = amount_due;
+  const amountPaid = amount_paid;
+  const Balance = amount_remaining;
 
   const dispatch = useDispatch();
 
@@ -53,32 +53,38 @@ function ReceiptComponent() {
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (invoice_id !== '') {
+    if (invoice_id) {
       dispatch(getInvoice(invoice_id));
     }
   }, [dispatch, invoice_id]);
 
   useEffect(() => {
-    if (stripe_invoice_id !== '') {
-      dispatch(getStripeInvoice(stripe_invoice_id));
+    if (client_id) {
+      dispatch(getClient());
+    }
+  }, [dispatch, client_id]);
+
+  useEffect(() => {
+    if (stripe_invoice_id) {
+      dispatch(getStripeInvoice());
     }
   }, [dispatch, stripe_invoice_id]);
 
   useEffect(() => {
-    if (customer) {
-      dispatch(getStripeCustomer(customer));
+    if (stripe_customer_id) {
+      dispatch(getStripeCustomer());
     }
-  }, [dispatch, customer]);
+  }, [dispatch, stripe_customer_id]);
 
   useEffect(() => {
-    if (payment_intent !== '') {
-      dispatch(getPaymentIntent(payment_intent));
+    if (payment_intent) {
+      dispatch(getPaymentIntent());
     }
   }, [dispatch, payment_intent]);
 
   useEffect(() => {
-    if (payment_method !== '') {
-      dispatch(getPaymentMethod(payment_method));
+    if (payment_method) {
+      dispatch(getPaymentMethod());
     }
   }, [dispatch, payment_method]);
 
@@ -128,7 +134,9 @@ function ReceiptComponent() {
               <h4>PAID BY</h4>
             </div>
             <div className="td">
-              <h5>{name}</h5>
+              <h5>
+                {first_name} {last_name} O/B/O {name}
+              </h5>
             </div>
             <div className="tr address-line-1">
               <div className="td">

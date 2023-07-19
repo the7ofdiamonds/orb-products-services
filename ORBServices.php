@@ -22,7 +22,7 @@ defined('ABSPATH') or die('Hey, what are you doing here? You silly human!');
 define('ORB_SERVICES', WP_PLUGIN_DIR . '/orb-services/');
 define('ORB_SERVICES_URL', WP_PLUGIN_URL . '/orb-services/');
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once ORB_SERVICES . 'vendor/autoload.php';
 
 use Dotenv\Dotenv;
 use ORBServices\Admin\Admin;
@@ -33,7 +33,7 @@ use ORBServices\JS\JS;
 use ORBServices\Menus\Menus;
 use ORBServices\Pages\Pages;
 use ORBServices\PostTypes\Services;
-// use ORBServices\Roles\Roles;
+use ORBServices\Roles\Roles;
 use ORBServices\Shortcodes\Shortcodes;
 use ORBServices\Tables\Tables;
 use ORBServices\Templates\Templates;
@@ -52,7 +52,7 @@ class ORBServices
         new Email;
         new JS;
         new Pages;
-        // new Roles;
+        new Roles;
         new Services;
         new Shortcodes;
         new Tables;

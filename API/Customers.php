@@ -1,20 +1,14 @@
 <?php
-
 namespace ORBServices\API;
 
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
 
-use Dotenv\Dotenv;
-
-require ORB_SERVICES . '/vendor/autoload.php';
+require ORB_SERVICES . 'vendor/autoload.php';
 require_once ABSPATH . 'wp-load.php';
 
-// $dotenv = Dotenv::createImmutable(ORB_SERVICES);
-// $dotenv->load(__DIR__);
-
-class Client
+class Customers
 {
     private $stripeSecretKey;
     private $stripeClient;
@@ -26,74 +20,23 @@ class Client
         $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/users/clients', array(
+            register_rest_route('orb/v1', '/stripe/customers', [
                 'methods' => 'POST',
-                'callback' => [$this, 'create_client'],
-                'permission_callback' => '__return_true',
-            ));
-        });
-
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/users/customers', [
-                'methods' => 'POST',
-                'callback' => [$this, 'create_customer'],
+                'callback' => [$this, 'add_stripe_customer'],
                 'permission_callback' => '__return_true',
             ]);
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/users/customers/stripe/(?P<slug>[a-zA-Z0-9-_]+)', [
+            register_rest_route('orb/v1', '/stripe/customers/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'GET',
-                'callback' => [$this, 'get_customer'],
+                'callback' => [$this, 'get_stripe_customer'],
                 'permission_callback' => '__return_true',
             ]);
         });
     }
 
-    function user_client_creation_permission($request)
-    {
-        // Implement your custom logic to check if the current user has the required capabilities or role.
-        // For example, you can use the `current_user_can()` function to check the user's capabilities.
-        return current_user_can('add_user');
-    }
-
-    function create_client($request)
-    {
-        $first_name = $request['first_name'];
-        $last_name = $request['last_name'];
-        $user_login = $request['user_login'];
-        $user_email = $request['user_email'];
-        $user_pass = $request['user_pass'];
-
-        $user = get_user_by('email', $user_email);
-
-        if ($user && $user->exists()) {
-            $user->add_role('subscriber');
-            $user->add_role('client');
-
-            return rest_ensure_response($user->ID);
-        }
-
-        $clientData = array(
-            'user_login' => $user_login,
-            'user_pass'  => $user_pass,
-            'user_email' => $user_email,
-            'first_name' => $first_name,
-            'last_name'  => $last_name,
-            'role'       => 'client'
-        );
-
-        $client_id = wp_insert_user($clientData);
-
-        if (!is_wp_error($client_id)) {
-            return rest_ensure_response($client_id);
-        } else {
-            $error_message = $client_id->get_error_message();
-            return rest_ensure_response(array('error' => $error_message));
-        }
-    }
-
-    public function create_customer(WP_REST_Request $request)
+    public function add_stripe_customer(WP_REST_Request $request)
     {
         $status_code = 200;
         $error_message = '';
@@ -168,7 +111,7 @@ class Client
         return new WP_Error('rest_error', $error_message, $data);
     }
 
-    public function get_customer(WP_REST_Request $request)
+    public function get_stripe_customer(WP_REST_Request $request)
     {
         $status_code = 200;
         $error_message = '';
@@ -209,5 +152,3 @@ class Client
         return new WP_Error('rest_error', $error_message, $data);
     }
 }
-
-$customer = new Client();

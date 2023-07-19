@@ -1,10 +1,6 @@
 <?php
 namespace ORBServices\CSS\Customizer;
 
-// include 'customizer-hero.php';
-// include 'customizer-services.php';
-// include 'customizer-shadow.php';
-
 use ORBServices\CSS\Customizer\HeroCustomizer;
 use ORBServices\CSS\Customizer\ServicesCustomizer;
 use ORBServices\CSS\Customizer\ShadowCustomizer;
