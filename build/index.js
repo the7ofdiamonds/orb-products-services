@@ -9277,10 +9277,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-//Utilities
-// import PrivateRoutes from './utils/PrivateRoutes.jsx';
-
 function App() {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_13__.BrowserRouter, {
     basename: "/"

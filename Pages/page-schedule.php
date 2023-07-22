@@ -1,5 +1,17 @@
-<?php get_header(); ?>
+<?php
+if (!is_user_logged_in()) {
+    $fullUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
-<?php include ORB_SERVICES . 'includes/main-schedule.php'; ?>
+    wp_redirect(wp_login_url() . '?redirectTo=' . $fullUrl);
+    exit;
+}
 
-<?php get_footer(); ?>
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+get_header();
+
+include ORB_SERVICES . 'includes/main-schedule.php';
+
+get_footer();
