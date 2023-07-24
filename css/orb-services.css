@@ -406,25 +406,6 @@ section.invoice {
   padding: 1rem;
 }
 
-.status-bar {
-  background-color: black;
-}
-.status-bar span {
-  color: white;
-}
-.status-bar span.info {
-  color: blue;
-}
-.status-bar span.caution {
-  color: yellow;
-}
-.status-bar span.error {
-  color: red;
-}
-.status-bar span.success {
-  color: green;
-}
-
 .quote-card.card .feature-cost,
 .quote-card.card .subtotal {
   text-align: right;

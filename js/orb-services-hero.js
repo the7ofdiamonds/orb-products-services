@@ -39,6 +39,5 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         console.log("Stylesheet not found");
     }
-console.log(keyframes);
     document.documentElement.style.setProperty('--animation-duration', `${length}s`);
 });

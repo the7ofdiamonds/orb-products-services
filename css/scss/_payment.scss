@@ -263,22 +263,3 @@
   gap: 1rem;
   padding: 1rem;
 }
-
-.status-bar {
-  background-color: black;
-  span {
-    color: white;
-    &.info {
-      color: blue;
-    }
-    &.caution {
-      color: yellow;
-    }
-    &.error {
-      color: red;
-    }
-    &.success {
-      color: green;
-    }
-  }
-}

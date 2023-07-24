@@ -1,4 +1,5 @@
 <?php
+
 namespace ORBServices\JS;
 
 class JS
@@ -31,7 +32,9 @@ class JS
 
     function load_hero_js()
     {
-        wp_enqueue_script('orb_services_hero_js', ORB_SERVICES_URL . 'JS/orb-services-hero.js');
+        if (is_front_page()) {
+            wp_enqueue_script('orb_services_hero_js', ORB_SERVICES_URL . 'JS/orb-services-hero.js');
+        }
     }
 
     function load_react()
@@ -44,7 +47,7 @@ class JS
             'services/quote',
             'services/invoice',
             'services/payment',
-            'services/receipt',  
+            'services/receipt',
         ];
 
         foreach ($pages as $page) {
