@@ -1,6 +1,6 @@
 <?php
 
-namespace ORBServices\Menus;
+namespace ORB_Services\Menus;
 
 class Menus
 {

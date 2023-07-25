@@ -1,7 +1,7 @@
 <?php
-namespace ORBServices\CSS;
+namespace ORB_Services\CSS;
 
-use ORBServices\CSS\Customizer\Customizer;
+use ORB_Services\CSS\Customizer\Customizer;
 
 class CSS {
     

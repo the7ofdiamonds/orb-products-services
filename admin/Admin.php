@@ -1,10 +1,10 @@
 <?php
-namespace ORBServices\Admin;
+namespace ORB_Services\Admin;
 
-use ORBServices\Admin\AdminEmail;
-use ORBServices\Admin\AdminHero;
-use ORBServices\Admin\AdminLocation;
-use ORBServices\Admin\AdminOfficeHours;
+use ORB_Services\Admin\AdminEmail;
+use ORB_Services\Admin\AdminHero;
+use ORB_Services\Admin\AdminLocation;
+use ORB_Services\Admin\AdminOfficeHours;
 
 class Admin
 {

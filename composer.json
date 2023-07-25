@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ORBServices\\": "",
+            "ORB_Services\\": "",
             "Stripe\\": "lib/"
         }
     },

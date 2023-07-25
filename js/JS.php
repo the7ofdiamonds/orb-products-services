@@ -1,6 +1,6 @@
 <?php
 
-namespace ORBServices\JS;
+namespace ORB_Services\JS;
 
 class JS
 {

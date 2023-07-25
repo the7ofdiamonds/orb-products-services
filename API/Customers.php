@@ -1,5 +1,5 @@
 <?php
-namespace ORBServices\API;
+namespace ORB_Services\API;
 
 use WP_REST_Request;
 use WP_REST_Response;

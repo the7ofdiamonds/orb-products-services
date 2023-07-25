@@ -94,7 +94,7 @@ function ClientComponent() {
       dispatch(addClient(user_email));
     }
   }, [dispatch, user_email]);
-//If not a user send to signup
+  //If not a user send to signup
   // useEffect(() => {
   //   if (client_id == false) {
   //     navigate('/signup/?redirectTo=start');
@@ -107,7 +107,7 @@ function ClientComponent() {
     }
   }, [dispatch, client_id]);
 
-//Check if form is valid and completed
+  //Check if form is valid and completed
   // const isFormCompleted =
   //   first_name &&
   //   last_name &&
@@ -148,26 +148,6 @@ function ClientComponent() {
               <tr>
                 <td colSpan={2}>
                   <input
-                    className="input schedule"
-                    name="user_email"
-                    type="email"
-                    placeholder="Email"
-                    onChange={handleEmailChange}
-                  />
-                </td>
-                <td>
-                  <input
-                    className="input"
-                    name="phone"
-                    type="tel"
-                    placeholder="Phone"
-                    onChange={handlePhoneChange}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td colSpan={2}>
-                  <input
                     className="input"
                     name="company_name"
                     id="company_name"
@@ -202,6 +182,15 @@ function ClientComponent() {
                     id="last_name"
                     placeholder="Last Name"
                     onChange={handleLastNameChange}
+                  />
+                </td>
+                <td>
+                  <input
+                    className="input"
+                    name="phone"
+                    type="tel"
+                    placeholder="Phone"
+                    onChange={handlePhoneChange}
                   />
                 </td>
               </tr>

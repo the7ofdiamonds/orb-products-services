@@ -1,6 +1,6 @@
 <?php
 
-namespace ORBServices\Admin;
+namespace ORB_Services\Admin;
 
 $smtp_host = esc_attr(get_option('smtp_host'));
 $smtp_port = get_option('smtp_port');

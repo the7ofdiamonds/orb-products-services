@@ -1,5 +1,5 @@
 <?php
-namespace ORBServices\Email;
+namespace ORB_Services\Email;
 
 require ORB_SERVICES . '/vendor/autoload.php';
 

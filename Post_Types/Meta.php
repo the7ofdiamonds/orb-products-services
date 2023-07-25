@@ -1,6 +1,6 @@
 <?php
 
-namespace ORBServices\PostTypes;
+namespace ORB_Services\Post_Types;
 
 use WP_Error;
 
@@ -146,7 +146,8 @@ class Meta
             return;
         }
 
-        update_post_meta(get_the_ID(), "_services_button", sanitize_text_field($_POST["_services_button"]));
+        $servicesButton = isset($_POST["_services_button"]) ? sanitize_text_field($_POST["_services_button"]) : '';
+        update_post_meta(get_the_ID(), "_services_button", $servicesButton);
     }
 
     function save_post_service_icon()
@@ -155,7 +156,8 @@ class Meta
             return;
         }
 
-        update_post_meta(get_the_ID(), "_service_icon", sanitize_text_field($_POST["_service_icon"]));
+        $serviceIcon = isset($_POST["_service_icon"]) ? sanitize_text_field($_POST["_service_icon"]) : '';
+        update_post_meta(get_the_ID(), "_service_icon", $serviceIcon);
     }
 
     function save_post_service_description()
@@ -164,7 +166,8 @@ class Meta
             return;
         }
         // Save to database & stripe
-        update_post_meta(get_the_ID(), "_service_description", sanitize_text_field($_POST["_service_description"]));
+        $serviceDescription = isset($_POST["_service_description"]) ? sanitize_text_field($_POST["_service_description"]) : '';
+        update_post_meta(get_the_ID(), "_service_description", $serviceDescription);
     }
 
     function save_post_service_cost()
@@ -173,8 +176,11 @@ class Meta
             return;
         }
         // Save to database & stripe
-        update_post_meta(get_the_ID(), "_service_cost", sanitize_text_field($_POST["_service_cost"]));
+        $serviceCost = isset($_POST["_service_cost"]) ? sanitize_text_field($_POST["_service_cost"]) : '';
+        update_post_meta(get_the_ID(), "_service_cost", $serviceCost);
     }
+
+    // ... Your existing code ...
 
     function save_post_service_features()
     {
@@ -182,13 +188,13 @@ class Meta
             return;
         }
 
-        $featureNames = $_POST['_feature_name'];
-        $featureCosts = $_POST['_feature_cost'];
+        $featureNames = isset($_POST['_feature_name']) ? $_POST['_feature_name'] : [];
+        $featureCosts = isset($_POST['_feature_cost']) ? $_POST['_feature_cost'] : [];
 
         $serviceFeatures = [];
 
         foreach ($featureNames as $index => $featureName) {
-            $featureCost = $featureCosts[$index];
+            $featureCost = isset($featureCosts[$index]) ? $featureCosts[$index] : '';
 
             $serviceFeatures[] = [
                 'name' => sanitize_text_field($featureName),

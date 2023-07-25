@@ -1,6 +1,6 @@
 <?php
 
-namespace ORBServices\Templates;
+namespace ORB_Services\Templates;
 
 class Templates
 {

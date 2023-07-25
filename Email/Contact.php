@@ -1,8 +1,8 @@
 <?php
 
-namespace ORBServices\Email;
+namespace ORB_Services\Email;
 
-use ORBServices\Email\Email;
+use ORB_Services\Email\Email;
 
 class Contact extends Email
 {

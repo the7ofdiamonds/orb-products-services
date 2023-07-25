@@ -1,6 +1,6 @@
 <?php
 
-namespace ORBServices\Pages;
+namespace ORB_Services\Pages;
 
 class Pages
 {

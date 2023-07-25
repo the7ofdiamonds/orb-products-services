@@ -1,9 +1,9 @@
 <?php
-namespace ORBServices\CSS\Customizer;
+namespace ORB_Services\CSS\Customizer;
 
-use ORBServices\CSS\Customizer\HeroCustomizer;
-use ORBServices\CSS\Customizer\ServicesCustomizer;
-use ORBServices\CSS\Customizer\ShadowCustomizer;
+use ORB_Services\CSS\Customizer\HeroCustomizer;
+use ORB_Services\CSS\Customizer\ServicesCustomizer;
+use ORB_Services\CSS\Customizer\ShadowCustomizer;
 
 class Customizer
 {

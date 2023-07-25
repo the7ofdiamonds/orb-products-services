@@ -12,23 +12,23 @@
     "webpack": "^5.50.0"
   },
   "scripts": {
-    "dev": "npm-run-all --parallel watch:sass start",
-    "sync": "browser-sync start -p 'http://localhost:8000'",
     "build": "wp-scripts build",
     "check-engines": "wp-scripts check-engines",
     "check-licenses": "wp-scripts check-licenses",
+    "dev": "npm-run-all --parallel watch:sass start",
+    "e2e": "cypress open",
     "lint:css": "wp-scripts lint-style",
     "lint:js": "wp-scripts lint-js",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "start": "wp-scripts start",
+    "sync": "browser-sync start -p 'http://localhost:8000'",
+    "test": "jest --watchAll --verbose",
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js",
     "update-dev": "git push orb-services development",
     "update-prod": "git push orb-services production",
     "vite": "vite start",
-    "watch:sass": "sass --watch ./CSS/scss/main.scss ./CSS/orb-services.css",
-    "test": "jest --watchAll --verbose",
-    "e2e": "cypress open"
+    "watch:sass": "sass --watch ./CSS/scss/main.scss ./CSS/orb-services.css"
   },
   "author": "THE7OFDIAMONDS.TECH",
   "license": "ISC",

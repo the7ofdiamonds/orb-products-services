@@ -1,13 +1,13 @@
 <?php
-namespace ORBServices\API;
+namespace ORB_Services\API;
 
-use ORBServices\API\Services;
-use ORBServices\API\Service;
-use ORBServices\API\Clients;
-use ORBServices\API\Customers;
-use ORBServices\API\Invoice;
-use ORBServices\API\Payment;
-use ORBServices\API\Receipt;
+use ORB_Services\API\Services;
+use ORB_Services\API\Service;
+use ORB_Services\API\Clients;
+use ORB_Services\API\Customers;
+use ORB_Services\API\Invoice;
+use ORB_Services\API\Payment;
+use ORB_Services\API\Receipt;
 
 require ORB_SERVICES . 'vendor/autoload.php';
 require_once ABSPATH . 'wp-load.php';

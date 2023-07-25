@@ -1,7 +1,7 @@
 <?php
-namespace ORBServices;
+namespace ORB_Services;
 /**
- * @package ORBServices
+ * @package ORB_Services
  */
 /*
 Plugin Name: ORB Services
@@ -25,20 +25,21 @@ define('ORB_SERVICES_URL', WP_PLUGIN_URL . '/orb-services/');
 require_once ORB_SERVICES . 'vendor/autoload.php';
 
 use Dotenv\Dotenv;
-use ORBServices\Admin\Admin;
-use ORBServices\API\API;
-use ORBServices\CSS\CSS;
-use ORBServices\Email\Email;
-use ORBServices\JS\JS;
-use ORBServices\Menus\Menus;
-use ORBServices\Pages\Pages;
-use ORBServices\PostTypes\Services;
-use ORBServices\Roles\Roles;
-use ORBServices\Shortcodes\Shortcodes;
-use ORBServices\Tables\Tables;
-use ORBServices\Templates\Templates;
 
-class ORBServices
+use ORB_Services\Admin\Admin;
+use ORB_Services\API\API;
+use ORB_Services\CSS\CSS;
+use ORB_Services\Email\Email;
+use ORB_Services\JS\JS;
+use ORB_Services\Menus\Menus;
+use ORB_Services\Pages\Pages;
+use ORB_Services\Post_Types\Services;
+use ORB_Services\Roles\Roles;
+use ORB_Services\Shortcodes\Shortcodes;
+use ORB_Services\Tables\Tables;
+use ORB_Services\Templates\Templates;
+
+class ORB_Services
 {
 
     public function __construct()
@@ -49,7 +50,7 @@ class ORBServices
         new Admin;
         new API;
         new CSS;
-        new Email;
+        // new Email;
         new JS;
         new Pages;
         new Roles;
@@ -65,7 +66,7 @@ class ORBServices
     }
 }
 
-$orb_services = new ORBServices();
+$orb_services = new ORB_Services();
 register_activation_hook(__FILE__, [$orb_services, 'activate']);
 // register_deactivation_hook( __FILE__, [ $thfw, 'deactivate' ]);
 
