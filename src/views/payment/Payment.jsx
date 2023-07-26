@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import PaymentNavigationComponent from './payment/Navigation.jsx';
+import PaymentNavigationComponent from './Navigation.jsx';
 
-import { getInvoice, getStripeInvoice } from '../controllers/invoiceSlice.js';
-import { getPaymentIntent } from '../controllers/paymentSlice.js';
-import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
-import { displayStatus, displayStatusType } from '../utils/DisplayStatus.js';
+import { getInvoice, getStripeInvoice } from '../../controllers/invoiceSlice.js';
+import { getPaymentIntent } from '../../controllers/paymentSlice.js';
+import { getPaymentMethod, getReceipt } from '../../controllers/receiptSlice.js';
+import { displayStatus, displayStatusType } from '../../utils/DisplayStatus.js';
 
 function PaymentComponent() {
   const { id } = useParams();

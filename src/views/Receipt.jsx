@@ -4,11 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { getClient } from '../controllers/clientSlice.js';
 import { getStripeCustomer } from '../controllers/customerSlice.js';
-import {
-  getInvoice,
-  getStripeInvoice,
-  updateInvoice,
-} from '../controllers/invoiceSlice.js';
+import { getInvoice, getStripeInvoice } from '../controllers/invoiceSlice.js';
 import { getPaymentIntent } from '../controllers/paymentSlice.js';
 import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
 
@@ -16,7 +12,7 @@ import formatPhoneNumber from '../utils/PhoneNumberFormatter.js';
 
 function ReceiptComponent() {
   const { id } = useParams();
-  const { client_id, user_email, first_name, last_name } = useSelector(
+  const { client_id, first_name, last_name } = useSelector(
     (state) => state.client
   );
   const { name, address_line_1, address_line_2, city, state, zipcode, phone } =
@@ -33,8 +29,8 @@ function ReceiptComponent() {
     payment_date,
     payment_intent,
   } = useSelector((state) => state.invoice);
-  const { payment_method } = useSelector((state) => state.payment);
-  const { loading, error, invoice_id, type, brand, last4 } = useSelector(
+  const { payment_method_id } = useSelector((state) => state.payment);
+  const { loading, error, invoice_id, payment_method } = useSelector(
     (state) => state.receipt
   );
   const timestamp = payment_date * 1000;
@@ -47,6 +43,14 @@ function ReceiptComponent() {
   const Balance = amount_remaining;
 
   const dispatch = useDispatch();
+
+  const user_email = sessionStorage.getItem('user_email');
+
+  useEffect(() => {
+    if (user_email) {
+      dispatch(getClient(user_email));
+    }
+  }, [dispatch, user_email]);
 
   useEffect(() => {
     dispatch(getReceipt(id));
@@ -83,12 +87,12 @@ function ReceiptComponent() {
   }, [dispatch, payment_intent]);
 
   useEffect(() => {
-    if (payment_method) {
+    if (payment_method_id) {
       dispatch(getPaymentMethod());
     }
-  }, [dispatch, payment_method]);
+  }, [dispatch, payment_method_id]);
 
-  const paymentMethod = type === 'card' ? `${brand} - ${last4}` : null;
+  // const paymentMethod = type === 'card' ? `${brand} - ${last4}` : null;
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -121,11 +125,11 @@ function ReceiptComponent() {
           </div>
           <div className="tr payment-method">
             <div className="th">
-              <h4>PAYMENT METHOD</h4>
+              <h4>PAYMENT TYPE</h4>
             </div>
             <div className="td">
               <h5 className="payment-method">
-                {paymentMethod ? paymentMethod : 'No Payment Method Provided'}
+                {payment_method ? payment_method : 'No Payment Method Provided'}
               </h5>
             </div>
           </div>

@@ -10,6 +10,7 @@ const initialState = {
   client_secret: '',
   status: '',
   payment_method_id: '',
+  payment_method: ''
 };
 
 export const finalizeInvoice = createAsyncThunk('payment/finalizeInvoice', async (_, { getState }) => {
@@ -69,7 +70,7 @@ export const paymentSlice = createSlice({
         state.error = null
         state.client_secret = action.payload.client_secret
         state.status = action.payload.status
-        state.payment_method_id = action.payload.payment_method
+        state.payment_method_id = action.payload.payment_method_id
       })
       .addCase(getPaymentIntent.rejected, (state, action) => {
         state.loading = false;

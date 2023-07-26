@@ -40,6 +40,7 @@ class Receipt
 
         $invoice_id = $request['invoice_id'];
         $stripe_invoice_id = $request['stripe_invoice_id'];
+        $payment_method = $request['payment_method'];
 
         $stripe_invoice = $this->stripeClient->invoices->retrieve(
             $stripe_invoice_id,
@@ -57,7 +58,7 @@ class Receipt
         );
 
         $payment_method_id = $payment_intent->payment_method;
-        
+
         $table_name = 'orb_receipt';
         $result = $wpdb->insert(
             $table_name,
@@ -67,6 +68,7 @@ class Receipt
                 'amount_paid' => $amount_paid,
                 'payment_date' => $payment_date,
                 'balance' => $balance,
+                'payment_method' => $payment_method
             ]
         );
 
@@ -97,10 +99,10 @@ class Receipt
         );
 
         if (!$receipt) {
-            return new WP_Error('receipt_not_found', 'Recceipt not found', array('status' => 404));
+            return new WP_Error('receipt_not_found', 'Receipt not found', array('status' => 404));
         }
 
-        $get_data = [
+        $receipt_data = [
             'id' => $receipt->id,
             'created_at' => $receipt->created_at,
             'invoice_id' => $receipt->invoice_id,
@@ -109,8 +111,9 @@ class Receipt
             'payment_date' => $receipt->payment_date,
             'payment_method' => $receipt->payment_method,
             'balance' => $receipt->balance,
+            'payment_method' => $receipt->payment_method
         ];
 
-        return new WP_REST_Response($get_data, 200);
+        return new WP_REST_Response($receipt_data, 200);
     }
 }

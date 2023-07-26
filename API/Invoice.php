@@ -139,7 +139,7 @@ class Invoice
             return new WP_Error('invoice_not_found', 'Invoice not found', array('status' => 404));
         }
 
-        $get_data = [
+        $data = [
             'id' => $invoice->id,
             'created_at' => $invoice->created_at,
             'status' => $invoice->status,
@@ -156,7 +156,7 @@ class Invoice
             'amount_remaining' => $invoice->amount_remaining
         ];
 
-        return new WP_REST_Response($get_data, 200);
+        return new WP_REST_Response($data, 200);
     }
 
     public function get_stripe_invoice(WP_REST_Request $request)

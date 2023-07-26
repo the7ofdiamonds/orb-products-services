@@ -33,7 +33,7 @@ const CardPaymentComponent = () => {
   const { loading, error, client_secret, payment_intent } = useSelector(
     (state) => state.payment
   );
-  const { receipt_id, balance, payment_date, type, card, last4 } = useSelector(
+  const { receipt_id, payment_method, brand, last4 } = useSelector(
     (state) => state.receipt
   );
 
@@ -54,12 +54,14 @@ const CardPaymentComponent = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  useEffect(() => {
-    if (client_id) {
-      dispatch(getClient());
-    }
-  }, [dispatch, client_id]);
+  const user_email = sessionStorage.getItem('user_email');
 
+  useEffect(() => {
+    if (user_email) {
+      dispatch(getClient(user_email));
+    }
+  }, [dispatch, user_email]);
+  
   useEffect(() => {
     dispatch(getInvoice(id));
   }, [dispatch, id]);
@@ -118,29 +120,22 @@ const CardPaymentComponent = () => {
       setMessage(displayStatus(status));
       setMessageType(displayStatusType(status));
 
-      setPaymentMethodID(result.paymentIntent.payment_method);
+      dispatch(getPaymentMethod(result.paymentIntent.payment_method));
     }
   };
 
   useEffect(() => {
-    if (paymentMethodID !== '') {
-      dispatch(getPaymentMethod(paymentMethodID));
+    if (brand !== '' && last4 !== '') {
+      const paymentMethodCard = `${brand} - ${last4}`;
+      dispatch(updatePaymentMethod(paymentMethodCard));
     }
-  }, [dispatch, paymentMethodID]);
+  }, [dispatch, brand, last4]);
 
   useEffect(() => {
-    if (card !== '' && last4 !== '') {
-      const paymentMethodCard = card && last4 ? `${card} - ${last4}` : '';
-
-      updatePaymentMethod(paymentMethodCard);
-    }
-  }, [dispatch, card, last4]);
-
-  useEffect(() => {
-    if (type) {
+    if (payment_method) {
       dispatch(getStripeInvoice());
     }
-  }, [dispatch, type]);
+  }, [dispatch, payment_method]);
 
   useEffect(() => {
     if (status === 'paid') {

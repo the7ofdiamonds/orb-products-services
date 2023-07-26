@@ -14,7 +14,7 @@ import {
 
 function QuoteComponent() {
   const { loading, error, services } = useSelector((state) => state.services);
-  const { stripe_customer_id } = useSelector((state) => state.customer);
+  const { stripe_customer_id } = useSelector((state) => state.client);
   const { subtotal, selections } = useSelector((state) => state.quote);
   const { stripe_invoice_id, invoice_id } = useSelector(
     (state) => state.invoice
@@ -24,7 +24,7 @@ function QuoteComponent() {
   const navigate = useNavigate();
 
   const [checkedItems, setCheckedItems] = useState([]);
-//Needs to come from stripe
+
   useEffect(() => {
     dispatch(fetchServices());
   }, [dispatch]);

@@ -67,6 +67,7 @@ html {
   align-items: center;
   justify-content: center;
   gap: 0.5em;
+  box-shadow: 0 0 1em rgba(255, 255, 255, 0.85);
 }
 .start-btn i {
   padding-right: 0;
@@ -97,6 +98,14 @@ i.fa-solid.fa-globe {
 
 .office-hours-card {
   padding: 0;
+}
+.office-hours-card table th + th,
+.office-hours-card table td + td {
+  border-left: 0.25em solid white;
+}
+.office-hours-card table thead th {
+  background-color: black;
+  color: white;
 }
 
 .orb-service-navigation {

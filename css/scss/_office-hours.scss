@@ -1,3 +1,16 @@
 .office-hours-card {
   padding: 0;
+
+  table {
+    th + th,
+    td + td {
+      border-left: 0.25em solid white;
+    }
+    thead {
+      th {
+        background-color: black;
+        color: white;
+      }
+    }
+  }
 }

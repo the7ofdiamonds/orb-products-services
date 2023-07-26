@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { addClient } from '../controllers/clientSlice';
+import { addClient } from '../../controllers/clientSlice';
 import {
   updateEmail,
   updatePhone,
@@ -16,17 +16,32 @@ import {
   updateState,
   updateZipcode,
   addStripeCustomer,
-} from '../controllers/customerSlice.js';
+} from '../../controllers/customerSlice.js';
 import {
   clientToInvoice,
   updateClientID,
-} from '../controllers/invoiceSlice.js';
+} from '../../controllers/invoiceSlice.js';
 
 function ClientComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { client_id } = useSelector((state) => state.client);
+  const [messageType, setMessageType] = useState('');
+  const [message, setMessage] = useState(
+    'To receive a quote, please fill out the form above with the required information.'
+  );
+
+  const user_email = sessionStorage.getItem('user_email');
+
+  useEffect(() => {
+    if (user_email) {
+      dispatch(updateEmail(user_email));
+    }
+  }, [dispatch, user_email]);
+
+  const { client_id, stripe_customer_id } = useSelector(
+    (state) => state.client
+  );
   const {
     loading,
     error,
@@ -34,7 +49,6 @@ function ClientComponent() {
     tax_id,
     first_name,
     last_name,
-    user_email,
     phone,
     address_line_1,
     address_line_2,
@@ -42,7 +56,6 @@ function ClientComponent() {
     state,
     zipcode,
     country,
-    stripe_customer_id,
   } = useSelector((state) => state.customer);
 
   const handleCompanyNameChange = (event) => {
@@ -59,10 +72,6 @@ function ClientComponent() {
 
   const handleLastNameChange = (event) => {
     dispatch(updateLastName(event.target.value));
-  };
-
-  const handleEmailChange = (event) => {
-    dispatch(updateEmail(event.target.value));
   };
 
   const handlePhoneChange = (event) => {
@@ -89,17 +98,7 @@ function ClientComponent() {
     dispatch(updateZipcode(event.target.value));
   };
 
-  useEffect(() => {
-    if (user_email) {
-      dispatch(addClient(user_email));
-    }
-  }, [dispatch, user_email]);
-  //If not a user send to signup
-  // useEffect(() => {
-  //   if (client_id == false) {
-  //     navigate('/signup/?redirectTo=start');
-  //   }
-  // }, [navigate, client_id]);
+  const [isFomCompleted, setIsFormCompleted] = useState(false);
 
   useEffect(() => {
     if (client_id > 0) {
@@ -107,27 +106,34 @@ function ClientComponent() {
     }
   }, [dispatch, client_id]);
 
-  //Check if form is valid and completed
-  // const isFormCompleted =
-  //   first_name &&
-  //   last_name &&
-  //   user_email &&
-  //   phone &&
-  //   address_line_1 &&
-  //   city &&
-  //   state &&
-  //   zipcode;
+  useEffect(() => {
+    if (first_name && last_name && zipcode) {
+      setIsFormCompleted(true);
+    }
+  }, [first_name, last_name, zipcode]);
+
   const handleClick = () => {
-    if (client_id > 0) {
-      dispatch(addStripeCustomer());
+    if (isFomCompleted) {
+      dispatch(addClient());
+    } else {
+      if (first_name === '') {
+        setMessage('Please provide a first name.');
+        setMessageType('error');
+      } else if (last_name === '') {
+        setMessage('Please provide last name.');
+        setMessageType('error');
+      } else if (zipcode === '') {
+        setMessage('Please provide zipcode.');
+        setMessageType('error');
+      }
     }
   };
 
   useEffect(() => {
-    if (stripe_customer_id) {
+    if (client_id && stripe_customer_id) {
       navigate('/services/quote');
     }
-  }, [dispatch, stripe_customer_id, navigate]);
+  }, [client_id, stripe_customer_id, navigate]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -200,7 +206,7 @@ function ClientComponent() {
                     className="input"
                     name="address_line_1"
                     id="bill_to_street"
-                    placeholder="Address"
+                    placeholder="Street Address"
                     onChange={handleAddressChange}
                   />
                 </td>
@@ -248,6 +254,12 @@ function ClientComponent() {
           </table>
         </form>
       </div>
+
+      {message && (
+        <div className="status-bar card">
+          <span className={`${messageType}`}>{message}</span>
+        </div>
+      )}
 
       <button id="quote_button" onClick={handleClick}>
         <h3>QUOTE</h3>

@@ -4,6 +4,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   error: '',
+  payment_method_id: '',
   receipt_id: '',
   invoice_id: '',
   amount_paid: '',
@@ -33,11 +34,16 @@ export const updatePaymentMethod = (paymentMethod) => {
 };
 
 export const postReceipt = createAsyncThunk('receipt/postReceipt', async (_, { getState }) => {
+  const { first_name, last_name } = getState().client;
   const { invoice_id, stripe_invoice_id } = getState().invoice;
-
+  const { payment_method } = getState().receipt;
+console.log(payment_method);
   const payment = {
+    first_name: first_name,
+    last_name: last_name,
     stripe_invoice_id: stripe_invoice_id,
     invoice_id: invoice_id,
+    payment_method: payment_method
   };
 
   try {

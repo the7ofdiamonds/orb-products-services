@@ -46,17 +46,8 @@ class Tables
             created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             user_id VARCHAR(255) DEFAULT NULL,
             stripe_customer_id VARCHAR(255) DEFAULT NULL,
-            tax_id VARCHAR(255) DEFAULT NULL,
-            company_name VARCHAR(255) DEFAULT NULL,
             first_name VARCHAR(255) DEFAULT NULL,
             last_name VARCHAR(255) DEFAULT NULL,
-            address_line_1 VARCHAR(255) DEFAULT NULL,
-            address_line_2 VARCHAR(255) DEFAULT NULL,
-            city VARCHAR(255) DEFAULT NULL,
-            state VARCHAR(255) DEFAULT NULL,
-            zipcode VARCHAR(255) DEFAULT NULL,
-            phone VARCHAR(255) DEFAULT NULL,
-            user_email VARCHAR(255) DEFAULT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
 
@@ -104,6 +95,7 @@ class Tables
         amount_paid VARCHAR(255) DEFAULT NULL,
         payment_date VARCHAR(255) DEFAULT NULL,
         balance VARCHAR(255) DEFAULT NULL,
+        payment_method VARCHAR(255) DEFAULT NULL,
         PRIMARY KEY (id)
     ) $charset_collate;";
 

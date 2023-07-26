@@ -21,10 +21,10 @@ const initialState = {
   payment_date: '',
 };
 
-export const clientToInvoice = (client) => {
+export const clientToInvoice = (selections) => {
   return {
     type: 'invoice/clientToInvoice',
-    payload: client
+    payload: selections
   };
 };
 
@@ -36,9 +36,8 @@ export const quoteToInvoice = (selections) => {
 };
 
 export const createInvoice = createAsyncThunk('invoice/createInvoice', async (_, { getState }) => {
-  const { client_id } = getState().client;
-  const { stripe_customer_id } = getState().customer;
-  const { selections } = getState().quote;
+  const { client_id, stripe_customer_id } = getState().client;
+  const { selections } = getState().invoice;
 
   const invoice = {
     client_id: client_id,

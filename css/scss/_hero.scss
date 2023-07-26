@@ -66,7 +66,7 @@ html {
 
 .start-btn:hover {
   box-shadow: unset;
-  
+
   i {
     color: lime;
   }
@@ -78,7 +78,8 @@ html {
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-
+  box-shadow: 0 0 1em rgba(255, 255, 255, 0.85);
+  
   i {
     padding-right: 0;
   }

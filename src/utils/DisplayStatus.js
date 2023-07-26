@@ -1,6 +1,6 @@
 export const displayStatus = (status) => {
 
-  if(status === "requires_payment_method"){
+  if (status === "requires_payment_method") {
     return 'Choose a payment method'
   }
 
@@ -22,6 +22,8 @@ export const displayStatus = (status) => {
   if (status === 'canceled') {
     return 'This transaction has been canceled';
   }
+
+  return status;
 };
 
 export const displayStatusType = (status) => {
@@ -41,4 +43,6 @@ export const displayStatusType = (status) => {
   if (status === 'canceled') {
     return 'error';
   }
+
+  return status;
 };

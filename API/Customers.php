@@ -1,9 +1,12 @@
 <?php
+
 namespace ORB_Services\API;
 
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
+
+use Stripe\Exception\ApiErrorException;
 
 require ORB_SERVICES . 'vendor/autoload.php';
 require_once ABSPATH . 'wp-load.php';
@@ -85,22 +88,8 @@ class Customers
             ]);
 
             return new WP_REST_Response($customer->id, $status_code);
-        } catch (\Stripe\Exception\InvalidRequestException $e) {
-            // Handle specific InvalidRequestException
-            $error_message = 'Invalid request. Please check your input.';
-            $status_code = 400;
-        } catch (\Stripe\Exception\AuthenticationException $e) {
-            // Handle specific AuthenticationException
-            $error_message = 'Authentication failed. Please check your API credentials.';
-            $status_code = 401;
-        } catch (\Stripe\Exception\ApiConnectionException $e) {
-            // Handle specific ApiConnectionException
-            $error_message = 'Network error occurred. Please try again later.';
-            $status_code = 500;
-        } catch (\Exception $e) {
-            // Handle any other generic exceptions
-            $error_message = 'An error occurred while creating the payment intent.';
-            $status_code = 500;
+        } catch (ApiErrorException $e) {
+            return rest_ensure_response($e);
         }
 
         $data = array(
