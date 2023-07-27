@@ -61,7 +61,7 @@ export const addStripeCustomer = createAsyncThunk('customer/addStripeCustomer', 
 });
 
 export const getStripeCustomer = createAsyncThunk('customer/getStripeCustomer', async (_, { getState }) => {
-    const { stripe_customer_id } = getState().invoice;
+    const { stripe_customer_id } = getState().client;
 
     try {
         const response = await axios.get(`/wp-json/orb/v1/stripe/customers/${stripe_customer_id}`);

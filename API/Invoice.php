@@ -50,6 +50,14 @@ class Invoice
         });
 
         add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/invoices/(?P<slug>[a-z0-9-]+)', [
+                'methods' => 'PATCH',
+                'callback' => [$this, 'update_invoice'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+
+        add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/invoices/status/(?P<slug>[a-z0-9-]+)', [
                 'methods' => 'PATCH',
                 'callback' => [$this, 'update_invoice_status'],
@@ -62,7 +70,6 @@ class Invoice
     {
         $stripe_customer_id = $request['stripe_customer_id'];
         $selections = $request['selections'];
-        $client_id = $request['client_id'];
 
         if (empty($stripe_customer_id)) {
             return new WP_Error('invalid_customer_id', 'Customer ID is required', array('status' => 400));
@@ -98,7 +105,6 @@ class Invoice
             $table_name,
             [
                 'status' => $status,
-                'client_id' => $client_id,
                 'stripe_customer_id' => $stripe_customer_id,
                 'stripe_invoice_id' => $stripe_invoice_id,
                 'selections' => $serialized_selections,
@@ -143,7 +149,6 @@ class Invoice
             'id' => $invoice->id,
             'created_at' => $invoice->created_at,
             'status' => $invoice->status,
-            'client_id' => $invoice->client_id,
             'stripe_customer_id' => $invoice->stripe_customer_id,
             'stripe_invoice_id' => $invoice->stripe_invoice_id,
             'payment_intent_id' => $invoice->payment_intent_id,
@@ -219,7 +224,6 @@ class Invoice
         global $wpdb;
 
         $stripe_invoice_id = $request->get_param('slug');
-        $client_id = $request['client_id'];
         $stripe_customer_id = $request['stripe_customer_id'];
 
         $status_code = 200;
@@ -242,7 +246,7 @@ class Invoice
         $amount_remaining = $invoice->amount_remaining;
 
 
-        if ($client_id === '' || $payment_intent_id === '' || $client_secret === '') {
+        if ($payment_intent_id === '' || $client_secret === '') {
             return new WP_Error('data_missing', 'Required data is missing', array('status' => 400));
         }
 
@@ -258,7 +262,7 @@ class Invoice
             'amount_remaining' => $amount_remaining,
         );
         $where = array(
-            'client_id' => $client_id,
+            'stripe_invoice_id' => $stripe_invoice_id,
             'stripe_customer_id' => $stripe_customer_id
         );
 
@@ -277,16 +281,72 @@ class Invoice
         return new WP_REST_Response($payment_intent_data);
     }
 
+    function update_invoice(WP_REST_Request $request)
+    {
+        global $wpdb;
+        $id = $request->get_param('slug');
+
+        $stripe_customer_id = $request['stripe_customer_id'];
+        $stripe_invoice_id = $request['stripe_invoice_id'];
+
+        if ($stripe_customer_id === '') {
+            return new WP_Error('data_missing', 'Required Stripe Customer ID is missing', array('status' => 400));
+        }
+
+        $stripe_invoice = $this->stripeClient->invoices->retrieve(
+            $stripe_invoice_id,
+            []
+        );
+
+        $payment_intent = $stripe_invoice->payment_intent;
+
+        $status = $stripe_invoice->status;
+        $payment_intent_id = $payment_intent->id;
+        $client_secret = $payment_intent->client_secret;
+        $due_date = $stripe_invoice->due_date;
+        $amount_due = $stripe_invoice->amount_due;
+        $subtotal = $stripe_invoice->subtotal;
+        $tax = $stripe_invoice->tax;
+        $amount_remaining = $stripe_invoice->amount_remaining;
+
+        $table_name = 'orb_invoice';
+        $data = array(
+            'status' => $status,
+            'payment_intent_id' => $payment_intent_id,
+            'client_secret' => $client_secret,
+            'status' => $status,
+            'due_date' => $due_date,
+            'amount_due' => $amount_due,
+            'subtotal' => $subtotal,
+            'tax' => $tax,
+            'amount_remaining' => $amount_remaining,
+        );
+        $where = array(
+            'id' => $id,
+            'stripe_customer_id' => $stripe_customer_id,
+            'stripe_invoice_id' => $stripe_invoice_id,
+        );
+
+        $updated = $wpdb->update($table_name, $data, $where);
+
+        if ($updated === false) {
+            $error_message = $wpdb->last_error ?: 'Invoice not found';
+            return new WP_Error('invoice_not_found', $error_message, array('status' => 404));
+        }
+
+        return new WP_REST_Response($status, 200);
+    }
+
     function update_invoice_status(WP_REST_Request $request)
     {
         global $wpdb;
         $id = $request->get_param('slug');
 
-        $client_id = $request['client_id'];
+        $stripe_customer_id = $request['stripe_customer_id'];
         $stripe_invoice_id = $request['stripe_invoice_id'];
 
-        if ($client_id === '') {
-            return new WP_Error('data_missing', 'Required data is missing', array('status' => 400));
+        if ($stripe_customer_id === '') {
+            return new WP_Error('data_missing', 'Required Stripe Customer ID is missing', array('status' => 400));
         }
 
         $stripe_invoice = $this->stripeClient->invoices->retrieve(
@@ -302,7 +362,7 @@ class Invoice
         );
         $where = array(
             'id' => $id,
-            'client_id' => $client_id,
+            'stripe_customer_id' => $stripe_customer_id,
             'stripe_invoice_id' => $stripe_invoice_id,
         );
 

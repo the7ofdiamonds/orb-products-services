@@ -64,7 +64,6 @@ class Tables
             id INT NOT NULL AUTO_INCREMENT,
             created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             status VARCHAR(255) DEFAULT NULL,
-            client_id VARCHAR(255) DEFAULT NULL,
             stripe_customer_id VARCHAR(255) DEFAULT NULL,
             stripe_invoice_id VARCHAR(255) DEFAULT NULL,
             payment_intent_id VARCHAR(255) DEFAULT NULL,
@@ -91,11 +90,14 @@ class Tables
         id INT NOT NULL AUTO_INCREMENT,
         created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
         invoice_id VARCHAR(255) DEFAULT NULL,
+        stripe_customer_id VARCHAR(255) DEFAULT NULL,
         payment_method_id VARCHAR(255) DEFAULT NULL,
         amount_paid VARCHAR(255) DEFAULT NULL,
         payment_date VARCHAR(255) DEFAULT NULL,
         balance VARCHAR(255) DEFAULT NULL,
         payment_method VARCHAR(255) DEFAULT NULL,
+        first_name VARCHAR(255) DEFAULT NULL,
+        last_name VARCHAR(255) DEFAULT NULL,
         PRIMARY KEY (id)
     ) $charset_collate;";
 

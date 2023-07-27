@@ -25,12 +25,10 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 const CardPaymentComponent = () => {
   const { id } = useParams();
 
-  const { client_id, first_name, last_name } = useSelector(
-    (state) => state.client
-  );
+  const { first_name, last_name, stripe_customer_id } = useSelector((state) => state.client);
   const { stripe_invoice_id, status, amount_paid, remaining_balance } =
     useSelector((state) => state.invoice);
-  const { loading, error, client_secret, payment_intent } = useSelector(
+  const { loading, error, client_secret, payment_intent_id } = useSelector(
     (state) => state.payment
   );
   const { receipt_id, payment_method, brand, last4 } = useSelector(
@@ -61,10 +59,12 @@ const CardPaymentComponent = () => {
       dispatch(getClient(user_email));
     }
   }, [dispatch, user_email]);
-  
+
   useEffect(() => {
-    dispatch(getInvoice(id));
-  }, [dispatch, id]);
+    if (stripe_customer_id) {
+      dispatch(getInvoice(id, stripe_customer_id));
+    }
+  }, [dispatch, id, stripe_customer_id]);
 
   useEffect(() => {
     if (stripe_invoice_id) {
@@ -73,10 +73,10 @@ const CardPaymentComponent = () => {
   }, [dispatch, stripe_invoice_id]);
 
   useEffect(() => {
-    if (payment_intent) {
-      dispatch(getPaymentIntent());
+    if (payment_intent_id) {
+      dispatch(getPaymentIntent(payment_intent_id));
     }
-  }, [dispatch, payment_intent]);
+  }, [dispatch, payment_intent_id]);
 
   useEffect(() => {
     if (status) {

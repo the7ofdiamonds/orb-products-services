@@ -34,6 +34,16 @@ class Clients
             register_rest_route('orb/v1', '/users/clients', array(
                 'methods' => 'GET',
                 'callback' => array($this, 'get_client'),
+                'args' => [
+                    'user_email' => [
+                        'required' => true, // Set to true if this parameter is mandatory
+                        'validate_callback' => function ($param, $request, $key) {
+                            // Add any custom validation for the 'stripe_customer_id' here
+                            // Return true if validation passes, or WP_Error object if it fails
+                            return true;
+                        },
+                    ],
+                ],
                 'permission_callback' => '__return_true',
             ));
         });
@@ -59,6 +69,7 @@ class Clients
             $country = $request['country'];
 
             $user = get_user_by('email', $user_email);
+            $user_id = $user->ID;
 
             if (is_wp_error($user)) {
                 $error_message = $user->get_error_message();
@@ -73,8 +84,8 @@ class Clients
                 return rest_ensure_response('There was an error updating the users last name.');
             }
 
-            update_user_meta($user->ID, 'first_name', sanitize_text_field($first_name));
-            update_user_meta($user->ID, 'last_name', sanitize_text_field($last_name));
+            update_user_meta($user_id, 'first_name', sanitize_text_field($first_name));
+            update_user_meta($user_id, 'last_name', sanitize_text_field($last_name));
 
             if (!$company_name) {
                 $company_name = $first_name . ' ' . $last_name;
@@ -99,7 +110,7 @@ class Clients
                     ]
                 ],
                 'metadata' => [
-                    'user_id' => $user->ID,
+                    'user_id' => $user_id,
                     'client_name' => $first_name . ' ' . $last_name
                 ]
             ]);
@@ -112,7 +123,7 @@ class Clients
             $result = $wpdb->insert(
                 $table_name,
                 [
-                    'user_id' => $user->ID,
+                    'user_id' => $user_id,
                     'stripe_customer_id' => $stripe_customer_id,
                     "first_name" => $first_name,
                     "last_name" => $last_name,
@@ -139,7 +150,7 @@ class Clients
 
     function get_client(WP_REST_Request $request)
     {
-        $user_email = $request['user_email'];
+        $user_email = urldecode($request->get_param('user_email'));
 
         $user = get_user_by('email', $user_email);
 
@@ -154,9 +165,9 @@ class Clients
             )
         );
 
-        // if ($client === null) {
-        //     return new WP_Error('client_not_found', 'Client not found', array('status' => 404));
-        // }
+        if ($client === null) {
+            return new WP_Error('client_not_found', 'Client not found', array('status' => 404));
+        }
 
         $client_data = [
             "id" => $client->id,

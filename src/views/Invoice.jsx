@@ -2,6 +2,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { getClient } from '../controllers/clientSlice.js';
+import { getStripeCustomer } from '../controllers/customerSlice.js';
 import {
   getStripeInvoice,
   getInvoice,
@@ -15,41 +17,52 @@ import {
 function InvoiceComponent() {
   const { id } = useParams();
 
+  const { name, address_line_1, address_line_2, city, state, zipcode, phone } =
+    useSelector((state) => state.customer);
+  const { user_email, first_name, last_name, stripe_customer_id } = useSelector(
+    (state) => state.client
+  );
   const {
     loading,
     error,
+    status,
     stripe_invoice_id,
     tax_id,
     company_name,
-    first_name,
-    last_name,
-    address_line_1,
-    address_line_2,
-    city,
-    state,
-    zipcode,
-    phone,
-    user_email,
     date_due,
     amount_due,
     selections,
     subtotal,
     tax,
   } = useSelector((state) => state.invoice);
-  const { payment_intent, client_secret } = useSelector(
+  const { payment_intent_id, client_secret } = useSelector(
     (state) => state.payment
   );
-  const amountDue = amount_due / 100;
-  const subTotal = subtotal / 100;
-  const Tax = tax / 100;
-  const grandTotal = amount_due / 100;
+  const amountDue = amount_due;
+  const subTotal = subtotal;
+  const Tax = tax;
+  const grandTotal = amount_due;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getInvoice(id));
-  }, [dispatch, id]);
+    if (user_email) {
+      dispatch(getClient(user_email));
+    }
+  }, [dispatch, user_email]);
+
+  useEffect(() => {
+    if (stripe_customer_id) {
+      dispatch(getStripeCustomer());
+    }
+  }, [dispatch, stripe_customer_id]);
+
+  useEffect(() => {
+    if (stripe_customer_id) {
+      dispatch(getInvoice(id, stripe_customer_id));
+    }
+  }, [dispatch, id, stripe_customer_id]);
 
   useEffect(() => {
     if (stripe_invoice_id) {
@@ -58,31 +71,44 @@ function InvoiceComponent() {
   }, [dispatch, stripe_invoice_id]);
 
   const handleClick = () => {
-    if (stripe_invoice_id) {
+    if (status === 'paid') {
+      navigate(`/services/receipt/${id}`);
+    } else if (status === 'open' && client_secret) {
+      navigate(`/services/payment/${id}`);
+    } else if (stripe_invoice_id) {
       dispatch(finalizeInvoice());
     }
   };
 
   useEffect(() => {
-    if (payment_intent) {
-      dispatch(getPaymentIntent(payment_intent));
+    if (payment_intent_id) {
+      dispatch(getPaymentIntent(payment_intent_id));
     }
-  }, [dispatch, payment_intent]);
+  }, [payment_intent_id, dispatch]);
 
   useEffect(() => {
-    if (payment_intent && client_secret) {
+    if (status && payment_intent_id && client_secret) {
       dispatch(updateInvoice());
     }
-  }, [dispatch, payment_intent, client_secret]);
+  }, [status, payment_intent_id, client_secret, dispatch]);
 
   useEffect(() => {
     if (client_secret) {
       navigate(`/services/payment/${id}`);
     }
-  }, [dispatch, client_secret, navigate, id]);
+  }, [client_secret, navigate, id]);
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <main className="error">
+        <div className="status-bar card">
+          <span className="error">
+            You have either entered the wrong Invoice ID, or you are not the
+            client to whom this invoice belongs.
+          </span>
+        </div>
+      </main>
+    );
   }
 
   if (loading) {

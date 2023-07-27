@@ -21,13 +21,6 @@ const initialState = {
   payment_date: '',
 };
 
-export const clientToInvoice = (selections) => {
-  return {
-    type: 'invoice/clientToInvoice',
-    payload: selections
-  };
-};
-
 export const quoteToInvoice = (selections) => {
   return {
     type: 'invoice/quoteToInvoice',
@@ -36,11 +29,10 @@ export const quoteToInvoice = (selections) => {
 };
 
 export const createInvoice = createAsyncThunk('invoice/createInvoice', async (_, { getState }) => {
-  const { client_id, stripe_customer_id } = getState().client;
+  const { stripe_customer_id } = getState().client;
   const { selections } = getState().invoice;
 
   const invoice = {
-    client_id: client_id,
     stripe_customer_id: stripe_customer_id,
     selections: selections
   };
@@ -53,29 +45,24 @@ export const createInvoice = createAsyncThunk('invoice/createInvoice', async (_,
   }
 });
 
-export const getInvoice = createAsyncThunk('invoice/getInvoice', async (id) => {
+export const getInvoice = createAsyncThunk('invoice/getInvoice', async (id, { getState }) => {
+  const { stripe_customer_id } = getState().client;
+
   try {
-    const response = await axios.get(`/wp-json/orb/v1/invoices/${id}`);
+    const response = await axios.get(`/wp-json/orb/v1/invoices/${id}`, { params: stripe_customer_id });
     return response.data;
   } catch (error) {
     throw new Error(error.message);
   }
 });
 
-export const updateInvoice = createAsyncThunk('invoice/updateInvoice', async (_, status, paymentIntentID, clientSecret, { getState }) => {
-  const { client_id } = getState().client;
-  const { invoice_id, due_date, amount_due, subtotal, tax, amount_remaining } = getState().invoice;
+export const updateInvoice = createAsyncThunk('invoice/updateInvoice', async (_, { getState }) => {
+  const { stripe_customer_id } = getState().client;
+  const { invoice_id, stripe_invoice_id } = getState().invoice;
 
   const update = {
-    status: status,
-    client_id: client_id,
-    payment_intent_id: paymentIntentID,
-    client_secret: clientSecret,
-    due_date: due_date,
-    amount_due: amount_due,
-    subtotal: subtotal,
-    tax: tax,
-    amount_remaining: amount_remaining
+    stripe_customer_id: stripe_customer_id,
+    stripe_invoice_id: stripe_invoice_id
   };
 
   try {
@@ -141,24 +128,6 @@ export const invoiceSlice = createSlice({
   name: 'invoice',
   initialState,
   reducers: {
-    updateClientID: (state, action) => {
-      state.client_id = action.payload;
-    },
-    clientToInvoice: (state, action) => {
-      state.user_email = action.payload.user_email;
-      state.phone = action.payload.phone;
-      state.company_name = action.payload.company_name;
-      state.tax_id = action.payload.tax_id;
-      state.first_name = action.payload.first_name;
-      state.last_name = action.payload.last_name;
-      state.address_line_1 = action.payload.address_line_1;
-      state.address_line_2 = action.payload.address_line_2;
-      state.city = action.payload.city;
-      state.state = action.payload.state;
-      state.zipcode = action.payload.zipcode;
-      state.country = action.payload.country;
-      state.stripe_customer_id = action.payload.stripe_customer_id;
-    },
     quoteToInvoice: (state, action) => {
       state.selections = action.payload;
     },
@@ -242,6 +211,7 @@ export const invoiceSlice = createSlice({
         state.amount_remaining = action.payload.amount_remaining;
         state.payment_date = action.payload.status_transitions.paid_at;
         state.stripe_customer_id = action.payload.customer;
+        state.payment_intent_id = action.payload.payment_intent;
       })
       .addCase(getStripeInvoice.rejected, (state, action) => {
         state.loading = false;
@@ -250,5 +220,5 @@ export const invoiceSlice = createSlice({
   }
 });
 
-export const { updateClientID, updateDate, updateTime } = invoiceSlice.actions;
+export const { updateDate, updateTime } = invoiceSlice.actions;
 export default invoiceSlice;

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { addClient } from '../../controllers/clientSlice';
+import { getClient, addClient } from '../../controllers/clientSlice';
 import {
   updateEmail,
   updatePhone,
@@ -17,10 +17,6 @@ import {
   updateZipcode,
   addStripeCustomer,
 } from '../../controllers/customerSlice.js';
-import {
-  clientToInvoice,
-  updateClientID,
-} from '../../controllers/invoiceSlice.js';
 
 function ClientComponent() {
   const dispatch = useDispatch();
@@ -31,15 +27,7 @@ function ClientComponent() {
     'To receive a quote, please fill out the form above with the required information.'
   );
 
-  const user_email = sessionStorage.getItem('user_email');
-
-  useEffect(() => {
-    if (user_email) {
-      dispatch(updateEmail(user_email));
-    }
-  }, [dispatch, user_email]);
-
-  const { client_id, stripe_customer_id } = useSelector(
+  const { user_email, client_id, stripe_customer_id } = useSelector(
     (state) => state.client
   );
   const {
@@ -101,10 +89,16 @@ function ClientComponent() {
   const [isFomCompleted, setIsFormCompleted] = useState(false);
 
   useEffect(() => {
-    if (client_id > 0) {
-      dispatch(updateClientID(client_id));
+    if (user_email) {
+      dispatch(getClient(user_email));
     }
-  }, [dispatch, client_id]);
+  }, [dispatch, user_email]);
+
+  useEffect(() => {
+    if (client_id && stripe_customer_id) {
+      navigate('/services/quote');
+    }
+  }, [client_id, navigate]);
 
   useEffect(() => {
     if (first_name && last_name && zipcode) {

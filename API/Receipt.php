@@ -29,6 +29,16 @@ class Receipt
             register_rest_route('orb/v1', '/receipt/(?P<slug>[a-z0-9-]+)', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_receipt'],
+                'args' => [
+                    'stripe_customer_id' => [
+                        'required' => true, // Set to true if this parameter is mandatory
+                        'validate_callback' => function ($param, $request, $key) {
+                            // Add any custom validation for the 'stripe_customer_id' here
+                            // Return true if validation passes, or WP_Error object if it fails
+                            return true;
+                        },
+                    ],
+                ],
                 'permission_callback' => '__return_true',
             ]);
         });
@@ -38,9 +48,12 @@ class Receipt
     {
         global $wpdb;
 
+        $stripe_customer_id = $request['stripe_customer_id'];
         $invoice_id = $request['invoice_id'];
         $stripe_invoice_id = $request['stripe_invoice_id'];
         $payment_method = $request['payment_method'];
+        $first_name = $request['first_name'];
+        $last_name = $request['last_name'];
 
         $stripe_invoice = $this->stripeClient->invoices->retrieve(
             $stripe_invoice_id,
@@ -64,11 +77,14 @@ class Receipt
             $table_name,
             [
                 'invoice_id' => $invoice_id,
+                'stripe_customer_id' => $stripe_customer_id,
                 'payment_method_id' => $payment_method_id,
                 'amount_paid' => $amount_paid,
                 'payment_date' => $payment_date,
                 'balance' => $balance,
-                'payment_method' => $payment_method
+                'payment_method' => $payment_method,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
             ]
         );
 
@@ -84,17 +100,24 @@ class Receipt
 
     function get_receipt(WP_REST_Request $request)
     {
-        global $wpdb;
         $id = $request->get_param('slug');
+        $stripe_customer_id = $request->get_param('stripe_customer_id');
 
         if (empty($id)) {
-            return new WP_Error('invalid_receipt_id', 'Invalid receipt ID', array('status' => 400));
+            return new WP_Error('invalid_receipt_id', 'Invalid Receipt ID', array('status' => 400));
         }
+
+        if (empty($stripe_customer_id)) {
+            return new WP_Error('invalid_stripe_customer_id', 'Invalid Stripe Customer ID', array('status' => 400));
+        }
+
+        global $wpdb;
 
         $receipt = $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT * FROM orb_receipt WHERE id = %d",
-                $id
+                "SELECT * FROM orb_receipt WHERE id = %d AND stripe_customer_id = %s",
+                $id,
+                $stripe_customer_id
             )
         );
 
@@ -106,12 +129,14 @@ class Receipt
             'id' => $receipt->id,
             'created_at' => $receipt->created_at,
             'invoice_id' => $receipt->invoice_id,
+            'stripe_customer_id' => $receipt->stripe_customer_id,
             'payment_method_id' => $receipt->payment_method_id,
             'amount_paid' => $receipt->amount_paid,
             'payment_date' => $receipt->payment_date,
-            'payment_method' => $receipt->payment_method,
             'balance' => $receipt->balance,
-            'payment_method' => $receipt->payment_method
+            'payment_method' => $receipt->payment_method,
+            'first_name' => $receipt->first_name,
+            'last_name' => $receipt->last_name,
         ];
 
         return new WP_REST_Response($receipt_data, 200);

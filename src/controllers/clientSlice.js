@@ -6,18 +6,18 @@ const initialState = {
     error: '',
     client_id: '',
     stripe_customer_id: '',
-    user_email: '',
+    user_email: sessionStorage.getItem('user_email'),
     first_name: '',
     last_name: '',
 };
 
 export const addClient = createAsyncThunk('client/addClient', async (_, { getState }) => {
+    const { user_email } = getState().client;
     const {
         company_name,
         tax_id,
         first_name,
         last_name,
-        user_email,
         phone,
         address_line_1,
         address_line_2,
@@ -50,12 +50,13 @@ export const addClient = createAsyncThunk('client/addClient', async (_, { getSta
     }
 });
 
-export const getClient = createAsyncThunk('client/getClient', async (user_email) => {
-    const client_data = {
-        user_email: user_email
-    };
+export const getClient = createAsyncThunk('client/getClient', async (_, { getState }) => {
+    const { user_email } = getState().client;
+
     try {
-        const response = await axios.get('/wp-json/orb/v1/users/clients', client_data);
+        const response = await axios.get('/wp-json/orb/v1/users/clients', {
+            params: { user_email } 
+        });
         return response.data;
     } catch (error) {
         throw new Error(error.message);
@@ -85,10 +86,11 @@ export const clientSlice = createSlice({
                 state.error = null
             })
             .addCase(getClient.fulfilled, (state, action) => {
-                state.loading = false
+                state.loading = false;
+                state.error = null;
+                state.client_id = action.payload.id
                 state.first_name = action.payload.first_name
                 state.last_name = action.payload.last_name
-                state.client_id = action.payload.client_id
                 state.stripe_customer_id = action.payload.stripe_customer_id
             })
             .addCase(getClient.rejected, (state, action) => {
