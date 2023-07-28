@@ -20,13 +20,15 @@ const initialState = {
 };
 
 export const addStripeCustomer = createAsyncThunk('customer/addStripeCustomer', async (_, { getState }) => {
-    const { client_id } = getState().client;
+    const {
+        client_id,
+        user_email
+    } = getState().client;
     const {
         company_name,
         tax_id,
         first_name,
         last_name,
-        user_email,
         phone,
         address_line_1,
         address_line_2,
@@ -130,7 +132,7 @@ export const customerSlice = createSlice({
             .addCase(getStripeCustomer.fulfilled, (state, action) => {
                 state.loading = false
                 state.stripe_customer_id = action.payload.id
-                state.name = action.payload.name
+                state.company_name = action.payload.name
                 state.address_line_1 = action.payload.address.line1
                 state.address_line_2 = action.payload.address.line2
                 state.city = action.payload.address.city

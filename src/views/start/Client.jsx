@@ -45,6 +45,9 @@ function ClientComponent() {
     zipcode,
     country,
   } = useSelector((state) => state.customer);
+  const { status, invoice_id, client_secret } = useSelector(
+    (state) => state.invoice
+  );
 
   const handleCompanyNameChange = (event) => {
     dispatch(updateCompanyName(event.target.value));
@@ -92,13 +95,13 @@ function ClientComponent() {
     if (user_email) {
       dispatch(getClient(user_email));
     }
-  }, [dispatch, user_email]);
+  }, [user_email, dispatch]);
 
   useEffect(() => {
-    if (client_id && stripe_customer_id) {
+    if (stripe_customer_id) {
       navigate('/services/quote');
     }
-  }, [client_id, navigate]);
+  }, [stripe_customer_id, navigate]);
 
   useEffect(() => {
     if (first_name && last_name && zipcode) {
@@ -106,28 +109,26 @@ function ClientComponent() {
     }
   }, [first_name, last_name, zipcode]);
 
-  const handleClick = () => {
+  useEffect(() => {
     if (isFomCompleted) {
       dispatch(addClient());
-    } else {
-      if (first_name === '') {
-        setMessage('Please provide a first name.');
-        setMessageType('error');
-      } else if (last_name === '') {
-        setMessage('Please provide last name.');
-        setMessageType('error');
-      } else if (zipcode === '') {
-        setMessage('Please provide zipcode.');
-        setMessageType('error');
-      }
     }
-  };
+  }, [isFomCompleted, dispatch]);
 
-  useEffect(() => {
-    if (client_id && stripe_customer_id) {
+  const handleClick = () => {
+    if (first_name === '') {
+      setMessage('Please provide a first name.');
+      setMessageType('error');
+    } else if (last_name === '') {
+      setMessage('Please provide last name.');
+      setMessageType('error');
+    } else if (zipcode === '') {
+      setMessage('Please provide zipcode.');
+      setMessageType('error');
+    } else if (client_id && stripe_customer_id) {
       navigate('/services/quote');
     }
-  }, [client_id, stripe_customer_id, navigate]);
+  };
 
   if (error) {
     return <div>Error: {error}</div>;

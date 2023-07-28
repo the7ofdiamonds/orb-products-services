@@ -3,22 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchServices } from '../controllers/servicesSlice.js';
+import { getClient } from '../controllers/clientSlice.js';
 import {
   addSelections,
   calculateSelections,
 } from '../controllers/quoteSlice.js';
-import {
-  quoteToInvoice,
-  createInvoice,
-} from '../controllers/invoiceSlice.js';
+import { quoteToInvoice, createInvoice } from '../controllers/invoiceSlice.js';
 
 function QuoteComponent() {
   const { loading, error, services } = useSelector((state) => state.services);
-  const { stripe_customer_id } = useSelector((state) => state.client);
-  const { subtotal, selections } = useSelector((state) => state.quote);
-  const { stripe_invoice_id, invoice_id } = useSelector(
-    (state) => state.invoice
+  const { user_email, stripe_customer_id } = useSelector(
+    (state) => state.client
   );
+  const { total, selections } = useSelector((state) => state.quote);
+  const { invoice_id } = useSelector((state) => state.invoice);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,8 +24,16 @@ function QuoteComponent() {
   const [checkedItems, setCheckedItems] = useState([]);
 
   useEffect(() => {
-    dispatch(fetchServices());
-  }, [dispatch]);
+    if (user_email) {
+      dispatch(getClient(user_email));
+    }
+  }, [user_email, dispatch]);
+
+  useEffect(() => {
+    if (stripe_customer_id) {
+      dispatch(fetchServices());
+    }
+  }, [stripe_customer_id, dispatch]);
 
   const handleCheckboxChange = (event, price_id, description, cost) => {
     const isChecked = event.target.checked;
@@ -50,9 +56,14 @@ function QuoteComponent() {
     dispatch(calculateSelections(services.cost));
   }, [dispatch, services.cost, checkedItems]);
 
-  const handleClick = () => {
-    if (stripe_customer_id && subtotal > 0) {
+  useEffect(() => {
+    if (selections) {
       dispatch(quoteToInvoice(selections));
+    }
+  }, [selections, dispatch]);
+
+  const handleClick = () => {
+    if (stripe_customer_id && total > 0) {
       dispatch(createInvoice());
     }
   };
@@ -64,7 +75,15 @@ function QuoteComponent() {
   }, [navigate, invoice_id]);
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <main className="error">
+        <div className="status-bar card">
+          <span className="error">
+            There was an error loading the available services at this time.
+          </span>
+        </div>
+      </main>
+    );
   }
 
   if (loading) {
@@ -100,9 +119,16 @@ function QuoteComponent() {
                           className="input selection feature-selection"
                           type="checkbox"
                           name="quote[checkbox][]"
-                          checked={checkedItems.some((item) => item.price_id === price_id)}
+                          checked={checkedItems.some(
+                            (item) => item.price_id === price_id
+                          )}
                           onChange={(event) =>
-                            handleCheckboxChange(event, price_id, description, cost)
+                            handleCheckboxChange(
+                              event,
+                              price_id,
+                              description,
+                              cost
+                            )
                           }
                         />
                       </td>
@@ -130,14 +156,14 @@ function QuoteComponent() {
           <tfoot>
             <tr>
               <th colSpan={2}>
-                <h4 className="subtotal-label">SUBTOTAL</h4>
+                <h4 className="subtotal-label">TOTAL</h4>
               </th>
               <th>
                 <h4 className="subtotal">
                   {new Intl.NumberFormat('us', {
                     style: 'currency',
                     currency: 'USD',
-                  }).format(subtotal)}
+                  }).format(total)}
                 </h4>
               </th>
             </tr>

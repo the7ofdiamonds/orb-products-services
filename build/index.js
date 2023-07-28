@@ -9497,14 +9497,14 @@ const addStripeCustomer = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.creat
   getState
 }) => {
   const {
-    client_id
+    client_id,
+    user_email
   } = getState().client;
   const {
     company_name,
     tax_id,
     first_name,
     last_name,
-    user_email,
     phone,
     address_line_1,
     address_line_2,
@@ -9602,7 +9602,7 @@ const customerSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
     }).addCase(getStripeCustomer.fulfilled, (state, action) => {
       state.loading = false;
       state.stripe_customer_id = action.payload.id;
-      state.name = action.payload.name;
+      state.company_name = action.payload.name;
       state.address_line_1 = action.payload.address.line1;
       state.address_line_2 = action.payload.address.line2;
       state.city = action.payload.address.city;
@@ -9752,14 +9752,14 @@ const updateInvoiceStatus = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.cre
   getState
 }) => {
   const {
-    client_id
+    stripe_customer_id
   } = getState().client;
   const {
     invoice_id,
     stripe_invoice_id
   } = getState().invoice;
   const update = {
-    client_id: client_id,
+    stripe_customer_id: stripe_customer_id,
     stripe_invoice_id: stripe_invoice_id
   };
   try {
@@ -9986,7 +9986,7 @@ const initialState = {
   loading: false,
   error: '',
   selections: [],
-  subtotal: ''
+  total: ''
 };
 const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
   name: 'quote',
@@ -9996,20 +9996,16 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
       state.selections = action.payload;
     },
     calculateSelections: state => {
-      let subtotal = 0.00;
+      let total = 0.00;
       state.selections.forEach(item => {
         const serviceCost = parseFloat(item.cost);
         if (isNaN(serviceCost)) {
-          subtotal += 0;
+          total += 0;
         } else {
-          subtotal += serviceCost;
+          total += serviceCost;
         }
       });
-      let tax = subtotal * 0.33;
-      let grandTotal = subtotal + tax;
-      state.subtotal = subtotal;
-      state.tax = tax;
-      state.grand_total = grandTotal;
+      state.total = total;
     }
   }
 });
@@ -10791,11 +10787,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _controllers_servicesSlice_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/servicesSlice.js */ "./src/controllers/servicesSlice.js");
-/* harmony import */ var _controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/quoteSlice.js */ "./src/controllers/quoteSlice.js");
-/* harmony import */ var _controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../controllers/invoiceSlice.js */ "./src/controllers/invoiceSlice.js");
+/* harmony import */ var _controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/clientSlice.js */ "./src/controllers/clientSlice.js");
+/* harmony import */ var _controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../controllers/quoteSlice.js */ "./src/controllers/quoteSlice.js");
+/* harmony import */ var _controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../controllers/invoiceSlice.js */ "./src/controllers/invoiceSlice.js");
+
 
 
 
@@ -10810,22 +10808,29 @@ function QuoteComponent() {
     services
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.services);
   const {
+    user_email,
     stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
-    subtotal,
+    total,
     selections
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.quote);
   const {
-    stripe_invoice_id,
     invoice_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_6__.useNavigate)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useNavigate)();
   const [checkedItems, setCheckedItems] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    dispatch((0,_controllers_servicesSlice_js__WEBPACK_IMPORTED_MODULE_3__.fetchServices)());
-  }, [dispatch]);
+    if (user_email) {
+      dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_4__.getClient)(user_email));
+    }
+  }, [user_email, dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (stripe_customer_id) {
+      dispatch((0,_controllers_servicesSlice_js__WEBPACK_IMPORTED_MODULE_3__.fetchServices)());
+    }
+  }, [stripe_customer_id, dispatch]);
   const handleCheckboxChange = (event, price_id, description, cost) => {
     const isChecked = event.target.checked;
     setCheckedItems(prevItems => {
@@ -10842,15 +10847,19 @@ function QuoteComponent() {
     });
   };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_4__.addSelections)(checkedItems));
+    dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.addSelections)(checkedItems));
   }, [dispatch, checkedItems]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_4__.calculateSelections)(services.cost));
+    dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.calculateSelections)(services.cost));
   }, [dispatch, services.cost, checkedItems]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (selections) {
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.quoteToInvoice)(selections));
+    }
+  }, [selections, dispatch]);
   const handleClick = () => {
-    if (stripe_customer_id && subtotal > 0) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.quoteToInvoice)(selections));
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.createInvoice)());
+    if (stripe_customer_id && total > 0) {
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.createInvoice)());
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -10859,7 +10868,13 @@ function QuoteComponent() {
     }
   }, [navigate, invoice_id]);
   if (error) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Error: ", error);
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", {
+      className: "error"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "status-bar card"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "error"
+    }, "There was an error loading the available services at this time.")));
   }
   if (loading) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
@@ -10902,12 +10917,12 @@ function QuoteComponent() {
     colSpan: 2
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
     className: "subtotal-label"
-  }, "SUBTOTAL")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+  }, "TOTAL")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
     className: "subtotal"
   }, new Intl.NumberFormat('us', {
     style: 'currency',
     currency: 'USD'
-  }).format(subtotal))))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }).format(total))))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "INVOICE")));
 }
@@ -10953,9 +10968,7 @@ function ReceiptComponent() {
     id
   } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_9__.useParams)();
   const {
-    error,
-    first_name,
-    last_name,
+    user_email,
     stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
@@ -10968,6 +10981,7 @@ function ReceiptComponent() {
     phone
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.customer);
   const {
+    status,
     stripe_invoice_id,
     selections,
     subtotal,
@@ -10983,8 +10997,11 @@ function ReceiptComponent() {
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.payment);
   const {
     loading,
+    error,
     invoice_id,
-    payment_method
+    payment_method,
+    first_name,
+    last_name
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.receipt);
   const timestamp = payment_date * 1000;
   const paymentDate = new Date(timestamp);
@@ -10995,9 +11012,6 @@ function ReceiptComponent() {
   const amountPaid = amount_paid;
   const Balance = amount_remaining;
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
-  const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
-  const user_email = sessionStorage.getItem('user_email');
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (user_email) {
       dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.getClient)(user_email));
@@ -11010,7 +11024,7 @@ function ReceiptComponent() {
   }, [dispatch, stripe_customer_id]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_customer_id) {
-      dispatch((0,_controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_7__.getReceipt)(id, stripe_customer_id));
+      dispatch((0,_controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_7__.getReceipt)(id));
     }
   }, [dispatch, id, stripe_customer_id]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -11023,6 +11037,11 @@ function ReceiptComponent() {
       dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.getStripeInvoice)());
     }
   }, [dispatch, stripe_invoice_id]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (status) {
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.updateInvoiceStatus)());
+    }
+  }, [status, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (payment_intent_id) {
       dispatch((0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_6__.getPaymentIntent)(payment_intent_id));
@@ -11944,6 +11963,11 @@ function ClientComponent() {
     zipcode,
     country
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.customer);
+  const {
+    status,
+    invoice_id,
+    client_secret
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
   const handleCompanyNameChange = event => {
     dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateCompanyName)(event.target.value));
   };
@@ -11979,38 +12003,36 @@ function ClientComponent() {
     if (user_email) {
       dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.getClient)(user_email));
     }
-  }, [dispatch, user_email]);
+  }, [user_email, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (client_id && stripe_customer_id) {
+    if (stripe_customer_id) {
       navigate('/services/quote');
     }
-  }, [client_id, navigate]);
+  }, [stripe_customer_id, navigate]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (first_name && last_name && zipcode) {
       setIsFormCompleted(true);
     }
   }, [first_name, last_name, zipcode]);
-  const handleClick = () => {
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (isFomCompleted) {
       dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.addClient)());
-    } else {
-      if (first_name === '') {
-        setMessage('Please provide a first name.');
-        setMessageType('error');
-      } else if (last_name === '') {
-        setMessage('Please provide last name.');
-        setMessageType('error');
-      } else if (zipcode === '') {
-        setMessage('Please provide zipcode.');
-        setMessageType('error');
-      }
     }
-  };
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (client_id && stripe_customer_id) {
+  }, [isFomCompleted, dispatch]);
+  const handleClick = () => {
+    if (first_name === '') {
+      setMessage('Please provide a first name.');
+      setMessageType('error');
+    } else if (last_name === '') {
+      setMessage('Please provide last name.');
+      setMessageType('error');
+    } else if (zipcode === '') {
+      setMessage('Please provide zipcode.');
+      setMessageType('error');
+    } else if (client_id && stripe_customer_id) {
       navigate('/services/quote');
     }
-  }, [client_id, stripe_customer_id, navigate]);
+  };
   if (error) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Error: ", error);
   }

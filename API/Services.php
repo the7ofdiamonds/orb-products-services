@@ -2,9 +2,6 @@
 
 namespace ORB_Services\API;
 
-use WP_REST_Request;
-use WP_Error;
-use WP_REST_Response;
 use WP_Query;
 
 class Services
@@ -20,7 +17,7 @@ class Services
         });
     }
 
-    function get_services(WP_REST_Request $request)
+    function get_services()
     {
         $args = array(
             'post_type' => 'services',
@@ -47,9 +44,9 @@ class Services
                 );
             }
 
-            return new WP_REST_Response($post_data, 200);
+            return rest_ensure_response($post_data);
         } else {
-            return new WP_Error('post_not_found', 'No service posts found', array('status' => 404));
+            return rest_ensure_response('No service posts found');
         }
     }
 }

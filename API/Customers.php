@@ -3,24 +3,16 @@
 namespace ORB_Services\API;
 
 use WP_REST_Request;
-use WP_REST_Response;
-use WP_Error;
 
 use Stripe\Exception\ApiErrorException;
 
-require ORB_SERVICES . 'vendor/autoload.php';
-require_once ABSPATH . 'wp-load.php';
-
 class Customers
 {
-    private $stripeSecretKey;
     private $stripeClient;
 
-    public function __construct()
+    public function __construct($stripeClient)
     {
-        $this->stripeSecretKey = $_ENV['STRIPE_SECRET_KEY'];
-        \Stripe\Stripe::setApiKey($this->stripeSecretKey);
-        $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
+        $this->stripeClient = $stripeClient;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/stripe/customers', [
@@ -41,9 +33,6 @@ class Customers
 
     public function add_stripe_customer(WP_REST_Request $request)
     {
-        $status_code = 200;
-        $error_message = '';
-
         try {
             $client_id = $request['client_id'];
             $company_name = $request['company_name'];
@@ -87,57 +76,25 @@ class Customers
                 ]
             ]);
 
-            return new WP_REST_Response($customer->id, $status_code);
+            return rest_ensure_response($customer->id);
         } catch (ApiErrorException $e) {
             return rest_ensure_response($e);
         }
-
-        $data = array(
-            'status' => $status_code,
-            'message' => $error_message,
-        );
-
-        return new WP_Error('rest_error', $error_message, $data);
     }
 
     public function get_stripe_customer(WP_REST_Request $request)
     {
-        $status_code = 200;
-        $error_message = '';
-
         $customer_id = $request->get_param('slug');
 
         try {
-
             $customer = $this->stripeClient->customers->retrieve(
                 $customer_id,
                 []
             );
 
-            return new WP_REST_Response($customer, $status_code);
-        } catch (\Stripe\Exception\InvalidRequestException $e) {
-            // Handle specific InvalidRequestException
-            $error_message = 'Invalid request. Please check your input.';
-            $status_code = 400;
-        } catch (\Stripe\Exception\AuthenticationException $e) {
-            // Handle specific AuthenticationException
-            $error_message = 'Authentication failed. Please check your API credentials.';
-            $status_code = 401;
-        } catch (\Stripe\Exception\ApiConnectionException $e) {
-            // Handle specific ApiConnectionException
-            $error_message = 'Network error occurred. Please try again later.';
-            $status_code = 500;
-        } catch (\Exception $e) {
-            // Handle any other generic exceptions
-            $error_message = 'An error occurred while creating the payment intent.';
-            $status_code = 500;
+            return rest_ensure_response($customer);
+        } catch (ApiErrorException $e) {
+            return rest_ensure_response($e);
         }
-
-        $data = array(
-            'status' => $status_code,
-            'message' => $error_message,
-        );
-
-        return new WP_Error('rest_error', $error_message, $data);
     }
 }

@@ -4,7 +4,7 @@ const initialState = {
   loading: false,
   error: '',
   selections: [],
-  subtotal: '',
+  total: '',
 };
 
 export const quoteSlice = createSlice({
@@ -15,24 +15,19 @@ export const quoteSlice = createSlice({
       state.selections = action.payload;
     },
     calculateSelections: (state) => {
-      let subtotal = 0.00;
+      let total = 0.00;
 
       state.selections.forEach((item) => {
         const serviceCost = parseFloat(item.cost);
 
         if (isNaN(serviceCost)) {
-          subtotal += 0;
+          total += 0;
         } else {
-          subtotal += serviceCost;
+          total += serviceCost;
         }
       });
 
-      let tax = subtotal * 0.33;
-      let grandTotal = subtotal + tax;
-
-      state.subtotal = subtotal;
-      state.tax = tax;
-      state.grand_total = grandTotal;
+      state.total = total;
     },
   },
 });

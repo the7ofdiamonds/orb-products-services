@@ -3,20 +3,15 @@
 namespace ORB_Services\API;
 
 use WP_REST_Request;
-use WP_Error;
-use WP_REST_Response;
 use WP_Query;
 
 class Service
 {
-    private $stripeSecretKey;
     private $stripeClient;
 
-    public function __construct()
+    public function __construct($stripeClient)
     {
-        $this->stripeSecretKey = $_ENV['STRIPE_SECRET_KEY'];
-        \Stripe\Stripe::setApiKey($this->stripeSecretKey);
-        $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
+        $this->stripeClient = $stripeClient;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/service/(?P<slug>[a-z0-9-]+)', [
@@ -56,7 +51,7 @@ class Service
             'product' => $product->id,
         ]);
 
-        return new WP_REST_Response( $price, 200);
+        return rest_ensure_response($price);
     }
 
     function get_service(WP_REST_Request $request)
@@ -67,7 +62,6 @@ class Service
             'pagename' => $slug,
             'posts_per_page' => 1,
         );
-        $post = get_post($args);
         $query = new WP_Query($args);
 
         if ($query->have_posts()) {
@@ -83,9 +77,9 @@ class Service
                 'slug' => get_post_field('post_name', get_the_ID()),
                 'cost' => get_post_meta(get_the_ID(), '_service_cost', true),
             );
-            return new WP_REST_Response($post_data, 200);
+            return rest_ensure_response($post_data, 200);
         } else {
-            return new WP_Error('post_not_found', 'Post not found', array('status' => 404));
+            return rest_ensure_response('Post not found');
         }
     }
 }

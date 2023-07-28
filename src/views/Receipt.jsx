@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getClient } from '../controllers/clientSlice.js';
 import { getStripeCustomer } from '../controllers/customerSlice.js';
-import { getInvoice, getStripeInvoice } from '../controllers/invoiceSlice.js';
+import {
+  getInvoice,
+  getStripeInvoice,
+  updateInvoiceStatus,
+} from '../controllers/invoiceSlice.js';
 import { getPaymentIntent } from '../controllers/paymentSlice.js';
 import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
 
@@ -12,12 +16,13 @@ import formatPhoneNumber from '../utils/PhoneNumberFormatter.js';
 
 function ReceiptComponent() {
   const { id } = useParams();
-  const { error, first_name, last_name, stripe_customer_id } = useSelector(
+  const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
   const { name, address_line_1, address_line_2, city, state, zipcode, phone } =
     useSelector((state) => state.customer);
   const {
+    status,
     stripe_invoice_id,
     selections,
     subtotal,
@@ -29,9 +34,8 @@ function ReceiptComponent() {
     payment_intent_id,
   } = useSelector((state) => state.invoice);
   const { payment_method_id } = useSelector((state) => state.payment);
-  const { loading, invoice_id, payment_method } = useSelector(
-    (state) => state.receipt
-  );
+  const { loading, error, invoice_id, payment_method, first_name, last_name } =
+    useSelector((state) => state.receipt);
   const timestamp = payment_date * 1000;
   const paymentDate = new Date(timestamp);
   const formattedPhone = formatPhoneNumber(phone);
@@ -42,11 +46,6 @@ function ReceiptComponent() {
   const Balance = amount_remaining;
 
   const dispatch = useDispatch();
-
-  const [messageType, setMessageType] = useState('');
-  const [message, setMessage] = useState('');
-
-  const user_email = sessionStorage.getItem('user_email');
 
   useEffect(() => {
     if (user_email) {
@@ -62,7 +61,7 @@ function ReceiptComponent() {
 
   useEffect(() => {
     if (stripe_customer_id) {
-      dispatch(getReceipt(id, stripe_customer_id));
+      dispatch(getReceipt(id));
     }
   }, [dispatch, id, stripe_customer_id]);
 
@@ -79,6 +78,12 @@ function ReceiptComponent() {
   }, [dispatch, stripe_invoice_id]);
 
   useEffect(() => {
+    if (status) {
+      dispatch(updateInvoiceStatus());
+    }
+  }, [status, dispatch]);
+
+  useEffect(() => {
     if (payment_intent_id) {
       dispatch(getPaymentIntent(payment_intent_id));
     }
@@ -92,7 +97,7 @@ function ReceiptComponent() {
 
   if (error) {
     return (
-      <main className='error'>
+      <main className="error">
         <div className="status-bar card">
           <span className="error">
             You have either entered the wrong Receipt ID, or you are not the

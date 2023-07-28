@@ -85,11 +85,11 @@ export const updateInvoice = createAsyncThunk('invoice/updateInvoice', async (_,
 });
 
 export const updateInvoiceStatus = createAsyncThunk('invoice/updateInvoiceStatus', async (id, { getState }) => {
-  const { client_id } = getState().client;
+  const { stripe_customer_id } = getState().client;
   const { invoice_id, stripe_invoice_id } = getState().invoice;
 
   const update = {
-    client_id: client_id,
+    stripe_customer_id: stripe_customer_id,
     stripe_invoice_id: stripe_invoice_id
   };
 

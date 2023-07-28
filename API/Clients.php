@@ -3,24 +3,16 @@
 namespace ORB_Services\API;
 
 use WP_REST_Request;
-use WP_REST_Response;
-use WP_Error;
 
 use Stripe\Exception\ApiErrorException;
 
-require ORB_SERVICES . 'vendor/autoload.php';
-require_once ABSPATH . 'wp-load.php';
-
 class Clients
 {
-    private $stripeSecretKey;
     private $stripeClient;
 
-    public function __construct()
+    public function __construct($stripeClient)
     {
-        $this->stripeSecretKey = $_ENV['STRIPE_SECRET_KEY'];
-        \Stripe\Stripe::setApiKey($this->stripeSecretKey);
-        $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
+        $this->stripeClient = $stripeClient;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/users/clients', array(
@@ -51,9 +43,6 @@ class Clients
 
     function add_client(WP_REST_Request $request)
     {
-        $status_code = 200;
-        $error_message = '';
-
         try {
             $company_name = $request['company_name'];
             $tax_id = $request['tax_id'];
@@ -142,7 +131,7 @@ class Clients
                 'stripe_customer_id' => $stripe_customer_id
             ];
 
-            return rest_ensure_response($data, $status_code);
+            return rest_ensure_response($data);
         } catch (ApiErrorException $e) {
             return rest_ensure_response($e);
         }
@@ -166,7 +155,7 @@ class Clients
         );
 
         if ($client === null) {
-            return new WP_Error('client_not_found', 'Client not found', array('status' => 404));
+            return rest_ensure_response('Client not found');
         }
 
         $client_data = [
@@ -177,6 +166,6 @@ class Clients
             "last_name" => $client->last_name,
         ];
 
-        return new WP_REST_Response($client_data, 200);
+        return rest_ensure_response($client_data);
     }
 }

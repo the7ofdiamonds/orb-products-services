@@ -3,19 +3,14 @@
 namespace ORB_Services\API;
 
 use WP_REST_Request;
-use WP_Error;
-use WP_REST_Response;
 
 class Receipt
 {
-    private $stripeSecretKey;
     private $stripeClient;
 
-    public function __construct()
+    public function __construct($stripeClient)
     {
-        $this->stripeSecretKey = $_ENV['STRIPE_SECRET_KEY'];
-        \Stripe\Stripe::setApiKey($this->stripeSecretKey);
-        $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
+        $this->stripeClient = $stripeClient;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/receipt', [
@@ -46,8 +41,6 @@ class Receipt
 
     public function post_receipt(WP_REST_Request $request)
     {
-        global $wpdb;
-
         $stripe_customer_id = $request['stripe_customer_id'];
         $invoice_id = $request['invoice_id'];
         $stripe_invoice_id = $request['stripe_invoice_id'];
@@ -72,6 +65,8 @@ class Receipt
 
         $payment_method_id = $payment_intent->payment_method;
 
+        global $wpdb;
+
         $table_name = 'orb_receipt';
         $result = $wpdb->insert(
             $table_name,
@@ -90,12 +85,12 @@ class Receipt
 
         if (!$result) {
             $error_message = $wpdb->last_error;
-            return new WP_Error($error_message);
+            return rest_ensure_response($error_message);
         }
 
         $receipt_id = $wpdb->insert_id;
 
-        return new WP_REST_Response($receipt_id, 200);
+        return rest_ensure_response($receipt_id);
     }
 
     function get_receipt(WP_REST_Request $request)
@@ -104,11 +99,11 @@ class Receipt
         $stripe_customer_id = $request->get_param('stripe_customer_id');
 
         if (empty($id)) {
-            return new WP_Error('invalid_receipt_id', 'Invalid Receipt ID', array('status' => 400));
+            return rest_ensure_response('Invalid Receipt ID');
         }
 
         if (empty($stripe_customer_id)) {
-            return new WP_Error('invalid_stripe_customer_id', 'Invalid Stripe Customer ID', array('status' => 400));
+            return rest_ensure_response('Invalid Stripe Customer ID');
         }
 
         global $wpdb;
@@ -122,7 +117,7 @@ class Receipt
         );
 
         if (!$receipt) {
-            return new WP_Error('receipt_not_found', 'Receipt not found', array('status' => 404));
+            return rest_ensure_response('Receipt not found');
         }
 
         $receipt_data = [
@@ -139,6 +134,6 @@ class Receipt
             'last_name' => $receipt->last_name,
         ];
 
-        return new WP_REST_Response($receipt_data, 200);
+        return rest_ensure_response($receipt_data);
     }
 }
