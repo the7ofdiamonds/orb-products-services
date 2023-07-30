@@ -2,20 +2,32 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { fetchCalendarEvents } from '../controllers/scheduleSlice.js';
 import {
+  fetchCalendarEvents,
   updateDate,
   updateTime,
-  updateInvoice,
-} from '../controllers/invoiceSlice.js';
+  updateDueDate,
+  updateEvent,
+  sendInvites,
+} from '../controllers/scheduleSlice.js';
+import { createInvoice } from '../controllers/invoiceSlice.js';
 
 function ScheduleComponent() {
-  const { loading, error, events } = useSelector((state) => state.schedule);
+  const { user_email, stripe_customer_id } = useSelector(
+    (state) => state.client
+  );
+  const { total, error } = useSelector((state) => state.quote);
+  const { loading, events, event } = useSelector(
+    (state) => state.schedule
+  );
+  const { invoice_id } = useSelector((state) => state.invoice);
 
-  const [selectedIndex, setSelectedIndex] = useState('');
-  const [availableTimes, setAvailableTimes] = useState([]);
+  const [availableDates, setAvailableDates] = useState('');
+  const [availableTimes, setAvailableTimes] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  const [formattedDate, setFormattedDate] = useState('');
+  const [formattedTime, setFormattedTime] = useState('');
 
   const dateSelectRef = useRef(null);
   const timeSelectRef = useRef(null);
@@ -25,75 +37,157 @@ function ScheduleComponent() {
 
   useEffect(() => {
     dispatch(fetchCalendarEvents());
-  }, []);
+  }, [dispatch]);
 
-  const getAvailableTimes = () => {
-    const hours = [];
-    setAvailableTimes([]);
+  const getEvents = () => {
+    const datesAvail = events.map((event) => {
+      const dateTime = event.start['dateTime'];
+      const date = dateTime.split('T')[0];
+      return new Date(date).toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    });
+
+    setAvailableDates(datesAvail);
+    setSelectedDate(datesAvail[0]);
 
     const selectedIndex = dateSelectRef.current.selectedIndex;
-    if (selectedIndex >= 0 && events && events.length > selectedIndex) {
-      const selectedDate = events[selectedIndex];
-      const startDateTime = selectedDate.start.dateTime;
-      const endDateTime = selectedDate.end.dateTime;
 
-      if (startDateTime && endDateTime) {
-        const startTime = startDateTime.split('T')[1];
-        const endTime = endDateTime.split('T')[1];
-        const startHour = parseInt(startTime, 10);
-        const endHour = parseInt(endTime, 10);
+    if (selectedIndex >= 0) {
+      const timesAvail = events.map((event) => {
+        const dateTime = event.start['dateTime'];
+        const time = dateTime.split('T')[1];
+        const start = time.split('-')[0];
+        const endTime = time.split('-')[1];
+        const startHour = parseInt(start, 10);
+        const endHour =
+          parseInt(endTime, 10) < 12
+            ? parseInt(endTime, 10) + 12
+            : parseInt(endTime, 10);
+
+        const hours = [];
 
         for (let i = startHour; i <= endHour; i++) {
           hours.push(i);
         }
 
-        const newAvailableTimes = hours.map((hr) => {
-          const time = new Date(0, 0, 0, hr, 0, 0, 0).toLocaleTimeString(
-            'en-US',
-            {
-              hour12: true,
-              hour: '2-digit',
-              minute: '2-digit',
-            }
-          );
-
-          return { label: time, value: time };
+        return hours.map((hr) => {
+          return new Date(0, 0, 0, hr, 0, 0, 0).toLocaleTimeString('en-US', {
+            hour12: true,
+            hour: '2-digit',
+            minute: '2-digit',
+          });
         });
+      });
 
-        setAvailableTimes(newAvailableTimes);
-      }
+      setAvailableTimes(timesAvail[selectedIndex]);
     }
   };
 
   useEffect(() => {
-    getAvailableTimes();
-  }, [getAvailableTimes, selectedIndex]);
+    if (events) {
+      getEvents();
+    }
+  }, [events]);
+
+  useEffect(() => {
+    dateSelectRef.current = document.getElementById('date_select');
+    timeSelectRef.current = document.getElementById('time_select');
+    if (availableDates && availableDates.length > 0) {
+      setSelectedDate(availableDates[0]);
+    }
+  }, [availableDates]);
 
   const handleDateChange = (event) => {
-    getAvailableTimes();
-    const date = new Date(event.target.value).toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-
-    dispatch(updateDate(date));
+    if (dateSelectRef.current) {
+      getEvents();
+      setSelectedDate(event.target.value);
+      dispatch(updateDate(event.target.value));
+      dispatch(updateDueDate());
+    }
   };
 
   const handleTimeChange = (event) => {
-    setSelectedTime(event.target.value);
-    dispatch(updateTime(event.target.value));
-  };
-
-  const handleClick = async () => {
-    if (client_data) {
-      try {
-        dispatch(updateInvoice(client_data));
-      } catch (error) {
-        console.log('Error creating client:', error.message);
-      }
+    if (timeSelectRef.current) {
+      getEvents();
+      setSelectedTime(event.target.value);
+      dispatch(updateTime(event.target.value));
+      dispatch(updateDueDate());
     }
   };
+
+  useEffect(() => {
+    if (selectedDate) {
+      const date = new Date(selectedDate);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+
+      setFormattedDate(`${year}-${month}-${day}`);
+    }
+  }, [selectedDate]);
+
+  useEffect(() => {
+    if (selectedTime) {
+      const [time, period] = selectedTime.split(' ');
+      const [hours, minutes] = time.split(':');
+
+      let formattedHours = parseInt(hours, 10);
+      if (period === 'PM' && formattedHours !== 12) {
+        formattedHours += 12;
+      } else if (period === 'AM' && formattedHours === 12) {
+        formattedHours = 0;
+      }
+
+      const formattedHoursString = String(formattedHours).padStart(2, '0');
+      const formattedMinutesString = String(minutes).padStart(2, '0');
+
+      setFormattedTime(`${formattedHoursString}:${formattedMinutesString}:00`);
+    }
+  }, [selectedTime]);
+
+  useEffect(() => {
+    if (formattedDate && formattedTime) {
+      dispatch(
+        updateEvent({
+          summary: 'Invitation Title',
+          description: 'Invitation Description',
+          start: {
+            dateTime: `${formattedDate}T${formattedTime}`, // Replace with the start date and time
+            timeZone: 'America/New_York', // Replace with the appropriate time zone
+          },
+          end: {
+            dateTime: '2023-08-01T11:00:00', // Replace with the end date and time
+            timeZone: 'America/New_York', // Replace with the appropriate time zone
+          },
+          attendees: [
+            { email: `${user_email}` }, // Replace with the email addresses of the people you want to invite
+            { email: 'jclyonsenterprises@gmail.com' },
+          ],
+        })
+      );
+    }
+  }, [formattedDate, formattedTime, dispatch]);
+
+  useEffect(() => {
+    if (event) {
+      dispatch(sendInvites());
+    }
+  }, [event, dispatch]);
+
+  const handleClick = () => {
+    if (stripe_customer_id && total > 0) {
+      dispatch(createInvoice());
+    }
+  };
+
+  useEffect(() => {
+    if (invoice_id) {
+      navigate(`/services/invoice/${invoice_id}`);
+    }
+  }, [navigate, invoice_id]);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -116,25 +210,17 @@ function ScheduleComponent() {
               id="date_select"
               ref={dateSelectRef}
               onChange={handleDateChange}
-              defaultValue={selectedDate}>
-              {events && events.length > 0 ? (
-                events.map((event, index) => (
-                  <option
-                    key={event.id}
-                    value={event.start.dateTime}
-                    name={index}>
-                    {new Date(event.start.dateTime).toLocaleDateString(
-                      undefined,
-                      {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      }
-                    )}
+              defaultValue={selectedDate}
+              min={new Date().toISOString().split('T')[0]} // Disable past dates
+            >
+              {availableDates ? (
+                availableDates.map((date, index) => (
+                  <option key={index} value={date}>
+                    {date}
                   </option>
                 ))
               ) : (
-                <option>Dates Unavailable</option>
+                <option disabled>No Available Dates</option> // Show "No Available Dates" message
               )}
             </select>
           </div>
@@ -145,19 +231,16 @@ function ScheduleComponent() {
               name="time"
               id="time_select"
               ref={timeSelectRef}
-              value={selectedTime}
+              defaultValue={selectedTime}
               onChange={handleTimeChange}>
-              {availableTimes ? (
-                availableTimes.map((time) => (
-                  <option
-                    key={time.value}
-                    name={time.value}
-                    selected={time.value === selectedTime}>
-                    {time.label}
+              {availableTimes && availableTimes.length > 0 ? (
+                availableTimes.map((time, index) => (
+                  <option key={index} value={time}>
+                    {time}
                   </option>
                 ))
               ) : (
-                <option>Time Unavailable</option>
+                <option disabled>No Available Times</option>
               )}
             </select>
           </div>

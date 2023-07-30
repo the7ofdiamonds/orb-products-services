@@ -66,14 +66,25 @@ class Invoice
     public function create_invoice(WP_REST_Request $request)
     {
         $stripe_customer_id = $request['stripe_customer_id'];
+        $due_date = $request['due_date'];
         $selections = $request['selections'];
 
         if (empty($stripe_customer_id)) {
             return rest_ensure_response('Customer ID is required');
         }
 
+        if (empty($due_date)) {
+            return rest_ensure_response('Due date is required');
+        }
+
+        if (empty($selections)) {
+            return rest_ensure_response('Selections are required');
+        }
+
         $stripe_invoice = $this->stripeClient->invoices->create([
+            'collection_method' => 'send_invoice',
             'customer' => $stripe_customer_id,
+            'due_date' => $due_date
         ]);
 
         foreach ($selections as $selection) {

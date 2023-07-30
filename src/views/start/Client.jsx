@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { getClient, addClient } from '../../controllers/clientSlice';
 import {
-  updateEmail,
   updatePhone,
   updateCompanyName,
   updateTaxID,
@@ -15,7 +14,6 @@ import {
   updateCity,
   updateState,
   updateZipcode,
-  addStripeCustomer,
 } from '../../controllers/customerSlice.js';
 
 function ClientComponent() {
@@ -27,26 +25,10 @@ function ClientComponent() {
     'To receive a quote, please fill out the form above with the required information.'
   );
 
-  const { user_email, client_id, stripe_customer_id } = useSelector(
-    (state) => state.client
-  );
-  const {
-    loading,
-    error,
-    company_name,
-    tax_id,
-    first_name,
-    last_name,
-    phone,
-    address_line_1,
-    address_line_2,
-    city,
-    state,
-    zipcode,
-    country,
-  } = useSelector((state) => state.customer);
-  const { status, invoice_id, client_secret } = useSelector(
-    (state) => state.invoice
+  const { loading, error, user_email, client_id, stripe_customer_id } =
+    useSelector((state) => state.client);
+  const { first_name, last_name, zipcode } = useSelector(
+    (state) => state.customer
   );
 
   const handleCompanyNameChange = (event) => {
@@ -131,11 +113,22 @@ function ClientComponent() {
   };
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <main className="error">
+        <div className="status-bar card">
+          <span className="error">
+            "We encountered an issue while loading this page. Please try again,
+            and if the problem persists, kindly contact the website
+            administrators for assistance."
+          </span>
+        </div>
+      </main>
+    );
   }
 
+  // Create loading animation
   if (loading) {
-    return <div>Loading...</div>;
+    return <main>Loading...</main>;
   }
 
   return (

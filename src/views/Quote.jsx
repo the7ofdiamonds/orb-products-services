@@ -8,7 +8,7 @@ import {
   addSelections,
   calculateSelections,
 } from '../controllers/quoteSlice.js';
-import { quoteToInvoice, createInvoice } from '../controllers/invoiceSlice.js';
+import { quoteToInvoice } from '../controllers/invoiceSlice.js';
 
 function QuoteComponent() {
   const { loading, error, services } = useSelector((state) => state.services);
@@ -16,7 +16,6 @@ function QuoteComponent() {
     (state) => state.client
   );
   const { total, selections } = useSelector((state) => state.quote);
-  const { invoice_id } = useSelector((state) => state.invoice);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -60,19 +59,13 @@ function QuoteComponent() {
     if (selections) {
       dispatch(quoteToInvoice(selections));
     }
-  }, [selections, dispatch]);
+  });
 
   const handleClick = () => {
-    if (stripe_customer_id && total > 0) {
-      dispatch(createInvoice());
+    if (total > 0) {
+      navigate('/services/schedule');
     }
   };
-
-  useEffect(() => {
-    if (invoice_id) {
-      navigate(`/services/invoice/${invoice_id}`);
-    }
-  }, [navigate, invoice_id]);
 
   if (error) {
     return (

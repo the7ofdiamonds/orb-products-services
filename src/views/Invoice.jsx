@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getClient } from '../controllers/clientSlice.js';
 import { getStripeCustomer } from '../controllers/customerSlice.js';
+import { sendInvites } from '../controllers/scheduleSlice.js';
 import {
   getStripeInvoice,
   getInvoice,
@@ -17,19 +18,24 @@ import {
 function InvoiceComponent() {
   const { id } = useParams();
 
-  const { name, address_line_1, address_line_2, city, state, zipcode, phone } =
-    useSelector((state) => state.customer);
   const { user_email, first_name, last_name, stripe_customer_id } = useSelector(
     (state) => state.client
   );
+  const {
+    company_name,
+    address_line_1,
+    address_line_2,
+    city,
+    state,
+    zipcode,
+    phone,
+  } = useSelector((state) => state.customer);
   const {
     loading,
     error,
     status,
     stripe_invoice_id,
-    tax_id,
-    company_name,
-    date_due,
+    due_date,
     amount_due,
     selections,
     subtotal,
@@ -38,6 +44,7 @@ function InvoiceComponent() {
   const { payment_intent_id, client_secret } = useSelector(
     (state) => state.payment
   );
+  const dueDate = new Date(due_date * 1000).toLocaleString();
   const amountDue = amount_due;
   const subTotal = subtotal;
   const Tax = tax;
@@ -77,9 +84,14 @@ function InvoiceComponent() {
       navigate(`/services/payment/${id}`);
     } else if (stripe_invoice_id) {
       dispatch(finalizeInvoice());
+      dispatch(sendInvites());
     }
   };
 
+  useEffect(()=>{
+    dispatch(sendInvites());
+  },[]);
+  
   useEffect(() => {
     if (payment_intent_id) {
       dispatch(getPaymentIntent(payment_intent_id));
@@ -126,7 +138,7 @@ function InvoiceComponent() {
                 <h4>BILL TO:</h4>
               </th>
               <td className="bill-to-name" colSpan={4}>
-                {first_name} {last_name}
+                {first_name} {last_name} O/B/O {company_name}
               </td>
             </tr>
             <tr className="bill-to-address">
@@ -162,7 +174,7 @@ function InvoiceComponent() {
                 <h4>DUE DATE</h4>
               </th>
               <td className="bill-to-due-date" colSpan={2}>
-                {date_due ? date_due : 'N/A'}
+                {dueDate ? dueDate : 'N/A'}
               </td>
               <th className="bill-to-total-due-label">
                 <h4>TOTAL DUE</h4>

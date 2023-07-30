@@ -19,7 +19,7 @@ function ReceiptComponent() {
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const { name, address_line_1, address_line_2, city, state, zipcode, phone } =
+  const { company_name, address_line_1, address_line_2, city, state, zipcode, phone } =
     useSelector((state) => state.customer);
   const {
     status,
@@ -149,7 +149,7 @@ function ReceiptComponent() {
             </div>
             <div className="td">
               <h5>
-                {first_name} {last_name} O/B/O {name}
+                {first_name} {last_name} O/B/O {company_name}
               </h5>
             </div>
             <div className="tr address-line-1">

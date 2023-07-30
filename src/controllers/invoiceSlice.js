@@ -11,7 +11,7 @@ const initialState = {
   stripe_invoice_id: '',
   payment_intent_id: '',
   client_secret: '',
-  selections: [],
+  selections: '',
   subtotal: '',
   tax: '',
   due_date: '',
@@ -30,10 +30,12 @@ export const quoteToInvoice = (selections) => {
 
 export const createInvoice = createAsyncThunk('invoice/createInvoice', async (_, { getState }) => {
   const { stripe_customer_id } = getState().client;
+  const { due_date } = getState().schedule;
   const { selections } = getState().invoice;
 
   const invoice = {
     stripe_customer_id: stripe_customer_id,
+    due_date: due_date,
     selections: selections
   };
 
@@ -131,12 +133,6 @@ export const invoiceSlice = createSlice({
     quoteToInvoice: (state, action) => {
       state.selections = action.payload;
     },
-    updateDate: (state, action) => {
-      state.start_date = action.payload;
-    },
-    updateTime: (state, action) => {
-      state.start_time = action.payload;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -202,7 +198,7 @@ export const invoiceSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.status = action.payload.status;
-        state.name = action.payload.name;
+        state.company_name = action.payload.name;
         state.subtotal = action.payload.subtotal;
         state.tax = action.payload.tax;
         state.due_date = action.payload.due_date;
@@ -220,5 +216,4 @@ export const invoiceSlice = createSlice({
   }
 });
 
-export const { updateDate, updateTime } = invoiceSlice.actions;
 export default invoiceSlice;

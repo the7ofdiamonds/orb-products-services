@@ -23,8 +23,19 @@ function ServiceComponent() {
   };
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <main className="error">
+        <div className="status-bar card">
+          <span className="error">
+            "We encountered an issue while loading this page. Please try again,
+            and if the problem persists, kindly contact the website
+            administrators for assistance."
+          </span>
+        </div>
+      </main>
+    );
   }
+
 
   if (loading) {
     return <div>Loading...</div>;

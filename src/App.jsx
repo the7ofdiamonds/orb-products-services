@@ -1,44 +1,54 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 // Components
-import ServicesComponent from './views/Services.jsx';
-import ServiceComponent from './views/Service.jsx';
-import QuoteComponent from './views/Quote.jsx';
-import StartComponent from './views/start/Start.jsx';
-import ClientComponent from './views/start/Client.jsx';
-import InvoiceComponent from './views/Invoice.jsx';
-import ScheduleComponent from './views/Schedule.jsx';
-import PaymentComponent from './views/payment/Payment.jsx';
-import CardPaymentComponent from './views/payment/Card.jsx';
-import MobileComponent from './views/payment/Mobile.jsx';
-import ReceiptComponent from './views/Receipt.jsx';
-import ErrorComponent from './views/Error.jsx';
+const ServicesComponent = lazy(() => import('./views/Services.jsx'));
+const ServiceComponent = lazy(() => import('./views/Service.jsx'));
+const QuoteComponent = lazy(() => import('./views/Quote.jsx'));
+const StartComponent = lazy(() => import('./views/start/Start.jsx'));
+const ClientComponent = lazy(() => import('./views/start/Client.jsx'));
+const InvoiceComponent = lazy(() => import('./views/Invoice.jsx'));
+const ScheduleComponent = lazy(() => import('./views/Schedule.jsx'));
+const PaymentComponent = lazy(() => import('./views/payment/Payment.jsx'));
+const CardPaymentComponent = lazy(() => import('./views/payment/Card.jsx'));
+const MobileComponent = lazy(() => import('./views/payment/Mobile.jsx'));
+const ReceiptComponent = lazy(() => import('./views/Receipt.jsx'));
+const ErrorComponent = lazy(() => import('./views/Error.jsx'));
+
+function LoadingFallback() {
+  return <div>Loading...</div>;
+}
 
 function App() {
   return (
     <>
       <Router basename="/">
-        <Routes>
-          <Route index path="/services" element={<ServicesComponent />} />
-          <Route index path="/" element={<ServicesComponent />} />
-          <Route path="services/:service" element={<ServiceComponent />} />
-          <Route path="services/quote" element={<QuoteComponent />} />
-          <Route path="services/start" element={<StartComponent />} />
-          <Route path="services/start/client" element={<ClientComponent />} />
-          <Route path="services/invoice/:id" element={<InvoiceComponent />} />
-          <Route path="services/payment/:id/*" element={<PaymentComponent />} />
-          <Route
-            path="services/payment/:id/card"
-            element={<CardPaymentComponent />}
-          />
-          <Route
-            path="services/payment/:id/mobile"
-            element={<MobileComponent />}
-          />
-          <Route path="services/receipt/:id" element={<ReceiptComponent />} />
-          <Route path="services/schedule/:id" element={<ScheduleComponent />} />
-          <Route path="services/*" element={<ErrorComponent />} />
-        </Routes>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            <Route index path="/services" element={<ServicesComponent />} />
+            <Route index path="/" element={<ServicesComponent />} />
+            <Route path="services/:service" element={<ServiceComponent />} />
+            <Route path="services/start" element={<StartComponent />} />
+            <Route path="services/start/client" element={<ClientComponent />} />
+            <Route path="services/quote" element={<QuoteComponent />} />
+            <Route path="services/schedule" element={<ScheduleComponent />} />
+            <Route path="services/invoice/:id" element={<InvoiceComponent />} />
+            <Route
+              path="services/payment/:id/*"
+              element={<PaymentComponent />}
+            />
+            <Route
+              path="services/payment/:id/card"
+              element={<CardPaymentComponent />}
+            />
+            <Route
+              path="services/payment/:id/mobile"
+              element={<MobileComponent />}
+            />
+            <Route path="services/receipt/:id" element={<ReceiptComponent />} />
+            <Route path="services/*" element={<ErrorComponent />} />
+          </Routes>
+        </Suspense>
       </Router>
     </>
   );

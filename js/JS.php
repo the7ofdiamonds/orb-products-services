@@ -40,26 +40,25 @@ class JS
     function load_react()
     {
         $directory = ORB_SERVICES . 'build';
-        $jsFiles = [];
         $pages = [
             'services',
             'services/start',
             'services/quote',
             'services/invoice',
+            'services/schedule',
             'services/payment',
             'services/receipt',
         ];
 
-        foreach ($pages as $page) {
-            if (is_front_page() || is_singular('services') || is_page($page)) {
-                $jsFiles = $this->get_js_files($directory);
-            }
-        }
+        // Check if the current page/post is one of the specified pages
+        if (is_front_page() || is_singular('services') || is_page($pages)) {
+            $jsFiles = $this->get_js_files($directory);
 
-        if ($jsFiles) {
-            foreach ($jsFiles as $jsFile) {
-                $handle = 'orb_services_react_' . basename($jsFile);
-                wp_enqueue_script($handle, ORB_SERVICES_URL . 'build/' . $jsFile, ['wp-element'], 1.0, true);
+            if ($jsFiles) {
+                foreach ($jsFiles as $jsFile) {
+                    $handle = 'orb_services_react_' . basename($jsFile);
+                    wp_enqueue_script($handle, ORB_SERVICES_URL . 'build/' . $jsFile, ['wp-element'], 1.0, true);
+                }
             }
         }
     }
