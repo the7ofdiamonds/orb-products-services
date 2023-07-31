@@ -88,10 +88,6 @@ function InvoiceComponent() {
     }
   };
 
-  useEffect(()=>{
-    dispatch(sendInvites());
-  },[]);
-  
   useEffect(() => {
     if (payment_intent_id) {
       dispatch(getPaymentIntent(payment_intent_id));

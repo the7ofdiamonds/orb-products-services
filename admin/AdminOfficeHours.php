@@ -26,8 +26,17 @@ class AdminOfficeHours
     {
 
         add_settings_section('orb-admin-office-hours', 'Add Office Hours', [$this, 'section_description'], 'orb_office_hours');
-        register_setting('orb-admin-office-hours-group', 'office_hours');
-        add_settings_field('office_hours', 'Add Office Hours', [$this, 'office_hours'], 'orb_office_hours', 'orb-admin-office-hours');
+        register_setting('orb-admin-office-hours-group', 'orb_calendar_id');
+        register_setting('orb-admin-office-hours-group', 'orb_event_max_results');
+        register_setting('orb-admin-office-hours-group', 'orb_event_summary');
+        register_setting('orb-admin-office-hours-group', 'orb_event_duration_hours');
+        register_setting('orb-admin-office-hours-group', 'orb_event_duration_minutes');
+        register_setting('orb-admin-office-hours-group', 'orb_event_time_zone');
+        add_settings_field('orb_calendar_id', 'Add Calendar ID', [$this, 'calendar_id'], 'orb_office_hours', 'orb-admin-office-hours');
+        add_settings_field('orb_event_max_results', 'Set Max Results', [$this, 'max_results'], 'orb_office_hours', 'orb-admin-office-hours');
+        add_settings_field('orb_event_summary', 'Add Title of Event', [$this, 'event_summary'], 'orb_office_hours', 'orb-admin-office-hours');
+        add_settings_field('orb_event_duration_hours', 'Add Event Duration', [$this, 'event_duration'], 'orb_office_hours', 'orb-admin-office-hours');
+        add_settings_field('orb_event_time_zone', 'Add Event Time Zone', [$this, 'event_time_zone'], 'orb_office_hours', 'orb-admin-office-hours');
     }
 
     function section_description()
@@ -35,9 +44,37 @@ class AdminOfficeHours
         echo 'Add your hours of operation';
     }
 
-    function office_hours()
+    function calendar_id()
     {
-        $office_hours = esc_attr(get_option('orb-office-hours'));
-        echo '<textarea type="text" name="orb-office-hours" value="' . $office_hours . '" ></textarea>';
+        $calendar_id = get_option('orb_calendar_id');
+        echo '<input type="text" name="orb_calendar_id" value="' . $calendar_id . '" >';
+    }
+
+    function max_results()
+    {
+        $event_max_results = get_option('orb_event_max_results');
+        echo '<input type="number" name="orb_event_max_results" value="' . $event_max_results . '" >';
+    }
+
+    function event_summary()
+    {
+        $event_summary = esc_attr(get_option('orb_event_summary'));
+        echo '<input type="text" name="orb_event_summary" value="' . $event_summary . '" >';
+    }
+
+    public function event_duration()
+    {
+        $event_duration_hours = get_option('orb_event_duration_hours');
+        $event_duration_minutes = get_option('orb_event_duration_minutes');
+
+        echo '<label>Hours: <input type="number" name="orb_event_duration_hours" value="' . $event_duration_hours . '" min="0" max="24"></label>';
+        echo '<label>Minutes: <input type="number" name="orb_event_duration_minutes" value="' . $event_duration_minutes . '" min="0" max="59"></label>';
+    }
+
+
+    function event_time_zone()
+    {
+        $time_zone = esc_attr(get_option('orb_event_time_zone'));
+        echo '<input type="text" name="orb_event_time_zone" value="' . $time_zone . '" >';
     }
 }

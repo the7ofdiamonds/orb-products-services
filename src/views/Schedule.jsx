@@ -2,22 +2,22 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { getClient } from '../controllers/clientSlice';
 import {
   fetchCalendarEvents,
   updateDate,
   updateTime,
   updateDueDate,
   updateEvent,
-  sendInvites,
 } from '../controllers/scheduleSlice.js';
 import { createInvoice } from '../controllers/invoiceSlice.js';
 
 function ScheduleComponent() {
-  const { user_email, stripe_customer_id } = useSelector(
+  const { user_email, client_id, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const { total, error } = useSelector((state) => state.quote);
-  const { loading, events, event } = useSelector(
+  const { total } = useSelector((state) => state.quote);
+  const { loading, error, events, start_date, start_time } = useSelector(
     (state) => state.schedule
   );
   const { invoice_id } = useSelector((state) => state.invoice);
@@ -26,8 +26,6 @@ function ScheduleComponent() {
   const [availableTimes, setAvailableTimes] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
-  const [formattedDate, setFormattedDate] = useState('');
-  const [formattedTime, setFormattedTime] = useState('');
 
   const dateSelectRef = useRef(null);
   const timeSelectRef = useRef(null);
@@ -36,12 +34,18 @@ function ScheduleComponent() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchCalendarEvents());
-  }, [dispatch]);
+    dispatch(getClient());
+  }, [user_email, dispatch]);
+
+  useEffect(() => {
+    if (client_id && stripe_customer_id) {
+      dispatch(fetchCalendarEvents());
+    }
+  }, [client_id, stripe_customer_id, dispatch]);
 
   const getEvents = () => {
     const datesAvail = events.map((event) => {
-      const dateTime = event.start['dateTime'];
+      const dateTime = event.start;
       const date = dateTime.split('T')[0];
       return new Date(date).toLocaleDateString(undefined, {
         year: 'numeric',
@@ -49,7 +53,6 @@ function ScheduleComponent() {
         day: 'numeric',
       });
     });
-
     setAvailableDates(datesAvail);
     setSelectedDate(datesAvail[0]);
 
@@ -57,7 +60,7 @@ function ScheduleComponent() {
 
     if (selectedIndex >= 0) {
       const timesAvail = events.map((event) => {
-        const dateTime = event.start['dateTime'];
+        const dateTime = event.start;
         const time = dateTime.split('T')[1];
         const start = time.split('-')[0];
         const endTime = time.split('-')[1];
@@ -119,63 +122,10 @@ function ScheduleComponent() {
   };
 
   useEffect(() => {
-    if (selectedDate) {
-      const date = new Date(selectedDate);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-
-      setFormattedDate(`${year}-${month}-${day}`);
+    if (start_date && start_time) {
+      dispatch(updateEvent());
     }
-  }, [selectedDate]);
-
-  useEffect(() => {
-    if (selectedTime) {
-      const [time, period] = selectedTime.split(' ');
-      const [hours, minutes] = time.split(':');
-
-      let formattedHours = parseInt(hours, 10);
-      if (period === 'PM' && formattedHours !== 12) {
-        formattedHours += 12;
-      } else if (period === 'AM' && formattedHours === 12) {
-        formattedHours = 0;
-      }
-
-      const formattedHoursString = String(formattedHours).padStart(2, '0');
-      const formattedMinutesString = String(minutes).padStart(2, '0');
-
-      setFormattedTime(`${formattedHoursString}:${formattedMinutesString}:00`);
-    }
-  }, [selectedTime]);
-
-  useEffect(() => {
-    if (formattedDate && formattedTime) {
-      dispatch(
-        updateEvent({
-          summary: 'Invitation Title',
-          description: 'Invitation Description',
-          start: {
-            dateTime: `${formattedDate}T${formattedTime}`, // Replace with the start date and time
-            timeZone: 'America/New_York', // Replace with the appropriate time zone
-          },
-          end: {
-            dateTime: '2023-08-01T11:00:00', // Replace with the end date and time
-            timeZone: 'America/New_York', // Replace with the appropriate time zone
-          },
-          attendees: [
-            { email: `${user_email}` }, // Replace with the email addresses of the people you want to invite
-            { email: 'jclyonsenterprises@gmail.com' },
-          ],
-        })
-      );
-    }
-  }, [formattedDate, formattedTime, dispatch]);
-
-  useEffect(() => {
-    if (event) {
-      dispatch(sendInvites());
-    }
-  }, [event, dispatch]);
+  }, [start_date, start_time, dispatch]);
 
   const handleClick = () => {
     if (stripe_customer_id && total > 0) {

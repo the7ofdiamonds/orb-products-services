@@ -1,6 +1,7 @@
 <?php
 namespace ORB_Services\API;
 
+use ORB_Services\API\Schedule;
 use ORB_Services\API\Services;
 use ORB_Services\API\Service;
 use ORB_Services\API\Clients;
@@ -8,9 +9,6 @@ use ORB_Services\API\Customers;
 use ORB_Services\API\Invoice;
 use ORB_Services\API\Payment;
 use ORB_Services\API\Receipt;
-
-// require ORB_SERVICES . 'vendor/autoload.php';
-// require_once ABSPATH . 'wp-load.php';
 
 use Stripe\Stripe;
 
@@ -23,7 +21,7 @@ class API
     {
         add_action('rest_api_init', [$this, 'add_to_rest_api']);
         add_action('rest_api_init', [$this, 'allow_cors_headers']);
-
+       
         $this->stripeSecretKey = $_ENV['STRIPE_SECRET_KEY'];
         Stripe::setApiKey($this->stripeSecretKey);
         $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
@@ -35,6 +33,8 @@ class API
         new Invoice($this->stripeClient);
         new Payment($this->stripeClient);
         new Receipt($this->stripeClient);
+
+        new Schedule();
     }
 
     public function add_to_rest_api()

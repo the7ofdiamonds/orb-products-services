@@ -15,10 +15,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/scheduleSlice.js */ "./src/controllers/scheduleSlice.js");
-/* harmony import */ var _controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/invoiceSlice.js */ "./src/controllers/invoiceSlice.js");
+/* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/clientSlice */ "./src/controllers/clientSlice.js");
+/* harmony import */ var _controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/scheduleSlice.js */ "./src/controllers/scheduleSlice.js");
+/* harmony import */ var _controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../controllers/invoiceSlice.js */ "./src/controllers/invoiceSlice.js");
+
 
 
 
@@ -28,16 +30,18 @@ __webpack_require__.r(__webpack_exports__);
 function ScheduleComponent() {
   const {
     user_email,
+    client_id,
     stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
-    total,
-    error
+    total
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.quote);
   const {
     loading,
+    error,
     events,
-    event
+    start_date,
+    start_time
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.schedule);
   const {
     invoice_id
@@ -46,18 +50,21 @@ function ScheduleComponent() {
   const [availableTimes, setAvailableTimes] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [selectedDate, setSelectedDate] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [selectedTime, setSelectedTime] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
-  const [formattedDate, setFormattedDate] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
-  const [formattedTime, setFormattedTime] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const dateSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   const timeSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useNavigate)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_6__.useNavigate)();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_3__.fetchCalendarEvents)());
-  }, [dispatch]);
+    dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.getClient)());
+  }, [user_email, dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (client_id && stripe_customer_id) {
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.fetchCalendarEvents)());
+    }
+  }, [client_id, stripe_customer_id, dispatch]);
   const getEvents = () => {
     const datesAvail = events.map(event => {
-      const dateTime = event.start['dateTime'];
+      const dateTime = event.start;
       const date = dateTime.split('T')[0];
       return new Date(date).toLocaleDateString(undefined, {
         year: 'numeric',
@@ -70,7 +77,7 @@ function ScheduleComponent() {
     const selectedIndex = dateSelectRef.current.selectedIndex;
     if (selectedIndex >= 0) {
       const timesAvail = events.map(event => {
-        const dateTime = event.start['dateTime'];
+        const dateTime = event.start;
         const time = dateTime.split('T')[1];
         const start = time.split('-')[0];
         const endTime = time.split('-')[1];
@@ -107,77 +114,26 @@ function ScheduleComponent() {
     if (dateSelectRef.current) {
       getEvents();
       setSelectedDate(event.target.value);
-      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateDate)(event.target.value));
-      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateDueDate)());
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDate)(event.target.value));
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDueDate)());
     }
   };
   const handleTimeChange = event => {
     if (timeSelectRef.current) {
       getEvents();
       setSelectedTime(event.target.value);
-      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateTime)(event.target.value));
-      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateDueDate)());
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateTime)(event.target.value));
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDueDate)());
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (selectedDate) {
-      const date = new Date(selectedDate);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      setFormattedDate(`${year}-${month}-${day}`);
+    if (start_date && start_time) {
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateEvent)());
     }
-  }, [selectedDate]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (selectedTime) {
-      const [time, period] = selectedTime.split(' ');
-      const [hours, minutes] = time.split(':');
-      let formattedHours = parseInt(hours, 10);
-      if (period === 'PM' && formattedHours !== 12) {
-        formattedHours += 12;
-      } else if (period === 'AM' && formattedHours === 12) {
-        formattedHours = 0;
-      }
-      const formattedHoursString = String(formattedHours).padStart(2, '0');
-      const formattedMinutesString = String(minutes).padStart(2, '0');
-      setFormattedTime(`${formattedHoursString}:${formattedMinutesString}:00`);
-    }
-  }, [selectedTime]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (formattedDate && formattedTime) {
-      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_3__.updateEvent)({
-        summary: 'Invitation Title',
-        description: 'Invitation Description',
-        start: {
-          dateTime: `${formattedDate}T${formattedTime}`,
-          // Replace with the start date and time
-          timeZone: 'America/New_York' // Replace with the appropriate time zone
-        },
-
-        end: {
-          dateTime: '2023-08-01T11:00:00',
-          // Replace with the end date and time
-          timeZone: 'America/New_York' // Replace with the appropriate time zone
-        },
-
-        attendees: [{
-          email: `${user_email}`
-        },
-        // Replace with the email addresses of the people you want to invite
-        {
-          email: 'jclyonsenterprises@gmail.com'
-        }]
-      }));
-    }
-  }, [formattedDate, formattedTime, dispatch]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (event) {
-      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_3__.sendInvites)());
-    }
-  }, [event, dispatch]);
+  }, [start_date, start_time, dispatch]);
   const handleClick = () => {
     if (stripe_customer_id && total > 0) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_4__.createInvoice)());
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.createInvoice)());
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {

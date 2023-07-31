@@ -10196,17 +10196,11 @@ const initialState = {
   start_date: '',
   start_time: '',
   due_date: '',
-  event: ''
+  event_date_time: ''
 };
-const apiKey = 'AIzaSyD9bY_bJimcwrWArRY97nY2LqzaOpsvZis';
-const calendarId = 'jclyonsenterprises@gmail.com';
-const accessToken = 'Bearer ya29.a0AbVbY6NxKsEogAAcg2JUOpQNUW7t7pQ7IXlG1h7q9-MPIZlK-UZQBKtPpO2NhWFd3bKFNctQpO5tEB2jJHKIEoT_5FNpaAUd1R3XHjNozIp-5BrXJ-rzKwM1879MIkNHTxYIPmtGPhoH0PacarMKyUnAgysjaCgYKAegSARISFQFWKvPlZ8CD3RAcjKgP7kfDFs5tPw0163';
-const timeNow = new Date();
-const currentDate = timeNow.toISOString();
-const latestDate = new Date(timeNow.setDate(timeNow.getDate() + 7)).toISOString();
 const fetchCalendarEvents = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/fetchCalendarEvents', async () => {
-  const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?key=${encodeURIComponent(apiKey)}&timeMin=${encodeURIComponent(currentDate)}&timeMax=${encodeURIComponent(latestDate)}`);
-  return response.data.items;
+  const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/wp-json/orb/v1/schedule');
+  return response.data;
 });
 function combineDateTimeToTimestamp(dateString, timeString) {
   const date = new Date(dateString);
@@ -10215,24 +10209,53 @@ function combineDateTimeToTimestamp(dateString, timeString) {
   date.setMinutes(parseInt(minutes, 10));
   return date.getTime() / 1000;
 }
+function formattedDate(start_date) {
+  const date = new Date(start_date);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+function formattedTime(start_time) {
+  const [time, period] = start_time.split(' ');
+  const [hours, minutes] = time.split(':');
+  let formattedHours = parseInt(hours, 10);
+  if (period === 'PM' && formattedHours !== 12) {
+    formattedHours += 12;
+  } else if (period === 'AM' && formattedHours === 12) {
+    formattedHours = 0;
+  }
+  const formattedHoursString = String(formattedHours).padStart(2, '0');
+  const formattedMinutesString = String(minutes).padStart(2, '0');
+  return `${formattedHoursString}:${formattedMinutesString}:00`;
+}
+function combineDateTime(start_date, start_time) {
+  const date = formattedDate(start_date);
+  const time = formattedTime(start_time);
+  return `${date}T${time}`;
+}
 const sendInvites = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/sendInvites', async (_, {
   getState
 }) => {
   const {
-    event
+    event_date_time
   } = getState().schedule;
-  try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?key=${encodeURIComponent(apiKey)}`, event, {
-      headers: {
-        Authorization: `${accessToken}`
-      }
-    });
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    throw new Error(error.message || 'Failed to send invites');
-  }
+  const {
+    invoice_id
+  } = getState().invoice;
+  const eventData = {
+    description: `Invoice #${invoice_id}`,
+    start: event_date_time,
+    attendees: ['jamel.c.lyons@gmail.com']
+  };
+  console.log(eventData);
+  axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/schedule/invite', eventData).then(response => {
+    // Handle the response if needed
+    console.log('Event created successfully:', response.data);
+  }).catch(error => {
+    // Handle the error if there's an issue with the request
+    console.error('Error creating event:', error);
+  });
 });
 const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
   name: 'schedule',
@@ -10247,8 +10270,8 @@ const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
     updateDueDate: state => {
       state.due_date = combineDateTimeToTimestamp(state.start_date, state.start_time);
     },
-    updateEvent: (state, action) => {
-      state.event = action.payload;
+    updateEvent: state => {
+      state.event_date_time = combineDateTime(state.start_date, state.start_time);
     }
   },
   extraReducers: builder => {
