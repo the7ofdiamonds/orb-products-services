@@ -1,0 +1,25 @@
+.dashboard {
+  .orb-services {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+
+    .card {
+      padding: 0;
+      width: fit-content;
+
+      tr {
+        td,
+        th {
+          border-right: solid white 0.25em;
+        }
+
+        td:last-child,
+        th:last-child {
+          border-right: none;
+        }
+      }
+    }
+  }
+}

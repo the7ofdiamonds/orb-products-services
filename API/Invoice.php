@@ -15,7 +15,7 @@ class Invoice
         $this->stripeClient = $stripeClient;
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/invoices', [
+            register_rest_route('orb/v1', '/invoice', [
                 'methods' => 'POST',
                 'callback' => [$this, 'create_invoice'],
                 'permission_callback' => '__return_true',
@@ -23,7 +23,7 @@ class Invoice
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/invoices/(?P<slug>[a-zA-Z0-9-_]+)', [
+            register_rest_route('orb/v1', '/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'GET',
                 'callback' => [$this, 'get_invoice'],
                 'permission_callback' => '__return_true',
@@ -47,7 +47,7 @@ class Invoice
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/invoices/(?P<slug>[a-z0-9-]+)', [
+            register_rest_route('orb/v1', '/invoice/(?P<slug>[a-z0-9-]+)', [
                 'methods' => 'PATCH',
                 'callback' => [$this, 'update_invoice'],
                 'permission_callback' => '__return_true',
@@ -55,9 +55,17 @@ class Invoice
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/invoices/status/(?P<slug>[a-z0-9-]+)', [
+            register_rest_route('orb/v1', '/invoice/status/(?P<slug>[a-z0-9-]+)', [
                 'methods' => 'PATCH',
                 'callback' => [$this, 'update_invoice_status'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/invoices/(?P<slug>[a-zA-Z0-9-_]+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_invoices'],
                 'permission_callback' => '__return_true',
             ]);
         });
@@ -307,7 +315,6 @@ class Invoice
 
     function update_invoice_status(WP_REST_Request $request)
     {
-        global $wpdb;
         $id = $request->get_param('slug');
 
         $stripe_customer_id = $request['stripe_customer_id'];
@@ -323,16 +330,22 @@ class Invoice
         );
 
         $status = $stripe_invoice->status;
+        $amount_due = $stripe_invoice->amount_due;
+        $amount_remaining = $stripe_invoice->amount_remaining;
 
         $table_name = 'orb_invoice';
         $data = array(
             'status' => $status,
+            'amount_due' => $amount_due,
+            'amount_remaining' => $amount_remaining
         );
         $where = array(
             'id' => $id,
             'stripe_customer_id' => $stripe_customer_id,
             'stripe_invoice_id' => $stripe_invoice_id,
         );
+
+        global $wpdb;
 
         $updated = $wpdb->update($table_name, $data, $where);
 
@@ -342,5 +355,29 @@ class Invoice
         }
 
         return rest_ensure_response($status);
+    }
+
+    public function get_invoices(WP_REST_Request $request)
+    {
+        $stripe_customer_id = $request->get_param('slug');
+
+        if (empty($stripe_customer_id)) {
+            return rest_ensure_response('invalid_stripe_customer_id', 'Invalid Stripe Customer ID', array('status' => 400));
+        }
+
+        global $wpdb;
+
+        $invoices = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM orb_invoice WHERE stripe_customer_id = %d",
+                $stripe_customer_id
+            )
+        );
+
+        if (!$invoices) {
+            return rest_ensure_response('invoice_not_found', 'Invoice not found', array('status' => 404));
+        }
+
+        return rest_ensure_response($invoices, 200);
     }
 }

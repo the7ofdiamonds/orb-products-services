@@ -5,16 +5,24 @@ const initialState = {
   loading: false,
   events: [],
   error: null,
+  schedule_id: 0,
+  event_id: '',
+  invoice_id: '',
+  start_date_time: '',
+  end_date_time: '',
+  attendees: '',
+  calendar_link: '',
   start_date: '',
   start_time: '',
   due_date: '',
-  event_date_time: ''
+  event_date_time: '',
+  event: ''
 };
 
 export const fetchCalendarEvents = createAsyncThunk(
   'schedule/fetchCalendarEvents',
   async () => {
-    const response = await axios.get('/wp-json/orb/v1/schedule');
+    const response = await axios.get('/wp-json/orb/v1/office-hours');
     return response.data;
   });
 
@@ -59,29 +67,83 @@ function combineDateTime(start_date, start_time) {
   return `${date}T${time}`
 }
 
-
-export const sendInvites = createAsyncThunk(
-  'schedule/sendInvites',
+export const sendInvites = createAsyncThunk('schedule/sendInvites',
   async (_, { getState }) => {
-    const { event_date_time } = getState().schedule;
+    const { client_id } = getState().client;
+    const { start_date, start_time, event_date_time } = getState().schedule;
     const { invoice_id } = getState().invoice;
 
     const eventData = {
-      description: `Invoice #${invoice_id}`,
+      client_id: client_id,
       start: event_date_time,
+      start_date: start_date,
+      start_time: start_time,
+      description: invoice_id,
       attendees: ['jamel.c.lyons@gmail.com'],
     };
-    console.log(eventData);
-    axios.post('/wp-json/orb/v1/schedule/invite', eventData)
+
+    axios.post('/wp-json/orb/v1/schedule/events/invite', eventData)
       .then((response) => {
-        // Handle the response if needed
-        console.log('Event created successfully:', response.data);
+        return response.data;
       })
       .catch((error) => {
-        // Handle the error if there's an issue with the request
-        console.error('Error creating event:', error);
+        return 'Error creating event:', error;
       });
   });
+
+export const saveEvent = createAsyncThunk('schedule/saveEvent',
+  async (_, { getState }) => {
+    const { client_id } = getState().client;
+    const {
+      event_id,
+      invoice_id,
+      start_date_time,
+      end_date_time,
+      attendees,
+      calendar_link } = getState().schedule;
+
+    const eventData = {
+      client_id: client_id,
+      event_id: event_id,
+      invoice_id: invoice_id,
+      start_date_time: start_date_time,
+      end_date_time: end_date_time,
+      attendees: attendees,
+      calendar_link: calendar_link
+    };
+
+    axios.post('/wp-json/orb/v1/schedule', eventData)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        return 'Error saving event:', error;
+      });
+  });
+
+export const getEvent = createAsyncThunk('schedule/getEvent', async (_, { getState }) => {
+  const { invoice_id } = getState().receipt;
+
+  try {
+    const response = await axios.get(`/wp-json/orb/v1/schedule/event/${invoice_id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error getting event:', error);
+    throw new Error('Error getting event:', error);
+  }
+});
+
+export const getEvents = createAsyncThunk('schedule/getEvents', async (_, { getState }) => {
+  const { client_id } = getState().client;
+
+  try {
+    const response = await axios.get(`/wp-json/orb/v1/schedule/events/${client_id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error getting event:', error);
+    throw new Error('Error getting event:', error);
+  }
+});
 
 export const scheduleSlice = createSlice({
   name: 'schedule',
@@ -127,10 +189,54 @@ export const scheduleSlice = createSlice({
       })
       .addCase(sendInvites.fulfilled, (state, action) => {
         state.loading = false;
-        state.event = action.payload;
+        state.event_id = action.payload;
         state.error = null;
       })
       .addCase(sendInvites.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to send out invites';
+      })
+      .addCase(saveEvent.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(saveEvent.fulfilled, (state, action) => {
+        state.loading = false;
+        state.schedule_id = action.payload;
+      })
+      .addCase(saveEvent.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to send out invites';
+      })
+      .addCase(getEvent.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getEvent.fulfilled, (state, action) => {
+        state.loading = false;
+        state.schedule_id = action.payload.schedule_id;
+        state.event_id = action.payload.event_id;
+        state.invoice_id = action.payload.invoice_id;
+        state.start_date = action.payload.start_date;
+        state.start_time = action.payload.start_time;
+        state.attendees = action.payload.attendees;
+        state.calendar_link = action.payload.htmlLink;
+        state.error = null;
+      })
+      .addCase(getEvent.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to send out invites';
+      })
+      .addCase(getEvents.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getEvents.fulfilled, (state, action) => {
+        state.loading = false;
+        state.events = action.payload;
+        state.error = null;
+      })
+      .addCase(getEvents.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to send out invites';
       });

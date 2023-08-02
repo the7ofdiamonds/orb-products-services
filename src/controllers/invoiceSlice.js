@@ -4,6 +4,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   error: '',
+  invoices: [],
   invoice_id: '',
   status: '',
   client_id: '',
@@ -40,7 +41,7 @@ export const createInvoice = createAsyncThunk('invoice/createInvoice', async (_,
   };
 
   try {
-    const response = await axios.post('/wp-json/orb/v1/invoices', invoice);
+    const response = await axios.post('/wp-json/orb/v1/invoice', invoice);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -51,7 +52,7 @@ export const getInvoice = createAsyncThunk('invoice/getInvoice', async (id, { ge
   const { stripe_customer_id } = getState().client;
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/invoices/${id}`, { params: stripe_customer_id });
+    const response = await axios.get(`/wp-json/orb/v1/invoice/${id}`, { params: stripe_customer_id });
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -68,7 +69,7 @@ export const updateInvoice = createAsyncThunk('invoice/updateInvoice', async (_,
   };
 
   try {
-    const response = await axios.patch(`/wp-json/orb/v1/invoices/${invoice_id}`, update);
+    const response = await axios.patch(`/wp-json/orb/v1/invoice/${invoice_id}`, update);
 
     if (response.status !== 200) {
       if (response.status === 400) {
@@ -96,7 +97,7 @@ export const updateInvoiceStatus = createAsyncThunk('invoice/updateInvoiceStatus
   };
 
   try {
-    const response = await axios.patch(`/wp-json/orb/v1/invoices/status/${invoice_id}`, update);
+    const response = await axios.patch(`/wp-json/orb/v1/invoice/status/${invoice_id}`, update);
 
     if (response.status !== 200) {
       if (response.status === 400) {
@@ -125,6 +126,16 @@ export const getStripeInvoice = createAsyncThunk('invoice/getStripeInvoice', asy
   }
 });
 
+export const getInvoices = createAsyncThunk('invoice/getInvoices', async (id, { getState }) => {
+  const { stripe_customer_id } = getState().client;
+
+  try {
+    const response = await axios.get(`/wp-json/orb/v1/invoices/${stripe_customer_id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
 
 export const invoiceSlice = createSlice({
   name: 'invoice',
@@ -210,6 +221,19 @@ export const invoiceSlice = createSlice({
         state.payment_intent_id = action.payload.payment_intent;
       })
       .addCase(getStripeInvoice.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getInvoices.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getInvoices.fulfilled, (state, action) => {
+        state.loading = false;
+        state.invoices = action.payload;
+        state.error = null;
+      })
+      .addCase(getInvoices.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

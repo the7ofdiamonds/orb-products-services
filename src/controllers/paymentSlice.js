@@ -25,8 +25,8 @@ export const finalizeInvoice = createAsyncThunk('payment/finalizeInvoice', async
   }
 });
 
-export const getPaymentIntent = createAsyncThunk('payment/getPaymentIntent', async (payment_intent_id) => {
-
+export const getPaymentIntent = createAsyncThunk('payment/getPaymentIntent', async (_, { getState }) => {
+  const { payment_intent_id } = getState().invoice;
   try {
     const response = await axios.get(`/wp-json/orb/v1/stripe/payment_intents/${payment_intent_id}`);
     return response.data;

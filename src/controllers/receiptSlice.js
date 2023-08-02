@@ -4,6 +4,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   error: '',
+  receipts: [],
   receipt_id: '',
   invoice_id: '',
   stripe_customer_id: '',
@@ -66,13 +67,24 @@ export const getReceipt = createAsyncThunk('receipt/getReceipt', async (id, { ge
   const { stripe_customer_id } = getState().client;
 
   const response = await axios.get(`/wp-json/orb/v1/receipt/${id}`, {
-      params: { stripe_customer_id },
+    params: { stripe_customer_id },
   });
 
   try {
-      return response.data;
+    return response.data;
   } catch (error) {
-      throw new Error(error.message);
+    throw new Error(error.message);
+  }
+});
+
+export const getReceipts = createAsyncThunk('receipt/getReceipts', async (_, { getState }) => {
+  const { stripe_customer_id } = getState().client;
+
+  try {
+    const response = await axios.get(`/wp-json/orb/v1/receipts/${stripe_customer_id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
   }
 });
 
@@ -133,6 +145,19 @@ export const receiptSlice = createSlice({
         state.last_name = action.payload.last_name;
       })
       .addCase(getReceipt.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getReceipts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getReceipts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.receipts = action.payload;
+        state.error = null;
+      })
+      .addCase(getReceipts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

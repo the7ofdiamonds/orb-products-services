@@ -13,6 +13,7 @@ const PaymentComponent = lazy(() => import('./views/payment/Payment.jsx'));
 const CardPaymentComponent = lazy(() => import('./views/payment/Card.jsx'));
 const MobileComponent = lazy(() => import('./views/payment/Mobile.jsx'));
 const ReceiptComponent = lazy(() => import('./views/Receipt.jsx'));
+const DashboardComponent = lazy(() => import('./views/Dashboard.jsx'));
 const ErrorComponent = lazy(() => import('./views/Error.jsx'));
 
 function LoadingFallback() {
@@ -27,6 +28,7 @@ function App() {
           <Routes>
             <Route index path="/services" element={<ServicesComponent />} />
             <Route index path="/" element={<ServicesComponent />} />
+            <Route path="/dashboard" element={<DashboardComponent />} />
             <Route path="services/:service" element={<ServiceComponent />} />
             <Route path="services/start" element={<StartComponent />} />
             <Route path="services/start/client" element={<ClientComponent />} />

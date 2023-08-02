@@ -14,6 +14,7 @@ class Tables
         $this->create_invoice_table();
         $this->create_receipt_table();
         $this->create_accounts_receivable();
+        $this->create_schedule_table();
     }
 
     function create_services_table()
@@ -123,6 +124,26 @@ class Tables
 
         dbDelta($sql);
     }
-}
 
-$orb_services_tables = new Tables();
+    function create_schedule_table()
+    {
+        global $wpdb;
+        $table_name = 'orb_schedule';
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE {$table_name} (
+        id INT NOT NULL AUTO_INCREMENT,
+        created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        client_id VARCHAR(255) DEFAULT NULL,
+        invoice_id VARCHAR(255) DEFAULT NULL,
+        google_event_id VARCHAR(255) DEFAULT NULL,
+        start_date VARCHAR(255) DEFAULT NULL,
+        start_time VARCHAR(255) DEFAULT NULL,
+        attendees VARCHAR(255) DEFAULT NULL,
+        calendar_link VARCHAR(255) DEFAULT NULL,
+        PRIMARY KEY (id)
+    ) $charset_collate;";
+
+        dbDelta($sql);
+    }
+}

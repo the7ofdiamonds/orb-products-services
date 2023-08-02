@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getClient } from '../controllers/clientSlice.js';
 import { getStripeCustomer } from '../controllers/customerSlice.js';
-import { sendInvites } from '../controllers/scheduleSlice.js';
+import { saveEvent, sendInvites } from '../controllers/scheduleSlice.js';
 import {
   getStripeInvoice,
   getInvoice,
@@ -30,6 +30,7 @@ function InvoiceComponent() {
     zipcode,
     phone,
   } = useSelector((state) => state.customer);
+  const { event_id } = useSelector((state) => state.schedule);
   const {
     loading,
     error,
@@ -40,10 +41,10 @@ function InvoiceComponent() {
     selections,
     subtotal,
     tax,
+    payment_intent_id,
   } = useSelector((state) => state.invoice);
-  const { payment_intent_id, client_secret } = useSelector(
-    (state) => state.payment
-  );
+  const { client_secret } = useSelector((state) => state.payment);
+  
   const dueDate = new Date(due_date * 1000).toLocaleString();
   const amountDue = amount_due;
   const subTotal = subtotal;
@@ -55,7 +56,7 @@ function InvoiceComponent() {
 
   useEffect(() => {
     if (user_email) {
-      dispatch(getClient(user_email));
+      dispatch(getClient());
     }
   }, [dispatch, user_email]);
 
@@ -77,6 +78,24 @@ function InvoiceComponent() {
     }
   }, [dispatch, stripe_invoice_id]);
 
+  useEffect(() => {
+    if (event_id) {
+      dispatch(saveEvent());
+    }
+  }, [event_id, dispatch]);
+
+  useEffect(() => {
+    if (payment_intent_id) {
+      dispatch(getPaymentIntent());
+    }
+  }, [payment_intent_id, dispatch]);
+
+  useEffect(() => {
+    if (status && payment_intent_id && client_secret) {
+      dispatch(updateInvoice());
+    }
+  }, [status, payment_intent_id, client_secret, dispatch]);
+
   const handleClick = () => {
     if (status === 'paid') {
       navigate(`/services/receipt/${id}`);
@@ -87,24 +106,6 @@ function InvoiceComponent() {
       dispatch(sendInvites());
     }
   };
-
-  useEffect(() => {
-    if (payment_intent_id) {
-      dispatch(getPaymentIntent(payment_intent_id));
-    }
-  }, [payment_intent_id, dispatch]);
-
-  useEffect(() => {
-    if (status && payment_intent_id && client_secret) {
-      dispatch(updateInvoice());
-    }
-  }, [status, payment_intent_id, client_secret, dispatch]);
-
-  useEffect(() => {
-    if (client_secret) {
-      navigate(`/services/payment/${id}`);
-    }
-  }, [client_secret, navigate, id]);
 
   if (error) {
     return (
@@ -277,7 +278,7 @@ function InvoiceComponent() {
       </div>
 
       <button onClick={handleClick}>
-        <h3>PAYMENT</h3>
+        {status === 'paid' ? <h3>RECEIPT</h3> : <h3>PAYMENT</h3>}
       </button>
     </>
   );

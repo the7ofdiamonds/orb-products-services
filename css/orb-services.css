@@ -735,10 +735,30 @@ tfoot th h4 {
 
 td {
   padding: 0.375em;
+  text-transform: capitalize;
 }
 
 .client-details form table tbody td {
   padding: 0.375em;
+}
+
+.dashboard .orb-services {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+.dashboard .orb-services .card {
+  padding: 0;
+  width: fit-content;
+}
+.dashboard .orb-services .card tr td,
+.dashboard .orb-services .card tr th {
+  border-right: solid white 0.25em;
+}
+.dashboard .orb-services .card tr td:last-child,
+.dashboard .orb-services .card tr th:last-child {
+  border-right: none;
 }
 
 /*# sourceMappingURL=orb-services.css.map */

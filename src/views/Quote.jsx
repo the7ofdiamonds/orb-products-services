@@ -24,7 +24,7 @@ function QuoteComponent() {
 
   useEffect(() => {
     if (user_email) {
-      dispatch(getClient(user_email));
+      dispatch(getClient());
     }
   }, [user_email, dispatch]);
 

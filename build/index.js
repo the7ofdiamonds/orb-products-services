@@ -9267,6 +9267,7 @@ const PaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __web
 const CardPaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_payment_Card_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/payment/Card.jsx */ "./src/views/payment/Card.jsx")));
 const MobileComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_payment_Mobile_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/payment/Mobile.jsx */ "./src/views/payment/Mobile.jsx")));
 const ReceiptComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Receipt_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Receipt.jsx */ "./src/views/Receipt.jsx")));
+const DashboardComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Dashboard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Dashboard.jsx */ "./src/views/Dashboard.jsx")));
 const ErrorComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Error_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Error.jsx */ "./src/views/Error.jsx")));
 function LoadingFallback() {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
@@ -9284,6 +9285,9 @@ function App() {
     index: true,
     path: "/",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    path: "/dashboard",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(DashboardComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/:service",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServiceComponent, null)
@@ -9641,6 +9645,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   createInvoice: () => (/* binding */ createInvoice),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   getInvoice: () => (/* binding */ getInvoice),
+/* harmony export */   getInvoices: () => (/* binding */ getInvoices),
 /* harmony export */   getStripeInvoice: () => (/* binding */ getStripeInvoice),
 /* harmony export */   invoiceSlice: () => (/* binding */ invoiceSlice),
 /* harmony export */   quoteToInvoice: () => (/* binding */ quoteToInvoice),
@@ -9655,6 +9660,7 @@ __webpack_require__.r(__webpack_exports__);
 const initialState = {
   loading: false,
   error: '',
+  invoices: [],
   invoice_id: '',
   status: '',
   client_id: '',
@@ -9695,7 +9701,7 @@ const createInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsy
     selections: selections
   };
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/invoices', invoice);
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/invoice', invoice);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -9708,7 +9714,7 @@ const getInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncT
     stripe_customer_id
   } = getState().client;
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/invoices/${id}`, {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/invoice/${id}`, {
       params: stripe_customer_id
     });
     return response.data;
@@ -9731,7 +9737,7 @@ const updateInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsy
     stripe_invoice_id: stripe_invoice_id
   };
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().patch(`/wp-json/orb/v1/invoices/${invoice_id}`, update);
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().patch(`/wp-json/orb/v1/invoice/${invoice_id}`, update);
     if (response.status !== 200) {
       if (response.status === 400) {
         throw new Error('Bad request');
@@ -9761,7 +9767,7 @@ const updateInvoiceStatus = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.cre
     stripe_invoice_id: stripe_invoice_id
   };
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().patch(`/wp-json/orb/v1/invoices/status/${invoice_id}`, update);
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().patch(`/wp-json/orb/v1/invoice/status/${invoice_id}`, update);
     if (response.status !== 200) {
       if (response.status === 400) {
         throw new Error('Bad request');
@@ -9784,6 +9790,19 @@ const getStripeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.create
   } = getState().invoice;
   try {
     const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const getInvoices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/getInvoices', async (id, {
+  getState
+}) => {
+  const {
+    stripe_customer_id
+  } = getState().client;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/invoices/${stripe_customer_id}`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -9860,6 +9879,16 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
     }).addCase(getStripeInvoice.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
+    }).addCase(getInvoices.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(getInvoices.fulfilled, (state, action) => {
+      state.loading = false;
+      state.invoices = action.payload;
+      state.error = null;
+    }).addCase(getInvoices.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
     });
   }
 });
@@ -9914,7 +9943,12 @@ const finalizeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createA
     throw new Error(error.message);
   }
 });
-const getPaymentIntent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('payment/getPaymentIntent', async payment_intent_id => {
+const getPaymentIntent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('payment/getPaymentIntent', async (_, {
+  getState
+}) => {
+  const {
+    payment_intent_id
+  } = getState().invoice;
   try {
     const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/stripe/payment_intents/${payment_intent_id}`);
     return response.data;
@@ -10016,6 +10050,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   getPaymentMethod: () => (/* binding */ getPaymentMethod),
 /* harmony export */   getReceipt: () => (/* binding */ getReceipt),
+/* harmony export */   getReceipts: () => (/* binding */ getReceipts),
 /* harmony export */   postReceipt: () => (/* binding */ postReceipt),
 /* harmony export */   receiptSlice: () => (/* binding */ receiptSlice),
 /* harmony export */   updatePaymentMethod: () => (/* binding */ updatePaymentMethod)
@@ -10028,6 +10063,7 @@ __webpack_require__.r(__webpack_exports__);
 const initialState = {
   loading: false,
   error: '',
+  receipts: [],
   receipt_id: '',
   invoice_id: '',
   stripe_customer_id: '',
@@ -10110,6 +10146,19 @@ const getReceipt = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncT
     throw new Error(error.message);
   }
 });
+const getReceipts = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('receipt/getReceipts', async (_, {
+  getState
+}) => {
+  const {
+    stripe_customer_id
+  } = getState().client;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/receipts/${stripe_customer_id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
 const receiptSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
   name: 'receipt',
   initialState,
@@ -10160,6 +10209,16 @@ const receiptSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
     }).addCase(getReceipt.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
+    }).addCase(getReceipts.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(getReceipts.fulfilled, (state, action) => {
+      state.loading = false;
+      state.receipts = action.payload;
+      state.error = null;
+    }).addCase(getReceipts.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
     });
   }
 });
@@ -10177,6 +10236,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   fetchCalendarEvents: () => (/* binding */ fetchCalendarEvents),
+/* harmony export */   getEvent: () => (/* binding */ getEvent),
+/* harmony export */   getEvents: () => (/* binding */ getEvents),
+/* harmony export */   saveEvent: () => (/* binding */ saveEvent),
 /* harmony export */   scheduleSlice: () => (/* binding */ scheduleSlice),
 /* harmony export */   sendInvites: () => (/* binding */ sendInvites),
 /* harmony export */   updateDate: () => (/* binding */ updateDate),
@@ -10193,13 +10255,21 @@ const initialState = {
   loading: false,
   events: [],
   error: null,
+  schedule_id: 0,
+  event_id: '',
+  invoice_id: '',
+  start_date_time: '',
+  end_date_time: '',
+  attendees: '',
+  calendar_link: '',
   start_date: '',
   start_time: '',
   due_date: '',
-  event_date_time: ''
+  event_date_time: '',
+  event: ''
 };
 const fetchCalendarEvents = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/fetchCalendarEvents', async () => {
-  const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/wp-json/orb/v1/schedule');
+  const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/wp-json/orb/v1/office-hours');
   return response.data;
 });
 function combineDateTimeToTimestamp(dateString, timeString) {
@@ -10238,24 +10308,86 @@ const sendInvites = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
   getState
 }) => {
   const {
+    client_id
+  } = getState().client;
+  const {
+    start_date,
+    start_time,
     event_date_time
   } = getState().schedule;
   const {
     invoice_id
   } = getState().invoice;
   const eventData = {
-    description: `Invoice #${invoice_id}`,
+    client_id: client_id,
     start: event_date_time,
+    start_date: start_date,
+    start_time: start_time,
+    description: invoice_id,
     attendees: ['jamel.c.lyons@gmail.com']
   };
-  console.log(eventData);
-  axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/schedule/invite', eventData).then(response => {
-    // Handle the response if needed
-    console.log('Event created successfully:', response.data);
+  axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/schedule/events/invite', eventData).then(response => {
+    return response.data;
   }).catch(error => {
-    // Handle the error if there's an issue with the request
-    console.error('Error creating event:', error);
+    return 'Error creating event:', error;
   });
+});
+const saveEvent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/saveEvent', async (_, {
+  getState
+}) => {
+  const {
+    client_id
+  } = getState().client;
+  const {
+    event_id,
+    invoice_id,
+    start_date_time,
+    end_date_time,
+    attendees,
+    calendar_link
+  } = getState().schedule;
+  const eventData = {
+    client_id: client_id,
+    event_id: event_id,
+    invoice_id: invoice_id,
+    start_date_time: start_date_time,
+    end_date_time: end_date_time,
+    attendees: attendees,
+    calendar_link: calendar_link
+  };
+  axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/schedule', eventData).then(response => {
+    return response.data;
+  }).catch(error => {
+    return 'Error saving event:', error;
+  });
+});
+const getEvent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/getEvent', async (_, {
+  getState
+}) => {
+  const {
+    invoice_id
+  } = getState().receipt;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/schedule/event/${invoice_id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error getting event:', error);
+    throw new Error('Error getting event:', error);
+  }
+});
+const getEvents = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/getEvents', async (_, {
+  getState
+}) => {
+  const {
+    client_id
+  } = getState().client;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/schedule/events/${client_id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error getting event:', error);
+    throw new Error('Error getting event:', error);
+  }
 });
 const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
   name: 'schedule',
@@ -10290,9 +10422,44 @@ const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
       state.error = null;
     }).addCase(sendInvites.fulfilled, (state, action) => {
       state.loading = false;
-      state.event = action.payload;
+      state.event_id = action.payload;
       state.error = null;
     }).addCase(sendInvites.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to send out invites';
+    }).addCase(saveEvent.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(saveEvent.fulfilled, (state, action) => {
+      state.loading = false;
+      state.schedule_id = action.payload;
+    }).addCase(saveEvent.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to send out invites';
+    }).addCase(getEvent.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(getEvent.fulfilled, (state, action) => {
+      state.loading = false;
+      state.schedule_id = action.payload.schedule_id;
+      state.event_id = action.payload.event_id;
+      state.invoice_id = action.payload.invoice_id;
+      state.start_date = action.payload.start_date;
+      state.start_time = action.payload.start_time;
+      state.attendees = action.payload.attendees;
+      state.calendar_link = action.payload.htmlLink;
+      state.error = null;
+    }).addCase(getEvent.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message || 'Failed to send out invites';
+    }).addCase(getEvents.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(getEvents.fulfilled, (state, action) => {
+      state.loading = false;
+      state.events = action.payload;
+      state.error = null;
+    }).addCase(getEvents.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message || 'Failed to send out invites';
     });

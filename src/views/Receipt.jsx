@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -13,14 +13,24 @@ import { getPaymentIntent } from '../controllers/paymentSlice.js';
 import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
 
 import formatPhoneNumber from '../utils/PhoneNumberFormatter.js';
+import { getEvent, saveEvent } from '../controllers/scheduleSlice.js';
 
 function ReceiptComponent() {
   const { id } = useParams();
-  const { user_email, stripe_customer_id } = useSelector(
+  const dispatch = useDispatch();
+
+  const { user_email, client_id, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const { company_name, address_line_1, address_line_2, city, state, zipcode, phone } =
-    useSelector((state) => state.customer);
+  const {
+    company_name,
+    address_line_1,
+    address_line_2,
+    city,
+    state,
+    zipcode,
+    phone,
+  } = useSelector((state) => state.customer);
   const {
     status,
     stripe_invoice_id,
@@ -33,9 +43,14 @@ function ReceiptComponent() {
     payment_date,
     payment_intent_id,
   } = useSelector((state) => state.invoice);
+  const { start_date, start_time } = useSelector((state) => state.schedule);
   const { payment_method_id } = useSelector((state) => state.payment);
   const { loading, error, invoice_id, payment_method, first_name, last_name } =
     useSelector((state) => state.receipt);
+
+  const [messageType, setMessageType] = useState('');
+  const [message, setMessage] = useState('');
+
   const timestamp = payment_date * 1000;
   const paymentDate = new Date(timestamp);
   const formattedPhone = formatPhoneNumber(phone);
@@ -45,11 +60,9 @@ function ReceiptComponent() {
   const amountPaid = amount_paid;
   const Balance = amount_remaining;
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     if (user_email) {
-      dispatch(getClient(user_email));
+      dispatch(getClient());
     }
   }, [dispatch, user_email]);
 
@@ -70,6 +83,21 @@ function ReceiptComponent() {
       dispatch(getInvoice(invoice_id));
     }
   }, [dispatch, invoice_id]);
+
+  useEffect(() => {
+    if (invoice_id) {
+      dispatch(getEvent());
+    }
+  }, [invoice_id, dispatch]);
+
+  useEffect(() => {
+    if (start_date && start_time) {
+      setMessageType('info');
+      setMessage(
+        `Make sure to confirm your appointment for ${start_date} @ ${start_time}.`
+      );
+    }
+  }, [start_date, start_time]);
 
   useEffect(() => {
     if (stripe_invoice_id) {
@@ -94,6 +122,11 @@ function ReceiptComponent() {
       dispatch(getPaymentMethod(payment_method_id));
     }
   }, [dispatch, payment_method_id]);
+
+  const handleClick = () => {
+    //Go to a dashboard
+    window.location = '/';
+  };
 
   if (error) {
     return (
@@ -290,6 +323,16 @@ function ReceiptComponent() {
           </div>
         </div>
       </div>
+
+      {message && (
+        <div className="status-bar card">
+          <span className={`${messageType}`}>{message}</span>
+        </div>
+      )}
+
+      <button id="quote_button" onClick={handleClick}>
+        <h3>FINISH</h3>
+      </button>
     </>
   );
 }

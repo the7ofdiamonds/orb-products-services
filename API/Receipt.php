@@ -37,6 +37,14 @@ class Receipt
                 'permission_callback' => '__return_true',
             ]);
         });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/receipts/(?P<slug>[a-z0-9-_]+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_receipts'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
     }
 
     public function post_receipt(WP_REST_Request $request)
@@ -135,5 +143,29 @@ class Receipt
         ];
 
         return rest_ensure_response($receipt_data);
+    }
+
+    function get_receipts(WP_REST_Request $request)
+    {
+        $stripe_customer_id = $request->get_param('slug');
+
+        if (empty($stripe_customer_id)) {
+            return rest_ensure_response('Invalid Stripe Customer ID');
+        }
+
+        global $wpdb;
+
+        $receipt = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM orb_receipt WHERE stripe_customer_id = %s",
+                $stripe_customer_id
+            )
+        );
+
+        if (!$receipt) {
+            return rest_ensure_response('No Receipts Found.');
+        }
+
+        return rest_ensure_response($receipt);
     }
 }
