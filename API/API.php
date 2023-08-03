@@ -1,4 +1,5 @@
 <?php
+
 namespace ORB_Services\API;
 
 use ORB_Services\API\Schedule;
@@ -6,11 +7,13 @@ use ORB_Services\API\Services;
 use ORB_Services\API\Service;
 use ORB_Services\API\Clients;
 use ORB_Services\API\Customers;
+use ORB_Services\API\Quote;
 use ORB_Services\API\Invoice;
 use ORB_Services\API\Payment;
 use ORB_Services\API\Receipt;
 
 use Stripe\Stripe;
+use Stripe\StripeClient;
 
 class API
 {
@@ -21,15 +24,16 @@ class API
     {
         add_action('rest_api_init', [$this, 'add_to_rest_api']);
         add_action('rest_api_init', [$this, 'allow_cors_headers']);
-       
+
         $this->stripeSecretKey = $_ENV['STRIPE_SECRET_KEY'];
         Stripe::setApiKey($this->stripeSecretKey);
-        $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
+        $this->stripeClient = new StripeClient($this->stripeSecretKey);
 
         new Services($this->stripeClient);
         new Service($this->stripeClient);
         new Clients($this->stripeClient);
         new Customers($this->stripeClient);
+        new Quote($this->stripeClient);
         new Invoice($this->stripeClient);
         new Payment($this->stripeClient);
         new Receipt($this->stripeClient);

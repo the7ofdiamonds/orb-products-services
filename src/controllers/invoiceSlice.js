@@ -20,6 +20,7 @@ const initialState = {
   amount_paid: '',
   amount_remaining: '',
   payment_date: '',
+  invoice_pdf: ''
 };
 
 export const quoteToInvoice = (selections) => {
@@ -30,18 +31,10 @@ export const quoteToInvoice = (selections) => {
 };
 
 export const createInvoice = createAsyncThunk('invoice/createInvoice', async (_, { getState }) => {
-  const { stripe_customer_id } = getState().client;
-  const { due_date } = getState().schedule;
-  const { selections } = getState().invoice;
-
-  const invoice = {
-    stripe_customer_id: stripe_customer_id,
-    due_date: due_date,
-    selections: selections
-  };
+  const { stripe_invoice_id } = getState().quote;
 
   try {
-    const response = await axios.post('/wp-json/orb/v1/invoice', invoice);
+    const response = await axios.post(`/wp-json/orb/v1/invoice/${stripe_invoice_id}`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -120,6 +113,17 @@ export const getStripeInvoice = createAsyncThunk('invoice/getStripeInvoice', asy
 
   try {
     const response = await axios.get(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
+export const pdfInvoice = createAsyncThunk('invoice/pdfInvoice', async (_, { getState }) => {
+  const { stripe_invoice_id } = getState().invoice;
+
+  try {
+    const response = await axios.get(`/wp-json/orb/v1/invoice/${stripe_invoice_id}/pdf`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -219,6 +223,7 @@ export const invoiceSlice = createSlice({
         state.payment_date = action.payload.status_transitions.paid_at;
         state.stripe_customer_id = action.payload.customer;
         state.payment_intent_id = action.payload.payment_intent;
+        state.invoice_pdf = action.payload.invoice_pdf;
       })
       .addCase(getStripeInvoice.rejected, (state, action) => {
         state.loading = false;

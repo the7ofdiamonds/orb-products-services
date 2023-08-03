@@ -6,8 +6,12 @@ use WP_Query;
 
 class Services
 {
-    public function __construct()
+    private $stripeClient;
+
+    public function __construct($stripeClient)
     {
+        $this->stripeClient = $stripeClient;
+
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/services', [
                 'methods' => 'GET',

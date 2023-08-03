@@ -11,6 +11,7 @@ class Tables
     {
         $this->create_services_table();
         $this->create_client_table();
+        $this->create_quote_table();
         $this->create_invoice_table();
         $this->create_receipt_table();
         $this->create_accounts_receivable();
@@ -49,6 +50,30 @@ class Tables
             stripe_customer_id VARCHAR(255) DEFAULT NULL,
             first_name VARCHAR(255) DEFAULT NULL,
             last_name VARCHAR(255) DEFAULT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+
+        dbDelta($sql);
+    }
+
+    function create_quote_table()
+    {
+        global $wpdb;
+        $table_name = 'orb_quote';
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE {$table_name} (
+            id INT NOT NULL AUTO_INCREMENT,
+            created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            stripe_customer_id VARCHAR(255) DEFAULT NULL,
+            stripe_quote_id VARCHAR(255) DEFAULT NULL,
+            status VARCHAR(255) DEFAULT NULL,
+            selections JSON DEFAULT NULL,
+            amount_subtotal VARCHAR(255) DEFAULT NULL,
+            amount_discount VARCHAR(255) DEFAULT NULL,
+            amount_shipping VARCHAR(255) DEFAULT NULL,
+            amount_tax VARCHAR(255) DEFAULT NULL,
+            amount_total VARCHAR(255) DEFAULT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
 

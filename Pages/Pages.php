@@ -43,6 +43,7 @@ class Pages
         $page_titles = [
             'SERVICE',
             'START',
+            'SELECTIONS',
             'QUOTE',
             'INVOICE',
             'PAYMENT',
@@ -85,7 +86,7 @@ class Pages
         if ($services_page_id && $start_page_id && $quote_page_id && $invoice_page_id && $payment_page_id && $receipt_page_id && $schedule_page_id) {
 
             add_rewrite_rule('^services/start/?$', 'index.php?page_id=' . $start_page_id . '&id=$matches[1]', 'top');
-            add_rewrite_rule('^services/quote/?$', 'index.php?page_id=' . $quote_page_id . '&id=$matches[1]', 'top');
+            add_rewrite_rule('^services/quote/([0-9]+)?$', 'index.php?page_id=' . $quote_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^services/invoice/([0-9]+)/?$', 'index.php?page_id=' . $invoice_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^services/payment/([0-9]+)/?$', 'index.php?page_id=' . $payment_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^services/receipt/([0-9]+)/?$', 'index.php?page_id=' . $receipt_page_id . '&id=$matches[1]', 'top');

@@ -1,10 +1,10 @@
 "use strict";
-(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_Quote_jsx"],{
+(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_Selections_jsx"],{
 
-/***/ "./src/views/Quote.jsx":
-/*!*****************************!*\
-  !*** ./src/views/Quote.jsx ***!
-  \*****************************/
+/***/ "./src/views/Selections.jsx":
+/*!**********************************!*\
+  !*** ./src/views/Selections.jsx ***!
+  \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -29,10 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function QuoteComponent() {
-  const {
-    id
-  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useParams)();
+function SelectionsComponent() {
   const {
     loading,
     error,
@@ -43,15 +40,10 @@ function QuoteComponent() {
     stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
-    stripe_quote_id,
-    status,
     total,
     selections,
-    stripe_invoice_id
+    quote_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.quote);
-  const {
-    invoice_id
-  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
   const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useNavigate)();
   const [checkedItems, setCheckedItems] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]);
@@ -65,11 +57,6 @@ function QuoteComponent() {
       dispatch((0,_controllers_servicesSlice_js__WEBPACK_IMPORTED_MODULE_3__.fetchServices)());
     }
   }, [stripe_customer_id, dispatch]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (id && stripe_customer_id) {
-      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.getQuote)(id, stripe_customer_id));
-    }
-  }, [id, stripe_customer_id, dispatch]);
   const handleCheckboxChange = (event, price_id, description, cost) => {
     const isChecked = event.target.checked;
     setCheckedItems(prevItems => {
@@ -91,36 +78,16 @@ function QuoteComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.calculateSelections)(services.cost));
   }, [dispatch, services.cost, checkedItems]);
+  const handleClick = () => {
+    if (selections.length > 0) {
+      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.createQuote)(selections));
+    }
+  };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (selections) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.quoteToInvoice)(selections));
+    if (total > 0 && quote_id) {
+      navigate(`/services/quote/${quote_id}`);
     }
   });
-  const handleCancel = () => {
-    if (status === 'draft' || status === 'open') {
-      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.cancelQuote)());
-    }
-  };
-  const handleConfirm = () => {
-    if (stripe_quote_id && status === 'open') {
-      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.acceptQuote)());
-    }
-  };
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (status === 'accepted') {
-      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.getStripeQuote)());
-    }
-  }, [status, dispatch]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (stripe_invoice_id) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.createInvoice)());
-    }
-  }, [stripe_invoice_id, dispatch]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (invoice_id) {
-      navigate(`/services/invoice/${invoice_id}`);
-    }
-  }, [invoice_id, navigate]);
   if (error) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", {
       className: "error"
@@ -133,7 +100,7 @@ function QuoteComponent() {
   if (loading) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
   }
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, "QUOTE"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, "SELECTIONS"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "quote-card card"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("thead", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
     colSpan: 2
@@ -176,17 +143,13 @@ function QuoteComponent() {
   }, new Intl.NumberFormat('us', {
     style: 'currency',
     currency: 'USD'
-  }).format(total))))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "actions"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    onClick: handleCancel
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "CANCEL")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    onClick: handleConfirm
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "CONFIRM"))));
+  }).format(total))))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: handleClick
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "QUOTE")));
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuoteComponent);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SelectionsComponent);
 
 /***/ })
 
 }]);
-//# sourceMappingURL=src_views_Quote_jsx.js.map
+//# sourceMappingURL=src_views_Selections_jsx.js.map

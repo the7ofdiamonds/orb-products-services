@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchServices } from '../controllers/servicesSlice.js';
@@ -7,25 +7,17 @@ import { getClient } from '../controllers/clientSlice.js';
 import {
   addSelections,
   calculateSelections,
-  getQuote,
-  updateQuote,
-  cancelQuote,
-  acceptQuote,
-  getStripeQuote,
+  createQuote
 } from '../controllers/quoteSlice.js';
-import { createInvoice, quoteToInvoice } from '../controllers/invoiceSlice.js';
+import { quoteToInvoice } from '../controllers/invoiceSlice.js';
 
-function QuoteComponent() {
-  const { id } = useParams();
-
+function SelectionsComponent() {
   const { loading, error, services } = useSelector((state) => state.services);
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const { stripe_quote_id, status, total, selections, stripe_invoice_id } =
-    useSelector((state) => state.quote);
-  const { invoice_id } = useSelector((state) => state.invoice);
-  
+  const { total, selections, quote_id } = useSelector((state) => state.quote);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -42,12 +34,6 @@ function QuoteComponent() {
       dispatch(fetchServices());
     }
   }, [stripe_customer_id, dispatch]);
-
-  useEffect(() => {
-    if (id && stripe_customer_id) {
-      dispatch(getQuote(id, stripe_customer_id));
-    }
-  }, [id, stripe_customer_id, dispatch]);
 
   const handleCheckboxChange = (event, price_id, description, cost) => {
     const isChecked = event.target.checked;
@@ -70,41 +56,17 @@ function QuoteComponent() {
     dispatch(calculateSelections(services.cost));
   }, [dispatch, services.cost, checkedItems]);
 
+  const handleClick = () => {
+    if (selections.length > 0) {
+      dispatch(createQuote(selections));
+    }
+  };
+  
   useEffect(() => {
-    if (selections) {
-      dispatch(quoteToInvoice(selections));
+    if (total > 0 && quote_id) {
+      navigate(`/services/quote/${quote_id}`);
     }
   });
-
-  const handleCancel = () => {
-    if (status === 'draft' || status === 'open') {
-      dispatch(cancelQuote());
-    }
-  };
-
-  const handleConfirm = () => {
-    if (stripe_quote_id && status === 'open') {
-      dispatch(acceptQuote());
-    }
-  };
-
-  useEffect(() => {
-    if (status === 'accepted') {
-      dispatch(getStripeQuote());
-    }
-  }, [status, dispatch]);
-
-  useEffect(() => {
-    if (stripe_invoice_id) {
-      dispatch(createInvoice());
-    }
-  }, [stripe_invoice_id, dispatch]);
-
-  useEffect(() => {
-    if (invoice_id) {
-      navigate(`/services/invoice/${invoice_id}`);
-    }
-  }, [invoice_id, navigate]);
 
   if (error) {
     return (
@@ -124,7 +86,7 @@ function QuoteComponent() {
 
   return (
     <>
-      <h2>QUOTE</h2>
+      <h2>SELECTIONS</h2>
 
       <div className="quote-card card">
         <table>
@@ -203,16 +165,11 @@ function QuoteComponent() {
         </table>
       </div>
 
-      <div className="actions">
-        <button onClick={handleCancel}>
-          <h3>CANCEL</h3>
-        </button>
-        <button onClick={handleConfirm}>
-          <h3>CONFIRM</h3>
-        </button>
-      </div>
+      <button onClick={handleClick}>
+        <h3>QUOTE</h3>
+      </button>
     </>
   );
 }
 
-export default QuoteComponent;
+export default SelectionsComponent;

@@ -9258,6 +9258,7 @@ __webpack_require__.r(__webpack_exports__);
 // Components
 const ServicesComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Services_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Services.jsx */ "./src/views/Services.jsx")));
 const ServiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Service_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Service.jsx */ "./src/views/Service.jsx")));
+const SelectionsComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Selections_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Selections.jsx */ "./src/views/Selections.jsx")));
 const QuoteComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Quote_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Quote.jsx */ "./src/views/Quote.jsx")));
 const StartComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_start_Start_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/start/Start.jsx */ "./src/views/start/Start.jsx")));
 const ClientComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_start_Client_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/start/Client.jsx */ "./src/views/start/Client.jsx")));
@@ -9298,7 +9299,10 @@ function App() {
     path: "services/start/client",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ClientComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "services/quote",
+    path: "services/selections",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(SelectionsComponent, null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    path: "services/quote/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(QuoteComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/schedule",
@@ -9648,6 +9652,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getInvoices: () => (/* binding */ getInvoices),
 /* harmony export */   getStripeInvoice: () => (/* binding */ getStripeInvoice),
 /* harmony export */   invoiceSlice: () => (/* binding */ invoiceSlice),
+/* harmony export */   pdfInvoice: () => (/* binding */ pdfInvoice),
 /* harmony export */   quoteToInvoice: () => (/* binding */ quoteToInvoice),
 /* harmony export */   updateInvoice: () => (/* binding */ updateInvoice),
 /* harmony export */   updateInvoiceStatus: () => (/* binding */ updateInvoiceStatus)
@@ -9675,7 +9680,8 @@ const initialState = {
   amount_due: '',
   amount_paid: '',
   amount_remaining: '',
-  payment_date: ''
+  payment_date: '',
+  invoice_pdf: ''
 };
 const quoteToInvoice = selections => {
   return {
@@ -9687,21 +9693,10 @@ const createInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsy
   getState
 }) => {
   const {
-    stripe_customer_id
-  } = getState().client;
-  const {
-    due_date
-  } = getState().schedule;
-  const {
-    selections
-  } = getState().invoice;
-  const invoice = {
-    stripe_customer_id: stripe_customer_id,
-    due_date: due_date,
-    selections: selections
-  };
+    stripe_invoice_id
+  } = getState().quote;
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/invoice', invoice);
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/wp-json/orb/v1/invoice/${stripe_invoice_id}`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -9795,6 +9790,19 @@ const getStripeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.create
     throw new Error(error.message);
   }
 });
+const pdfInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/pdfInvoice', async (_, {
+  getState
+}) => {
+  const {
+    stripe_invoice_id
+  } = getState().invoice;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/invoice/${stripe_invoice_id}/pdf`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
 const getInvoices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/getInvoices', async (id, {
   getState
 }) => {
@@ -9876,6 +9884,7 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.payment_date = action.payload.status_transitions.paid_at;
       state.stripe_customer_id = action.payload.customer;
       state.payment_intent_id = action.payload.payment_intent;
+      state.invoice_pdf = action.payload.invoice_pdf;
     }).addCase(getStripeInvoice.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
@@ -9997,20 +10006,245 @@ const paymentSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   acceptQuote: () => (/* binding */ acceptQuote),
 /* harmony export */   addSelections: () => (/* binding */ addSelections),
 /* harmony export */   calculateSelections: () => (/* binding */ calculateSelections),
+/* harmony export */   cancelQuote: () => (/* binding */ cancelQuote),
+/* harmony export */   createQuote: () => (/* binding */ createQuote),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   quoteSlice: () => (/* binding */ quoteSlice)
+/* harmony export */   finalizeQuote: () => (/* binding */ finalizeQuote),
+/* harmony export */   getClientQuotes: () => (/* binding */ getClientQuotes),
+/* harmony export */   getQuote: () => (/* binding */ getQuote),
+/* harmony export */   getStripeClientQuotes: () => (/* binding */ getStripeClientQuotes),
+/* harmony export */   getStripeQuote: () => (/* binding */ getStripeQuote),
+/* harmony export */   pdfQuote: () => (/* binding */ pdfQuote),
+/* harmony export */   quoteSlice: () => (/* binding */ quoteSlice),
+/* harmony export */   updateQuote: () => (/* binding */ updateQuote),
+/* harmony export */   updateQuoteStatus: () => (/* binding */ updateQuoteStatus),
+/* harmony export */   updateStripeQuote: () => (/* binding */ updateStripeQuote)
 /* harmony export */ });
-/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+
 
 const initialState = {
   loading: false,
   error: '',
+  quotes: '',
+  quote_id: '',
+  stripe_quote_id: '',
+  amount_subtotal: '',
+  amount_total: '',
+  status: '',
   selections: '',
-  total: ''
+  total: '',
+  pdf: ''
 };
-const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
+const createQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/createQuote', async (_, {
+  getState
+}) => {
+  const {
+    stripe_customer_id
+  } = getState().client;
+  const {
+    selections
+  } = getState().quote;
+  const quote = {
+    stripe_customer_id: stripe_customer_id,
+    selections: selections
+  };
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/quote', quote);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const getQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/getQuote', async (id, {
+  getState
+}) => {
+  const {
+    stripe_customer_id
+  } = getState().quote;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/quote/${id}`, {
+      params: stripe_customer_id
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const getStripeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/getStripeQuote', async (_, {
+  getState
+}) => {
+  const {
+    stripe_quote_id
+  } = getState().quote;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const updateQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/updateQuote', async (_, {
+  getState
+}) => {
+  const {
+    stripe_quote_id,
+    selections
+  } = getState().quote;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().patch(`/wp-json/orb/v1/quote/${stripe_quote_id}`, selections);
+    if (response.status !== 200) {
+      if (response.status === 400) {
+        throw new Error('Bad request');
+      } else if (response.status === 404) {
+        throw new Error('Quote not found');
+      } else {
+        throw new Error(`HTTP error! Status: ${response.statusText}`);
+      }
+    }
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const updateStripeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/updateStripeQuote', async (_, {
+  getState
+}) => {
+  const {
+    stripe_quote_id,
+    selections
+  } = getState().quote;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().patch(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}`, selections);
+    if (response.status !== 200) {
+      if (response.status === 400) {
+        throw new Error('Bad request');
+      } else if (response.status === 404) {
+        throw new Error('Quote not found');
+      } else {
+        throw new Error(`HTTP error! Status: ${response.statusText}`);
+      }
+    }
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const finalizeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/finalizeQuote', async (_, {
+  getState
+}) => {
+  const {
+    stripe_quote_id
+  } = getState().quote;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/wp-json/orb/v1/quotes/${stripe_quote_id}/finalize`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const updateQuoteStatus = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/updateQuoteStatus', async (_, {
+  getState
+}) => {
+  const {
+    stripe_quote_id,
+    status
+  } = getState().quote;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().patch(`/wp-json/orb/v1/quote/${stripe_quote_id}`, status);
+    if (response.status !== 200) {
+      if (response.status === 400) {
+        throw new Error('Bad request');
+      } else if (response.status === 404) {
+        throw new Error('Quote not found');
+      } else {
+        throw new Error(`HTTP error! Status: ${response.statusText}`);
+      }
+    }
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const acceptQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/acceptQuote', async (_, {
+  getState
+}) => {
+  const {
+    stripe_quote_id
+  } = getState().quote;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/accept`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const cancelQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/cancelQuote', async (_, {
+  getState
+}) => {
+  const {
+    stripe_quote_id
+  } = getState().quote;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/wp-json/orb/v1/quotes/${stripe_quote_id}/cancel`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const pdfQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/pdfQuote', async quoteId => {
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/quote/${quoteId}/pdf`, {
+      responseType: 'blob'
+    });
+
+    // Convert the Blob to a base64 string
+    const blob = response.data;
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    return new Promise(resolve => {
+      reader.onloadend = () => {
+        resolve(reader.result);
+      };
+    });
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const getClientQuotes = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/getClientQuotes', async (_, {
+  getState
+}) => {
+  const {
+    stripe_customer_id
+  } = getState().client;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/quotes/${stripe_customer_id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const getStripeClientQuotes = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/getStripeClientQuotes', async (_, {
+  getState
+}) => {
+  const {
+    stripe_customer_id
+  } = getState().client;
+  try {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/stripe/quotes/${stripe_customer_id}`);
+    return response.data.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
   name: 'quote',
   initialState,
   reducers: {
@@ -10029,6 +10263,94 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
       });
       state.total = total;
     }
+  },
+  extraReducers: builder => {
+    builder.addCase(createQuote.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(createQuote.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.quote_id = action.payload;
+    }).addCase(createQuote.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    }).addCase(getQuote.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(getQuote.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.quote_id = action.payload.id;
+      state.stripe_quote_id = action.payload.stripe_quote_id;
+      state.status = action.payload.status;
+      state.selections = action.payload.selections;
+      state.amount_subtotal = action.payload.amount_subtotal;
+      state.amount_total = action.payload.amount_total;
+    }).addCase(getQuote.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    }).addCase(getStripeQuote.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(getStripeQuote.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.stripe_quote_id = action.payload.id;
+      state.status = action.payload.status;
+      state.amount_subtotal = action.payload.amount_subtotal;
+      state.amount_total = action.payload.amount_total;
+      state.stripe_invoice_id = action.payload.invoice;
+    }).addCase(getStripeQuote.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    }).addCase(updateQuote.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(updateQuote.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.stripe_quote_id = action.payload.id;
+      state.status = action.payload.status;
+      state.amount_subtotal = action.payload.amount_subtotal;
+      state.amount_total = action.payload.amount_total;
+    }).addCase(updateQuote.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    }).addCase(updateQuoteStatus.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(updateQuoteStatus.fulfilled, (state, action) => {
+      state.status = action.payload;
+      state.error = null;
+      state.stripe_quote_id = action.payload.id;
+      state.status = action.payload.status;
+      state.amount_subtotal = action.payload.amount_subtotal;
+      state.amount_total = action.payload.amount_total;
+    }).addCase(updateQuoteStatus.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    }).addCase(pdfQuote.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(pdfQuote.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.pdf = action.payload;
+    }).addCase(pdfQuote.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    }).addCase(getClientQuotes.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(getClientQuotes.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.quotes = action.payload;
+    }).addCase(getClientQuotes.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    });
   }
 });
 const {

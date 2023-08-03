@@ -44,6 +44,7 @@ class JS
             'dashboard',
             'services',
             'services/start',
+            'services/selections',
             'services/quote',
             'services/invoice',
             'services/schedule',

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // Components
 const ServicesComponent = lazy(() => import('./views/Services.jsx'));
 const ServiceComponent = lazy(() => import('./views/Service.jsx'));
+const SelectionsComponent = lazy(() => import('./views/Selections.jsx'));
 const QuoteComponent = lazy(() => import('./views/Quote.jsx'));
 const StartComponent = lazy(() => import('./views/start/Start.jsx'));
 const ClientComponent = lazy(() => import('./views/start/Client.jsx'));
@@ -32,7 +33,11 @@ function App() {
             <Route path="services/:service" element={<ServiceComponent />} />
             <Route path="services/start" element={<StartComponent />} />
             <Route path="services/start/client" element={<ClientComponent />} />
-            <Route path="services/quote" element={<QuoteComponent />} />
+            <Route
+              path="services/selections"
+              element={<SelectionsComponent />}
+            />
+            <Route path="services/quote/:id" element={<QuoteComponent />} />
             <Route path="services/schedule" element={<ScheduleComponent />} />
             <Route path="services/invoice/:id" element={<InvoiceComponent />} />
             <Route

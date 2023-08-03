@@ -79,8 +79,14 @@ function UserInvoiceComponent() {
                       <a href={`/services/invoice/${invoice.id}`}>
                         {invoice.status === 'paid' ? (
                           <h5>View</h5>
-                        ) : (
+                        ) : invoice.status === 'void' ? (
+                          <h5>Void</h5>
+                        ) : invoice.status === 'uncollectible' ? (
+                          <h5>Uncollectible</h5>
+                        ) : invoice.status === 'open' ? (
                           <h5>Continue</h5>
+                        ) : (
+                          <h5>Change</h5>
                         )}
                       </a>
                     </td>

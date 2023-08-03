@@ -15,7 +15,7 @@ class Invoice
         $this->stripeClient = $stripeClient;
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/invoice', [
+            register_rest_route('orb/v1', '/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'POST',
                 'callback' => [$this, 'create_invoice'],
                 'permission_callback' => '__return_true',
@@ -73,58 +73,28 @@ class Invoice
 
     public function create_invoice(WP_REST_Request $request)
     {
-        $stripe_customer_id = $request['stripe_customer_id'];
-        $due_date = $request['due_date'];
-        $selections = $request['selections'];
+        $stripe_invoice_id = $request->get_param('slug');
 
-        if (empty($stripe_customer_id)) {
-            return rest_ensure_response('Customer ID is required');
-        }
-
-        if (empty($due_date)) {
-            return rest_ensure_response('Due date is required');
-        }
-
-        if (empty($selections)) {
-            return rest_ensure_response('Selections are required');
-        }
-
-        $stripe_invoice = $this->stripeClient->invoices->create([
-            'collection_method' => 'send_invoice',
-            'customer' => $stripe_customer_id,
-            'due_date' => $due_date
-        ]);
-
-        foreach ($selections as $selection) {
-            $price_id = $selection['price_id'];
-
-            $this->stripeClient->invoiceItems->create([
-                'customer' => $stripe_customer_id,
-                'price' => $price_id,
-                'invoice' => $stripe_invoice->id,
-            ]);
-        }
+        $stripe_invoice = $this->stripeClient->invoices->retrieve(
+            $stripe_invoice_id,
+            []
+        );
 
         global $wpdb;
 
         $status = $stripe_invoice->status;
         $stripe_invoice_id = $stripe_invoice->id;
-        $due_date = $stripe_invoice->due_date;
         $subtotal = $stripe_invoice->subtotal;
         $tax = $stripe_invoice->tax;
         $amount_due = $stripe_invoice->amount_due;
-
-        $serialized_selections = json_encode($selections);
 
         $table_name = 'orb_invoice';
         $result = $wpdb->insert(
             $table_name,
             [
                 'status' => $status,
-                'stripe_customer_id' => $stripe_customer_id,
+                'stripe_customer_id' => $stripe_invoice->customer,
                 'stripe_invoice_id' => $stripe_invoice_id,
-                'selections' => $serialized_selections,
-                'due_date' => $due_date,
                 'subtotal' => $subtotal,
                 'tax' => $tax,
                 'amount_due' => $amount_due
