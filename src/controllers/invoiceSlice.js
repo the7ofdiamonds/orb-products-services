@@ -4,6 +4,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 const initialState = {
   loading: false,
   error: '',
+  quote_id: '',
   invoices: [],
   invoice_id: '',
   status: '',
@@ -23,18 +24,13 @@ const initialState = {
   invoice_pdf: ''
 };
 
-export const quoteToInvoice = (selections) => {
-  return {
-    type: 'invoice/quoteToInvoice',
-    payload: selections
-  };
-};
+export const saveInvoice = createAsyncThunk('invoice/saveInvoice', async (_, { getState }) => {
+  const { quote_id, stripe_invoice_id } = getState().quote;
 
-export const createInvoice = createAsyncThunk('invoice/createInvoice', async (_, { getState }) => {
-  const { stripe_invoice_id } = getState().quote;
 
   try {
-    const response = await axios.post(`/wp-json/orb/v1/invoice/${stripe_invoice_id}`);
+    const response = await axios.post(`/wp-json/orb/v1/invoice/${stripe_invoice_id}`, { quote_id: quote_id });
+    console.log(response.data)
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -151,15 +147,15 @@ export const invoiceSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createInvoice.pending, (state) => {
+      .addCase(saveInvoice.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(createInvoice.fulfilled, (state, action) => {
+      .addCase(saveInvoice.fulfilled, (state, action) => {
         state.loading = false;
         state.invoice_id = action.payload;
       })
-      .addCase(createInvoice.rejected, (state, action) => {
+      .addCase(saveInvoice.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
@@ -171,12 +167,11 @@ export const invoiceSlice = createSlice({
         state.loading = false
         state.invoice_id = action.payload.id
         state.status = action.payload.status;
-        state.client_id = action.payload.client_id;
         state.stripe_customer_id = action.payload.stripe_customer_id;
+        state.quote_id = action.payload.quote_id;
         state.stripe_invoice_id = action.payload.stripe_invoice_id;
         state.payment_intent_id = action.payload.payment_intent_id;
         state.client_secret = action.payload.client_secret;
-        state.selections = action.payload.selections;
         state.subtotal = action.payload.subtotal;
       })
       .addCase(getInvoice.rejected, (state, action) => {

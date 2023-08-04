@@ -342,7 +342,7 @@ class Quote
     public function finalize_quote(WP_REST_Request $request)
     {
         $stripe_quote_id = $request->get_param('slug');
-
+        
         try {
             $quote = $this->stripeClient->quotes->finalizeQuote(
                 $stripe_quote_id,

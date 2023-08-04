@@ -9646,14 +9646,13 @@ const {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createInvoice: () => (/* binding */ createInvoice),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   getInvoice: () => (/* binding */ getInvoice),
 /* harmony export */   getInvoices: () => (/* binding */ getInvoices),
 /* harmony export */   getStripeInvoice: () => (/* binding */ getStripeInvoice),
 /* harmony export */   invoiceSlice: () => (/* binding */ invoiceSlice),
 /* harmony export */   pdfInvoice: () => (/* binding */ pdfInvoice),
-/* harmony export */   quoteToInvoice: () => (/* binding */ quoteToInvoice),
+/* harmony export */   saveInvoice: () => (/* binding */ saveInvoice),
 /* harmony export */   updateInvoice: () => (/* binding */ updateInvoice),
 /* harmony export */   updateInvoiceStatus: () => (/* binding */ updateInvoiceStatus)
 /* harmony export */ });
@@ -9665,6 +9664,7 @@ __webpack_require__.r(__webpack_exports__);
 const initialState = {
   loading: false,
   error: '',
+  quote_id: '',
   invoices: [],
   invoice_id: '',
   status: '',
@@ -9683,20 +9683,18 @@ const initialState = {
   payment_date: '',
   invoice_pdf: ''
 };
-const quoteToInvoice = selections => {
-  return {
-    type: 'invoice/quoteToInvoice',
-    payload: selections
-  };
-};
-const createInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/createInvoice', async (_, {
+const saveInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/saveInvoice', async (_, {
   getState
 }) => {
   const {
+    quote_id,
     stripe_invoice_id
   } = getState().quote;
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/wp-json/orb/v1/invoice/${stripe_invoice_id}`);
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/wp-json/orb/v1/invoice/${stripe_invoice_id}`, {
+      quote_id: quote_id
+    });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -9825,13 +9823,13 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
     }
   },
   extraReducers: builder => {
-    builder.addCase(createInvoice.pending, state => {
+    builder.addCase(saveInvoice.pending, state => {
       state.loading = true;
       state.error = null;
-    }).addCase(createInvoice.fulfilled, (state, action) => {
+    }).addCase(saveInvoice.fulfilled, (state, action) => {
       state.loading = false;
       state.invoice_id = action.payload;
-    }).addCase(createInvoice.rejected, (state, action) => {
+    }).addCase(saveInvoice.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     }).addCase(getInvoice.pending, state => {
@@ -9841,12 +9839,11 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.loading = false;
       state.invoice_id = action.payload.id;
       state.status = action.payload.status;
-      state.client_id = action.payload.client_id;
       state.stripe_customer_id = action.payload.stripe_customer_id;
+      state.quote_id = action.payload.quote_id;
       state.stripe_invoice_id = action.payload.stripe_invoice_id;
       state.payment_intent_id = action.payload.payment_intent_id;
       state.client_secret = action.payload.client_secret;
-      state.selections = action.payload.selections;
       state.subtotal = action.payload.subtotal;
     }).addCase(getInvoice.rejected, (state, action) => {
       state.loading = false;
@@ -10056,7 +10053,6 @@ const createQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
   };
   try {
     const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/quote', quote);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -10072,7 +10068,6 @@ const getQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThu
     const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/quote/${id}`, {
       params: stripe_customer_id
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -10144,7 +10139,7 @@ const finalizeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsy
     stripe_quote_id
   } = getState().quote;
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/wp-json/orb/v1/quotes/${stripe_quote_id}/finalize`);
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/finalize`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -10193,7 +10188,7 @@ const cancelQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
     stripe_quote_id
   } = getState().quote;
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/wp-json/orb/v1/quotes/${stripe_quote_id}/cancel`);
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/cancel`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -10348,6 +10343,36 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
       state.error = null;
       state.quotes = action.payload;
     }).addCase(getClientQuotes.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    }).addCase(finalizeQuote.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(finalizeQuote.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.status = action.payload;
+    }).addCase(finalizeQuote.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    }).addCase(acceptQuote.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(acceptQuote.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.status = action.payload;
+    }).addCase(acceptQuote.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    }).addCase(cancelQuote.pending, state => {
+      state.loading = true;
+      state.error = null;
+    }).addCase(cancelQuote.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = null;
+      state.status = action.payload;
+    }).addCase(cancelQuote.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     });

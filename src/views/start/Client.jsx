@@ -81,7 +81,7 @@ function ClientComponent() {
 
   useEffect(() => {
     if (stripe_customer_id) {
-      navigate('/services/quote');
+      navigate('/services/selections');
     }
   }, [stripe_customer_id, navigate]);
 

@@ -80,7 +80,7 @@ function ClientComponent() {
   }, [user_email, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_customer_id) {
-      navigate('/services/quote');
+      navigate('/services/selections');
     }
   }, [stripe_customer_id, navigate]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {

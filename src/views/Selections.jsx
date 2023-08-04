@@ -7,16 +7,19 @@ import { getClient } from '../controllers/clientSlice.js';
 import {
   addSelections,
   calculateSelections,
-  createQuote
+  createQuote,
+  finalizeQuote,
+  getQuote,
 } from '../controllers/quoteSlice.js';
-import { quoteToInvoice } from '../controllers/invoiceSlice.js';
 
 function SelectionsComponent() {
   const { loading, error, services } = useSelector((state) => state.services);
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const { total, selections, quote_id } = useSelector((state) => state.quote);
+  const { quote_id, stripe_quote_id, status, selections, total } = useSelector(
+    (state) => state.quote
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,9 +64,21 @@ function SelectionsComponent() {
       dispatch(createQuote(selections));
     }
   };
-  
+
   useEffect(() => {
-    if (total > 0 && quote_id) {
+    if (stripe_quote_id) {
+      dispatch(finalizeQuote());
+    }
+  }, [stripe_quote_id, dispatch]);
+
+  useEffect(() => {
+    if (quote_id) {
+      dispatch(getQuote(quote_id));
+    }
+  }, [quote_id, dispatch]);
+
+  useEffect(() => {
+    if (status === 'open') {
       navigate(`/services/quote/${quote_id}`);
     }
   });

@@ -26,7 +26,6 @@ export const createQuote = createAsyncThunk('quote/createQuote', async (_, { get
 
   try {
     const response = await axios.post('/wp-json/orb/v1/quote', quote);
-    console.log(response.data)
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -38,7 +37,6 @@ export const getQuote = createAsyncThunk('quote/getQuote', async (id, { getState
 
   try {
     const response = await axios.get(`/wp-json/orb/v1/quote/${id}`, { params: stripe_customer_id });
-    console.log(response.data)
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -104,7 +102,7 @@ export const finalizeQuote = createAsyncThunk('quote/finalizeQuote', async (_, {
   const { stripe_quote_id } = getState().quote;
 
   try {
-    const response = await axios.post(`/wp-json/orb/v1/quotes/${stripe_quote_id}/finalize`);
+    const response = await axios.post(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/finalize`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -148,7 +146,7 @@ export const cancelQuote = createAsyncThunk('quote/cancelQuote', async (_, { get
   const { stripe_quote_id } = getState().quote;
 
   try {
-    const response = await axios.post(`/wp-json/orb/v1/quotes/${stripe_quote_id}/cancel`);
+    const response = await axios.post(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/cancel`);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -328,6 +326,45 @@ export const quoteSlice = createSlice({
         state.quotes = action.payload;
       })
       .addCase(getClientQuotes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(finalizeQuote.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(finalizeQuote.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.status = action.payload;
+      })
+      .addCase(finalizeQuote.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(acceptQuote.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(acceptQuote.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.status = action.payload;
+      })
+      .addCase(acceptQuote.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(cancelQuote.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(cancelQuote.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.status = action.payload;
+      })
+      .addCase(cancelQuote.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

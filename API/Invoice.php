@@ -17,7 +17,7 @@ class Invoice
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'POST',
-                'callback' => [$this, 'create_invoice'],
+                'callback' => [$this, 'save_invoice'],
                 'permission_callback' => '__return_true',
             ]);
         });
@@ -71,9 +71,10 @@ class Invoice
         });
     }
 
-    public function create_invoice(WP_REST_Request $request)
+    public function save_invoice(WP_REST_Request $request)
     {
         $stripe_invoice_id = $request->get_param('slug');
+        $quote_id = $request['quote_id'];
 
         $stripe_invoice = $this->stripeClient->invoices->retrieve(
             $stripe_invoice_id,
@@ -82,22 +83,17 @@ class Invoice
 
         global $wpdb;
 
-        $status = $stripe_invoice->status;
-        $stripe_invoice_id = $stripe_invoice->id;
-        $subtotal = $stripe_invoice->subtotal;
-        $tax = $stripe_invoice->tax;
-        $amount_due = $stripe_invoice->amount_due;
-
         $table_name = 'orb_invoice';
         $result = $wpdb->insert(
             $table_name,
             [
-                'status' => $status,
+                'status' => $stripe_invoice->status,
                 'stripe_customer_id' => $stripe_invoice->customer,
-                'stripe_invoice_id' => $stripe_invoice_id,
-                'subtotal' => $subtotal,
-                'tax' => $tax,
-                'amount_due' => $amount_due
+                'quote_id' => $quote_id,
+                'stripe_invoice_id' => $stripe_invoice->id,
+                'subtotal' => $stripe_invoice->subtotal,
+                'tax' => $stripe_invoice->tax,
+                'amount_due' => $stripe_invoice->amount_due
             ]
         );
 
@@ -137,6 +133,7 @@ class Invoice
             'created_at' => $invoice->created_at,
             'status' => $invoice->status,
             'stripe_customer_id' => $invoice->stripe_customer_id,
+            'quote_id' => $invoice->quote_id,
             'stripe_invoice_id' => $invoice->stripe_invoice_id,
             'payment_intent_id' => $invoice->payment_intent_id,
             'client_secret' => $invoice->client_secret,

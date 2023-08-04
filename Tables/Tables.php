@@ -89,13 +89,13 @@ class Tables
         $sql = "CREATE TABLE {$table_name} (
             id INT NOT NULL AUTO_INCREMENT,
             created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            status VARCHAR(255) DEFAULT NULL,
             stripe_customer_id VARCHAR(255) DEFAULT NULL,
+            quote_id VARCHAR(255) DEFAULT NULL,
             stripe_invoice_id VARCHAR(255) DEFAULT NULL,
+            status VARCHAR(255) DEFAULT NULL,
             payment_intent_id VARCHAR(255) DEFAULT NULL,
             client_secret VARCHAR(255) DEFAULT NULL,
             due_date VARCHAR(255) DEFAULT NULL,
-            selections JSON DEFAULT NULL,
             subtotal VARCHAR(255) DEFAULT NULL,
             tax VARCHAR(255) DEFAULT NULL,
             amount_due VARCHAR(255) DEFAULT NULL,
@@ -115,8 +115,8 @@ class Tables
         $sql = "CREATE TABLE {$table_name} (
         id INT NOT NULL AUTO_INCREMENT,
         created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        invoice_id VARCHAR(255) DEFAULT NULL,
         stripe_customer_id VARCHAR(255) DEFAULT NULL,
+        invoice_id VARCHAR(255) DEFAULT NULL,
         payment_method_id VARCHAR(255) DEFAULT NULL,
         amount_paid VARCHAR(255) DEFAULT NULL,
         payment_date VARCHAR(255) DEFAULT NULL,
@@ -139,6 +139,7 @@ class Tables
         $sql = "CREATE TABLE {$table_name} (
         id INT NOT NULL AUTO_INCREMENT,
         created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        invoice_id VARCHAR(255) DEFAULT NULL,
         description VARCHAR(255) DEFAULT NULL,
         ref VARCHAR(255) DEFAULT NULL,
         debit VARCHAR(255) DEFAULT NULL,

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getClient } from '../controllers/clientSlice.js';
 import { getStripeCustomer } from '../controllers/customerSlice.js';
-import { saveEvent, sendInvites } from '../controllers/scheduleSlice.js';
+import { getQuote } from '../controllers/quoteSlice.js';
 import {
   getStripeInvoice,
   getInvoice,
@@ -30,7 +30,7 @@ function InvoiceComponent() {
     zipcode,
     phone,
   } = useSelector((state) => state.customer);
-  const { event_id } = useSelector((state) => state.schedule);
+  const { selections } = useSelector((state) => state.quote);
   const {
     loading,
     error,
@@ -38,13 +38,14 @@ function InvoiceComponent() {
     stripe_invoice_id,
     due_date,
     amount_due,
-    selections,
     subtotal,
     tax,
     payment_intent_id,
+    quote_id,
   } = useSelector((state) => state.invoice);
+  const { event_id } = useSelector((state) => state.schedule);
   const { client_secret } = useSelector((state) => state.payment);
-  
+
   const dueDate = new Date(due_date * 1000).toLocaleString();
   const amountDue = amount_due;
   const subTotal = subtotal;
@@ -58,31 +59,31 @@ function InvoiceComponent() {
     if (user_email) {
       dispatch(getClient());
     }
-  }, [dispatch, user_email]);
+  }, [user_email, dispatch]);
 
   useEffect(() => {
     if (stripe_customer_id) {
       dispatch(getStripeCustomer());
     }
-  }, [dispatch, stripe_customer_id]);
+  }, [stripe_customer_id, dispatch]);
 
   useEffect(() => {
     if (stripe_customer_id) {
       dispatch(getInvoice(id, stripe_customer_id));
     }
-  }, [dispatch, id, stripe_customer_id]);
+  }, [id, stripe_customer_id, dispatch]);
 
   useEffect(() => {
     if (stripe_invoice_id) {
       dispatch(getStripeInvoice(stripe_invoice_id));
     }
-  }, [dispatch, stripe_invoice_id]);
+  }, [stripe_invoice_id, dispatch]);
 
   useEffect(() => {
-    if (event_id) {
-      dispatch(saveEvent());
+    if (quote_id && stripe_customer_id) {
+      dispatch(getQuote(quote_id));
     }
-  }, [event_id, dispatch]);
+  }, [quote_id, stripe_customer_id, dispatch]);
 
   useEffect(() => {
     if (payment_intent_id) {
@@ -96,14 +97,16 @@ function InvoiceComponent() {
     }
   }, [status, payment_intent_id, client_secret, dispatch]);
 
+  //Event id mast be validated
   const handleClick = () => {
     if (status === 'paid') {
       navigate(`/services/receipt/${id}`);
-    } else if (status === 'open' && client_secret) {
+    } else if (status === 'open' && event_id && client_secret) {
       navigate(`/services/payment/${id}`);
+    } else if (status === 'open' && client_secret) {
+      navigate(`/services/schedule/${id}`);
     } else if (stripe_invoice_id) {
       dispatch(finalizeInvoice());
-      dispatch(sendInvites());
     }
   };
 
@@ -278,7 +281,7 @@ function InvoiceComponent() {
       </div>
 
       <button onClick={handleClick}>
-        {status === 'paid' ? <h3>RECEIPT</h3> : <h3>PAYMENT</h3>}
+        {status === 'paid' ? <h3>RECEIPT</h3> : <h3>SCHEDULE</h3>}
       </button>
     </>
   );

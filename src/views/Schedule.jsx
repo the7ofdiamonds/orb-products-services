@@ -10,7 +10,7 @@ import {
   updateDueDate,
   updateEvent,
 } from '../controllers/scheduleSlice.js';
-import { createInvoice } from '../controllers/invoiceSlice.js';
+import { saveInvoice } from '../controllers/invoiceSlice.js';
 
 function ScheduleComponent() {
   const { user_email, client_id, stripe_customer_id } = useSelector(
@@ -129,7 +129,7 @@ function ScheduleComponent() {
 
   const handleClick = () => {
     if (stripe_customer_id && total > 0) {
-      dispatch(createInvoice());
+      dispatch(saveInvoice());
     }
   };
 

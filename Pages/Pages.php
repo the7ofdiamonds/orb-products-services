@@ -77,15 +77,17 @@ class Pages
 
         $services_page_id = get_page_by_path('services')->ID;
         $start_page_id = get_page_by_path('services/start')->ID;
+        $selections_page_id = get_page_by_path('services/selections')->ID;
         $quote_page_id = get_page_by_path('services/quote')->ID;
         $invoice_page_id = get_page_by_path('services/invoice')->ID;
         $payment_page_id = get_page_by_path('services/payment')->ID;
         $receipt_page_id = get_page_by_path('services/receipt')->ID;
         $schedule_page_id = get_page_by_path('services/schedule')->ID;
 
-        if ($services_page_id && $start_page_id && $quote_page_id && $invoice_page_id && $payment_page_id && $receipt_page_id && $schedule_page_id) {
+        if ($services_page_id && $start_page_id && $selections_page_id && $quote_page_id && $invoice_page_id && $payment_page_id && $receipt_page_id && $schedule_page_id) {
 
             add_rewrite_rule('^services/start/?$', 'index.php?page_id=' . $start_page_id . '&id=$matches[1]', 'top');
+            add_rewrite_rule('^services/selections/?$', 'index.php?page_id=' . $selections_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^services/quote/([0-9]+)?$', 'index.php?page_id=' . $quote_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^services/invoice/([0-9]+)/?$', 'index.php?page_id=' . $invoice_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^services/payment/([0-9]+)/?$', 'index.php?page_id=' . $payment_page_id . '&id=$matches[1]', 'top');

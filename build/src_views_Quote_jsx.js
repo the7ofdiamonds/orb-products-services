@@ -91,11 +91,6 @@ function QuoteComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.calculateSelections)(services.cost));
   }, [dispatch, services.cost, checkedItems]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (selections) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.quoteToInvoice)(selections));
-    }
-  });
   const handleCancel = () => {
     if (status === 'draft' || status === 'open') {
       dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.cancelQuote)());
@@ -113,7 +108,7 @@ function QuoteComponent() {
   }, [status, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_invoice_id) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.createInvoice)());
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.saveInvoice)());
     }
   }, [stripe_invoice_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {

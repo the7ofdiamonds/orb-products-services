@@ -19,7 +19,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/clientSlice.js */ "./src/controllers/clientSlice.js");
 /* harmony import */ var _controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/customerSlice.js */ "./src/controllers/customerSlice.js");
-/* harmony import */ var _controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../controllers/scheduleSlice.js */ "./src/controllers/scheduleSlice.js");
+/* harmony import */ var _controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../controllers/quoteSlice.js */ "./src/controllers/quoteSlice.js");
 /* harmony import */ var _controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../controllers/invoiceSlice.js */ "./src/controllers/invoiceSlice.js");
 /* harmony import */ var _controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../controllers/paymentSlice.js */ "./src/controllers/paymentSlice.js");
 
@@ -51,8 +51,8 @@ function InvoiceComponent() {
     phone
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.customer);
   const {
-    event_id
-  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.schedule);
+    selections
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.quote);
   const {
     loading,
     error,
@@ -60,11 +60,14 @@ function InvoiceComponent() {
     stripe_invoice_id,
     due_date,
     amount_due,
-    selections,
     subtotal,
     tax,
-    payment_intent_id
+    payment_intent_id,
+    quote_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
+  const {
+    event_id
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.schedule);
   const {
     client_secret
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.payment);
@@ -79,27 +82,27 @@ function InvoiceComponent() {
     if (user_email) {
       dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.getClient)());
     }
-  }, [dispatch, user_email]);
+  }, [user_email, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_customer_id) {
       dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.getStripeCustomer)());
     }
-  }, [dispatch, stripe_customer_id]);
+  }, [stripe_customer_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_customer_id) {
       dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.getInvoice)(id, stripe_customer_id));
     }
-  }, [dispatch, id, stripe_customer_id]);
+  }, [id, stripe_customer_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_invoice_id) {
       dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.getStripeInvoice)(stripe_invoice_id));
     }
-  }, [dispatch, stripe_invoice_id]);
+  }, [stripe_invoice_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (event_id) {
-      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_5__.saveEvent)());
+    if (quote_id && stripe_customer_id) {
+      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.getQuote)(quote_id));
     }
-  }, [event_id, dispatch]);
+  }, [quote_id, stripe_customer_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (payment_intent_id) {
       dispatch((0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_7__.getPaymentIntent)());
@@ -110,14 +113,17 @@ function InvoiceComponent() {
       dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.updateInvoice)());
     }
   }, [status, payment_intent_id, client_secret, dispatch]);
+
+  //Event id mast be validated
   const handleClick = () => {
     if (status === 'paid') {
       navigate(`/services/receipt/${id}`);
-    } else if (status === 'open' && client_secret) {
+    } else if (status === 'open' && event_id && client_secret) {
       navigate(`/services/payment/${id}`);
+    } else if (status === 'open' && client_secret) {
+      navigate(`/services/schedule/${id}`);
     } else if (stripe_invoice_id) {
       dispatch((0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_7__.finalizeInvoice)());
-      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_5__.sendInvites)());
     }
   };
   if (error) {
@@ -225,7 +231,7 @@ function InvoiceComponent() {
     currency: 'USD'
   }).format(grandTotal))))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
-  }, status === 'paid' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "RECEIPT") : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "PAYMENT")));
+  }, status === 'paid' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "RECEIPT") : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SCHEDULE")));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (InvoiceComponent);
 

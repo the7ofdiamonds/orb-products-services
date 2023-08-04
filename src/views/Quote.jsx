@@ -8,12 +8,11 @@ import {
   addSelections,
   calculateSelections,
   getQuote,
-  updateQuote,
   cancelQuote,
   acceptQuote,
   getStripeQuote,
 } from '../controllers/quoteSlice.js';
-import { createInvoice, quoteToInvoice } from '../controllers/invoiceSlice.js';
+import { saveInvoice } from '../controllers/invoiceSlice.js';
 
 function QuoteComponent() {
   const { id } = useParams();
@@ -25,7 +24,7 @@ function QuoteComponent() {
   const { stripe_quote_id, status, total, selections, stripe_invoice_id } =
     useSelector((state) => state.quote);
   const { invoice_id } = useSelector((state) => state.invoice);
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -70,12 +69,6 @@ function QuoteComponent() {
     dispatch(calculateSelections(services.cost));
   }, [dispatch, services.cost, checkedItems]);
 
-  useEffect(() => {
-    if (selections) {
-      dispatch(quoteToInvoice(selections));
-    }
-  });
-
   const handleCancel = () => {
     if (status === 'draft' || status === 'open') {
       dispatch(cancelQuote());
@@ -96,7 +89,7 @@ function QuoteComponent() {
 
   useEffect(() => {
     if (stripe_invoice_id) {
-      dispatch(createInvoice());
+      dispatch(saveInvoice());
     }
   }, [stripe_invoice_id, dispatch]);
 

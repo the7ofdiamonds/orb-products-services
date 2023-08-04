@@ -133,7 +133,7 @@ function ScheduleComponent() {
   }, [start_date, start_time, dispatch]);
   const handleClick = () => {
     if (stripe_customer_id && total > 0) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.createInvoice)());
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.saveInvoice)());
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
