@@ -100,6 +100,8 @@ class Tables
             tax VARCHAR(255) DEFAULT NULL,
             amount_due VARCHAR(255) DEFAULT NULL,
             amount_remaining VARCHAR(255) DEFAULT NULL,
+            event_id VARCHAR(255) DEFAULT NULL,
+            invoice_pdf_url VARCHAR(255) DEFAULT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
 
@@ -124,6 +126,7 @@ class Tables
         payment_method VARCHAR(255) DEFAULT NULL,
         first_name VARCHAR(255) DEFAULT NULL,
         last_name VARCHAR(255) DEFAULT NULL,
+        receipt_pdf_url VARCHAR(255) DEFAULT NULL,
         PRIMARY KEY (id)
     ) $charset_collate;";
 

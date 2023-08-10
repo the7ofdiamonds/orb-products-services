@@ -2,8 +2,8 @@ import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
-  loading: false,
-  error: '',
+  servicesloading: false,
+  servicesError: '',
   services: {}
 }
 
@@ -23,7 +23,7 @@ export const servicesSlice = createSlice({
     builder
       .addCase(fetchServices.pending, (state) => {
         state.loading = true
-        state.error = null
+        state.servicesError = null
       })
       .addCase(fetchServices.fulfilled, (state, action) => {
         state.loading = false
@@ -31,7 +31,7 @@ export const servicesSlice = createSlice({
       })
       .addCase(fetchServices.rejected, (state, action) => {
         state.loading = false
-        state.error = action.error.message
+        state.servicesError = action.error.message
       })
   }
 })

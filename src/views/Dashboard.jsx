@@ -9,9 +9,9 @@ import UserQuoteComponent from './dashboard/UserQuote';
 function DashboardComponent() {
   return (
     <>
-      {/* <UserScheduleComponent />
+      <UserScheduleComponent />
       <UserReceiptComponent />
-      <UserInvoiceComponent /> */}
+      <UserInvoiceComponent />
       <UserQuoteComponent />
     </>
   );

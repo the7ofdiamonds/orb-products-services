@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getClient } from '../../controllers/clientSlice';
-import { getInvoices } from '../../controllers/invoiceSlice';
+import {
+  getClientInvoices,
+  deleteInvoice,
+  getStripeInvoice,
+} from '../../controllers/invoiceSlice';
 
 function UserInvoiceComponent() {
   const dispatch = useDispatch();
@@ -10,7 +14,9 @@ function UserInvoiceComponent() {
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const { loading, error, invoices } = useSelector((state) => state.invoice);
+  const { loading, invoiceError, invoices, stripe_invoice_id } = useSelector(
+    (state) => state.invoice
+  );
 
   useEffect(() => {
     if (user_email) {
@@ -20,20 +26,18 @@ function UserInvoiceComponent() {
 
   useEffect(() => {
     if (stripe_customer_id) {
-      dispatch(getInvoices());
+      dispatch(getClientInvoices());
     }
   }, [stripe_customer_id, dispatch]);
 
-  if (error) {
+  if (invoiceError) {
     return (
       <>
-        <main className="error">
-          <div className="status-bar card">
-            <span className="error">
-              <h4>There was an error or no invoices to show at this time.</h4>
-            </span>
-          </div>
-        </main>
+        <div className="status-bar card error">
+          <span>
+            <h4>{invoiceError}</h4>
+          </span>
+        </div>
       </>
     );
   }
@@ -59,6 +63,12 @@ function UserInvoiceComponent() {
                   <h4>Balance</h4>
                 </th>
                 <th>
+                  <h4>Due Date</h4>
+                </th>
+                <th>
+                  <h4>Quote ID</h4>
+                </th>
+                <th>
                   <h4>Page</h4>
                 </th>
               </tr>
@@ -70,25 +80,45 @@ function UserInvoiceComponent() {
                     <td>{invoice.id}</td>
                     <td>{invoice.status}</td>
                     <td>
+                      {/* add currency column using var invoice.currency */}
                       {new Intl.NumberFormat('us', {
                         style: 'currency',
                         currency: 'USD',
                       }).format(invoice.amount_remaining)}
                     </td>
+                    <td>{invoice.due_date}</td>
+                    <td>{invoice.quote_id}</td>
                     <td>
-                      <a href={`/services/invoice/${invoice.id}`}>
-                        {invoice.status === 'paid' ? (
-                          <h5>View</h5>
-                        ) : invoice.status === 'void' ? (
-                          <h5>Void</h5>
-                        ) : invoice.status === 'uncollectible' ? (
-                          <h5>Uncollectible</h5>
-                        ) : invoice.status === 'open' ? (
+                      {invoice.status === 'deleted' ? (
+                        <h5>Deleted</h5>
+                      ) : invoice.status === 'paid' ? (
+                        <a href={`/services/invoice/${invoice.id}`}>
+                          <button>
+                            <h5>View</h5>
+                          </button>
+                        </a>
+                      ) : invoice.status === 'void' ? (
+                        <h5>Void</h5>
+                      ) : invoice.status === 'uncollectible' ? (
+                        <h5>Uncollectible</h5>
+                      ) : invoice.status === 'open' ? (
+                        <a href={`/services/invoice/${invoice.id}`}>
                           <h5>Continue</h5>
-                        ) : (
-                          <h5>Change</h5>
-                        )}
-                      </a>
+                        </a>
+                      ) : (
+                        <a>
+                          <button
+                            onClick={async () =>
+                              await dispatch(
+                                deleteInvoice(invoice.stripe_invoice_id)
+                              ).then(() => {
+                                dispatch(getClientInvoices());
+                              })
+                            }>
+                            <h5>Delete</h5>
+                          </button>
+                        </a>
+                      )}
                     </td>
                   </tr>
                 </>

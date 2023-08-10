@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getClient } from '../../controllers/clientSlice';
-import { getClientQuotes, pdfQuote } from '../../controllers/quoteSlice';
+import { getClientQuotes } from '../../controllers/quoteSlice';
 
 function UserQuoteComponent() {
   const dispatch = useDispatch();
@@ -10,7 +10,9 @@ function UserQuoteComponent() {
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const { loading, error, quotes, pdf } = useSelector((state) => state.quote);
+  const { loading, quoteError, quotes, pdf } = useSelector(
+    (state) => state.quote
+  );
 
   useEffect(() => {
     if (user_email) {
@@ -24,63 +26,14 @@ function UserQuoteComponent() {
     }
   }, [stripe_customer_id, dispatch]);
 
-  const handlePDFClick = async (quoteId) => {
-    try {
-      const response = await dispatch(pdfQuote(quoteId));
-      const base64String = response.payload;
-
-      // Convert the base64 string back to a Blob
-      const byteCharacters = atob(base64String.split(',')[1]);
-      const byteArrays = [];
-      for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-        const slice = byteCharacters.slice(offset, offset + 512);
-        const byteNumbers = new Array(slice.length);
-        for (let i = 0; i < slice.length; i++) {
-          byteNumbers[i] = slice.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        byteArrays.push(byteArray);
-      }
-      const blob = new Blob(byteArrays, { type: 'application/pdf' });
-
-      // Rest of the code for initiating the download remains the same
-      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        // For Internet Explorer or Microsoft Edge
-        window.navigator.msSaveOrOpenBlob(blob, `quote_${quoteId}.pdf`);
-      } else {
-        // For other modern browsers
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `quote_${quoteId}.pdf`;
-        a.click();
-
-        // Release the object URL after the download is initiated
-        URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error('Error downloading PDF:', error);
-    }
-  };
-
-  useEffect(() => {
-    return () => {
-      if (pdf) {
-        URL.revokeObjectURL(pdf);
-      }
-    };
-  }, [pdf]);
-
-  if (error) {
+  if (quoteError) {
     return (
       <>
-        <main className="error">
-          <div className="status-bar card">
-            <span className="error">
-              <h4>There was an error or no quotes to show at this time.</h4>
-            </span>
-          </div>
-        </main>
+        <div className="status-bar card error">
+          <span>
+            <h4>{quoteError}</h4>
+          </span>
+        </div>
       </>
     );
   }
@@ -124,20 +77,12 @@ function UserQuoteComponent() {
                     </td>
                     <td>
                       {quote.status === 'accepted' ? (
-                        <button onClick={() => handlePDFClick(quote.id)}>
-                          <h5>Download</h5>
-                        </button>
+                        <h5>Accepted</h5>
                       ) : quote.status === 'canceled' ? (
-                        <a href={`/services/quote/${quote.id}`}>
-                          <h5>Canceled</h5>
-                        </a>
-                      ) : quote.status === 'open' ? (
-                        <a href={`/services/quote/${quote.id}`}>
-                          <h5>Confirm</h5>
-                        </a>
+                        <h5>Canceled</h5>
                       ) : (
                         <a href={`/services/quote/${quote.id}`}>
-                          <h5>Change</h5>
+                          <h5>Confirm</h5>
                         </a>
                       )}
                     </td>

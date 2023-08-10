@@ -3,7 +3,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
   loading: false,
-  error: '',
+  quoteError: '',
+  stripe_customer_id: '',
   quotes: '',
   quote_id: '',
   stripe_quote_id: '',
@@ -13,6 +14,13 @@ const initialState = {
   selections: '',
   total: '',
   pdf: ''
+};
+
+export const updateQuoteID = (stripe_quote_id) => {
+  return {
+    type: 'quote/updateQuoteID',
+    payload: stripe_quote_id
+  };
 };
 
 export const createQuote = createAsyncThunk('quote/createQuote', async (_, { getState }) => {
@@ -25,21 +33,78 @@ export const createQuote = createAsyncThunk('quote/createQuote', async (_, { get
   };
 
   try {
-    const response = await axios.post('/wp-json/orb/v1/quote', quote);
-    return response.data;
+    const response = await fetch('/wp-json/orb/v1/quote', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(quote)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      console.log(errorMessage)
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    console.error(error);
+    throw error.message;
   }
 });
 
-export const getQuote = createAsyncThunk('quote/getQuote', async (id, { getState }) => {
-  const { stripe_customer_id } = getState().quote;
+
+export const getQuote = createAsyncThunk('quote/getQuote', async (_, { getState }) => {
+  const { stripe_quote_id } = getState().quote;
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/quote/${id}`, { params: stripe_customer_id });
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/quote/${stripe_quote_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      console.log(errorMessage)
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    console.error(error);
+    throw error.message;
+  }
+});
+
+export const getQuoteByID = createAsyncThunk('quote/getQuoteByID', async (id, { getState }) => {
+
+  try {
+    const response = await fetch(`/wp-json/orb/v1/quote/${id}/id`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      console.log(errorMessage)
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error(error);
+    throw error.message;
   }
 });
 
@@ -47,10 +112,25 @@ export const getStripeQuote = createAsyncThunk('quote/getStripeQuote', async (_,
   const { stripe_quote_id } = getState().quote;
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      console.log(errorMessage)
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    console.error(error);
+    throw error.message;
   }
 });
 
@@ -58,21 +138,26 @@ export const updateQuote = createAsyncThunk('quote/updateQuote', async (_, { get
   const { stripe_quote_id, selections } = getState().quote;
 
   try {
-    const response = await axios.patch(`/wp-json/orb/v1/quote/${stripe_quote_id}`, selections);
+    const response = await fetch(`/wp-json/orb/v1/quote/${stripe_quote_id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(selections)
+    });
 
-    if (response.status !== 200) {
-      if (response.status === 400) {
-        throw new Error('Bad request');
-      } else if (response.status === 404) {
-        throw new Error('Quote not found');
-      } else {
-        throw new Error(`HTTP error! Status: ${response.statusText}`);
-      }
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      console.log(errorMessage)
+      throw new Error(errorMessage);
     }
 
-    return response.data;
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    console.error(error);
+    throw error.message;
   }
 });
 
@@ -80,21 +165,26 @@ export const updateStripeQuote = createAsyncThunk('quote/updateStripeQuote', asy
   const { stripe_quote_id, selections } = getState().quote;
 
   try {
-    const response = await axios.patch(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}`, selections);
+    const response = await fetch(`/wp-json/orb/v1/stripe/quote/${stripe_quote_id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(selections)
+    });
 
-    if (response.status !== 200) {
-      if (response.status === 400) {
-        throw new Error('Bad request');
-      } else if (response.status === 404) {
-        throw new Error('Quote not found');
-      } else {
-        throw new Error(`HTTP error! Status: ${response.statusText}`);
-      }
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      console.log(errorMessage)
+      throw new Error(errorMessage);
     }
 
-    return response.data;
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    console.error(error);
+    throw error.message;
   }
 });
 
@@ -102,32 +192,51 @@ export const finalizeQuote = createAsyncThunk('quote/finalizeQuote', async (_, {
   const { stripe_quote_id } = getState().quote;
 
   try {
-    const response = await axios.post(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/finalize`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/finalize`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      console.log(errorMessage)
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    console.error(error);
+    throw error.message;
   }
 });
 
 export const updateQuoteStatus = createAsyncThunk('quote/updateQuoteStatus', async (_, { getState }) => {
-  const { stripe_quote_id, status } = getState().quote;
+  const { stripe_quote_id } = getState().quote;
 
   try {
-    const response = await axios.patch(`/wp-json/orb/v1/quote/${stripe_quote_id}`, status);
+    const response = await fetch(`/wp-json/orb/v1/quote/${stripe_quote_id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
 
-    if (response.status !== 200) {
-      if (response.status === 400) {
-        throw new Error('Bad request');
-      } else if (response.status === 404) {
-        throw new Error('Quote not found');
-      } else {
-        throw new Error(`HTTP error! Status: ${response.statusText}`);
-      }
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      console.log(errorMessage)
+      throw new Error(errorMessage);
     }
 
-    return response.data;
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    console.error(error);
+    throw error.message;
   }
 });
 
@@ -135,10 +244,25 @@ export const acceptQuote = createAsyncThunk('quote/acceptQuote', async (_, { get
   const { stripe_quote_id } = getState().quote;
 
   try {
-    const response = await axios.post(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/accept`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/accept`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      console.log(errorMessage)
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    console.error(error);
+    throw error.message;
   }
 });
 
@@ -146,44 +270,49 @@ export const cancelQuote = createAsyncThunk('quote/cancelQuote', async (_, { get
   const { stripe_quote_id } = getState().quote;
 
   try {
-    const response = await axios.post(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/cancel`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/cancel`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      console.log(errorMessage)
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    console.error(error);
+    throw error.message;
   }
 });
-
-export const pdfQuote = createAsyncThunk(
-  'quote/pdfQuote',
-  async (quoteId) => {
-    try {
-      const response = await axios.get(`/wp-json/orb/v1/quote/${quoteId}/pdf`, {
-        responseType: 'blob',
-      });
-
-      // Convert the Blob to a base64 string
-      const blob = response.data;
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      return new Promise((resolve) => {
-        reader.onloadend = () => {
-          resolve(reader.result);
-        };
-      });
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
-);
 
 export const getClientQuotes = createAsyncThunk('quote/getClientQuotes', async (_, { getState }) => {
   const { stripe_customer_id } = getState().client;
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/quotes/${stripe_customer_id}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/quotes/${stripe_customer_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error.message;
   }
 });
 
@@ -191,10 +320,23 @@ export const getStripeClientQuotes = createAsyncThunk('quote/getStripeClientQuot
   const { stripe_customer_id } = getState().client;
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/stripe/quotes/${stripe_customer_id}`);
-    return response.data.data;
+    const response = await fetch(`/wp-json/orb/v1/stripe/quotes/${stripe_customer_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error.message;
   }
 });
 
@@ -220,29 +362,36 @@ export const quoteSlice = createSlice({
 
       state.total = total;
     },
+    updateQuoteID: (state, action) => {
+      state.stripe_quote_id = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(createQuote.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.quoteError = null;
       })
       .addCase(createQuote.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
-        state.quote_id = action.payload;
+        state.quoteError = null;
+        state.stripe_quote_id = action.payload.id;
+        state.amount_subtotal = action.payload.amount_subtotal;
+        state.amount_total = action.payload.amount_total;
+        state.status = action.payload.status;
+        state.total = action.payload.total;
       })
       .addCase(createQuote.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.quoteError = action.error.message;
       })
       .addCase(getQuote.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.quoteError = null;
       })
       .addCase(getQuote.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.quoteError = null;
         state.quote_id = action.payload.id;
         state.stripe_quote_id = action.payload.stripe_quote_id;
         state.status = action.payload.status;
@@ -252,15 +401,33 @@ export const quoteSlice = createSlice({
       })
       .addCase(getQuote.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.quoteError = action.error.message;
+      })
+      .addCase(getQuoteByID.pending, (state) => {
+        state.loading = true;
+        state.quoteError = null;
+      })
+      .addCase(getQuoteByID.fulfilled, (state, action) => {
+        state.loading = false;
+        state.quoteError = null;
+        state.quote_id = action.payload.id;
+        state.stripe_quote_id = action.payload.stripe_quote_id;
+        state.status = action.payload.status;
+        state.selections = action.payload.selections;
+        state.amount_subtotal = action.payload.amount_subtotal
+        state.amount_total = action.payload.amount_total
+      })
+      .addCase(getQuoteByID.rejected, (state, action) => {
+        state.loading = false;
+        state.quoteError = action.error.message;
       })
       .addCase(getStripeQuote.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.quoteError = null;
       })
       .addCase(getStripeQuote.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.quoteError = null;
         state.stripe_quote_id = action.payload.id;
         state.status = action.payload.status;
         state.amount_subtotal = action.payload.amount_subtotal
@@ -269,15 +436,15 @@ export const quoteSlice = createSlice({
       })
       .addCase(getStripeQuote.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.quoteError = action.error.message;
       })
       .addCase(updateQuote.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.quoteError = null;
       })
       .addCase(updateQuote.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.quoteError = null;
         state.stripe_quote_id = action.payload.id;
         state.status = action.payload.status;
         state.amount_subtotal = action.payload.amount_subtotal
@@ -285,15 +452,15 @@ export const quoteSlice = createSlice({
       })
       .addCase(updateQuote.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.quoteError = action.error.message;
       })
       .addCase(updateQuoteStatus.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.quoteError = null;
       })
       .addCase(updateQuoteStatus.fulfilled, (state, action) => {
         state.status = action.payload;
-        state.error = null;
+        state.quoteError = null;
         state.stripe_quote_id = action.payload.id;
         state.status = action.payload.status;
         state.amount_subtotal = action.payload.amount_subtotal
@@ -301,72 +468,65 @@ export const quoteSlice = createSlice({
       })
       .addCase(updateQuoteStatus.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
-      })
-      .addCase(pdfQuote.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(pdfQuote.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-        state.pdf = action.payload;
-      })
-      .addCase(pdfQuote.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
+        state.quoteError = action.error.message;
       })
       .addCase(getClientQuotes.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.quoteError = null;
       })
       .addCase(getClientQuotes.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.quoteError = null;
         state.quotes = action.payload;
       })
       .addCase(getClientQuotes.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.quoteError = action.error.message;
       })
       .addCase(finalizeQuote.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.quoteError = null;
       })
       .addCase(finalizeQuote.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
-        state.status = action.payload;
+        state.quoteError = null;
+        state.quote_id = action.payload.id;
+        state.stripe_quote_id = action.payload.stripe_quote_id;
+        state.stripe_customer_id = action.payload.customer;
+        state.status = action.payload.status;
+        state.amount_subtotal = action.payload.amount_subtotal;
+        state.amount_total = action.payload.amount_total;
+        state.total = action.payload.total;
       })
       .addCase(finalizeQuote.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.quoteError = action.error.message;
       })
       .addCase(acceptQuote.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.quoteError = null;
       })
       .addCase(acceptQuote.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.quoteError = null;
         state.status = action.payload;
       })
       .addCase(acceptQuote.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.quoteError = action.error.message;
       })
       .addCase(cancelQuote.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.quoteError = null;
       })
       .addCase(cancelQuote.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.quoteError = null;
         state.status = action.payload;
       })
       .addCase(cancelQuote.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.quoteError = action.error.message;
       });
   }
 });

@@ -113,11 +113,11 @@ function ReceiptComponent() {
   const timestamp = payment_date * 1000;
   const paymentDate = new Date(timestamp);
   const formattedPhone = (0,_utils_PhoneNumberFormatter_js__WEBPACK_IMPORTED_MODULE_8__["default"])(phone);
-  const Subtotal = subtotal;
-  const Tax = tax;
-  const amountDue = amount_due;
-  const amountPaid = amount_paid;
-  const Balance = amount_remaining;
+  const Subtotal = subtotal / 100;
+  const Tax = tax / 100;
+  const amountDue = amount_due / 100;
+  const amountPaid = amount_paid / 100;
+  const Balance = amount_remaining / 100;
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (user_email) {
       dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.getClient)());
@@ -133,6 +133,11 @@ function ReceiptComponent() {
       dispatch((0,_controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_7__.getReceipt)(id));
     }
   }, [dispatch, id, stripe_customer_id]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (!payment_method && payment_method_id) {
+      dispatch((0,_controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_7__.getPaymentMethod)(payment_method_id));
+    }
+  }, [dispatch, payment_method_id]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (invoice_id) {
       dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.getInvoice)(invoice_id));
@@ -164,23 +169,15 @@ function ReceiptComponent() {
       dispatch((0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_6__.getPaymentIntent)(payment_intent_id));
     }
   }, [dispatch, payment_intent_id]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (payment_method_id) {
-      dispatch((0,_controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_7__.getPaymentMethod)(payment_method_id));
-    }
-  }, [dispatch, payment_method_id]);
   const handleClick = () => {
-    //Go to a dashboard
-    window.location = '/';
+    window.location = '/dashboard';
   };
   if (error) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", {
       className: "error"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "status-bar card"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-      className: "error"
-    }, "You have either entered the wrong Receipt ID, or you are not the client to whom this receipt belongs.")));
+      className: "status-bar card error"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "You have either entered the wrong Receipt ID, or you are not the client to whom this receipt belongs.")));
   }
   if (loading) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
@@ -294,13 +291,11 @@ function ReceiptComponent() {
     style: 'currency',
     currency: 'USD'
   }).format(Balance)))))), message && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "status-bar card"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: `${messageType}`
-  }, message)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: `status-bar card ${messageType}`
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     id: "quote_button",
     onClick: handleClick
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "FINISH")));
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "DASHBOARD")));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ReceiptComponent);
 

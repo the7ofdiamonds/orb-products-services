@@ -54,11 +54,11 @@ function ReceiptComponent() {
   const timestamp = payment_date * 1000;
   const paymentDate = new Date(timestamp);
   const formattedPhone = formatPhoneNumber(phone);
-  const Subtotal = subtotal;
-  const Tax = tax;
-  const amountDue = amount_due;
-  const amountPaid = amount_paid;
-  const Balance = amount_remaining;
+  const Subtotal = subtotal / 100;
+  const Tax = tax / 100;
+  const amountDue = amount_due / 100;
+  const amountPaid = amount_paid / 100;
+  const Balance = amount_remaining / 100;
 
   useEffect(() => {
     if (user_email) {
@@ -77,6 +77,12 @@ function ReceiptComponent() {
       dispatch(getReceipt(id));
     }
   }, [dispatch, id, stripe_customer_id]);
+
+  useEffect(() => {
+    if (!payment_method && payment_method_id) {
+      dispatch(getPaymentMethod(payment_method_id));
+    }
+  }, [dispatch, payment_method_id]);
 
   useEffect(() => {
     if (invoice_id) {
@@ -117,22 +123,15 @@ function ReceiptComponent() {
     }
   }, [dispatch, payment_intent_id]);
 
-  useEffect(() => {
-    if (payment_method_id) {
-      dispatch(getPaymentMethod(payment_method_id));
-    }
-  }, [dispatch, payment_method_id]);
-
   const handleClick = () => {
-    //Go to a dashboard
-    window.location = '/';
+    window.location = '/dashboard';
   };
 
   if (error) {
     return (
       <main className="error">
-        <div className="status-bar card">
-          <span className="error">
+        <div className="status-bar card error">
+          <span>
             You have either entered the wrong Receipt ID, or you are not the
             client to whom this receipt belongs.
           </span>
@@ -325,13 +324,13 @@ function ReceiptComponent() {
       </div>
 
       {message && (
-        <div className="status-bar card">
-          <span className={`${messageType}`}>{message}</span>
+        <div className={`status-bar card ${messageType}`}>
+          <span>{message}</span>
         </div>
       )}
 
       <button id="quote_button" onClick={handleClick}>
-        <h3>FINISH</h3>
+        <h3>DASHBOARD</h3>
       </button>
     </>
   );

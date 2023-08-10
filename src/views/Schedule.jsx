@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getClient } from '../controllers/clientSlice';
@@ -9,18 +9,19 @@ import {
   updateTime,
   updateDueDate,
   updateEvent,
+  sendInvites
 } from '../controllers/scheduleSlice.js';
 import { saveInvoice } from '../controllers/invoiceSlice.js';
 
 function ScheduleComponent() {
+  const { id } = useParams();
+
   const { user_email, client_id, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const { total } = useSelector((state) => state.quote);
-  const { loading, error, events, start_date, start_time } = useSelector(
+  const { loading, error, events, start_date, start_time, event_id, event_date_time } = useSelector(
     (state) => state.schedule
   );
-  const { invoice_id } = useSelector((state) => state.invoice);
 
   const [availableDates, setAvailableDates] = useState('');
   const [availableTimes, setAvailableTimes] = useState('');
@@ -128,16 +129,16 @@ function ScheduleComponent() {
   }, [start_date, start_time, dispatch]);
 
   const handleClick = () => {
-    if (stripe_customer_id && total > 0) {
-      dispatch(saveInvoice());
+    if (event_date_time) {
+      dispatch(sendInvites(id));
     }
   };
-
+console.log(event_id)
   useEffect(() => {
-    if (invoice_id) {
-      navigate(`/services/invoice/${invoice_id}`);
+    if (event_id) {
+      navigate(`/services/payment/${id}`);
     }
-  }, [navigate, invoice_id]);
+  }, [event_id, id, navigate]);
 
   if (error) {
     return <div>Error: {error}</div>;

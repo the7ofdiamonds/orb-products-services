@@ -91,82 +91,82 @@ class Schedule
         }
     }
 
-public function send_invite(WP_REST_Request $request)
-{
-    try {
-        $eventData = $request->get_params();
-        $event_duration_hours = intval(get_option('orb_event_duration_hours'));
-        $event_duration_minutes = intval(get_option('orb_event_duration_minutes'));
+    public function send_invite(WP_REST_Request $request)
+    {
+        try {
+            $eventData = $request->get_params();
+            $event_duration_hours = intval(get_option('orb_event_duration_hours'));
+            $event_duration_minutes = intval(get_option('orb_event_duration_minutes'));
 
-        if (
-            !isset($eventData['client_id']) ||
-            !isset($eventData['description']) ||
-            !isset($eventData['start']) ||
-            !isset($eventData['start_date']) ||
-            !isset($eventData['start_time']) ||
-            !isset($eventData['attendees']) ||
-            !isset($eventData['description'])
-        ) {
-            throw new Exception('Invalid event data.');
+            if (
+                !isset($eventData['client_id']) ||
+                !isset($eventData['description']) ||
+                !isset($eventData['start']) ||
+                !isset($eventData['start_date']) ||
+                !isset($eventData['start_time']) ||
+                !isset($eventData['attendees']) ||
+                !isset($eventData['description'])
+            ) {
+                throw new Exception('Invalid event data.');
+            }
+
+            $invoice_id = $eventData['description'];
+            $start = $eventData['start'];
+            $end = new DateTime($start);
+            $end->modify('+' . $event_duration_hours . ' hours');
+            $end->modify('+' . $event_duration_minutes . ' minutes');
+
+            $event = new Event(array(
+                'summary' => get_option('orb_event_summary'),
+                'description' => $invoice_id,
+                'start' => array(
+                    'dateTime' => $start,
+                    'timeZone' => get_option('orb_event_time_zone'),
+                ),
+                'end' => array(
+                    'dateTime' => $end->format('Y-m-d\TH:i:s'),
+                    'timeZone' => get_option('orb_event_time_zone'),
+                ),
+                'attendees' => array_map(function ($email) {
+                    return array('email' => $email);
+                }, $eventData['attendees']),
+                'transparency' => 'opaque',
+                'status' => 'confirmed',
+            ));
+
+            $calendarId = get_option('orb_calendar_id');
+
+            $createdEvent = $this->service->events->insert($calendarId, $event);
+
+            global $wpdb;
+
+            $table_name = 'orb_schedule';
+            $result = $wpdb->insert(
+                $table_name,
+                [
+                    'client_id' => $eventData['client_id'],
+                    'invoice_id' => $eventData['description'],
+                    'google_event_id' => $createdEvent->id,
+                    'start_date' => $eventData['start_date'],
+                    'start_time' => $eventData['start_time'],
+                    'attendees' => $createdEvent->getAttendees(),
+                    'calendar_link' => $createdEvent->htmlLink,
+                ]
+            );
+
+            if (!$result) {
+                $error_message = $wpdb->last_error;
+                return rest_ensure_response($error_message);
+            }
+
+            $event_id = $wpdb->insert_id;
+
+            return rest_ensure_response($event_id);
+        } catch (Exception $e) {
+            // In case of an exception, return the error as the response
+            return rest_ensure_response($e->getMessage());
         }
-
-        $invoice_id = $eventData['description'];
-        $start = $eventData['start'];
-        $end = new DateTime($start);
-        $end->modify('+' . $event_duration_hours . ' hours');
-        $end->modify('+' . $event_duration_minutes . ' minutes');
-
-        $event = new Event(array(
-            'summary' => get_option('orb_event_summary'),
-            'description' => $invoice_id,
-            'start' => array(
-                'dateTime' => $start,
-                'timeZone' => get_option('orb_event_time_zone'),
-            ),
-            'end' => array(
-                'dateTime' => $end->format('Y-m-d\TH:i:s'),
-                'timeZone' => get_option('orb_event_time_zone'),
-            ),
-            'attendees' => array_map(function ($email) {
-                return array('email' => $email);
-            }, $eventData['attendees']),
-            'transparency' => 'opaque',
-            'status' => 'confirmed',
-        ));
-
-        $calendarId = get_option('orb_calendar_id');
-
-        $createdEvent = $this->service->events->insert($calendarId, $event);
-
-        global $wpdb;
-
-        $table_name = 'orb_schedule';
-        $result = $wpdb->insert(
-            $table_name,
-            [
-                'client_id' => $eventData['client_id'],
-                'invoice_id' => $eventData['description'],
-                'google_event_id' => $createdEvent->id,
-                'start_date' => $eventData['start_date'],
-                'start_time' => $eventData['start_time'],
-                'attendees' => $createdEvent->getAttendees(),
-                'calendar_link' => $createdEvent->htmlLink,
-            ]
-        );
-
-        if (!$result) {
-            $error_message = $wpdb->last_error;
-            return rest_ensure_response($error_message);
-        }
-
-        $schedule_id = $wpdb->insert_id;
-
-        return rest_ensure_response($schedule_id);
-    } catch (Exception $e) {
-        // In case of an exception, return the error as the response
-        return rest_ensure_response($e->getMessage());
     }
-}
 
     public function get_event(WP_REST_Request $request)
     {

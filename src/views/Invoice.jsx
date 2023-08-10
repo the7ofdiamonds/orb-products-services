@@ -8,49 +8,46 @@ import { getQuote } from '../controllers/quoteSlice.js';
 import {
   getStripeInvoice,
   getInvoice,
-  updateInvoice,
-} from '../controllers/invoiceSlice.js';
-import {
   finalizeInvoice,
-  getPaymentIntent,
-} from '../controllers/paymentSlice.js';
+} from '../controllers/invoiceSlice.js';
+import { getPaymentIntent } from '../controllers/paymentSlice.js';
 
 function InvoiceComponent() {
   const { id } = useParams();
 
-  const { user_email, first_name, last_name, stripe_customer_id } = useSelector(
+  const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const {
-    company_name,
-    address_line_1,
-    address_line_2,
-    city,
-    state,
-    zipcode,
-    phone,
-  } = useSelector((state) => state.customer);
-  const { selections } = useSelector((state) => state.quote);
   const {
     loading,
     error,
     status,
+    quote_id,
+    customer_name,
+    customer_tax_ids,
+    address_line_1,
+    address_line_2,
+    city,
+    state,
+    postal_code,
+    customer_phone,
+    customer_email,
     stripe_invoice_id,
+    event_id,
     due_date,
     amount_due,
     subtotal,
     tax,
     payment_intent_id,
-    quote_id,
+    items,
   } = useSelector((state) => state.invoice);
-  const { event_id } = useSelector((state) => state.schedule);
   const { client_secret } = useSelector((state) => state.payment);
 
   const dueDate = new Date(due_date * 1000).toLocaleString();
-  const amountDue = amount_due;
-  const subTotal = subtotal;
-  const Tax = tax;
-  const grandTotal = amount_due;
+  const amountDue = amount_due / 100;
+  const subTotal = subtotal / 100;
+  const Tax = tax / 100;
+  const grandTotal = amount_due / 100;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -69,7 +66,7 @@ function InvoiceComponent() {
 
   useEffect(() => {
     if (stripe_customer_id) {
-      dispatch(getInvoice(id, stripe_customer_id));
+      dispatch(getInvoice(id));
     }
   }, [id, stripe_customer_id, dispatch]);
 
@@ -91,14 +88,8 @@ function InvoiceComponent() {
     }
   }, [payment_intent_id, dispatch]);
 
-  useEffect(() => {
-    if (status && payment_intent_id && client_secret) {
-      dispatch(updateInvoice());
-    }
-  }, [status, payment_intent_id, client_secret, dispatch]);
-
   //Event id mast be validated
-  const handleClick = () => {
+  const handleClick = async () => {
     if (status === 'paid') {
       navigate(`/services/receipt/${id}`);
     } else if (status === 'open' && event_id && client_secret) {
@@ -106,15 +97,21 @@ function InvoiceComponent() {
     } else if (status === 'open' && client_secret) {
       navigate(`/services/schedule/${id}`);
     } else if (stripe_invoice_id) {
-      dispatch(finalizeInvoice());
+      await dispatch(finalizeInvoice())
+        .then(() => {
+          dispatch(getInvoice(id));
+        })
+        .then(() => {
+          navigate(`/services/schedule/${id}`);
+        });
     }
   };
-
+  console.log(customer_tax_ids.length);
   if (error) {
     return (
-      <main className="error">
-        <div className="status-bar card">
-          <span className="error">
+      <main>
+        <div className="status-bar card error">
+          <span>
             You have either entered the wrong Invoice ID, or you are not the
             client to whom this invoice belongs.
           </span>
@@ -137,9 +134,17 @@ function InvoiceComponent() {
               <th className="bill-to-label" colSpan={2}>
                 <h4>BILL TO:</h4>
               </th>
-              <td className="bill-to-name" colSpan={4}>
-                {first_name} {last_name} O/B/O {company_name}
+              <td className="bill-to-name" colSpan={2}>
+                {customer_name}
               </td>
+              {Array.isArray(customer_tax_ids) &&
+                customer_tax_ids.length > 0 &&
+                customer_tax_ids.map((tax, index) => (
+                  <>
+                    <td className='bill-to-tax-id-type' key={index}>{tax.type}</td>
+                    <td className='bill-to-tax-id' key={index}>{tax.value}</td>
+                  </>
+                ))}
             </tr>
             <tr className="bill-to-address">
               <td></td>
@@ -152,12 +157,12 @@ function InvoiceComponent() {
               <td></td>
               <td className="bill-to-city">{city}</td>
               <td className="bill-to-state">{state}</td>
-              <td className="bill-to-zipcode">{zipcode}</td>
+              <td className="bill-to-zipcode">{postal_code}</td>
             </tr>
             <tr>
               <td></td>
               <td></td>
-              <td className="bill-to-phone">{phone}</td>
+              <td className="bill-to-phone">{customer_phone}</td>
               <td></td>
               <td></td>
             </tr>
@@ -165,7 +170,7 @@ function InvoiceComponent() {
               <td></td>
               <td></td>
               <td className="bill-to-email" colSpan={2}>
-                {user_email}
+                {customer_email}
               </td>
               <td></td>
             </tr>
@@ -204,20 +209,20 @@ function InvoiceComponent() {
           </thead>
 
           <tbody>
-            {selections &&
-              selections.length > 0 &&
-              selections.map((selection) => (
+            {items &&
+              items.length > 0 &&
+              items.map((item) => (
                 <tr id="quote_option">
-                  <td className="feature-id">{selection.id}</td>
+                  <td className="feature-id">{item.price.product}</td>
                   <td className="feature-name" id="feature_name" colSpan={4}>
-                    {selection.description}
+                    {item.description}
                   </td>
                   <td className="feature-cost  table-number" id="feature_cost">
                     <h4>
                       {new Intl.NumberFormat('us', {
                         style: 'currency',
                         currency: 'USD',
-                      }).format(selection.cost)}
+                      }).format(item.amount / 100)}
                     </h4>
                   </td>
                 </tr>

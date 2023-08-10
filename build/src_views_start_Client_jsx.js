@@ -28,19 +28,26 @@ __webpack_require__.r(__webpack_exports__);
 function ClientComponent() {
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
   const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useNavigate)();
-  const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
   const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('To receive a quote, please fill out the form above with the required information.');
   const {
     loading,
     error,
     user_email,
+    first_name,
+    last_name,
     client_id,
     stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
-    first_name,
-    last_name,
-    zipcode
+    company_name,
+    tax_id,
+    address_line_1,
+    address_line_2,
+    city,
+    state,
+    zipcode,
+    phone
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.customer);
   const handleCompanyNameChange = event => {
     dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateCompanyName)(event.target.value));
@@ -80,41 +87,48 @@ function ClientComponent() {
   }, [user_email, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_customer_id) {
-      navigate('/services/selections');
+      dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.getStripeCustomer)());
     }
   }, [stripe_customer_id, navigate]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (first_name && last_name && zipcode) {
+    if (address_line_1 && city && state && zipcode) {
       setIsFormCompleted(true);
     }
-  }, [first_name, last_name, zipcode]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (isFomCompleted) {
-      dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.addClient)());
-    }
-  }, [isFomCompleted, dispatch]);
-  const handleClick = () => {
+  }, [first_name, last_name, address_line_1, city, state, zipcode]);
+  console.log(isFomCompleted);
+  const handleClick = async () => {
     if (first_name === '') {
       setMessage('Please provide a first name.');
       setMessageType('error');
     } else if (last_name === '') {
       setMessage('Please provide last name.');
       setMessageType('error');
+    } else if (address_line_1 === '') {
+      setMessage('Please provide an address.');
+      setMessageType('error');
+    } else if (city === '') {
+      setMessage('Please provide the city.');
+      setMessageType('error');
+    } else if (state === '') {
+      setMessage('Please provide the state.');
+      setMessageType('error');
     } else if (zipcode === '') {
       setMessage('Please provide zipcode.');
       setMessageType('error');
-    } else if (client_id && stripe_customer_id) {
-      navigate('/services/quote');
+    } else if (isFomCompleted && stripe_customer_id === undefined) {
+      await dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.addClient)()).then(() => {
+        navigate('/services/selections');
+      });
+    } else if (stripe_customer_id) {
+      await dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateStripeCustomer)()).then(() => {
+        navigate('/services/selections');
+      });
     }
   };
   if (error) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", {
-      className: "error"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "status-bar card"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-      className: "error"
-    }, "\"We encountered an issue while loading this page. Please try again, and if the problem persists, kindly contact the website administrators for assistance.\"")));
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "status-bar card error"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "\"We encountered an issue while loading this page. Please try again, and if the problem persists, kindly contact the website administrators for assistance.\"")));
   }
 
   // Create loading animation
@@ -133,31 +147,36 @@ function ClientComponent() {
     name: "company_name",
     id: "company_name",
     placeholder: "Company Name",
-    onChange: handleCompanyNameChange
+    onChange: handleCompanyNameChange,
+    value: company_name
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "input",
     name: "tax_id",
     id: "tax_id",
     placeholder: "Tax ID",
-    onChange: handleTaxIDChange
+    onChange: handleTaxIDChange,
+    value: tax_id
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "input",
     name: "first_name",
     id: "first_name",
     placeholder: "First Name",
-    onChange: handleFirstNameChange
+    onChange: handleFirstNameChange,
+    value: first_name
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "input",
     name: "last_name",
     id: "last_name",
     placeholder: "Last Name",
-    onChange: handleLastNameChange
+    onChange: handleLastNameChange,
+    value: last_name
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "input",
     name: "phone",
     type: "tel",
     placeholder: "Phone",
-    onChange: handlePhoneChange
+    onChange: handlePhoneChange,
+    value: phone
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
     colSpan: 2
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
@@ -165,36 +184,39 @@ function ClientComponent() {
     name: "address_line_1",
     id: "bill_to_street",
     placeholder: "Street Address",
-    onChange: handleAddressChange
+    onChange: handleAddressChange,
+    value: address_line_1
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "input",
     name: "address_line_2",
     id: "bill_to_street2",
     placeholder: "Suite #",
-    onChange: handleAddressChange2
+    onChange: handleAddressChange2,
+    value: address_line_2
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "input",
     name: "city",
     id: "bill_to_city",
     placeholder: "City",
-    onChange: handleCityChange
+    onChange: handleCityChange,
+    value: city
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "input",
     name: "state",
     id: "bill_to_state",
     placeholder: "State",
-    onChange: handleStateChange
+    onChange: handleStateChange,
+    value: state
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     className: "input",
     name: "zipcode",
     id: "bill_to_zipcode",
     placeholder: "Zipcode",
-    onChange: handleZipcodeChange
+    onChange: handleZipcodeChange,
+    value: zipcode
   })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tfoot", null)))), message && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "status-bar card"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: `${messageType}`
-  }, message)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: `status-bar card ${messageType}`
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     id: "quote_button",
     onClick: handleClick
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "QUOTE")));

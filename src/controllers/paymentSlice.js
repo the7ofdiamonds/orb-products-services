@@ -13,18 +13,6 @@ const initialState = {
   payment_method: ''
 };
 
-export const finalizeInvoice = createAsyncThunk('payment/finalizeInvoice', async (_, { getState }) => {
-  const { stripe_customer_id } = getState().client;
-  const { stripe_invoice_id } = getState().invoice;
-
-  try {
-    const response = await axios.post(`/wp-json/orb/v1/invoices/${stripe_invoice_id}/finalize`, { stripe_customer_id: stripe_customer_id });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-});
-
 export const getPaymentIntent = createAsyncThunk('payment/getPaymentIntent', async (_, { getState }) => {
   const { payment_intent_id } = getState().invoice;
   try {
@@ -42,19 +30,6 @@ export const paymentSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(finalizeInvoice.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(finalizeInvoice.fulfilled, (state, action) => {
-        state.loading = false;
-        state.payment_intent_id = action.payload.id;
-        state.client_secret = action.payload.client_secret;
-      })
-      .addCase(finalizeInvoice.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
       .addCase(getPaymentIntent.pending, (state) => {
         state.loading = true;
         state.error = null;

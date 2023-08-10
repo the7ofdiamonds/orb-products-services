@@ -5,8 +5,7 @@ const initialState = {
   loading: false,
   events: [],
   error: null,
-  schedule_id: 0,
-  event_id: '',
+  event_id: 0,
   invoice_id: '',
   start_date_time: '',
   end_date_time: '',
@@ -68,10 +67,9 @@ function combineDateTime(start_date, start_time) {
 }
 
 export const sendInvites = createAsyncThunk('schedule/sendInvites',
-  async (_, { getState }) => {
+  async (invoice_id, { getState }) => {
     const { client_id } = getState().client;
     const { start_date, start_time, event_date_time } = getState().schedule;
-    const { invoice_id } = getState().invoice;
 
     const eventData = {
       client_id: client_id,
@@ -81,14 +79,14 @@ export const sendInvites = createAsyncThunk('schedule/sendInvites',
       description: invoice_id,
       attendees: ['jamel.c.lyons@gmail.com'],
     };
-
-    axios.post('/wp-json/orb/v1/schedule/events/invite', eventData)
-      .then((response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        return 'Error creating event:', error;
-      });
+    
+    try {
+      const response = await axios.post('/wp-json/orb/v1/schedule/events/invite', eventData)
+      return response.data;
+    } catch {
+      console.error('Error getting event:', error);
+      throw new Error('Error getting event:', error);
+    }
   });
 
 export const saveEvent = createAsyncThunk('schedule/saveEvent',
@@ -112,13 +110,14 @@ export const saveEvent = createAsyncThunk('schedule/saveEvent',
       calendar_link: calendar_link
     };
 
-    axios.post('/wp-json/orb/v1/schedule', eventData)
-      .then((response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        return 'Error saving event:', error;
-      });
+    try {
+      const response = await axios.post('/wp-json/orb/v1/schedule', eventData);
+      console.log(response.data)
+      return response.data;
+    } catch (error) {
+      console.error('Error getting event:', error);
+      throw new Error('Error getting event:', error);
+    }
   });
 
 export const getEvent = createAsyncThunk('schedule/getEvent', async (_, { getState }) => {
@@ -202,7 +201,7 @@ export const scheduleSlice = createSlice({
       })
       .addCase(saveEvent.fulfilled, (state, action) => {
         state.loading = false;
-        state.schedule_id = action.payload;
+        state.event_id = action.payload;
       })
       .addCase(saveEvent.rejected, (state, action) => {
         state.loading = false;

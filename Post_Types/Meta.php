@@ -2,7 +2,8 @@
 
 namespace ORB_Services\Post_Types;
 
-use WP_Error;
+use Stripe\Exception\ApiErrorException;
+use Stripe\Exception\InvalidRequestException;
 
 class Meta
 {
@@ -19,6 +20,9 @@ class Meta
     // Use stripe to enter prices and making updates
     public function __construct()
     {
+        if (!session_id()) {
+            session_start();
+        }
         add_action('admin_init', [$this, 'add_services_meta_boxes']);
         add_action('save_post', [$this, 'save_post_services_button']);
         add_action('save_post', [$this, 'save_post_service_icon']);
@@ -27,8 +31,8 @@ class Meta
         add_action('save_post', [$this, 'save_post_service_features']);
         add_action('save_post', [$this, 'save_post_service_price_id']);
 
-        // add_action('save_post', [$this, 'add_service_to_stripe']);
-        // add_action('save_post', [$this, 'add_service_price_to_stripe']);
+        add_action('save_post', [$this, 'add_service_to_stripe']);
+        add_action('save_post', [$this, 'add_service_price_to_stripe']);
         // add_action('save_post', [$this, 'update_service_name_to_stripe']);
         // add_action('save_post', [$this, 'update_service_description_to_stripe']);
 
@@ -180,8 +184,6 @@ class Meta
         update_post_meta(get_the_ID(), "_service_cost", $serviceCost);
     }
 
-    // ... Your existing code ...
-
     function save_post_service_features()
     {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
@@ -210,24 +212,28 @@ class Meta
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
-    
+
         $serviceID = get_the_ID();
         $serviceCost = get_post_meta($serviceID, '_service_cost', true);
-    
+
         if (!empty($serviceCost)) {
-            $price = $this->stripeClient->prices->create([
-                'unit_amount' => str_replace('.', '', $serviceCost),
-                'currency' => 'usd',
-                'product' => $serviceID,
-            ]);
-    
-            update_post_meta($serviceID, '_service_price_id', $price->id);
+
+            try {
+                $price = $this->stripeClient->prices->create([
+                    'unit_amount' => str_replace('.', '', $serviceCost),
+                    'currency' => 'usd',
+                    'product' => $serviceID,
+                ]);
+
+                update_post_meta($serviceID, '_service_price_id', $price->id);
+            } catch (ApiErrorException $e) {
+                echo $e->getMessage();
+            }
         }
     }
-    
+
     function add_service_to_stripe()
     {
-
         if ($this->serviceID) {
             return;
         }
@@ -237,20 +243,23 @@ class Meta
         $serviceCost = get_post_meta(get_the_ID(), '_service_cost', true);
 
         if ($serviceName !== '' && $serviceDescription !== '' && $serviceCost > 50) {
+            try {
+                $product = $this->stripeClient->products->create([
+                    'id' => get_the_ID(),
+                    'name' => $serviceName,
+                    'description' => $serviceDescription,
+                ]);
 
-            $product = $this->stripeClient->products->create([
-                'id' => get_the_ID(),
-                'name' => $serviceName,
-                'description' => $serviceDescription,
-            ]);
+                $price = $this->stripeClient->prices->create([
+                    'unit_amount' => str_replace('.', '', $serviceCost),
+                    'currency' => 'usd',
+                    'product' => $product->id,
+                ]);
 
-            $price = $this->stripeClient->prices->create([
-                'unit_amount' => str_replace('.', '', $serviceCost),
-                'currency' => 'usd',
-                'product' => $product->id,
-            ]);
-
-            return $price;
+                return $price;
+            } catch (ApiErrorException $e) {
+                echo $e->getMessage();
+            }
         }
     }
 
@@ -259,13 +268,16 @@ class Meta
         $serviceName = get_the_title(get_the_ID());
 
         if ($serviceName !== '') {
+            try {
+                $product = $this->stripeClient->products->update(
+                    get_the_ID(),
+                    ['name' => $serviceName]
+                );
 
-            $product = $this->stripeClient->products->update(
-                get_the_ID(),
-                ['name' => $serviceName]
-            );
-
-            return $product;
+                return $product;
+            } catch (InvalidRequestException $e) {
+                echo $e;
+            }
         }
     }
 

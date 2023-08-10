@@ -39,7 +39,15 @@ class Invoice
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/invoices/(?P<slug>[a-zA-Z0-9-_]+)/finalize', [
+            register_rest_route('orb/v1', '/stripe/invoices/(?P<slug>[a-zA-Z0-9-_]+)', [
+                'methods' => "DELETE",
+                'callback' => [$this, 'delete_invoice'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/stripe/invoices/(?P<slug>[a-zA-Z0-9-_]+)/finalize', [
                 'methods' => 'POST',
                 'callback' => [$this, 'finalize_invoice'],
                 'permission_callback' => '__return_true',
@@ -69,42 +77,74 @@ class Invoice
                 'permission_callback' => '__return_true',
             ]);
         });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/invoices/client/(?P<slug>[a-zA-Z0-9-_]+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_client_invoices'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
     }
 
     public function save_invoice(WP_REST_Request $request)
     {
-        $stripe_invoice_id = $request->get_param('slug');
-        $quote_id = $request['quote_id'];
+        try {
+            $stripe_invoice_id = $request->get_param('slug');
+            $quote_id = $request['quote_id'];
 
-        $stripe_invoice = $this->stripeClient->invoices->retrieve(
-            $stripe_invoice_id,
-            []
-        );
+            $stripe_invoice = $this->stripeClient->invoices->retrieve(
+                $stripe_invoice_id,
+                []
+            );
 
-        global $wpdb;
+            $subtotal = intval($stripe_invoice->subtotal) / 100;
+            $tax = intval($stripe_invoice->tax) / 100;
+            $amount_due = intval($stripe_invoice->amount_due) / 100;
 
-        $table_name = 'orb_invoice';
-        $result = $wpdb->insert(
-            $table_name,
-            [
-                'status' => $stripe_invoice->status,
-                'stripe_customer_id' => $stripe_invoice->customer,
-                'quote_id' => $quote_id,
-                'stripe_invoice_id' => $stripe_invoice->id,
-                'subtotal' => $stripe_invoice->subtotal,
-                'tax' => $stripe_invoice->tax,
-                'amount_due' => $stripe_invoice->amount_due
-            ]
-        );
+            global $wpdb;
 
-        if (!$result) {
-            $error_message = $wpdb->last_error;
-            return rest_ensure_response($error_message);
+            $table_name = 'orb_invoice';
+            $result = $wpdb->insert(
+                $table_name,
+                [
+                    'status' => $stripe_invoice->status,
+                    'stripe_customer_id' => $stripe_invoice->customer,
+                    'quote_id' => $quote_id,
+                    'stripe_invoice_id' => $stripe_invoice->id,
+                    'subtotal' => $subtotal,
+                    'tax' => $tax,
+                    'amount_due' => $amount_due
+                ]
+            );
+
+            if (!$result) {
+                $error_message = $wpdb->last_error;
+                $response = rest_ensure_response($error_message);
+                $response->set_status(404);
+
+                return $response;
+            }
+
+            $invoice_id = $wpdb->insert_id;
+            $response = rest_ensure_response($invoice_id);
+            $response->set_status(200);
+
+            return $response;
+        } catch (ApiErrorException $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
-
-        $invoice_id = $wpdb->insert_id;
-
-        return rest_ensure_response($invoice_id, 200);
     }
 
     public function get_invoice(WP_REST_Request $request)
@@ -112,7 +152,11 @@ class Invoice
         $id = $request->get_param('slug');
 
         if (empty($id)) {
-            return rest_ensure_response('invalid_invoice_id', 'Invalid invoice ID', array('status' => 400));
+            $msg = 'No Invoice ID was provided.';
+            $response = rest_ensure_response($msg);
+            $response->set_status(404);
+
+            return $response;
         }
 
         global $wpdb;
@@ -125,7 +169,11 @@ class Invoice
         );
 
         if (!$invoice) {
-            return rest_ensure_response('invoice_not_found', 'Invoice not found', array('status' => 404));
+            $msg = 'Invoice not found';
+            $response = rest_ensure_response($msg);
+            $response->set_status(404);
+
+            return $response;
         }
 
         $data = [
@@ -145,7 +193,58 @@ class Invoice
             'amount_remaining' => $invoice->amount_remaining
         ];
 
-        return rest_ensure_response($data, 200);
+        $response = rest_ensure_response($data);
+        $response->set_status(200);
+
+        return $response;
+    }
+
+    public function delete_invoice(WP_REST_Request $request)
+    {
+        try {
+            $stripe_invoice_id = $request->get_param('slug');
+
+            $stripe_invoice = $this->stripeClient->invoices->delete(
+                $stripe_invoice_id,
+                []
+            );
+
+            $deleted = $stripe_invoice->deleted;
+
+            if ($deleted) {
+                $table_name = 'orb_invoice';
+                $data = array(
+                    'status' => 'deleted',
+                );
+                $where = array(
+                    'stripe_invoice_id' => $stripe_invoice_id,
+                );
+
+                global $wpdb;
+
+                $updated = $wpdb->update($table_name, $data, $where);
+
+                if ($updated === false) {
+                    $error_message = $wpdb->last_error ?: 'Invoice not found';
+                    return rest_ensure_response('invoice_not_found', $error_message, array('status' => 404));
+                }
+
+                return rest_ensure_response('Invoice Deleted');
+            }
+        } catch (ApiErrorException $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
+        }
     }
 
     public function get_stripe_invoice(WP_REST_Request $request)
@@ -161,167 +260,150 @@ class Invoice
 
             return rest_ensure_response($stripe_invoice);
         } catch (ApiErrorException $e) {
-            return rest_ensure_response($e);
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
-    }
-
-    public function finalize_invoice(WP_REST_Request $request)
-    {
-        global $wpdb;
-
-        $stripe_invoice_id = $request->get_param('slug');
-        $stripe_customer_id = $request['stripe_customer_id'];
-
-        $invoice = $this->stripeClient->invoices->finalizeInvoice(
-            $stripe_invoice_id,
-            ['expand' => ['payment_intent']]
-        );
-
-        $payment_intent = $invoice->payment_intent;
-
-        $status = $invoice->status;
-        $payment_intent_id = $payment_intent->id;
-        $client_secret = $payment_intent->client_secret;
-        $due_date = $invoice->due_date;
-        $amount_due = $invoice->amount_due;
-        $subtotal = $invoice->subtotal;
-        $tax = $invoice->tax;
-        $amount_remaining = $invoice->amount_remaining;
-
-
-        if ($payment_intent_id === '' || $client_secret === '') {
-            return rest_ensure_response('data_missing', 'Required data is missing', array('status' => 400));
-        }
-
-        $table_name = 'orb_invoice';
-        $data = array(
-            'payment_intent_id' => $payment_intent_id,
-            'client_secret' => $client_secret,
-            'status' => $status,
-            'due_date' => $due_date,
-            'amount_due' => $amount_due,
-            'subtotal' => $subtotal,
-            'tax' => $tax,
-            'amount_remaining' => $amount_remaining,
-        );
-        $where = array(
-            'stripe_invoice_id' => $stripe_invoice_id,
-            'stripe_customer_id' => $stripe_customer_id
-        );
-
-        $updated = $wpdb->update($table_name, $data, $where);
-
-        if ($updated === false) {
-            $error_message = $wpdb->last_error ?: 'Invoice not found';
-            return rest_ensure_response('invoice_not_found', $error_message, array('status' => 404));
-        }
-
-        $payment_intent_data = [
-            'payment_intent_id' => $payment_intent_id,
-            'client_secret' => $client_secret
-        ];
-
-        return rest_ensure_response($payment_intent_data);
     }
 
     function update_invoice(WP_REST_Request $request)
     {
-        global $wpdb;
-        $id = $request->get_param('slug');
+        try {
+            $id = $request->get_param('slug');
 
-        $stripe_customer_id = $request['stripe_customer_id'];
-        $stripe_invoice_id = $request['stripe_invoice_id'];
+            $stripe_customer_id = $request['stripe_customer_id'];
+            $stripe_invoice_id = $request['stripe_invoice_id'];
 
-        if ($stripe_customer_id === '') {
-            return rest_ensure_response('data_missing', 'Required Stripe Customer ID is missing', array('status' => 400));
+            if ($stripe_customer_id === '') {
+                return rest_ensure_response('data_missing', 'Required Stripe Customer ID is missing', array('status' => 400));
+            }
+
+            $stripe_invoice = $this->stripeClient->invoices->retrieve(
+                $stripe_invoice_id,
+                []
+            );
+
+            $payment_intent = $stripe_invoice->payment_intent;
+
+            $status = $stripe_invoice->status;
+            $payment_intent_id = $payment_intent->id;
+            $client_secret = $payment_intent->client_secret;
+            $due_date = $stripe_invoice->due_date;
+            $amount_due = intval($stripe_invoice->amount_due) / 100;
+            $subtotal = intval($stripe_invoice->subtotal) / 100;
+            $tax = intval($stripe_invoice->tax) / 100;
+            $amount_remaining = intval($stripe_invoice->amount_remaining) / 100;
+
+            $table_name = 'orb_invoice';
+            $data = array(
+                'status' => $status,
+                'payment_intent_id' => $payment_intent_id,
+                'client_secret' => $client_secret,
+                'status' => $status,
+                'due_date' => $due_date,
+                'amount_due' => $amount_due,
+                'subtotal' => $subtotal,
+                'tax' => $tax,
+                'amount_remaining' => $amount_remaining,
+            );
+            $where = array(
+                'id' => $id,
+                'stripe_customer_id' => $stripe_customer_id,
+                'stripe_invoice_id' => $stripe_invoice_id,
+            );
+
+            global $wpdb;
+
+            $updated = $wpdb->update($table_name, $data, $where);
+
+            if ($updated === false) {
+                $error_message = $wpdb->last_error ?: 'Invoice not found';
+                return rest_ensure_response('invoice_not_found', $error_message, array('status' => 404));
+            }
+
+            return rest_ensure_response($status);
+        } catch (ApiErrorException $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
-
-        $stripe_invoice = $this->stripeClient->invoices->retrieve(
-            $stripe_invoice_id,
-            []
-        );
-
-        $payment_intent = $stripe_invoice->payment_intent;
-
-        $status = $stripe_invoice->status;
-        $payment_intent_id = $payment_intent->id;
-        $client_secret = $payment_intent->client_secret;
-        $due_date = $stripe_invoice->due_date;
-        $amount_due = $stripe_invoice->amount_due;
-        $subtotal = $stripe_invoice->subtotal;
-        $tax = $stripe_invoice->tax;
-        $amount_remaining = $stripe_invoice->amount_remaining;
-
-        $table_name = 'orb_invoice';
-        $data = array(
-            'status' => $status,
-            'payment_intent_id' => $payment_intent_id,
-            'client_secret' => $client_secret,
-            'status' => $status,
-            'due_date' => $due_date,
-            'amount_due' => $amount_due,
-            'subtotal' => $subtotal,
-            'tax' => $tax,
-            'amount_remaining' => $amount_remaining,
-        );
-        $where = array(
-            'id' => $id,
-            'stripe_customer_id' => $stripe_customer_id,
-            'stripe_invoice_id' => $stripe_invoice_id,
-        );
-
-        $updated = $wpdb->update($table_name, $data, $where);
-
-        if ($updated === false) {
-            $error_message = $wpdb->last_error ?: 'Invoice not found';
-            return rest_ensure_response('invoice_not_found', $error_message, array('status' => 404));
-        }
-
-        return rest_ensure_response($status, 200);
     }
 
     function update_invoice_status(WP_REST_Request $request)
     {
-        $id = $request->get_param('slug');
+        try {
+            $id = $request->get_param('slug');
 
-        $stripe_customer_id = $request['stripe_customer_id'];
-        $stripe_invoice_id = $request['stripe_invoice_id'];
+            $stripe_customer_id = $request['stripe_customer_id'];
+            $stripe_invoice_id = $request['stripe_invoice_id'];
 
-        if ($stripe_customer_id === '') {
-            return rest_ensure_response('data_missing', 'Required Stripe Customer ID is missing', array('status' => 400));
+            if ($stripe_customer_id === '') {
+                return rest_ensure_response('data_missing', 'Required Stripe Customer ID is missing', array('status' => 400));
+            }
+
+            $stripe_invoice = $this->stripeClient->invoices->retrieve(
+                $stripe_invoice_id,
+                []
+            );
+
+            $status = $stripe_invoice->status;
+            $amount_due = intval($stripe_invoice->amount_due) / 100;
+            $amount_remaining = intval($stripe_invoice->amount_remaining) / 100;
+
+            $table_name = 'orb_invoice';
+            $data = array(
+                'status' => $status,
+                'amount_due' => $amount_due,
+                'amount_remaining' => $amount_remaining
+            );
+            $where = array(
+                'id' => $id,
+                'stripe_customer_id' => $stripe_customer_id,
+                'stripe_invoice_id' => $stripe_invoice_id,
+            );
+
+            global $wpdb;
+
+            $updated = $wpdb->update($table_name, $data, $where);
+
+            if ($updated === false) {
+                $error_message = $wpdb->last_error ?: 'Invoice not found';
+                return rest_ensure_response('invoice_not_found', $error_message, array('status' => 404));
+            }
+
+            return rest_ensure_response($status);
+        } catch (ApiErrorException $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
-
-        $stripe_invoice = $this->stripeClient->invoices->retrieve(
-            $stripe_invoice_id,
-            []
-        );
-
-        $status = $stripe_invoice->status;
-        $amount_due = $stripe_invoice->amount_due;
-        $amount_remaining = $stripe_invoice->amount_remaining;
-
-        $table_name = 'orb_invoice';
-        $data = array(
-            'status' => $status,
-            'amount_due' => $amount_due,
-            'amount_remaining' => $amount_remaining
-        );
-        $where = array(
-            'id' => $id,
-            'stripe_customer_id' => $stripe_customer_id,
-            'stripe_invoice_id' => $stripe_invoice_id,
-        );
-
-        global $wpdb;
-
-        $updated = $wpdb->update($table_name, $data, $where);
-
-        if ($updated === false) {
-            $error_message = $wpdb->last_error ?: 'Invoice not found';
-            return rest_ensure_response('invoice_not_found', $error_message, array('status' => 404));
-        }
-
-        return rest_ensure_response($status);
     }
 
     public function get_invoices(WP_REST_Request $request)
@@ -345,6 +427,95 @@ class Invoice
             return rest_ensure_response('invoice_not_found', 'Invoice not found', array('status' => 404));
         }
 
-        return rest_ensure_response($invoices, 200);
+        return rest_ensure_response($invoices);
+    }
+
+    public function get_client_invoices(WP_REST_Request $request)
+    {
+        $stripe_customer_id = $request->get_param('slug');
+
+        if (empty($stripe_customer_id)) {
+            $msg = 'Invalid Stripe Customer ID';
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(404);
+
+            return $response;
+        }
+
+        global $wpdb;
+
+        $invoices = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM orb_invoice WHERE stripe_customer_id = %d",
+                $stripe_customer_id
+            )
+        );
+
+        if (!$invoices) {
+            $msg = 'There are no invoices to display.';
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(404);
+
+            return $response;
+        }
+
+        return rest_ensure_response($invoices);
+    }
+
+    public function finalize_invoice(WP_REST_Request $request)
+    {
+        try {
+            $stripe_invoice_id = $request->get_param('slug');
+            $stripe_customer_id = $request['stripe_customer_id'];
+
+            $invoice = $this->stripeClient->invoices->finalizeInvoice(
+                $stripe_invoice_id,
+                ['expand' => ['payment_intent']]
+            );
+
+            $status = $invoice->status;
+
+            $table_name = 'orb_invoice';
+            $data = array(
+                'payment_intent_id' => $invoice->payment_intent->id,
+                'client_secret' => $invoice->payment_intent->client_secret,
+                'status' => $status,
+                'invoice_pdf_url' => $invoice->invoice_pdf
+            );
+            $where = array(
+                'stripe_invoice_id' => $stripe_invoice_id,
+                'stripe_customer_id' => $stripe_customer_id
+            );
+
+            global $wpdb;
+
+            $updated = $wpdb->update($table_name, $data, $where);
+
+            if ($updated === false) {
+                $error_message = $wpdb->last_error ?: 'Invoice not found';
+                return rest_ensure_response('invoice_not_found', $error_message, array('status' => 404));
+            }
+
+            return rest_ensure_response($status);
+        } catch (ApiErrorException $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
+        }
     }
 }

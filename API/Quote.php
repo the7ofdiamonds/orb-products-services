@@ -5,6 +5,8 @@ namespace ORB_Services\API;
 use WP_REST_Request;
 
 use Stripe\Exception\ApiErrorException;
+use Stripe\Exception\InvalidRequestException;
+use WP_Error;
 
 class Quote
 {
@@ -31,6 +33,14 @@ class Quote
         });
 
         add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/quote/(?P<slug>[a-zA-Z0-9-_]+)/id', array(
+                'methods' => 'GET',
+                'callback' => array($this, 'get_quote_by_id'),
+                'permission_callback' => '__return_true',
+            ));
+        });
+
+        add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/stripe/quotes/(?P<slug>[a-zA-Z0-9-_]+)', array(
                 'methods' => 'GET',
                 'callback' => array($this, 'get_stripe_quote'),
@@ -40,7 +50,7 @@ class Quote
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/quote/(?P<slug>[a-zA-Z0-9-_]+)', array(
-                'methods' => 'POST',
+                'methods' => 'PATCH',
                 'callback' => array($this, 'update_quote'),
                 'permission_callback' => '__return_true',
             ));
@@ -57,7 +67,7 @@ class Quote
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/stripe/quotes/(?P<slug>[a-zA-Z0-9-_]+)/finalize', array(
                 'methods' => 'POST',
-                'callback' => array($this, 'finalize_quote'),
+                'callback' => [$this, 'finalize_quote'],
                 'permission_callback' => '__return_true',
             ));
         });
@@ -129,39 +139,47 @@ class Quote
 
     public function create_quote(WP_REST_Request $request)
     {
-        $stripe_customer_id = $request['stripe_customer_id'];
-        $selections = $request['selections'];
-        //Create option in the quote admin section
-        $tax_enabled = get_option('orb_automatic_tax_enabled');
-
-        if (empty($stripe_customer_id)) {
-            return rest_ensure_response('Customer ID is required');
-        }
-
-        if (empty($selections)) {
-            return rest_ensure_response('Selections are required');
-        }
-
-        if (empty($tax_enabled)) {
-            $tax_enabled = 'true';
-        }
-
-        $line_items = [];
-
-        foreach ($selections as $selection) {
-            $price_id = $selection['price_id'];
-
-            $line_items[] = [
-                'price' => $price_id
-            ];
-        }
-
         try {
+            $stripe_customer_id = $request['stripe_customer_id'];
+            $selections = $request['selections'];
+            //Create option in the quote admin section
+            // $tax_enabled = get_option('orb_automatic_tax_enabled');
+
+            if (empty($stripe_customer_id)) {
+                $msg = 'Customer ID is required';
+                $response = rest_ensure_response($msg);
+                $response->set_status(404);
+
+                return $response;
+            }
+
+            if (empty($selections)) {
+                $msg = 'Selections are required';
+                $response = rest_ensure_response($msg);
+                $response->set_status(404);
+
+                return $response;
+            }
+
+            // if (empty($tax_enabled)) {
+            //     $tax_enabled = 'false';
+            // }
+
+            $line_items = [];
+
+            foreach ($selections as $selection) {
+                $price_id = $selection['price_id'];
+
+                $line_items[] = [
+                    'price' => $price_id
+                ];
+            }
+
             $stripe_quote = $this->stripeClient->quotes->create([
                 //Add to quote admin section collection_method & days until due make default automatic tax
-                'automatic_tax' => [
-                    'enabled' => $tax_enabled,
-                ],
+                // 'automatic_tax' => [
+                //     'enabled' => $tax_enabled,
+                // ],
                 'collection_method' => 'send_invoice',
                 'invoice_settings' => [
                     'days_until_due' => 7
@@ -171,47 +189,64 @@ class Quote
                 'line_items' => $line_items,
             ]);
 
-            //Save to database
-            global $wpdb;
+            return rest_ensure_response($stripe_quote);
+        } catch (InvalidRequestException $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
 
-            $serialized_selections = json_encode($selections);
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
 
-            $table_name = 'orb_quote';
-            $result = $wpdb->insert(
-                $table_name,
-                [
-                    'stripe_customer_id' => $stripe_customer_id,
-                    'stripe_quote_id' => $stripe_quote->id,
-                    'status' => $stripe_quote->status,
-                    'selections' => $serialized_selections,
-                    'amount_subtotal' => $stripe_quote->amount_subtotal,
-                    'amount_discount' => $stripe_quote->computed->upfront->amount_discount,
-                    'amount_shipping' => $stripe_quote->computed->upfront->amount_shipping,
-                    'amount_tax' => $stripe_quote->computed->upfront->amount_tax,
-                    'amount_total' => $stripe_quote->amount_total
-                ]
-            );
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
 
-            if (!$result) {
-                $error_message = $wpdb->last_error;
-                return rest_ensure_response($error_message);
-            }
-
-            $quote_id = $wpdb->insert_id;
-
-            return rest_ensure_response($quote_id, 200);
-        } catch (ApiErrorException $e) {
-            return rest_ensure_response($e->getMessage(), 500);
+            return $response;
         }
     }
 
     public function get_quote(WP_REST_Request $request)
     {
-        $id = $request->get_param('slug');
+        $stripe_quote_id = $request->get_param('slug');
 
-        if (empty($id)) {
-            return rest_ensure_response('invalid_quote_id', 'Invalid invoice ID', array('status' => 400));
+        global $wpdb;
+
+        $quote = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM orb_quote WHERE stripe_quote_id = %d",
+                $stripe_quote_id
+            )
+        );
+
+        if (!$quote) {
+            $msg = 'Quote not found';
+            $response = rest_ensure_response($msg);
+            $response->set_status(404);
+
+            return $response;
         }
+
+        $data = [
+            'id' => $quote->id,
+            'created_at' => $quote->created_at,
+            'status' => $quote->status,
+            'stripe_customer_id' => $quote->stripe_customer_id,
+            'stripe_quote_id' => $quote->stripe_quote_id,
+            'selections' => json_decode($quote->selections, true),
+            'amount_subtotal' => $quote->amount_subtotal,
+            'amount_discount' => $quote->amount_discount,
+            'amount_shipping' => $quote->amount_shipping,
+            'amount_tax' => $quote->amount_tax,
+            'amount_total' => $quote->amount_total
+        ];
+
+        return rest_ensure_response($data);
+    }
+
+    public function get_quote_by_id(WP_REST_Request $request)
+    {
+        $id = $request->get_param('slug');
 
         global $wpdb;
 
@@ -223,7 +258,11 @@ class Quote
         );
 
         if (!$quote) {
-            return rest_ensure_response('quote_not_found', 'Quote not found', array('status' => 404));
+            $msg = 'Quote not found';
+            $response = rest_ensure_response($msg);
+            $response->set_status(404);
+
+            return $response;
         }
 
         $data = [
@@ -243,53 +282,73 @@ class Quote
         return rest_ensure_response($data, 200);
     }
 
-
     public function get_stripe_quote(WP_REST_Request $request)
     {
-        $quote_id = $request->get_param('slug');
-
         try {
+            $stripe_quote_id = $request->get_param('slug');
+
             $quote = $this->stripeClient->quotes->retrieve(
-                $quote_id,
+                $stripe_quote_id,
                 []
             );
+
             return rest_ensure_response($quote);
         } catch (ApiErrorException $e) {
-            return rest_ensure_response($e);
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
     }
 
     public function update_quote(WP_REST_Request $request)
     {
-        $stripe_quote_id = $request->get_param('slug');
-        $selections = $request['selections'];
-
-        $line_items = [];
-
-        foreach ($selections as $selection) {
-            $price_id = $selection['price_id'];
-
-            $line_items[] = [
-                'price' => $price_id
-            ];
-        }
-
         try {
-            $this->stripeClient->quotes->update(
+            $stripe_quote_id = $request->get_param('slug');
+            $selections = $request['selections'];
+
+            $line_items = [];
+
+            foreach ($selections as $selection) {
+                $price_id = $selection['price_id'];
+
+                $line_items[] = [
+                    'price' => $price_id
+                ];
+            }
+
+            $stripe_quote = $this->stripeClient->quotes->update(
                 $stripe_quote_id,
-                //Needs data to update
                 [
                     'line_items' => $line_items
                 ]
             );
 
             $serialized_selections = json_encode($selections);
+            $amount_subtotal = intval($stripe_quote->amount_subtotal) / 100;
+            $amount_discount = intval($stripe_quote->computed->upfront->amount_discount) / 100;
+            $amount_shipping = intval($stripe_quote->computed->upfront->amount_shipping) / 100;
+            $amount_tax = intval($stripe_quote->computed->upfront->amount_tax) / 100;
+            $amount_total = intval($stripe_quote->amount_total) / 100;
 
             global $wpdb;
 
             $table_name = 'orb_quote';
             $data = array(
                 'selections' => $serialized_selections,
+                'mount_subtotal' => $amount_subtotal,
+                'amount_discount' => $amount_discount,
+                'amount_shipping' => $amount_shipping,
+                'amount_tax' => $amount_tax,
+                'amount_total' => $amount_total
             );
             $where = array(
                 'stripe_quote_id' => $stripe_quote_id,
@@ -299,52 +358,35 @@ class Quote
 
             if ($updated === false) {
                 $error_message = $wpdb->last_error ?: 'Quote not found';
-                return rest_ensure_response('quote_not_found', $error_message, array('status' => 404));
+                $response = rest_ensure_response($error_message);
+                $response->set_status(404);
+
+                return $response;
             }
 
             return rest_ensure_response($selections);
         } catch (ApiErrorException $e) {
-            return rest_ensure_response($e);
-        }
-    }
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
 
-    public function update_stripe_quote(WP_REST_Request $request)
-    {
-        //Update
-        $quote_id = $request->get_param('slug');
-        $selections = $request['selections'];
-
-        $line_items = [];
-
-        foreach ($selections as $selection) {
-            $price_id = $selection['price_id'];
-
-            $line_items[] = [
-                'price' => $price_id
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
             ];
-        }
 
-        try {
-            $quote = $this->stripeClient->quotes->update(
-                $quote_id,
-                //Needs data to update
-                [
-                    'line_items' => $line_items
-                ]
-            );
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
 
-            return rest_ensure_response($quote);
-        } catch (ApiErrorException $e) {
-            return rest_ensure_response($e);
+            return $response;
         }
     }
 
-    public function finalize_quote(WP_REST_Request $request)
+    public function update_quote_status(WP_REST_Request $request)
     {
-        $stripe_quote_id = $request->get_param('slug');
-        
         try {
-            $quote = $this->stripeClient->quotes->finalizeQuote(
+            $stripe_quote_id = $request->get_param('slug');
+
+            $quote = $this->stripeClient->quotes->retrieve(
                 $stripe_quote_id,
                 []
             );
@@ -363,20 +405,139 @@ class Quote
 
             if ($updated === false) {
                 $error_message = $wpdb->last_error ?: 'Quote not found';
-                return rest_ensure_response('quote_not_found', $error_message, array('status' => 404));
+                $response = rest_ensure_response($error_message);
+                $response->set_status(404);
+
+                return $response;
             }
 
             return rest_ensure_response($quote->status);
         } catch (ApiErrorException $e) {
-            return rest_ensure_response($e);
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
+        }
+    }
+
+    public function update_stripe_quote(WP_REST_Request $request)
+    {
+        try {
+            $stripe_quote_id = $request->get_param('slug');
+            $selections = $request['selections'];
+
+            $line_items = [];
+
+            foreach ($selections as $selection) {
+                $price_id = $selection['price_id'];
+
+                $line_items[] = [
+                    'price' => $price_id
+                ];
+            }
+
+            $quote = $this->stripeClient->quotes->update(
+                $stripe_quote_id,
+                [
+                    'line_items' => $line_items
+                ]
+            );
+
+            return rest_ensure_response($quote);
+        } catch (ApiErrorException $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
+        }
+    }
+
+    public function finalize_quote(WP_REST_Request $request)
+    {
+        try {
+            $stripe_quote_id = $request->get_param('slug');
+            $selections = $request['selections'];
+
+            $stripe_quote = $this->stripeClient->quotes->finalizeQuote(
+                $stripe_quote_id,
+                []
+            );
+
+            global $wpdb;
+
+            $serialized_selections = json_encode($selections);
+
+            $amount_subtotal = intval($stripe_quote->amount_subtotal) / 100;
+            $amount_discount = intval($stripe_quote->computed->upfront->amount_discount) / 100;
+            $amount_shipping = intval($stripe_quote->computed->upfront->amount_shipping) / 100;
+            $amount_tax = intval($stripe_quote->computed->upfront->amount_tax) / 100;
+            $amount_total = intval($stripe_quote->amount_total) / 100;
+
+            $table_name = 'orb_quote';
+            $result = $wpdb->insert(
+                $table_name,
+                [
+                    'stripe_customer_id' => $stripe_quote->customer,
+                    'stripe_quote_id' => $stripe_quote->id,
+                    'status' => $stripe_quote->status,
+                    'selections' => $serialized_selections,
+                    'amount_subtotal' => $amount_subtotal,
+                    'amount_discount' => $amount_discount,
+                    'amount_shipping' => $amount_shipping,
+                    'amount_tax' => $amount_tax,
+                    'amount_total' => $amount_total
+                ]
+            );
+
+            if (!$result) {
+                $error_message = $wpdb->last_error;
+                $response = rest_ensure_response($error_message);
+
+                return $response;
+            }
+
+            $quote_id = $wpdb->insert_id;
+            $inserted_row = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $quote_id));
+            $response = rest_ensure_response($inserted_row);
+
+            return $response;
+        } catch (ApiErrorException $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
     }
 
     public function accept_quote(WP_REST_Request $request)
     {
-        $stripe_quote_id = $request->get_param('slug');
-
         try {
+            $stripe_quote_id = $request->get_param('slug');
+
             $quote = $this->stripeClient->quotes->accept(
                 $stripe_quote_id,
                 []
@@ -396,20 +557,34 @@ class Quote
 
             if ($updated === false) {
                 $error_message = $wpdb->last_error ?: 'Quote not found';
-                return rest_ensure_response('quote_not_found', $error_message, array('status' => 404));
+                $response = rest_ensure_response($error_message);
+                $response->set_status(404);
+
+                return $response;
             }
 
             return rest_ensure_response($quote->status);
         } catch (ApiErrorException $e) {
-            return rest_ensure_response($e);
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
     }
 
     public function cancel_quote(WP_REST_Request $request)
     {
-        $stripe_quote_id = $request->get_param('slug');
-
         try {
+            $stripe_quote_id = $request->get_param('slug');
+
             $quote = $this->stripeClient->quotes->cancel(
                 $stripe_quote_id,
                 []
@@ -429,34 +604,65 @@ class Quote
 
             if ($updated === false) {
                 $error_message = $wpdb->last_error ?: 'Quote not found';
-                return rest_ensure_response('quote_not_found', $error_message, array('status' => 404));
+                $response = rest_ensure_response($error_message);
+                $response->set_status(404);
+
+                return $response;
             }
 
             return rest_ensure_response($quote->status);
         } catch (ApiErrorException $e) {
-            return rest_ensure_response($e);
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
     }
 
     public function pdf_quote(WP_REST_Request $request)
     {
         try {
-            $pdf_data = '';
+            // $pdf_data = '';
 
-            $quote_id = $request->get_param('slug');
+            $stripe_quote_id = $request->get_param('slug');
 
-            $this->stripeClient->quotes->pdf($quote_id, function ($chunk) use (&$pdf_data) {
-                $pdf_data .= $chunk;
+            // $this->stripeClient->quotes->pdf($quote_id, function ($chunk) use (&$pdf_data) {
+            //     $pdf_data .= $chunk;
+            // });
+            // $myfile = fopen("/tmp/tmp.pdf", "w");
+
+            $pdf = $this->stripeClient->quotes->pdf($stripe_quote_id, function ($chunk) use (&$myfile) {
+                fwrite($myfile, $chunk);
             });
 
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: inline; filename="quote.pdf"');
+            fclose($myfile);
+            // header('Content-Type: application/pdf');
+            // header('Content-Disposition: inline; filename="quote.pdf"');
 
-            echo $pdf_data;
+            // echo $pdf_data;
 
-            return rest_ensure_response($pdf_data);
+            // return rest_ensure_response($pdf_data);
         } catch (ApiErrorException $e) {
-            return rest_ensure_response($e);
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
     }
 
@@ -478,7 +684,14 @@ class Quote
         $stripe_customer_id = $request->get_param('slug');
 
         if (empty($stripe_customer_id)) {
-            return rest_ensure_response('invalid_stripe_customer_id', 'Invalid Stripe Customer ID', array('status' => 400));
+            $msg = 'Invalid Stripe Customer ID';
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(404);
+
+            return $response;
         }
 
         global $wpdb;
@@ -491,10 +704,17 @@ class Quote
         );
 
         if (!$quotes) {
-            return rest_ensure_response('invoice_not_found', 'Invoice not found', array('status' => 404));
+            $msg = 'There are no quotes to display.';
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(404);
+
+            return $response;
         }
 
-        return rest_ensure_response($quotes, 200);
+        return rest_ensure_response($quotes);
     }
 
     public function get_stripe_quotes()
@@ -509,18 +729,36 @@ class Quote
 
             return rest_ensure_response($quotes);
         } catch (ApiErrorException $e) {
-            return rest_ensure_response($e);
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
     }
 
     public function get_stripe_client_quotes(WP_REST_Request $request)
     {
-        $customer_id = $request->get_param('slug');
-
         try {
+            $stripe_customer_id = $request->get_param('slug');
+
+            if (empty($stripe_customer_id)) {
+                $msg = 'Customer ID is required';
+                $response = rest_ensure_response($msg);
+                $response->set_status(404);
+
+                return $response;
+            }
             $quotes = $this->stripeClient->quotes->all(
                 [
-                    'customer' => $customer_id,
+                    'customer' => $stripe_customer_id,
                     //Add limit to quote admin section
                     'limit' => 100
                 ],
@@ -528,7 +766,18 @@ class Quote
 
             return rest_ensure_response($quotes);
         } catch (ApiErrorException $e) {
-            return rest_ensure_response($e);
+            $error_message = $e->getMessage();
+            $status_code = $e->getHttpStatus();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
     }
 }

@@ -1,5 +1,27 @@
 "use strict";
-(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_start_Start_jsx"],{
+(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_Start_jsx"],{
+
+/***/ "./src/views/Start.jsx":
+/*!*****************************!*\
+  !*** ./src/views/Start.jsx ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _start_Client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./start/Client */ "./src/views/start/Client.jsx");
+
+
+function Start() {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_start_Client__WEBPACK_IMPORTED_MODULE_1__["default"], null));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Start);
+
+/***/ }),
 
 /***/ "./src/views/start/Client.jsx":
 /*!************************************!*\
@@ -96,7 +118,7 @@ function ClientComponent() {
     }
   }, [first_name, last_name, address_line_1, city, state, zipcode]);
   console.log(isFomCompleted);
-  const handleClick = () => {
+  const handleClick = async () => {
     if (first_name === '') {
       setMessage('Please provide a first name.');
       setMessageType('error');
@@ -116,17 +138,15 @@ function ClientComponent() {
       setMessage('Please provide zipcode.');
       setMessageType('error');
     } else if (isFomCompleted && stripe_customer_id === undefined) {
-      dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.addClient)());
+      await dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.addClient)()).then(() => {
+        navigate('/services/selections');
+      });
     } else if (stripe_customer_id) {
-      dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateStripeCustomer)());
+      await dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateStripeCustomer)()).then(() => {
+        navigate('/services/selections');
+      });
     }
   };
-  console.log(stripe_customer_id);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (stripe_customer_id) {
-      navigate('/services/selections');
-    }
-  }, [stripe_customer_id, dispatch]);
   if (error) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "status-bar card error"
@@ -225,29 +245,7 @@ function ClientComponent() {
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ClientComponent);
 
-/***/ }),
-
-/***/ "./src/views/start/Start.jsx":
-/*!***********************************!*\
-  !*** ./src/views/start/Start.jsx ***!
-  \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Client */ "./src/views/start/Client.jsx");
-
-
-function Start() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Client__WEBPACK_IMPORTED_MODULE_1__["default"], null));
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Start);
-
 /***/ })
 
 }]);
-//# sourceMappingURL=src_views_start_Start_jsx.js.map
+//# sourceMappingURL=src_views_Start_jsx.js.map

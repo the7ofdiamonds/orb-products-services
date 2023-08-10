@@ -90,9 +90,9 @@ class Pages
             add_rewrite_rule('^services/selections/?$', 'index.php?page_id=' . $selections_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^services/quote/([0-9]+)?$', 'index.php?page_id=' . $quote_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^services/invoice/([0-9]+)/?$', 'index.php?page_id=' . $invoice_page_id . '&id=$matches[1]', 'top');
+            add_rewrite_rule('^services/schedule/([0-9]+)/?$', 'index.php?page_id=' . $schedule_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^services/payment/([0-9]+)/?$', 'index.php?page_id=' . $payment_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^services/receipt/([0-9]+)/?$', 'index.php?page_id=' . $receipt_page_id . '&id=$matches[1]', 'top');
-            add_rewrite_rule('^services/schedule/?$', 'index.php?page_id=' . $schedule_page_id . '&id=$matches[1]', 'top');
 
             add_rewrite_rule('^services/payment/([0-9]+)/([^/]+)/?$', 'index.php?page_id=' . $payment_page_id . '&custom_route=payment&id=$matches[1]&extra_param=$matches[2]', 'top');
         }

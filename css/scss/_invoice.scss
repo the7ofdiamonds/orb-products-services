@@ -13,6 +13,15 @@ section.invoice {
     text-align: left;
   }
 
+  .bill-to-tax-id-type {
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  .bill-to-tax-id {
+    text-align: left;
+  }
+
   tr.bill-to-due {
     th {
       h4 {

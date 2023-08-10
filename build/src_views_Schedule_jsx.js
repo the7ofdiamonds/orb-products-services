@@ -29,23 +29,22 @@ __webpack_require__.r(__webpack_exports__);
 
 function ScheduleComponent() {
   const {
+    id
+  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_6__.useParams)();
+  const {
     user_email,
     client_id,
     stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
-    total
-  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.quote);
-  const {
     loading,
     error,
     events,
     start_date,
-    start_time
+    start_time,
+    event_id,
+    event_date_time
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.schedule);
-  const {
-    invoice_id
-  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
   const [availableDates, setAvailableDates] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [availableTimes, setAvailableTimes] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [selectedDate, setSelectedDate] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
@@ -132,15 +131,16 @@ function ScheduleComponent() {
     }
   }, [start_date, start_time, dispatch]);
   const handleClick = () => {
-    if (stripe_customer_id && total > 0) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.saveInvoice)());
+    if (event_date_time) {
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.sendInvites)(id));
     }
   };
+  console.log(event_id);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (invoice_id) {
-      navigate(`/services/invoice/${invoice_id}`);
+    if (event_id) {
+      navigate(`/services/payment/${id}`);
     }
-  }, [navigate, invoice_id]);
+  }, [event_id, id, navigate]);
   if (error) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Error: ", error);
   }

@@ -14,22 +14,38 @@ import {
   updateCity,
   updateState,
   updateZipcode,
+  getStripeCustomer,
+  updateStripeCustomer,
 } from '../../controllers/customerSlice.js';
 
 function ClientComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [messageType, setMessageType] = useState('');
+  const [messageType, setMessageType] = useState('info');
   const [message, setMessage] = useState(
     'To receive a quote, please fill out the form above with the required information.'
   );
 
-  const { loading, error, user_email, client_id, stripe_customer_id } =
-    useSelector((state) => state.client);
-  const { first_name, last_name, zipcode } = useSelector(
-    (state) => state.customer
-  );
+  const {
+    loading,
+    error,
+    user_email,
+    first_name,
+    last_name,
+    client_id,
+    stripe_customer_id,
+  } = useSelector((state) => state.client);
+  const {
+    company_name,
+    tax_id,
+    address_line_1,
+    address_line_2,
+    city,
+    state,
+    zipcode,
+    phone,
+  } = useSelector((state) => state.customer);
 
   const handleCompanyNameChange = (event) => {
     dispatch(updateCompanyName(event.target.value));
@@ -81,42 +97,53 @@ function ClientComponent() {
 
   useEffect(() => {
     if (stripe_customer_id) {
-      navigate('/services/selections');
+      dispatch(getStripeCustomer());
     }
   }, [stripe_customer_id, navigate]);
 
   useEffect(() => {
-    if (first_name && last_name && zipcode) {
+    if (address_line_1 && city && state && zipcode) {
       setIsFormCompleted(true);
     }
-  }, [first_name, last_name, zipcode]);
+  }, [first_name, last_name, address_line_1, city, state, zipcode]);
 
-  useEffect(() => {
-    if (isFomCompleted) {
-      dispatch(addClient());
-    }
-  }, [isFomCompleted, dispatch]);
+  console.log(isFomCompleted);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (first_name === '') {
       setMessage('Please provide a first name.');
       setMessageType('error');
     } else if (last_name === '') {
       setMessage('Please provide last name.');
       setMessageType('error');
+    } else if (address_line_1 === '') {
+      setMessage('Please provide an address.');
+      setMessageType('error');
+    } else if (city === '') {
+      setMessage('Please provide the city.');
+      setMessageType('error');
+    } else if (state === '') {
+      setMessage('Please provide the state.');
+      setMessageType('error');
     } else if (zipcode === '') {
       setMessage('Please provide zipcode.');
       setMessageType('error');
-    } else if (client_id && stripe_customer_id) {
-      navigate('/services/quote');
+    } else if (isFomCompleted && stripe_customer_id === undefined) {
+      await dispatch(addClient()).then(() => {
+        navigate('/services/selections');
+      });
+    } else if (stripe_customer_id) {
+      await dispatch(updateStripeCustomer()).then(() => {
+        navigate('/services/selections');
+      });
     }
   };
 
   if (error) {
     return (
-      <main className="error">
-        <div className="status-bar card">
-          <span className="error">
+      <main>
+        <div className="status-bar card error">
+          <span>
             "We encountered an issue while loading this page. Please try again,
             and if the problem persists, kindly contact the website
             administrators for assistance."
@@ -147,6 +174,7 @@ function ClientComponent() {
                     id="company_name"
                     placeholder="Company Name"
                     onChange={handleCompanyNameChange}
+                    value={company_name}
                   />
                 </td>
                 <td>
@@ -156,6 +184,7 @@ function ClientComponent() {
                     id="tax_id"
                     placeholder="Tax ID"
                     onChange={handleTaxIDChange}
+                    value={tax_id}
                   />
                 </td>
               </tr>
@@ -167,6 +196,7 @@ function ClientComponent() {
                     id="first_name"
                     placeholder="First Name"
                     onChange={handleFirstNameChange}
+                    value={first_name}
                   />
                 </td>
                 <td>
@@ -176,6 +206,7 @@ function ClientComponent() {
                     id="last_name"
                     placeholder="Last Name"
                     onChange={handleLastNameChange}
+                    value={last_name}
                   />
                 </td>
                 <td>
@@ -185,6 +216,7 @@ function ClientComponent() {
                     type="tel"
                     placeholder="Phone"
                     onChange={handlePhoneChange}
+                    value={phone}
                   />
                 </td>
               </tr>
@@ -196,6 +228,7 @@ function ClientComponent() {
                     id="bill_to_street"
                     placeholder="Street Address"
                     onChange={handleAddressChange}
+                    value={address_line_1}
                   />
                 </td>
                 <td>
@@ -205,6 +238,7 @@ function ClientComponent() {
                     id="bill_to_street2"
                     placeholder="Suite #"
                     onChange={handleAddressChange2}
+                    value={address_line_2}
                   />
                 </td>
               </tr>
@@ -216,6 +250,7 @@ function ClientComponent() {
                     id="bill_to_city"
                     placeholder="City"
                     onChange={handleCityChange}
+                    value={city}
                   />
                 </td>
                 <td>
@@ -225,6 +260,7 @@ function ClientComponent() {
                     id="bill_to_state"
                     placeholder="State"
                     onChange={handleStateChange}
+                    value={state}
                   />
                 </td>
                 <td>
@@ -234,6 +270,7 @@ function ClientComponent() {
                     id="bill_to_zipcode"
                     placeholder="Zipcode"
                     onChange={handleZipcodeChange}
+                    value={zipcode}
                   />
                 </td>
               </tr>
@@ -244,8 +281,8 @@ function ClientComponent() {
       </div>
 
       {message && (
-        <div className="status-bar card">
-          <span className={`${messageType}`}>{message}</span>
+        <div className={`status-bar card ${messageType}`}>
+          <span>{message}</span>
         </div>
       )}
 

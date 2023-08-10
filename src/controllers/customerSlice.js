@@ -73,6 +73,51 @@ export const getStripeCustomer = createAsyncThunk('customer/getStripeCustomer', 
     }
 });
 
+export const updateStripeCustomer = createAsyncThunk('customer/updateStripeCustomer', async (_, { getState }) => {
+    const {
+        client_id,
+        user_email,
+        stripe_customer_id
+    } = getState().client;
+    const {
+        company_name,
+        tax_id,
+        first_name,
+        last_name,
+        phone,
+        address_line_1,
+        address_line_2,
+        city,
+        state,
+        zipcode,
+        country
+    } = getState().customer;
+
+    const customer_data = {
+        client_id: client_id,
+        company_name: company_name,
+        tax_id: tax_id,
+        first_name: first_name,
+        last_name: last_name,
+        user_email: user_email,
+        phone: phone,
+        address_line_1: address_line_1,
+        address_line_2: address_line_2,
+        city: city,
+        state: state,
+        zipcode: zipcode,
+        country: country
+    };
+
+    try {
+        const response = await axios.patch(`/wp-json/orb/v1/stripe/customers/${stripe_customer_id}`, customer_data);
+        console.log(response.data)
+        return response.data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+});
+
 export const customerSlice = createSlice({
     name: 'customer',
     initialState,
@@ -131,8 +176,10 @@ export const customerSlice = createSlice({
             })
             .addCase(getStripeCustomer.fulfilled, (state, action) => {
                 state.loading = false
-                state.stripe_customer_id = action.payload.id
-                state.company_name = action.payload.name
+                state.stripe_customer_id = action.payload.id;
+                state.company_name = action.payload.name;
+                state.first_name = action.payload.first_name;
+                state.last_name = action.payload.last_name;
                 state.address_line_1 = action.payload.address.line1
                 state.address_line_2 = action.payload.address.line2
                 state.city = action.payload.address.city

@@ -9,17 +9,30 @@ import {
   calculateSelections,
   createQuote,
   finalizeQuote,
+  getClientQuotes,
+  getStripeQuote,
+  updateQuoteID,
+  updateQuote,
   getQuote,
 } from '../controllers/quoteSlice.js';
 
 function SelectionsComponent() {
-  const { loading, error, services } = useSelector((state) => state.services);
+  const { servicesLoading, servicesError, services } = useSelector(
+    (state) => state.services
+  );
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const { quote_id, stripe_quote_id, status, selections, total } = useSelector(
-    (state) => state.quote
-  );
+  const {
+    loading,
+    quotes,
+    quoteError,
+    quote_id,
+    status,
+    selections,
+    total,
+    stripe_quote_id,
+  } = useSelector((state) => state.quote);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -59,7 +72,7 @@ function SelectionsComponent() {
     dispatch(calculateSelections(services.cost));
   }, [dispatch, services.cost, checkedItems]);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (selections.length > 0) {
       dispatch(createQuote(selections));
     }
@@ -72,18 +85,12 @@ function SelectionsComponent() {
   }, [stripe_quote_id, dispatch]);
 
   useEffect(() => {
-    if (quote_id) {
-      dispatch(getQuote(quote_id));
+    if ((quote_id && status === 'open') || status === 'accepted') {
+      window.location.href = `/services/quote/${quote_id}`;
     }
-  }, [quote_id, dispatch]);
+  }, [quote_id, status]);
 
-  useEffect(() => {
-    if (status === 'open') {
-      navigate(`/services/quote/${quote_id}`);
-    }
-  });
-
-  if (error) {
+  if (servicesError) {
     return (
       <main className="error">
         <div className="status-bar card">
@@ -95,7 +102,7 @@ function SelectionsComponent() {
     );
   }
 
-  if (loading) {
+  if (servicesLoading) {
     return <div>Loading...</div>;
   }
 
@@ -179,6 +186,12 @@ function SelectionsComponent() {
           </tfoot>
         </table>
       </div>
+
+      {quoteError && (
+        <div className={`status-bar card error`}>
+          <span>{quoteError}</span>
+        </div>
+      )}
 
       <button onClick={handleClick}>
         <h3>QUOTE</h3>

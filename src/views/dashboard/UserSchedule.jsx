@@ -48,7 +48,7 @@ function UserScheduleComponent() {
             <thead>
               <tr>
                 <th>
-                  <h4>Invoice ID</h4>
+                  <h4>Event ID</h4>
                 </th>
                 <th>
                   <h4>Start Date</h4>
@@ -62,7 +62,7 @@ function UserScheduleComponent() {
               {events.map((event) => (
                 <>
                   <tr>
-                    <td>{event.invoice_id}</td>
+                    <td>{event.id}</td>
                     <td>{event.start_date}</td>
                     <td>{event.start_time}</td>
                   </tr>

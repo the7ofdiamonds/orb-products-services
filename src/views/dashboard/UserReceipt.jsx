@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getClient } from '../../controllers/clientSlice';
-import { getReceipts } from '../../controllers/receiptSlice';
+import { getClientReceipts } from '../../controllers/receiptSlice';
 
 function UserReceiptComponent() {
   const dispatch = useDispatch();
@@ -10,7 +10,9 @@ function UserReceiptComponent() {
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const { loading, error, receipts } = useSelector((state) => state.receipt);
+  const { loading, receiptError, receipts } = useSelector(
+    (state) => state.receipt
+  );
 
   useEffect(() => {
     if (user_email) {
@@ -20,20 +22,18 @@ function UserReceiptComponent() {
 
   useEffect(() => {
     if (stripe_customer_id) {
-      dispatch(getReceipts());
+      dispatch(getClientReceipts());
     }
   }, [stripe_customer_id, dispatch]);
 
-  if (error) {
+  if (receiptError) {
     return (
       <>
-        <main className="error">
-          <div className="status-bar card">
-            <span className="error">
-              <h4>There was an error or no receipts to show at this time.</h4>
-            </span>
-          </div>
-        </main>
+        <div className="status-bar card error">
+          <span>
+            <h4>{receiptError}</h4>
+          </span>
+        </div>
       </>
     );
   }
@@ -53,10 +53,16 @@ function UserReceiptComponent() {
                   <h4>Receipt ID</h4>
                 </th>
                 <th>
+                  <h4>Amount Paid</h4>
+                </th>
+                <th>
+                  <h4>Balance</h4>
+                </th>
+                <th>
                   <h4>Invoice ID</h4>
                 </th>
                 <th>
-                  <h4>Page</h4>
+                  <h4>PDF</h4>
                 </th>
               </tr>
             </thead>
@@ -65,10 +71,25 @@ function UserReceiptComponent() {
                 <>
                   <tr key={receipt.id}>
                     <td>{receipt.id}</td>
+                    <td>
+                      {/* add locales column & currency column Ex: invoice.currency */}
+                      {new Intl.NumberFormat('us', {
+                        style: 'currency',
+                        currency: 'USD',
+                      }).format(receipt.amount_paid)}
+                    </td>
+                    <td>
+                      {new Intl.NumberFormat('us', {
+                        style: 'currency',
+                        currency: 'USD',
+                      }).format(receipt.balance)}
+                    </td>
                     <td>{receipt.invoice_id}</td>
                     <td>
-                      <a href={`/services/receipt/${receipt.id}`}>
-                        <h5>View</h5>
+                      <a href={receipt.receipt_pdf_url} target="_blank">
+                        <button>
+                          <h5>Download</h5>
+                        </button>
                       </a>
                     </td>
                   </tr>

@@ -29,8 +29,8 @@ __webpack_require__.r(__webpack_exports__);
 
 function SelectionsComponent() {
   const {
-    loading,
-    error,
+    servicesLoading,
+    servicesError,
     services
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.services);
   const {
@@ -38,11 +38,14 @@ function SelectionsComponent() {
     stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
+    loading,
+    quotes,
+    quoteError,
     quote_id,
-    stripe_quote_id,
     status,
     selections,
-    total
+    total,
+    stripe_quote_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.quote);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
   const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_6__.useNavigate)();
@@ -78,7 +81,7 @@ function SelectionsComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.calculateSelections)(services.cost));
   }, [dispatch, services.cost, checkedItems]);
-  const handleClick = () => {
+  const handleClick = async () => {
     if (selections.length > 0) {
       dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.createQuote)(selections));
     }
@@ -89,16 +92,11 @@ function SelectionsComponent() {
     }
   }, [stripe_quote_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (quote_id) {
-      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.getQuote)(quote_id));
+    if (quote_id && status === 'open' || status === 'accepted') {
+      window.location.href = `/services/quote/${quote_id}`;
     }
-  }, [quote_id, dispatch]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (status === 'open') {
-      navigate(`/services/quote/${quote_id}`);
-    }
-  });
-  if (error) {
+  }, [quote_id, status]);
+  if (servicesError) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", {
       className: "error"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -107,7 +105,7 @@ function SelectionsComponent() {
       className: "error"
     }, "There was an error loading the available services at this time.")));
   }
-  if (loading) {
+  if (servicesLoading) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
   }
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, "SELECTIONS"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -153,7 +151,9 @@ function SelectionsComponent() {
   }, new Intl.NumberFormat('us', {
     style: 'currency',
     currency: 'USD'
-  }).format(total))))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }).format(total))))))), quoteError && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `status-bar card error`
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, quoteError)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "QUOTE")));
 }

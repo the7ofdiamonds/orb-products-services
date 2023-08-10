@@ -45,6 +45,14 @@ class Receipt
                 'permission_callback' => '__return_true',
             ]);
         });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/receipts/client/(?P<slug>[a-z0-9-_]+)', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_client_receipts'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
     }
 
     public function post_receipt(WP_REST_Request $request)
@@ -63,8 +71,8 @@ class Receipt
 
         $payment_intent_id = $stripe_invoice->payment_intent;
         $payment_date = $stripe_invoice->status_transitions['paid_at'];
-        $amount_paid = $stripe_invoice->amount_paid;
-        $balance = $stripe_invoice->amount_remaining;
+        $amount_paid = intval($stripe_invoice->amount_paid) / 100;
+        $balance = intval($stripe_invoice->amount_remaining) / 100;
 
         $payment_intent = $this->stripeClient->paymentIntents->retrieve(
             $payment_intent_id,
@@ -72,6 +80,12 @@ class Receipt
         );
 
         $payment_method_id = $payment_intent->payment_method;
+        $charge_id = $payment_intent->latest_charge;
+
+        $charges = $this->stripeClient->charges->retrieve(
+            $charge_id,
+            []
+        );
 
         global $wpdb;
 
@@ -88,6 +102,7 @@ class Receipt
                 'payment_method' => $payment_method,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
+                'receipt_pdf_url' => $charges->receipt_url
             ]
         );
 
@@ -164,6 +179,44 @@ class Receipt
 
         if (!$receipt) {
             return rest_ensure_response('No Receipts Found.');
+        }
+
+        return rest_ensure_response($receipt);
+    }
+
+    function get_client_receipts(WP_REST_Request $request)
+    {
+        $stripe_customer_id = $request->get_param('slug');
+
+        if (empty($stripe_customer_id)) {
+            $msg = 'Invalid Stripe Customer ID';
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(404);
+
+            return $response;
+        }
+
+        global $wpdb;
+
+        $receipt = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM orb_receipt WHERE stripe_customer_id = %s",
+                $stripe_customer_id
+            )
+        );
+
+        if (!$receipt) {
+            $msg = 'There are no receipts to display.';
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(404);
+
+            return $response;
         }
 
         return rest_ensure_response($receipt);

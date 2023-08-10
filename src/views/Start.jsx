@@ -1,4 +1,4 @@
-import ClientComponent from './Client';
+import ClientComponent from './start/Client';
 
 function Start() {
   

@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
   loading: false,
-  error: '',
+  receiptError: '',
   receipts: [],
   receipt_id: '',
   invoice_id: '',
@@ -77,14 +77,27 @@ export const getReceipt = createAsyncThunk('receipt/getReceipt', async (id, { ge
   }
 });
 
-export const getReceipts = createAsyncThunk('receipt/getReceipts', async (_, { getState }) => {
+export const getClientReceipts = createAsyncThunk('receipt/getClientReceipts', async (_, { getState }) => {
   const { stripe_customer_id } = getState().client;
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/receipts/${stripe_customer_id}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/receipts/client/${stripe_customer_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error.message;
   }
 });
 
@@ -100,39 +113,39 @@ export const receiptSlice = createSlice({
     builder
       .addCase(getPaymentMethod.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.receiptError = null;
       })
       .addCase(getPaymentMethod.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.receiptError = null;
         state.type = action.payload.type;
         state.brand = action.payload.card.brand;
         state.last4 = action.payload.card.last4;
       })
       .addCase(getPaymentMethod.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.receiptError = action.error.message;
       })
       .addCase(postReceipt.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.receiptError = null;
       })
       .addCase(postReceipt.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.receiptError = null;
         state.receipt_id = action.payload;
       })
       .addCase(postReceipt.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.receiptError = action.error.message;
       })
       .addCase(getReceipt.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.receiptError = null;
       })
       .addCase(getReceipt.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.receiptError = null;
         state.created_at = action.payload.created_at;
         state.invoice_id = action.payload.invoice_id;
         state.stripe_customer_id = action.payload.stripe_customer_id;
@@ -146,20 +159,20 @@ export const receiptSlice = createSlice({
       })
       .addCase(getReceipt.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.receiptError = action.error.message;
       })
-      .addCase(getReceipts.pending, (state) => {
+      .addCase(getClientReceipts.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.receiptError = null;
       })
-      .addCase(getReceipts.fulfilled, (state, action) => {
+      .addCase(getClientReceipts.fulfilled, (state, action) => {
         state.loading = false;
         state.receipts = action.payload;
-        state.error = null;
+        state.receiptError = null;
       })
-      .addCase(getReceipts.rejected, (state, action) => {
+      .addCase(getClientReceipts.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.receiptError = action.error.message;
       });
   }
 });

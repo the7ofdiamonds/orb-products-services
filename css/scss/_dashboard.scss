@@ -19,6 +19,16 @@
         th:last-child {
           border-right: none;
         }
+
+        td {
+          a {
+            button {
+              h5 {
+                padding: 0.5em;
+              }
+            }
+          }
+        }
       }
     }
   }

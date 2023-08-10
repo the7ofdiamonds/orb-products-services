@@ -6,11 +6,11 @@ const ServicesComponent = lazy(() => import('./views/Services.jsx'));
 const ServiceComponent = lazy(() => import('./views/Service.jsx'));
 const SelectionsComponent = lazy(() => import('./views/Selections.jsx'));
 const QuoteComponent = lazy(() => import('./views/Quote.jsx'));
-const StartComponent = lazy(() => import('./views/start/Start.jsx'));
+const StartComponent = lazy(() => import('./views/Start.jsx'));
 const ClientComponent = lazy(() => import('./views/start/Client.jsx'));
 const InvoiceComponent = lazy(() => import('./views/Invoice.jsx'));
 const ScheduleComponent = lazy(() => import('./views/Schedule.jsx'));
-const PaymentComponent = lazy(() => import('./views/payment/Payment.jsx'));
+const PaymentComponent = lazy(() => import('./views/Payment.jsx'));
 const CardPaymentComponent = lazy(() => import('./views/payment/Card.jsx'));
 const MobileComponent = lazy(() => import('./views/payment/Mobile.jsx'));
 const ReceiptComponent = lazy(() => import('./views/Receipt.jsx'));
@@ -38,7 +38,7 @@ function App() {
               element={<SelectionsComponent />}
             />
             <Route path="services/quote/:id" element={<QuoteComponent />} />
-            <Route path="services/schedule" element={<ScheduleComponent />} />
+            <Route path="services/schedule/:id" element={<ScheduleComponent />} />
             <Route path="services/invoice/:id" element={<InvoiceComponent />} />
             <Route
               path="services/payment/:id/*"

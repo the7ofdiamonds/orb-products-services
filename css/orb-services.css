@@ -173,6 +173,13 @@ section.invoice {
 .invoice-card.card .bill-to-email {
   text-align: left;
 }
+.invoice-card.card .bill-to-tax-id-type {
+  text-transform: uppercase;
+  text-align: right;
+}
+.invoice-card.card .bill-to-tax-id {
+  text-align: left;
+}
 .invoice-card.card tr.bill-to-due th h4 {
   margin-bottom: 0.1775em;
 }
@@ -759,6 +766,38 @@ td {
 .dashboard .orb-services .card tr td:last-child,
 .dashboard .orb-services .card tr th:last-child {
   border-right: none;
+}
+.dashboard .orb-services .card tr td a button h5 {
+  padding: 0.5em;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.status-bar.card {
+  background-color: black;
+}
+.status-bar.card.info {
+  background-color: blue;
+}
+.status-bar.card.caution {
+  background-color: yellow;
+}
+.status-bar.card.error {
+  background-color: red;
+}
+.status-bar.card.success {
+  background-color: green;
+}
+.status-bar.card span {
+  color: white;
+}
+.status-bar.card span h4 {
+  padding: 0.5em;
 }
 
 /*# sourceMappingURL=orb-services.css.map */

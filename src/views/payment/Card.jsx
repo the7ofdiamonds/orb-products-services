@@ -25,10 +25,10 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 const CardPaymentComponent = () => {
   const { id } = useParams();
 
-  const { first_name, last_name, stripe_customer_id } = useSelector((state) => state.client);
-  const { stripe_invoice_id, status, amount_paid, remaining_balance } =
+  const { user_email, first_name, last_name, stripe_customer_id } = useSelector((state) => state.client);
+  const { stripe_invoice_id, payment_intent_id, status, amount_paid, remaining_balance } =
     useSelector((state) => state.invoice);
-  const { loading, error, client_secret, payment_intent_id } = useSelector(
+  const { loading, error, client_secret } = useSelector(
     (state) => state.payment
   );
   const { receipt_id, payment_method, brand, last4 } = useSelector(
@@ -52,13 +52,11 @@ const CardPaymentComponent = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const user_email = sessionStorage.getItem('user_email');
-
   useEffect(() => {
     if (user_email) {
       dispatch(getClient(user_email));
     }
-  }, [dispatch, user_email]);
+  }, [user_email, dispatch]);
 
   useEffect(() => {
     if (stripe_customer_id) {
@@ -195,8 +193,8 @@ const CardPaymentComponent = () => {
       </form>
 
       {message && (
-        <div className="status-bar card">
-          <span className={`${messageType}`}>{message}</span>
+        <div className={`status-bar card ${messageType}`}>
+          <span>{message}</span>
         </div>
       )}
 

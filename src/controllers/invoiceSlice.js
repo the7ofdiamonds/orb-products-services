@@ -3,13 +3,25 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
   loading: false,
-  error: '',
+  invoiceError: '',
   quote_id: '',
   invoices: [],
   invoice_id: '',
   status: '',
   client_id: '',
   stripe_customer_id: '',
+  customer_name: '',
+  customer_tax_ids: '',
+  address_line_1: '',
+  address_line_2: '',
+  city: '',
+  state: '',
+  postal_code: '',
+  customer_phone: '',
+  customer_email: '',
+  event_id: '',
+  payment_intent_id: '',
+  items: '',
   stripe_invoice_id: '',
   payment_intent_id: '',
   client_secret: '',
@@ -42,9 +54,36 @@ export const getInvoice = createAsyncThunk('invoice/getInvoice', async (id, { ge
 
   try {
     const response = await axios.get(`/wp-json/orb/v1/invoice/${id}`, { params: stripe_customer_id });
+
+    console.log(response)
     return response.data;
   } catch (error) {
     throw new Error(error.message);
+  }
+});
+
+export const deleteInvoice = createAsyncThunk('invoice/deleteInvoice', async (stripe_invoice_id) => {
+
+  try {
+    const response = await fetch(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      console.log(errorMessage)
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error(error);
+    throw error.message;
   }
 });
 
@@ -126,11 +165,36 @@ export const pdfInvoice = createAsyncThunk('invoice/pdfInvoice', async (_, { get
   }
 });
 
-export const getInvoices = createAsyncThunk('invoice/getInvoices', async (id, { getState }) => {
+export const getClientInvoices = createAsyncThunk('invoice/getClientInvoices', async (_, { getState }) => {
   const { stripe_customer_id } = getState().client;
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/invoices/${stripe_customer_id}`);
+    const response = await fetch(`/wp-json/orb/v1/invoices/client/${stripe_customer_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw error.message;
+  }
+});
+
+export const finalizeInvoice = createAsyncThunk('invoice/finalizeInvoice', async (_, { getState }) => {
+  const { stripe_customer_id } = getState().client;
+  const { stripe_invoice_id } = getState().invoice;
+
+  try {
+    const response = await axios.post(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}/finalize`, { stripe_customer_id: stripe_customer_id });
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -149,7 +213,7 @@ export const invoiceSlice = createSlice({
     builder
       .addCase(saveInvoice.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.invoiceError = null;
       })
       .addCase(saveInvoice.fulfilled, (state, action) => {
         state.loading = false;
@@ -157,11 +221,11 @@ export const invoiceSlice = createSlice({
       })
       .addCase(saveInvoice.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.invoiceError = action.error.message;
       })
       .addCase(getInvoice.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.invoiceError = null;
       })
       .addCase(getInvoice.fulfilled, (state, action) => {
         state.loading = false
@@ -173,42 +237,53 @@ export const invoiceSlice = createSlice({
         state.payment_intent_id = action.payload.payment_intent_id;
         state.client_secret = action.payload.client_secret;
         state.subtotal = action.payload.subtotal;
+        state.invoice_pdf = action.payload.invoice_pdf_URL;
       })
       .addCase(getInvoice.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.invoiceError = action.error.message;
       })
       .addCase(updateInvoice.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.invoiceError = null;
       })
       .addCase(updateInvoice.fulfilled, (state, action) => {
         state.loading = false;
       })
       .addCase(updateInvoice.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.invoiceError = action.error.message;
       })
       .addCase(updateInvoiceStatus.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.invoiceError = null;
       })
       .addCase(updateInvoiceStatus.fulfilled, (state, action) => {
         state.status = action.payload;
       })
       .addCase(updateInvoiceStatus.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.invoiceError = action.error.message;
       })
       .addCase(getStripeInvoice.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.invoiceError = null;
       })
       .addCase(getStripeInvoice.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
+        state.invoiceError = null;
         state.status = action.payload.status;
         state.company_name = action.payload.name;
+        state.stripe_customer_id = action.payload.customer;
+        state.customer_name = action.payload.customer_name;
+        state.customer_tax_ids = action.payload.customer_tax_ids;
+        state.address_line_1 = action.payload.customer_address.line1;
+        state.address_line_2 = action.payload.customer_address.line2;
+        state.city = action.payload.customer_address.city;
+        state.state = action.payload.customer_address.state;
+        state.postal_code = action.payload.customer_address.postal_code;
+        state.customer_phone = action.payload.customer_phone;
+        state.customer_email = action.payload.customer_email;
         state.subtotal = action.payload.subtotal;
         state.tax = action.payload.tax;
         state.due_date = action.payload.due_date;
@@ -219,23 +294,37 @@ export const invoiceSlice = createSlice({
         state.stripe_customer_id = action.payload.customer;
         state.payment_intent_id = action.payload.payment_intent;
         state.invoice_pdf = action.payload.invoice_pdf;
+        state.items = action.payload.lines.data;
       })
       .addCase(getStripeInvoice.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.invoiceError = action.error.message;
       })
-      .addCase(getInvoices.pending, (state) => {
+      .addCase(getClientInvoices.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.invoiceError = null;
       })
-      .addCase(getInvoices.fulfilled, (state, action) => {
+      .addCase(getClientInvoices.fulfilled, (state, action) => {
         state.loading = false;
         state.invoices = action.payload;
-        state.error = null;
+        state.invoiceError = null;
       })
-      .addCase(getInvoices.rejected, (state, action) => {
+      .addCase(getClientInvoices.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.invoiceError = action.error.message;
+      })
+      .addCase(finalizeInvoice.pending, (state) => {
+        state.loading = true;
+        state.invoiceError = null;
+      })
+      .addCase(finalizeInvoice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.status = action.payload;
+        state.invoiceError = null;
+      })
+      .addCase(finalizeInvoice.rejected, (state, action) => {
+        state.loading = false;
+        state.invoiceError = action.error.message;
       });
   }
 });
