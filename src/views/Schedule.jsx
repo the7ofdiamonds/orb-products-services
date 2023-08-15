@@ -49,6 +49,8 @@ function ScheduleComponent() {
   const [selectedSummary, setSelectedSummary] = useState('');
   const [selectedDescription, setSelectedDescription] = useState('');
   const [selectedAttendees, setSelectedAttendees] = useState([user_email]);
+  const [showAdditionalAttendee, setShowAdditionalAttendee] = useState(false);
+  const [additionalAttendeeEmail, setAdditionalAttendeeEmail] = useState('');
   const [messageType, setMessageType] = useState('info');
   const [message, setMessage] = useState('Choose a date and time to start');
 
@@ -229,19 +231,22 @@ function ScheduleComponent() {
     }
   }, [description, dispatch]);
 
-  const handleAttendeeChange = (event, index) => {
-    const updatedAttendees = [...selectedAttendees];
-    updatedAttendees[index] = event.target.value;
-    setSelectedAttendees(updatedAttendees);
+  const handleAttendeeChange = () => {
+    if (additionalAttendeeEmail) {
+      const updatedAttendees = [user_email, additionalAttendeeEmail];
+      setAdditionalAttendeeEmail('');
+      dispatch(updateAttendees(updatedAttendees));
+    }
   };
 
   const handleAddAttendee = () => {
-    setSelectedAttendees([...selectedAttendees]);
+    setShowAdditionalAttendee((prevState) => !prevState);
   };
 
   const handleRemoveAttendee = (index) => {
     const updatedAttendees = selectedAttendees.filter((_, i) => i !== index);
     setSelectedAttendees(updatedAttendees);
+    dispatch(updateAttendees(updatedAttendees));
   };
 
   const handleClick = () => {
@@ -250,11 +255,11 @@ function ScheduleComponent() {
     }
   };
 
-  // useEffect(() => {
-  //   if (event_id) {
-  //     window.location.href = '/dashboard';
-  //   }
-  // }, [event_id]);
+  useEffect(() => {
+    if (event_id) {
+      window.location.href = '/dashboard';
+    }
+  }, [event_id]);
 
   if (scheduleError) {
     return (
@@ -400,6 +405,11 @@ function ScheduleComponent() {
           {attendees.map((attendee, index) => (
             <div className="attendee">
               <h4 key={index}>{attendee}</h4>
+              <button
+                className="remove-attendee"
+                onClick={handleRemoveAttendee}>
+                <h4>-</h4>
+              </button>
               <button onClick={handleAddAttendee}>
                 <h4>+</h4>
               </button>
@@ -410,28 +420,38 @@ function ScheduleComponent() {
         ''
       )}
 
-      <div className="additional-attendee card" id='additional_attendee'>
+      <div
+        className={`additional-attendee card ${
+          showAdditionalAttendee ? 'view' : ''
+        }`}
+        id="additional_attendee">
         <label htmlFor="attendees">Additional Attendee</label>
         <div className="attendee">
-          <input type="email" />
-          <button className="remove-attendee" onClick={handleRemoveAttendee}>
-            <h4>-</h4>
-          </button>
+          <input
+            type="email"
+            value={additionalAttendeeEmail}
+            onChange={(event) => setAdditionalAttendeeEmail(event.target.value)}
+          />
           <button className="add-attendee" onClick={handleAttendeeChange}>
             <h4>+</h4>
           </button>
         </div>
       </div>
 
-      {message && (
-        <div className={`status-bar card ${messageType}`}>
-          <span>{message}</span>
-        </div>
-      )}
+      {user_email &&
+        message(
+          <div className={`status-bar card ${messageType}`}>
+            <span>{message}</span>
+          </div>
+        )}
 
-      <button onClick={handleClick}>
-        <h3>CONFIRM</h3>
-      </button>
+      {user_email ? (
+        <button onClick={handleClick}>
+          <h3>SCHEDULE</h3>
+        </button>
+      ) : (
+        ''
+      )}
     </>
   );
 }

@@ -163,7 +163,7 @@ class Schedule
                     'google_event_id' => $createdEvent->id,
                     'start_date' => $body['start_date'],
                     'start_time' => $body['start_time'],
-                    'attendees' => $createdEvent->getAttendees(),
+                    'attendees' => $body['attendees'],
                     'calendar_link' => $createdEvent->htmlLink,
                 ]
             );

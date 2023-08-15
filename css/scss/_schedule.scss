@@ -43,6 +43,14 @@
       }
     }
   }
+
+  .additional-attendee.card {
+    display: none;
+  }
+
+  .additional-attendee.card.view {
+    display: flex;
+  }
 }
 
 .schedule-select {

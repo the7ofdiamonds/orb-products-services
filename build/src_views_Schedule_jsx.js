@@ -73,6 +73,8 @@ function ScheduleComponent() {
   const [selectedSummary, setSelectedSummary] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [selectedDescription, setSelectedDescription] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [selectedAttendees, setSelectedAttendees] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([user_email]);
+  const [showAdditionalAttendee, setShowAdditionalAttendee] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+  const [additionalAttendeeEmail, setAdditionalAttendeeEmail] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
   const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('Choose a date and time to start');
   const dateSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
@@ -219,30 +221,31 @@ function ScheduleComponent() {
       dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateAttendees)(selectedAttendees));
     }
   }, [description, dispatch]);
-  const handleAttendeeChange = (event, index) => {
-    const updatedAttendees = [...selectedAttendees];
-    updatedAttendees[index] = event.target.value;
-    setSelectedAttendees(updatedAttendees);
+  const handleAttendeeChange = () => {
+    if (additionalAttendeeEmail) {
+      const updatedAttendees = [user_email, additionalAttendeeEmail];
+      setAdditionalAttendeeEmail('');
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateAttendees)(updatedAttendees));
+    }
   };
   const handleAddAttendee = () => {
-    setSelectedAttendees([...selectedAttendees]);
+    setShowAdditionalAttendee(prevState => !prevState);
   };
   const handleRemoveAttendee = index => {
     const updatedAttendees = selectedAttendees.filter((_, i) => i !== index);
     setSelectedAttendees(updatedAttendees);
+    dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateAttendees)(updatedAttendees));
   };
   const handleClick = () => {
     if (event_date_time) {
       dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.sendInvites)(id));
     }
   };
-
-  // useEffect(() => {
-  //   if (event_id) {
-  //     window.location.href = '/dashboard';
-  //   }
-  // }, [event_id]);
-
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (event_id) {
+      window.location.href = '/dashboard';
+    }
+  }, [event_id]);
   if (scheduleError) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "status-bar card error"
@@ -330,27 +333,29 @@ function ScheduleComponent() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
     key: index
   }, attendee), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "remove-attendee",
+    onClick: handleRemoveAttendee
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "-")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleAddAttendee
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "+"))))) : '', (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "additional-attendee card",
+    className: `additional-attendee card ${showAdditionalAttendee ? 'view' : ''}`,
     id: "additional_attendee"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "attendees"
   }, "Additional Attendee"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "attendee"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    type: "email"
+    type: "email",
+    value: additionalAttendeeEmail,
+    onChange: event => setAdditionalAttendeeEmail(event.target.value)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    className: "remove-attendee",
-    onClick: handleRemoveAttendee
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "-")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "add-attendee",
     onClick: handleAttendeeChange
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "+")))), message && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "+")))), user_email && message((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: `status-bar card ${messageType}`
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message))), user_email ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "CONFIRM")));
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SCHEDULE")) : '');
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ScheduleComponent);
 

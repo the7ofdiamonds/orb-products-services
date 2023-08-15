@@ -490,6 +490,12 @@ section.invoice {
 .schedule .additional-attendee.card .attendee input {
   margin: 0.5em;
 }
+.schedule .additional-attendee.card {
+  display: none;
+}
+.schedule .additional-attendee.card.view {
+  display: flex;
+}
 
 .schedule-select {
   display: flex;
