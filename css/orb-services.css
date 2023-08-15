@@ -439,21 +439,62 @@ section.invoice {
   text-transform: uppercase;
 }
 
+.schedule {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 1.5rem;
+}
+.schedule .date-select.card,
+.schedule .time-select.card,
+.schedule .summary-select.card,
+.schedule .description-select.card,
+.schedule .attendees-select.card,
+.schedule .additional-attendee.card {
+  padding: 0;
+  gap: unset;
+}
+.schedule .date-select.card label,
+.schedule .time-select.card label,
+.schedule .summary-select.card label,
+.schedule .description-select.card label,
+.schedule .attendees-select.card label,
+.schedule .additional-attendee.card label {
+  background-color: black;
+  color: white;
+  padding: 0.25em;
+  margin: 0;
+  width: 100%;
+}
+.schedule .attendees-select.card .attendee,
+.schedule .additional-attendee.card .attendee {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+}
+.schedule .attendees-select.card .attendee h4,
+.schedule .additional-attendee.card .attendee h4 {
+  padding: 0.5em;
+}
+.schedule .attendees-select.card .attendee button,
+.schedule .additional-attendee.card .attendee button {
+  margin: 0 0.25em 0;
+}
+.schedule .attendees-select.card .attendee button h4,
+.schedule .additional-attendee.card .attendee button h4 {
+  padding: 0.25em;
+}
+.schedule .attendees-select.card .attendee input,
+.schedule .additional-attendee.card .attendee input {
+  margin: 0.5em;
+}
+
 .schedule-select {
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
-}
-.schedule-select .date-select.card,
-.schedule-select .time-select.card {
-  padding: 0;
-  gap: unset;
-}
-.schedule-select .date-select.card label,
-.schedule-select .time-select.card label {
-  background-color: black;
-  color: white;
-  padding: 0.25em;
 }
 
 .service-icon i {

@@ -4,22 +4,18 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { getClient } from '../controllers/clientSlice.js';
 import { getStripeCustomer } from '../controllers/customerSlice.js';
-import {
-  getInvoice,
-  getStripeInvoice,
-  updateInvoiceStatus,
-} from '../controllers/invoiceSlice.js';
+import { getStripeInvoice } from '../controllers/invoiceSlice.js';
 import { getPaymentIntent } from '../controllers/paymentSlice.js';
 import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
 
 import formatPhoneNumber from '../utils/PhoneNumberFormatter.js';
-import { getEvent, saveEvent } from '../controllers/scheduleSlice.js';
+import { getEvent } from '../controllers/scheduleSlice.js';
 
 function ReceiptComponent() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const { user_email, client_id, stripe_customer_id } = useSelector(
+  const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
   const {
@@ -33,7 +29,6 @@ function ReceiptComponent() {
   } = useSelector((state) => state.customer);
   const {
     status,
-    stripe_invoice_id,
     selections,
     subtotal,
     tax,
@@ -45,8 +40,15 @@ function ReceiptComponent() {
   } = useSelector((state) => state.invoice);
   const { start_date, start_time } = useSelector((state) => state.schedule);
   const { payment_method_id } = useSelector((state) => state.payment);
-  const { loading, error, invoice_id, payment_method, first_name, last_name } =
-    useSelector((state) => state.receipt);
+  const {
+    loading,
+    error,
+    invoice_id,
+    stripe_invoice_id,
+    payment_method,
+    first_name,
+    last_name,
+  } = useSelector((state) => state.receipt);
 
   const [messageType, setMessageType] = useState('');
   const [message, setMessage] = useState('');
@@ -86,12 +88,6 @@ function ReceiptComponent() {
 
   useEffect(() => {
     if (invoice_id) {
-      dispatch(getInvoice(invoice_id));
-    }
-  }, [dispatch, invoice_id]);
-
-  useEffect(() => {
-    if (invoice_id) {
       dispatch(getEvent());
     }
   }, [invoice_id, dispatch]);
@@ -107,15 +103,9 @@ function ReceiptComponent() {
 
   useEffect(() => {
     if (stripe_invoice_id) {
-      dispatch(getStripeInvoice());
+      dispatch(getStripeInvoice(stripe_invoice_id));
     }
   }, [dispatch, stripe_invoice_id]);
-
-  useEffect(() => {
-    if (status) {
-      dispatch(updateInvoiceStatus());
-    }
-  }, [status, dispatch]);
 
   useEffect(() => {
     if (payment_intent_id) {
@@ -129,14 +119,12 @@ function ReceiptComponent() {
 
   if (error) {
     return (
-      <main className="error">
-        <div className="status-bar card error">
-          <span>
-            You have either entered the wrong Receipt ID, or you are not the
-            client to whom this receipt belongs.
-          </span>
-        </div>
-      </main>
+      <div className="status-bar card error">
+        <span>
+          You have either entered the wrong Receipt ID, or you are not the
+          client to whom this receipt belongs.
+        </span>
+      </div>
     );
   }
 

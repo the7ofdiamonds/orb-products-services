@@ -7,6 +7,7 @@ const initialState = {
   receipts: [],
   receipt_id: '',
   invoice_id: '',
+  stripe_invoice_id: '',
   stripe_customer_id: '',
   payment_method_id: '',
   amount_paid: '',
@@ -147,7 +148,7 @@ export const receiptSlice = createSlice({
         state.loading = false;
         state.receiptError = null;
         state.created_at = action.payload.created_at;
-        state.invoice_id = action.payload.invoice_id;
+        state.stripe_invoice_id = action.payload.stripe_invoice_id;
         state.stripe_customer_id = action.payload.stripe_customer_id;
         state.payment_method_id = action.payload.payment_method_id;
         state.amount_paid = action.payload.amount_paid;

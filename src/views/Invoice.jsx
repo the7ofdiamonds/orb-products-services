@@ -90,23 +90,21 @@ function InvoiceComponent() {
 
   //Event id mast be validated
   const handleClick = async () => {
-    if (status === 'paid') {
-      navigate(`/services/receipt/${id}`);
-    } else if (status === 'open' && event_id && client_secret) {
-      navigate(`/services/payment/${id}`);
+    if (status === 'paid' && receipt_id) {
+      navigate(`/services/receipt/${receipt_id}`);
     } else if (status === 'open' && client_secret) {
-      navigate(`/services/schedule/${id}`);
+      navigate(`/services/payment/${id}`);
     } else if (stripe_invoice_id) {
-      await dispatch(finalizeInvoice())
-        .then(() => {
-          dispatch(getInvoice(id));
-        })
-        .then(() => {
-          navigate(`/services/schedule/${id}`);
-        });
+      dispatch(finalizeInvoice());
     }
   };
-  console.log(customer_tax_ids.length);
+
+  useEffect(() => {
+    if (status === 'open' && client_secret) {
+      navigate(`/services/payment/${id}`);
+    }
+  }, [status, id, client_secret]);
+
   if (error) {
     return (
       <main>
@@ -141,8 +139,12 @@ function InvoiceComponent() {
                 customer_tax_ids.length > 0 &&
                 customer_tax_ids.map((tax, index) => (
                   <>
-                    <td className='bill-to-tax-id-type' key={index}>{tax.type}</td>
-                    <td className='bill-to-tax-id' key={index}>{tax.value}</td>
+                    <td className="bill-to-tax-id-type" key={index}>
+                      {tax.type}
+                    </td>
+                    <td className="bill-to-tax-id" key={index}>
+                      {tax.value}
+                    </td>
                   </>
                 ))}
             </tr>
@@ -286,7 +288,7 @@ function InvoiceComponent() {
       </div>
 
       <button onClick={handleClick}>
-        {status === 'paid' ? <h3>RECEIPT</h3> : <h3>SCHEDULE</h3>}
+        {status === 'paid' ? <h3>RECEIPT</h3> : <h3>PAYMENT</h3>}
       </button>
     </>
   );

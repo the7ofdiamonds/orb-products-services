@@ -21,7 +21,8 @@ function QuoteComponent() {
   );
   const {
     loading,
-    error,
+    quoteError,
+    quote_id,
     stripe_quote_id,
     status,
     total,
@@ -65,6 +66,12 @@ function QuoteComponent() {
     }
   };
 
+  const handleAccepted = () => {
+    if (stripe_quote_id && quote_id && status === 'accepted') {
+      navigate(`/services/invoice/${quote_id}`);
+    }
+  };
+
   useEffect(() => {
     if (stripe_invoice_id) {
       dispatch(saveInvoice());
@@ -86,15 +93,13 @@ function QuoteComponent() {
     );
   }
 
-  if (error) {
+  if (quoteError) {
     return (
-      <main>
-        <div className="status-bar card error">
-          <span>
-            There is an error loading the available services at this time.{' '}
-          </span>
-        </div>
-      </main>
+      <div className="status-bar card error">
+        <span>
+          <h4>{quoteError}</h4>
+        </span>
+      </div>
     );
   }
 
@@ -130,7 +135,7 @@ function QuoteComponent() {
               selections.length > 0 &&
               selections.map((item) => (
                 <tr id="quote_option">
-                  <td className="feature-id">{item.price_id}</td>
+                  <td className="feature-id">{item.id}</td>
                   <td className="feature-name" id="feature_name" colSpan={4}>
                     {item.description}
                   </td>
@@ -147,15 +152,22 @@ function QuoteComponent() {
           </tbody>
         </table>
       </div>
-
       <div className="actions">
-        <button onClick={handleCancel}>
-          <h3>CANCEL</h3>
-        </button>
+        {status && status === 'open' ? (
+          <>
+            <button onClick={handleCancel}>
+              <h3>CANCEL</h3>
+            </button>
 
-        <button onClick={handleConfirm}>
-          <h3>CONFIRM</h3>
-        </button>
+            <button onClick={handleConfirm}>
+              <h3>CONFIRM</h3>
+            </button>
+          </>
+        ) : status === 'accepted' ? (
+          <button onClick={handleAccepted}>
+            <h3>INVOICE</h3>
+          </button>
+        ) : null}
       </div>
     </>
   );

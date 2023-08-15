@@ -105,21 +105,19 @@ function InvoiceComponent() {
 
   //Event id mast be validated
   const handleClick = async () => {
-    if (status === 'paid') {
-      navigate(`/services/receipt/${id}`);
-    } else if (status === 'open' && event_id && client_secret) {
-      navigate(`/services/payment/${id}`);
+    if (status === 'paid' && receipt_id) {
+      navigate(`/services/receipt/${receipt_id}`);
     } else if (status === 'open' && client_secret) {
-      navigate(`/services/schedule/${id}`);
+      navigate(`/services/payment/${id}`);
     } else if (stripe_invoice_id) {
-      await dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.finalizeInvoice)()).then(() => {
-        dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.getInvoice)(id));
-      }).then(() => {
-        navigate(`/services/schedule/${id}`);
-      });
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.finalizeInvoice)());
     }
   };
-  console.log(customer_tax_ids.length);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (status === 'open' && client_secret) {
+      navigate(`/services/payment/${id}`);
+    }
+  }, [status, id, client_secret]);
   if (error) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "status-bar card error"
@@ -227,7 +225,7 @@ function InvoiceComponent() {
     currency: 'USD'
   }).format(grandTotal))))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
-  }, status === 'paid' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "RECEIPT") : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SCHEDULE")));
+  }, status === 'paid' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "RECEIPT") : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "PAYMENT")));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (InvoiceComponent);
 

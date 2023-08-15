@@ -42,9 +42,21 @@ function UserReceiptComponent() {
     return <div>Loading...</div>;
   }
 
+  const now = new Date().getTime();
+  let sortedReceipts = [];
+
+  if (Array.isArray(receipts)) {
+    sortedReceipts = receipts.slice().sort((a, b) => {
+      const timeDiffA = Math.abs(a.payment_date - now);
+      const timeDiffB = Math.abs(b.payment_date - now);
+
+      return timeDiffA - timeDiffB;
+    });
+  }
+
   return (
     <>
-      {Array.isArray(receipts) && receipts.length > 0 ? (
+      {Array.isArray(sortedReceipts) && sortedReceipts.length > 0 ? (
         <div className="card receipt">
           <table>
             <thead>
@@ -67,7 +79,7 @@ function UserReceiptComponent() {
               </tr>
             </thead>
             <tbody>
-              {receipts.map((receipt) => (
+              {sortedReceipts.map((receipt) => (
                 <>
                   <tr key={receipt.id}>
                     <td>{receipt.id}</td>

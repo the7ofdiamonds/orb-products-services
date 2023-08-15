@@ -69,7 +69,6 @@ function ReceiptComponent() {
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
   const {
     user_email,
-    client_id,
     stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
@@ -83,7 +82,6 @@ function ReceiptComponent() {
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.customer);
   const {
     status,
-    stripe_invoice_id,
     selections,
     subtotal,
     tax,
@@ -104,6 +102,7 @@ function ReceiptComponent() {
     loading,
     error,
     invoice_id,
+    stripe_invoice_id,
     payment_method,
     first_name,
     last_name
@@ -140,11 +139,6 @@ function ReceiptComponent() {
   }, [dispatch, payment_method_id]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (invoice_id) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.getInvoice)(invoice_id));
-    }
-  }, [dispatch, invoice_id]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (invoice_id) {
       dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_9__.getEvent)());
     }
   }, [invoice_id, dispatch]);
@@ -156,14 +150,9 @@ function ReceiptComponent() {
   }, [start_date, start_time]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_invoice_id) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.getStripeInvoice)());
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.getStripeInvoice)(stripe_invoice_id));
     }
   }, [dispatch, stripe_invoice_id]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (status) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.updateInvoiceStatus)());
-    }
-  }, [status, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (payment_intent_id) {
       dispatch((0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_6__.getPaymentIntent)(payment_intent_id));
@@ -173,11 +162,9 @@ function ReceiptComponent() {
     window.location = '/dashboard';
   };
   if (error) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", {
-      className: "error"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "status-bar card error"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "You have either entered the wrong Receipt ID, or you are not the client to whom this receipt belongs.")));
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "You have either entered the wrong Receipt ID, or you are not the client to whom this receipt belongs."));
   }
   if (loading) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");

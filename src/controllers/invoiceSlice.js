@@ -143,8 +143,7 @@ export const updateInvoiceStatus = createAsyncThunk('invoice/updateInvoiceStatus
   }
 });
 
-export const getStripeInvoice = createAsyncThunk('invoice/getStripeInvoice', async (_, { getState }) => {
-  const { stripe_invoice_id } = getState().invoice;
+export const getStripeInvoice = createAsyncThunk('invoice/getStripeInvoice', async (stripe_invoice_id) => {
 
   try {
     const response = await axios.get(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}`);
@@ -319,7 +318,9 @@ export const invoiceSlice = createSlice({
       })
       .addCase(finalizeInvoice.fulfilled, (state, action) => {
         state.loading = false;
-        state.status = action.payload;
+        state.client_secret = action.payload.client_secret;
+        state.payment_intent_id = action.payload.payment_intent_id;
+        state.status = action.payload.status;
         state.invoiceError = null;
       })
       .addCase(finalizeInvoice.rejected, (state, action) => {

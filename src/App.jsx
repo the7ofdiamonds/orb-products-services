@@ -29,6 +29,7 @@ function App() {
           <Routes>
             <Route index path="/services" element={<ServicesComponent />} />
             <Route index path="/" element={<ServicesComponent />} />
+            <Route index path="/about" element={<ScheduleComponent />} />
             <Route path="/dashboard" element={<DashboardComponent />} />
             <Route path="services/:service" element={<ServiceComponent />} />
             <Route path="services/start" element={<StartComponent />} />
@@ -38,7 +39,6 @@ function App() {
               element={<SelectionsComponent />}
             />
             <Route path="services/quote/:id" element={<QuoteComponent />} />
-            <Route path="services/schedule/:id" element={<ScheduleComponent />} />
             <Route path="services/invoice/:id" element={<InvoiceComponent />} />
             <Route
               path="services/payment/:id/*"
@@ -53,6 +53,7 @@ function App() {
               element={<MobileComponent />}
             />
             <Route path="services/receipt/:id" element={<ReceiptComponent />} />
+            <Route path="schedule" element={<ScheduleComponent />} />
             <Route path="services/*" element={<ErrorComponent />} />
           </Routes>
         </Suspense>

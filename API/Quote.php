@@ -113,7 +113,7 @@ class Quote
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/quotes/(?P<slug>[a-zA-Z0-9-_]+)', array(
+            register_rest_route('orb/v1', '/quotes/client/(?P<slug>[a-zA-Z0-9-_]+)', array(
                 'methods' => 'GET',
                 'callback' => array($this, 'get_client_quotes'),
                 'permission_callback' => '__return_true',
@@ -140,14 +140,19 @@ class Quote
     public function create_quote(WP_REST_Request $request)
     {
         try {
-            $stripe_customer_id = $request['stripe_customer_id'];
-            $selections = $request['selections'];
+            $request_body = $request->get_body();
+            $body = json_decode($request_body, true);
+            $stripe_customer_id = $body['stripe_customer_id'];
+            $selections = $body['selections'];
             //Create option in the quote admin section
             // $tax_enabled = get_option('orb_automatic_tax_enabled');
 
             if (empty($stripe_customer_id)) {
-                $msg = 'Customer ID is required';
-                $response = rest_ensure_response($msg);
+                $msg = 'Stripe Customer ID is required';
+                $message = array(
+                    'message' => $msg,
+                );
+                $response = rest_ensure_response($message);
                 $response->set_status(404);
 
                 return $response;
@@ -155,7 +160,10 @@ class Quote
 
             if (empty($selections)) {
                 $msg = 'Selections are required';
-                $response = rest_ensure_response($msg);
+                $message = array(
+                    'message' => $msg,
+                );
+                $response = rest_ensure_response($message);
                 $response->set_status(404);
 
                 return $response;
@@ -193,7 +201,6 @@ class Quote
         } catch (InvalidRequestException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();
-
             $response_data = [
                 'message' => $error_message,
                 'status' => $status_code
@@ -455,7 +462,6 @@ class Quote
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();
-
             $response_data = [
                 'message' => $error_message,
                 'status' => $status_code
@@ -472,14 +478,25 @@ class Quote
     {
         try {
             $stripe_quote_id = $request->get_param('slug');
-            $selections = $request['selections'];
+            $request_body = $request->get_body();
+            $body = json_decode($request_body, true);
+            $selections = $body['selections'];
+
+            if (empty($selections)) {
+                $msg = 'Selections are required';
+                $message = array(
+                    'message' => $msg,
+                );
+                $response = rest_ensure_response($message);
+                $response->set_status(404);
+
+                return $response;
+            }
 
             $stripe_quote = $this->stripeClient->quotes->finalizeQuote(
                 $stripe_quote_id,
                 []
             );
-
-            global $wpdb;
 
             $serialized_selections = json_encode($selections);
 
@@ -489,6 +506,8 @@ class Quote
             $amount_tax = intval($stripe_quote->computed->upfront->amount_tax) / 100;
             $amount_total = intval($stripe_quote->amount_total) / 100;
 
+            global $wpdb;
+
             $table_name = 'orb_quote';
             $result = $wpdb->insert(
                 $table_name,
@@ -496,6 +515,7 @@ class Quote
                     'stripe_customer_id' => $stripe_quote->customer,
                     'stripe_quote_id' => $stripe_quote->id,
                     'status' => $stripe_quote->status,
+                    'expires_at' => $stripe_quote->expires_at,
                     'selections' => $serialized_selections,
                     'amount_subtotal' => $amount_subtotal,
                     'amount_discount' => $amount_discount,
@@ -506,8 +526,12 @@ class Quote
             );
 
             if (!$result) {
-                $error_message = $wpdb->last_error;
-                $response = rest_ensure_response($error_message);
+                $msg = $wpdb->last_error;
+                $message = array(
+                    'message' => $msg,
+                );
+                $response = rest_ensure_response($message);
+                $response->set_status(404);
 
                 return $response;
             }

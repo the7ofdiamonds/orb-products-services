@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getClient } from '../../controllers/clientSlice';
@@ -8,7 +8,9 @@ function UserScheduleComponent() {
   const dispatch = useDispatch();
 
   const { user_email, client_id } = useSelector((state) => state.client);
-  const { loading, error, events } = useSelector((state) => state.schedule);
+  const { loading, scheduleError, events } = useSelector(
+    (state) => state.schedule
+  );
 
   useEffect(() => {
     if (user_email) {
@@ -22,16 +24,14 @@ function UserScheduleComponent() {
     }
   }, [client_id, dispatch]);
 
-  if (error) {
+  if (scheduleError) {
     return (
       <>
-        <main className="error">
-          <div className="status-bar card">
-            <span className="error">
-              <h4>There is nothing on your schedule to show at this time</h4>
-            </span>
-          </div>
-        </main>
+        <div className="status-bar card error">
+          <span>
+            <h4>{scheduleError}</h4>
+          </span>
+        </div>
       </>
     );
   }
@@ -40,9 +40,21 @@ function UserScheduleComponent() {
     return <div>Loading...</div>;
   }
 
+  const now = new Date().getTime();
+  let sortedEvents = [];
+
+  if (Array.isArray(events)) {
+    sortedEvents = events.slice().sort((a, b) => {
+      const timeDiffA = new Date(a.start_date + ' ' + a.start_time) - now;
+      const timeDiffB = new Date(b.start_date + ' ' + b.start_time) - now;
+
+      return timeDiffA - timeDiffB;
+    });
+  }
+
   return (
     <>
-      {Array.isArray(events) && events.length > 0 ? (
+      {Array.isArray(sortedEvents) && sortedEvents.length > 0 ? (
         <div className="card schedule">
           <table>
             <thead>
@@ -59,14 +71,12 @@ function UserScheduleComponent() {
               </tr>
             </thead>
             <tbody>
-              {events.map((event) => (
-                <>
-                  <tr>
-                    <td>{event.id}</td>
-                    <td>{event.start_date}</td>
-                    <td>{event.start_time}</td>
-                  </tr>
-                </>
+              {sortedEvents.map((event) => (
+                <tr key={event.id}>
+                  <td>{event.id}</td>
+                  <td>{event.start_date}</td>
+                  <td>{event.start_time}</td>
+                </tr>
               ))}
             </tbody>
           </table>

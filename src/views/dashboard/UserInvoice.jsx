@@ -46,9 +46,21 @@ function UserInvoiceComponent() {
     return <div>Loading...</div>;
   }
 
+  const now = new Date().getTime();
+  let sortedInvoices = [];
+
+  if (Array.isArray(invoices)) {
+    sortedInvoices = invoices.slice().sort((a, b) => {
+      const timeDiffA = Math.abs(a.due_date - now);
+      const timeDiffB = Math.abs(b.due_date - now);
+
+      return timeDiffA - timeDiffB;
+    });
+  }
+
   return (
     <>
-      {Array.isArray(invoices) && invoices.length > 0 ? (
+      {Array.isArray(sortedInvoices) && sortedInvoices.length > 0 ? (
         <div className="card invoice">
           <table>
             <thead>
@@ -74,7 +86,7 @@ function UserInvoiceComponent() {
               </tr>
             </thead>
             <tbody>
-              {invoices.map((invoice) => (
+              {sortedInvoices.map((invoice) => (
                 <>
                   <tr>
                     <td>{invoice.id}</td>
@@ -86,7 +98,11 @@ function UserInvoiceComponent() {
                         currency: 'USD',
                       }).format(invoice.amount_remaining)}
                     </td>
-                    <td>{invoice.due_date}</td>
+                    <td>
+                      {invoice.due_date
+                        ? new Date(invoice.due_date * 1000).toLocaleString()
+                        : ''}
+                    </td>
                     <td>{invoice.quote_id}</td>
                     <td>
                       {invoice.status === 'deleted' ? (

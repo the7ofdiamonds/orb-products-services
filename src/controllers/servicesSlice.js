@@ -1,18 +1,55 @@
-import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
   servicesloading: false,
   servicesError: '',
-  services: {}
+  services: [],
+  availableServices: []
 }
 
-export const fetchServices = createAsyncThunk('services/servicesSlice', async () => {
+export const fetchServices = createAsyncThunk('services/fetchServices', async () => {
+
   try {
-    const response = await axios.get(`/wp-json/orb/v1/services`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/services`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error.message;
+  }
+});
+
+export const getAvailableServices = createAsyncThunk('services/getAvailableServices', async () => {
+
+  try {
+    const response = await fetch(`/wp-json/orb/v1/services/available`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw error.message;
   }
 });
 
@@ -30,6 +67,18 @@ export const servicesSlice = createSlice({
         state.services = action.payload
       })
       .addCase(fetchServices.rejected, (state, action) => {
+        state.loading = false
+        state.servicesError = action.error.message
+      })
+      .addCase(getAvailableServices.pending, (state) => {
+        state.loading = true
+        state.servicesError = null
+      })
+      .addCase(getAvailableServices.fulfilled, (state, action) => {
+        state.loading = false
+        state.availableServices = action.payload
+      })
+      .addCase(getAvailableServices.rejected, (state, action) => {
         state.loading = false
         state.servicesError = action.error.message
       })

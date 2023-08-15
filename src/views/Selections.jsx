@@ -51,19 +51,19 @@ function SelectionsComponent() {
     }
   }, [stripe_customer_id, dispatch]);
 
-  const handleCheckboxChange = (event, price_id, description, cost) => {
+  const handleCheckboxChange = (event, id, price_id, description, cost) => {
     const isChecked = event.target.checked;
 
     setCheckedItems((prevItems) => {
       if (isChecked) {
-        const newItem = { price_id, description, cost };
+        const newItem = { id, price_id, description, cost };
         return [...prevItems, newItem];
       } else {
-        return prevItems.filter((item) => item.price_id !== price_id);
+        return prevItems.filter((item) => item.id !== id);
       }
     });
   };
-
+console.log(checkedItems)
   useEffect(() => {
     dispatch(addSelections(checkedItems));
   }, [dispatch, checkedItems]);
@@ -72,8 +72,8 @@ function SelectionsComponent() {
     dispatch(calculateSelections(services.cost));
   }, [dispatch, services.cost, checkedItems]);
 
-  const handleClick = async () => {
-    if (selections.length > 0) {
+  const handleClick = () => {
+    if (selections.length > 0 && stripe_customer_id) {
       dispatch(createQuote(selections));
     }
   };
@@ -126,7 +126,7 @@ function SelectionsComponent() {
             {services && services.length ? (
               <React.Fragment>
                 {services.map((service) => {
-                  const { price_id, description, cost } = service;
+                  const { id, price_id, description, cost } = service;
 
                   return (
                     <tr key={price_id} id="quote_option">
@@ -141,6 +141,7 @@ function SelectionsComponent() {
                           onChange={(event) =>
                             handleCheckboxChange(
                               event,
+                              id,
                               price_id,
                               description,
                               cost

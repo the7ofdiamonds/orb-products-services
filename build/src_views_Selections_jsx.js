@@ -60,29 +60,31 @@ function SelectionsComponent() {
       dispatch((0,_controllers_servicesSlice_js__WEBPACK_IMPORTED_MODULE_3__.fetchServices)());
     }
   }, [stripe_customer_id, dispatch]);
-  const handleCheckboxChange = (event, price_id, description, cost) => {
+  const handleCheckboxChange = (event, id, price_id, description, cost) => {
     const isChecked = event.target.checked;
     setCheckedItems(prevItems => {
       if (isChecked) {
         const newItem = {
+          id,
           price_id,
           description,
           cost
         };
         return [...prevItems, newItem];
       } else {
-        return prevItems.filter(item => item.price_id !== price_id);
+        return prevItems.filter(item => item.id !== id);
       }
     });
   };
+  console.log(checkedItems);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.addSelections)(checkedItems));
   }, [dispatch, checkedItems]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.calculateSelections)(services.cost));
   }, [dispatch, services.cost, checkedItems]);
-  const handleClick = async () => {
-    if (selections.length > 0) {
+  const handleClick = () => {
+    if (selections.length > 0 && stripe_customer_id) {
       dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.createQuote)(selections));
     }
   };
@@ -118,6 +120,7 @@ function SelectionsComponent() {
     className: "cost-label"
   }, "COST")))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, services && services.length ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, services.map(service => {
     const {
+      id,
       price_id,
       description,
       cost
@@ -130,7 +133,7 @@ function SelectionsComponent() {
       type: "checkbox",
       name: "quote[checkbox][]",
       checked: checkedItems.some(item => item.price_id === price_id),
-      onChange: event => handleCheckboxChange(event, price_id, description, cost)
+      onChange: event => handleCheckboxChange(event, id, price_id, description, cost)
     })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
       className: "feature-description"
     }, description), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {

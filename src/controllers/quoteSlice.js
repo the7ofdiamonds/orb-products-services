@@ -5,7 +5,7 @@ const initialState = {
   loading: false,
   quoteError: '',
   stripe_customer_id: '',
-  quotes: '',
+  quotes: [],
   quote_id: '',
   stripe_quote_id: '',
   amount_subtotal: '',
@@ -27,31 +27,27 @@ export const createQuote = createAsyncThunk('quote/createQuote', async (_, { get
   const { stripe_customer_id } = getState().client;
   const { selections } = getState().quote;
 
-  const quote = {
-    stripe_customer_id: stripe_customer_id,
-    selections: selections
-  };
-
   try {
     const response = await fetch('/wp-json/orb/v1/quote', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(quote)
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id,
+        selections: selections
+      })
     });
 
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage)
       throw new Error(errorMessage);
     }
 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
     throw error.message;
   }
 });
@@ -71,14 +67,12 @@ export const getQuote = createAsyncThunk('quote/getQuote', async (_, { getState 
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage)
       throw new Error(errorMessage);
     }
 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
     throw error.message;
   }
 });
@@ -189,27 +183,28 @@ export const updateStripeQuote = createAsyncThunk('quote/updateStripeQuote', asy
 });
 
 export const finalizeQuote = createAsyncThunk('quote/finalizeQuote', async (_, { getState }) => {
-  const { stripe_quote_id } = getState().quote;
+  const { stripe_quote_id, selections } = getState().quote;
 
   try {
     const response = await fetch(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/finalize`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        selections: selections
+      })
     });
 
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage)
       throw new Error(errorMessage);
     }
 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
     throw error.message;
   }
 });
@@ -296,7 +291,7 @@ export const getClientQuotes = createAsyncThunk('quote/getClientQuotes', async (
   const { stripe_customer_id } = getState().client;
 
   try {
-    const response = await fetch(`/wp-json/orb/v1/quotes/${stripe_customer_id}`, {
+    const response = await fetch(`/wp-json/orb/v1/quotes/client/${stripe_customer_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -376,6 +371,7 @@ export const quoteSlice = createSlice({
         state.loading = false;
         state.quoteError = null;
         state.stripe_quote_id = action.payload.id;
+        state.stripe_customer_id = action.payload.stripe_customer_id;
         state.amount_subtotal = action.payload.amount_subtotal;
         state.amount_total = action.payload.amount_total;
         state.status = action.payload.status;

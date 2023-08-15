@@ -1,16 +1,52 @@
-.schedule-select {
+.schedule {
   display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 1.5rem;
 
   .date-select.card,
-  .time-select.card {
+  .time-select.card,
+  .summary-select.card,
+  .description-select.card,
+  .attendees-select.card,
+  .additional-attendee.card {
     padding: 0;
     gap: unset;
     label {
       background-color: black;
       color: white;
       padding: 0.25em;
+      margin: 0;
+      width: 100%;
     }
   }
+
+  .attendees-select.card,
+  .additional-attendee.card {
+    .attendee {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-items: center;
+      h4 {
+        padding: 0.5em;
+      }
+      button {
+        margin: 0 0.25em 0;
+        h4 {
+          padding: 0.25em;
+        }
+      }
+      input {
+        margin: 0.5em;
+      }
+    }
+  }
+}
+
+.schedule-select {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
 }

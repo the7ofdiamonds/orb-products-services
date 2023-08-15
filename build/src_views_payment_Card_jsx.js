@@ -133,7 +133,7 @@ const CardPaymentComponent = () => {
   }, [dispatch, id, stripe_customer_id]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_invoice_id) {
-      dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_5__.getStripeInvoice)());
+      dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_5__.getStripeInvoice)(stripe_invoice_id));
     }
   }, [dispatch, stripe_invoice_id]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -185,8 +185,8 @@ const CardPaymentComponent = () => {
     }
   }, [dispatch, brand, last4]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (payment_method) {
-      dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_5__.getStripeInvoice)());
+    if (payment_method && stripe_invoice_id) {
+      dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_5__.getStripeInvoice)(stripe_invoice_id));
     }
   }, [dispatch, payment_method]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {

@@ -112,6 +112,7 @@ class Invoice
                     'stripe_customer_id' => $stripe_invoice->customer,
                     'quote_id' => $quote_id,
                     'stripe_invoice_id' => $stripe_invoice->id,
+                    'due_date' => $stripe_invoice->due_date,
                     'subtotal' => $subtotal,
                     'tax' => $tax,
                     'amount_due' => $amount_due
@@ -435,7 +436,7 @@ class Invoice
         $stripe_customer_id = $request->get_param('slug');
 
         if (empty($stripe_customer_id)) {
-            $msg = 'Invalid Stripe Customer ID';
+            $msg = 'Stripe Customer ID is required';
             $message = array(
                 'message' => $msg,
             );
@@ -479,17 +480,15 @@ class Invoice
                 ['expand' => ['payment_intent']]
             );
 
-            $status = $invoice->status;
-
             $table_name = 'orb_invoice';
             $data = array(
                 'payment_intent_id' => $invoice->payment_intent->id,
                 'client_secret' => $invoice->payment_intent->client_secret,
-                'status' => $status,
+                'status' => $invoice->status,
                 'invoice_pdf_url' => $invoice->invoice_pdf
             );
             $where = array(
-                'stripe_invoice_id' => $stripe_invoice_id,
+                'stripe_invoice_id' => $invoice->id,
                 'stripe_customer_id' => $stripe_customer_id
             );
 
@@ -502,7 +501,15 @@ class Invoice
                 return rest_ensure_response('invoice_not_found', $error_message, array('status' => 404));
             }
 
-            return rest_ensure_response($status);
+            $finalized_invoice = [
+                'payment_intent_id' => $invoice->payment_intent->id,
+                'client_secret' => $invoice->payment_intent->client_secret,
+                'status' => $invoice->status,
+                'stripe_invoice_id' => $invoice->id,
+                'stripe_customer_id' => $invoice->customer
+            ];
+
+            return rest_ensure_response($finalized_invoice);
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();

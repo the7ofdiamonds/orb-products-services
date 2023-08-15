@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getClient } from '../../controllers/clientSlice';
@@ -42,9 +42,21 @@ function UserQuoteComponent() {
     return <div>Loading...</div>;
   }
 
+  const now = new Date().getTime();
+  let sortedQuotes = [];
+
+  if (Array.isArray(quotes)) {
+    sortedQuotes = quotes.slice().sort((a, b) => {
+      const timeDiffA = Math.abs(a.expires_at - now);
+      const timeDiffB = Math.abs(b.expires_at - now);
+
+      return timeDiffA - timeDiffB;
+    });
+  }
+
   return (
     <>
-      {Array.isArray(quotes) && quotes.length > 0 ? (
+      {Array.isArray(sortedQuotes) && sortedQuotes.length > 0 ? (
         <div className="card quote">
           <table>
             <thead>
@@ -64,7 +76,7 @@ function UserQuoteComponent() {
               </tr>
             </thead>
             <tbody>
-              {quotes.map((quote) => (
+              {sortedQuotes.map((quote) => (
                 <>
                   <tr>
                     <td>{quote.id}</td>

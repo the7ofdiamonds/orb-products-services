@@ -9287,6 +9287,10 @@ function App() {
     path: "/",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    index: true,
+    path: "/about",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ScheduleComponent, null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "/dashboard",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(DashboardComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
@@ -9305,9 +9309,6 @@ function App() {
     path: "services/quote/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(QuoteComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "services/schedule/:id",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ScheduleComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/invoice/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(InvoiceComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
@@ -9322,6 +9323,9 @@ function App() {
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/receipt/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ReceiptComponent, null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    path: "schedule",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ScheduleComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/*",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ErrorComponent, null)
@@ -9858,12 +9862,7 @@ const updateInvoiceStatus = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.cre
     throw new Error(error.message);
   }
 });
-const getStripeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/getStripeInvoice', async (_, {
-  getState
-}) => {
-  const {
-    stripe_invoice_id
-  } = getState().invoice;
+const getStripeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/getStripeInvoice', async stripe_invoice_id => {
   try {
     const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}`);
     return response.data;
@@ -10024,7 +10023,9 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.invoiceError = null;
     }).addCase(finalizeInvoice.fulfilled, (state, action) => {
       state.loading = false;
-      state.status = action.payload;
+      state.client_secret = action.payload.client_secret;
+      state.payment_intent_id = action.payload.payment_intent_id;
+      state.status = action.payload.status;
       state.invoiceError = null;
     }).addCase(finalizeInvoice.rejected, (state, action) => {
       state.loading = false;
@@ -10135,7 +10136,7 @@ const initialState = {
   loading: false,
   quoteError: '',
   stripe_customer_id: '',
-  quotes: '',
+  quotes: [],
   quote_id: '',
   stripe_quote_id: '',
   amount_subtotal: '',
@@ -10160,28 +10161,25 @@ const createQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
   const {
     selections
   } = getState().quote;
-  const quote = {
-    stripe_customer_id: stripe_customer_id,
-    selections: selections
-  };
   try {
     const response = await fetch('/wp-json/orb/v1/quote', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(quote)
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id,
+        selections: selections
+      })
     });
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage);
       throw new Error(errorMessage);
     }
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
     throw error.message;
   }
 });
@@ -10201,13 +10199,11 @@ const getQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThu
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage);
       throw new Error(errorMessage);
     }
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
     throw error.message;
   }
 });
@@ -10320,25 +10316,27 @@ const finalizeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsy
   getState
 }) => {
   const {
-    stripe_quote_id
+    stripe_quote_id,
+    selections
   } = getState().quote;
   try {
     const response = await fetch(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}/finalize`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        selections: selections
+      })
     });
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage);
       throw new Error(errorMessage);
     }
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
     throw error.message;
   }
 });
@@ -10427,7 +10425,7 @@ const getClientQuotes = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createA
     stripe_customer_id
   } = getState().client;
   try {
-    const response = await fetch(`/wp-json/orb/v1/quotes/${stripe_customer_id}`, {
+    const response = await fetch(`/wp-json/orb/v1/quotes/client/${stripe_customer_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -10499,6 +10497,7 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
       state.loading = false;
       state.quoteError = null;
       state.stripe_quote_id = action.payload.id;
+      state.stripe_customer_id = action.payload.stripe_customer_id;
       state.amount_subtotal = action.payload.amount_subtotal;
       state.amount_total = action.payload.amount_total;
       state.status = action.payload.status;
@@ -10660,6 +10659,7 @@ const initialState = {
   receipts: [],
   receipt_id: '',
   invoice_id: '',
+  stripe_invoice_id: '',
   stripe_customer_id: '',
   payment_method_id: '',
   amount_paid: '',
@@ -10802,7 +10802,7 @@ const receiptSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.loading = false;
       state.receiptError = null;
       state.created_at = action.payload.created_at;
-      state.invoice_id = action.payload.invoice_id;
+      state.stripe_invoice_id = action.payload.stripe_invoice_id;
       state.stripe_customer_id = action.payload.stripe_customer_id;
       state.payment_method_id = action.payload.payment_method_id;
       state.amount_paid = action.payload.amount_paid;
@@ -10846,9 +10846,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   saveEvent: () => (/* binding */ saveEvent),
 /* harmony export */   scheduleSlice: () => (/* binding */ scheduleSlice),
 /* harmony export */   sendInvites: () => (/* binding */ sendInvites),
+/* harmony export */   updateAttendees: () => (/* binding */ updateAttendees),
 /* harmony export */   updateDate: () => (/* binding */ updateDate),
+/* harmony export */   updateDescription: () => (/* binding */ updateDescription),
 /* harmony export */   updateDueDate: () => (/* binding */ updateDueDate),
 /* harmony export */   updateEvent: () => (/* binding */ updateEvent),
+/* harmony export */   updateSummary: () => (/* binding */ updateSummary),
 /* harmony export */   updateTime: () => (/* binding */ updateTime)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -10859,12 +10862,14 @@ __webpack_require__.r(__webpack_exports__);
 const initialState = {
   loading: false,
   events: [],
-  error: null,
+  scheduleError: null,
   event_id: 0,
   invoice_id: '',
   start_date_time: '',
   end_date_time: '',
-  attendees: '',
+  summary: '',
+  description: '',
+  attendees: [],
   calendar_link: '',
   start_date: '',
   start_time: '',
@@ -10908,7 +10913,7 @@ function combineDateTime(start_date, start_time) {
   const time = formattedTime(start_time);
   return `${date}T${time}`;
 }
-const sendInvites = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/sendInvites', async (invoice_id, {
+const sendInvites = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/sendInvites', async (_, {
   getState
 }) => {
   const {
@@ -10917,22 +10922,38 @@ const sendInvites = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
   const {
     start_date,
     start_time,
-    event_date_time
+    event_date_time,
+    summary,
+    description,
+    attendees
   } = getState().schedule;
-  const eventData = {
-    client_id: client_id,
-    start: event_date_time,
-    start_date: start_date,
-    start_time: start_time,
-    description: invoice_id,
-    attendees: ['jamel.c.lyons@gmail.com']
-  };
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/schedule/events/invite', eventData);
-    return response.data;
-  } catch {
-    console.error('Error getting event:', error);
-    throw new Error('Error getting event:', error);
+    const response = await fetch('/wp-json/orb/v1/schedule/events/invite', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        client_id: client_id,
+        start: event_date_time,
+        start_date: start_date,
+        start_time: start_time,
+        summary: summary,
+        description: description,
+        attendees: attendees
+      })
+    });
+    console.log(response);
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.log(error);
+    throw error.message;
   }
 });
 const saveEvent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/saveEvent', async (_, {
@@ -11005,6 +11026,15 @@ const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
     updateTime: (state, action) => {
       state.start_time = action.payload;
     },
+    updateSummary: (state, action) => {
+      state.summary = action.payload;
+    },
+    updateDescription: (state, action) => {
+      state.description = action.payload;
+    },
+    updateAttendees: (state, action) => {
+      state.attendees = action.payload;
+    },
     updateDueDate: state => {
       state.due_date = combineDateTimeToTimestamp(state.start_date, state.start_time);
     },
@@ -11015,59 +11045,65 @@ const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
   extraReducers: builder => {
     builder.addCase(fetchCalendarEvents.pending, state => {
       state.loading = true;
-      state.error = null;
+      state.scheduleError = null;
     }).addCase(fetchCalendarEvents.fulfilled, (state, action) => {
       state.loading = false;
       state.events = action.payload;
-      state.error = null;
+      state.scheduleError = null;
     }).addCase(fetchCalendarEvents.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error.message || 'Failed to fetch calendar events';
+      state.scheduleError = action.error.message || 'Failed to fetch calendar events';
     }).addCase(sendInvites.pending, state => {
       state.loading = true;
-      state.error = null;
+      state.scheduleError = null;
     }).addCase(sendInvites.fulfilled, (state, action) => {
       state.loading = false;
-      state.event_id = action.payload;
-      state.error = null;
-    }).addCase(sendInvites.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.message || 'Failed to send out invites';
-    }).addCase(saveEvent.pending, state => {
-      state.loading = true;
-      state.error = null;
-    }).addCase(saveEvent.fulfilled, (state, action) => {
-      state.loading = false;
-      state.event_id = action.payload;
-    }).addCase(saveEvent.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.message || 'Failed to send out invites';
-    }).addCase(getEvent.pending, state => {
-      state.loading = true;
-      state.error = null;
-    }).addCase(getEvent.fulfilled, (state, action) => {
-      state.loading = false;
-      state.schedule_id = action.payload.schedule_id;
+      state.scheduleError = null;
       state.event_id = action.payload.event_id;
+      state.google_event_id = action.payload.google_event_id;
       state.invoice_id = action.payload.invoice_id;
       state.start_date = action.payload.start_date;
       state.start_time = action.payload.start_time;
       state.attendees = action.payload.attendees;
       state.calendar_link = action.payload.htmlLink;
-      state.error = null;
+    }).addCase(sendInvites.rejected, (state, action) => {
+      state.loading = false;
+      state.scheduleError = action.error.message || 'Failed to send out invites';
+    }).addCase(saveEvent.pending, state => {
+      state.loading = true;
+      state.scheduleError = null;
+    }).addCase(saveEvent.fulfilled, (state, action) => {
+      state.loading = false;
+      state.event_id = action.payload;
+    }).addCase(saveEvent.rejected, (state, action) => {
+      state.loading = false;
+      state.scheduleError = action.error.message || 'Failed to send out invites';
+    }).addCase(getEvent.pending, state => {
+      state.loading = true;
+      state.scheduleError = null;
+    }).addCase(getEvent.fulfilled, (state, action) => {
+      state.loading = false;
+      state.event_id = action.payload.event_id;
+      state.google_event_id = action.payload.google_event_id;
+      state.invoice_id = action.payload.invoice_id;
+      state.start_date = action.payload.start_date;
+      state.start_time = action.payload.start_time;
+      state.attendees = action.payload.attendees;
+      state.calendar_link = action.payload.htmlLink;
+      state.scheduleError = null;
     }).addCase(getEvent.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error.message || 'Failed to send out invites';
+      state.scheduleError = action.error.message || 'Failed to send out invites';
     }).addCase(getEvents.pending, state => {
       state.loading = true;
-      state.error = null;
+      state.scheduleError = null;
     }).addCase(getEvents.fulfilled, (state, action) => {
       state.loading = false;
       state.events = action.payload;
-      state.error = null;
+      state.scheduleError = null;
     }).addCase(getEvents.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error.message || 'Failed to send out invites';
+      state.scheduleError = action.error.message || 'Failed to send out invites';
     });
   }
 });
@@ -11075,6 +11111,9 @@ const {
   updateDate,
   updateTime,
   updateDueDate,
+  updateSummary,
+  updateDescription,
+  updateAttendees,
   updateEvent
 } = scheduleSlice.actions;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (scheduleSlice.reducer);
@@ -11143,27 +11182,56 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   fetchServices: () => (/* binding */ fetchServices),
+/* harmony export */   getAvailableServices: () => (/* binding */ getAvailableServices),
 /* harmony export */   servicesSlice: () => (/* binding */ servicesSlice)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
-
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
 const initialState = {
   servicesloading: false,
   servicesError: '',
-  services: {}
+  services: [],
+  availableServices: []
 };
-const fetchServices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('services/servicesSlice', async () => {
+const fetchServices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('services/fetchServices', async () => {
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/services`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/services`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error.message;
   }
 });
-const servicesSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
+const getAvailableServices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('services/getAvailableServices', async () => {
+  try {
+    const response = await fetch(`/wp-json/orb/v1/services/available`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw error.message;
+  }
+});
+const servicesSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
   name: 'services',
   initialState,
   extraReducers: builder => {
@@ -11174,6 +11242,15 @@ const servicesSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
       state.loading = false;
       state.services = action.payload;
     }).addCase(fetchServices.rejected, (state, action) => {
+      state.loading = false;
+      state.servicesError = action.error.message;
+    }).addCase(getAvailableServices.pending, state => {
+      state.loading = true;
+      state.servicesError = null;
+    }).addCase(getAvailableServices.fulfilled, (state, action) => {
+      state.loading = false;
+      state.availableServices = action.payload;
+    }).addCase(getAvailableServices.rejected, (state, action) => {
       state.loading = false;
       state.servicesError = action.error.message;
     });

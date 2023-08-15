@@ -68,6 +68,7 @@ class Tables
             stripe_customer_id VARCHAR(255) DEFAULT NULL,
             stripe_quote_id VARCHAR(255) DEFAULT NULL,
             status VARCHAR(255) DEFAULT NULL,
+            expires_at VARCHAR(255) DEFAULT NULL,
             selections JSON DEFAULT NULL,
             amount_subtotal VARCHAR(255) DEFAULT NULL,
             amount_discount VARCHAR(255) DEFAULT NULL,
@@ -100,7 +101,6 @@ class Tables
             tax VARCHAR(255) DEFAULT NULL,
             amount_due VARCHAR(255) DEFAULT NULL,
             amount_remaining VARCHAR(255) DEFAULT NULL,
-            event_id VARCHAR(255) DEFAULT NULL,
             invoice_pdf_url VARCHAR(255) DEFAULT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
@@ -118,6 +118,7 @@ class Tables
         id INT NOT NULL AUTO_INCREMENT,
         created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
         stripe_customer_id VARCHAR(255) DEFAULT NULL,
+        stripe_invoice_id VARCHAR(255) DEFAULT NULL,
         invoice_id VARCHAR(255) DEFAULT NULL,
         payment_method_id VARCHAR(255) DEFAULT NULL,
         amount_paid VARCHAR(255) DEFAULT NULL,
@@ -164,7 +165,8 @@ class Tables
         id INT NOT NULL AUTO_INCREMENT,
         created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
         client_id VARCHAR(255) DEFAULT NULL,
-        invoice_id VARCHAR(255) DEFAULT NULL,
+        summary VARCHAR(255) DEFAULT NULL,
+        description VARCHAR(255) DEFAULT NULL,
         google_event_id VARCHAR(255) DEFAULT NULL,
         start_date VARCHAR(255) DEFAULT NULL,
         start_time VARCHAR(255) DEFAULT NULL,

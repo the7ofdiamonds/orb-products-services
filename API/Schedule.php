@@ -94,42 +94,55 @@ class Schedule
     public function send_invite(WP_REST_Request $request)
     {
         try {
-            $eventData = $request->get_params();
-            $event_duration_hours = intval(get_option('orb_event_duration_hours'));
-            $event_duration_minutes = intval(get_option('orb_event_duration_minutes'));
+            $request_body = $request->get_body();
+            $body = json_decode($request_body, true);
 
             if (
-                !isset($eventData['client_id']) ||
-                !isset($eventData['description']) ||
-                !isset($eventData['start']) ||
-                !isset($eventData['start_date']) ||
-                !isset($eventData['start_time']) ||
-                !isset($eventData['attendees']) ||
-                !isset($eventData['description'])
+                !isset($body['client_id']) ||
+                !isset($body['start']) ||
+                !isset($body['start_date']) ||
+                !isset($body['start_time']) ||
+                !isset($body['attendees'])
             ) {
                 throw new Exception('Invalid event data.');
             }
 
-            $invoice_id = $eventData['description'];
-            $start = $eventData['start'];
+            $start = $body['start'];
+            $event_duration_hours = intval(get_option('orb_event_duration_hours'));
+            $event_duration_minutes = intval(get_option('orb_event_duration_minutes'));
+
             $end = new DateTime($start);
             $end->modify('+' . $event_duration_hours . ' hours');
             $end->modify('+' . $event_duration_minutes . ' minutes');
 
+            $summary = $body['summary'];
+
+            if (empty($body['summary'])) {
+                $summary = get_option('orb_event_summary');
+            }
+
+            $description = $body['description'];
+
+            if (empty($body['description'])) {
+                $description = get_option('orb_event_description');
+            }
+
+            $timeZone = get_option('orb_event_time_zone');
+
             $event = new Event(array(
-                'summary' => get_option('orb_event_summary'),
-                'description' => $invoice_id,
+                'summary' => $summary,
+                'description' => $description,
                 'start' => array(
                     'dateTime' => $start,
-                    'timeZone' => get_option('orb_event_time_zone'),
+                    'timeZone' => $timeZone,
                 ),
                 'end' => array(
                     'dateTime' => $end->format('Y-m-d\TH:i:s'),
-                    'timeZone' => get_option('orb_event_time_zone'),
+                    'timeZone' => $timeZone,
                 ),
                 'attendees' => array_map(function ($email) {
                     return array('email' => $email);
-                }, $eventData['attendees']),
+                }, $body['attendees']),
                 'transparency' => 'opaque',
                 'status' => 'confirmed',
             ));
@@ -144,11 +157,12 @@ class Schedule
             $result = $wpdb->insert(
                 $table_name,
                 [
-                    'client_id' => $eventData['client_id'],
-                    'invoice_id' => $eventData['description'],
+                    'client_id' => $body['client_id'],
+                    'summary' => $createdEvent->summary,
+                    'description' => $createdEvent->description,
                     'google_event_id' => $createdEvent->id,
-                    'start_date' => $eventData['start_date'],
-                    'start_time' => $eventData['start_time'],
+                    'start_date' => $body['start_date'],
+                    'start_time' => $body['start_time'],
                     'attendees' => $createdEvent->getAttendees(),
                     'calendar_link' => $createdEvent->htmlLink,
                 ]
@@ -156,15 +170,32 @@ class Schedule
 
             if (!$result) {
                 $error_message = $wpdb->last_error;
-                return rest_ensure_response($error_message);
+                $message = [
+                    'message' => $error_message,
+                ];
+
+                $response = rest_ensure_response($message);
+                $response->set_status(404);
+
+                return $response;
             }
 
             $event_id = $wpdb->insert_id;
 
             return rest_ensure_response($event_id);
         } catch (Exception $e) {
-            // In case of an exception, return the error as the response
-            return rest_ensure_response($e->getMessage());
+            $error_message = $e->getErrors();
+            $status_code = $e->getCode();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
     }
 
