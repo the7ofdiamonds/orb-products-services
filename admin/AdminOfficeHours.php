@@ -24,14 +24,15 @@ class AdminOfficeHours
 
     function register_section()
     {
-
         add_settings_section('orb-admin-office-hours', 'Add Office Hours', [$this, 'section_description'], 'orb_office_hours');
+        register_setting('orb-admin-office-hours-group', 'orb_office_hours');
         register_setting('orb-admin-office-hours-group', 'orb_calendar_id');
         register_setting('orb-admin-office-hours-group', 'orb_event_max_results');
         register_setting('orb-admin-office-hours-group', 'orb_event_summary');
         register_setting('orb-admin-office-hours-group', 'orb_event_duration_hours');
         register_setting('orb-admin-office-hours-group', 'orb_event_duration_minutes');
         register_setting('orb-admin-office-hours-group', 'orb_event_time_zone');
+        add_settings_field('orb_office_hours', 'Add Office Hours', [$this, 'office_hours'], 'orb_office_hours', 'orb-admin-office-hours');
         add_settings_field('orb_calendar_id', 'Add Calendar ID', [$this, 'calendar_id'], 'orb_office_hours', 'orb-admin-office-hours');
         add_settings_field('orb_event_max_results', 'Set Max Results', [$this, 'max_results'], 'orb_office_hours', 'orb-admin-office-hours');
         add_settings_field('orb_event_summary', 'Add Title of Event', [$this, 'event_summary'], 'orb_office_hours', 'orb-admin-office-hours');
@@ -42,6 +43,42 @@ class AdminOfficeHours
     function section_description()
     {
         echo 'Add your hours of operation';
+    }
+
+    function office_hours()
+    {
+        $days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+        // Get the office hours as a serialized string from the option
+        $office_hours = get_option("orb_office_hours");
+
+        echo '<table>';
+        echo '<thead>';
+        echo '<th>Day</th>';
+        echo '<th>Start Time</th>';
+        echo '<th>End Time</th>';
+        echo '</thead>';
+        echo '<tbody>';
+
+        foreach ($days as $day) {
+            // Check if the day exists in the array before accessing its values
+            if (isset($office_hours[$day . '_start']) && isset($office_hours[$day . '_end'])) {
+                $start_time = esc_attr($office_hours[$day . '_start']);
+                $end_time = esc_attr($office_hours[$day . '_end']);
+            } else {
+                $start_time = '';
+                $end_time = '';
+            }
+
+            echo '<tr>';
+            echo "<td>{$day}</td>";
+            echo "<td><input type='time' name='orb_office_hours[{$day}_start]' value='{$start_time}'></td>";
+            echo "<td><input type='time' name='orb_office_hours[{$day}_end]' value='{$end_time}'></td>";
+            echo '</tr>';
+        }
+
+        echo '</tbody>';
+        echo '</table>';
     }
 
     function calendar_id()

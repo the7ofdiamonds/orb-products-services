@@ -307,7 +307,7 @@ function UserScheduleComponent() {
   }, [user_email, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (client_id) {
-      dispatch((0,_controllers_scheduleSlice__WEBPACK_IMPORTED_MODULE_4__.getEvents)());
+      dispatch((0,_controllers_scheduleSlice__WEBPACK_IMPORTED_MODULE_4__.getClientEvents)());
     }
   }, [client_id, dispatch]);
   if (scheduleError) {

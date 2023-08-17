@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getClient } from '../../controllers/clientSlice';
-import { getEvents } from '../../controllers/scheduleSlice';
+import { getClientEvents } from '../../controllers/scheduleSlice';
 
 function UserScheduleComponent() {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ function UserScheduleComponent() {
 
   useEffect(() => {
     if (client_id) {
-      dispatch(getEvents());
+      dispatch(getClientEvents());
     }
   }, [client_id, dispatch]);
 

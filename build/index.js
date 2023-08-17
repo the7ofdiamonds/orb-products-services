@@ -10841,8 +10841,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   fetchCalendarEvents: () => (/* binding */ fetchCalendarEvents),
+/* harmony export */   getClientEvents: () => (/* binding */ getClientEvents),
 /* harmony export */   getEvent: () => (/* binding */ getEvent),
-/* harmony export */   getEvents: () => (/* binding */ getEvents),
+/* harmony export */   getOfficeHours: () => (/* binding */ getOfficeHours),
 /* harmony export */   saveEvent: () => (/* binding */ saveEvent),
 /* harmony export */   scheduleSlice: () => (/* binding */ scheduleSlice),
 /* harmony export */   sendInvites: () => (/* binding */ sendInvites),
@@ -10854,9 +10855,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   updateSummary: () => (/* binding */ updateSummary),
 /* harmony export */   updateTime: () => (/* binding */ updateTime)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+/* harmony import */ var _utils_Schedule__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/Schedule */ "./src/utils/Schedule.js");
 
 
 const initialState = {
@@ -10875,44 +10875,49 @@ const initialState = {
   start_time: '',
   due_date: '',
   event_date_time: '',
-  event: ''
+  event: '',
+  office_hours: []
 };
-const fetchCalendarEvents = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/fetchCalendarEvents', async () => {
-  const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/wp-json/orb/v1/office-hours');
-  return response.data;
-});
-function combineDateTimeToTimestamp(dateString, timeString) {
-  const date = new Date(dateString);
-  const [hours, minutes] = timeString.split(':');
-  date.setHours(parseInt(hours, 10));
-  date.setMinutes(parseInt(minutes, 10));
-  return date.getTime() / 1000;
-}
-function formattedDate(start_date) {
-  const date = new Date(start_date);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-function formattedTime(start_time) {
-  const [time, period] = start_time.split(' ');
-  const [hours, minutes] = time.split(':');
-  let formattedHours = parseInt(hours, 10);
-  if (period === 'PM' && formattedHours !== 12) {
-    formattedHours += 12;
-  } else if (period === 'AM' && formattedHours === 12) {
-    formattedHours = 0;
+const getOfficeHours = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/getOfficeHours', async () => {
+  try {
+    const response = await fetch('/wp-json/orb/v1/office-hours', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.log(error);
+    throw error.message;
   }
-  const formattedHoursString = String(formattedHours).padStart(2, '0');
-  const formattedMinutesString = String(minutes).padStart(2, '0');
-  return `${formattedHoursString}:${formattedMinutesString}:00`;
-}
-function combineDateTime(start_date, start_time) {
-  const date = formattedDate(start_date);
-  const time = formattedTime(start_time);
-  return `${date}T${time}`;
-}
+});
+const fetchCalendarEvents = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/fetchCalendarEvents', async () => {
+  try {
+    const response = await fetch('/wp-json/orb/v1/schedule/events', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.log(error);
+    throw error.message;
+  }
+});
 const sendInvites = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/sendInvites', async (_, {
   getState
 }) => {
@@ -10943,7 +10948,6 @@ const sendInvites = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
         attendees: attendees
       })
     });
-    console.log(response);
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
@@ -10970,22 +10974,32 @@ const saveEvent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncTh
     attendees,
     calendar_link
   } = getState().schedule;
-  const eventData = {
-    client_id: client_id,
-    event_id: event_id,
-    invoice_id: invoice_id,
-    start_date_time: start_date_time,
-    end_date_time: end_date_time,
-    attendees: attendees,
-    calendar_link: calendar_link
-  };
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/schedule', eventData);
-    console.log(response.data);
-    return response.data;
+    const response = await fetch('/wp-json/orb/v1/schedule', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        client_id: client_id,
+        event_id: event_id,
+        invoice_id: invoice_id,
+        start_date_time: start_date_time,
+        end_date_time: end_date_time,
+        attendees: attendees,
+        calendar_link: calendar_link
+      })
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    console.error('Error getting event:', error);
-    throw new Error('Error getting event:', error);
+    console.log(error);
+    throw error.message;
   }
 });
 const getEvent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/getEvent', async (_, {
@@ -10995,25 +11009,47 @@ const getEvent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThu
     invoice_id
   } = getState().receipt;
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/schedule/event/${invoice_id}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/schedule/event/${invoice_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    console.error('Error getting event:', error);
-    throw new Error('Error getting event:', error);
+    console.log(error);
+    throw error.message;
   }
 });
-const getEvents = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/getEvents', async (_, {
+const getClientEvents = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/getClientEvents', async (_, {
   getState
 }) => {
   const {
     client_id
   } = getState().client;
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/schedule/events/${client_id}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/schedule/events/${client_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    console.error('Error getting event:', error);
-    throw new Error('Error getting event:', error);
+    console.log(error);
+    throw error.message;
   }
 });
 const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
@@ -11036,14 +11072,24 @@ const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
       state.attendees = action.payload;
     },
     updateDueDate: state => {
-      state.due_date = combineDateTimeToTimestamp(state.start_date, state.start_time);
+      state.due_date = (0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_0__.combineDateTimeToTimestamp)(state.start_date, state.start_time);
     },
     updateEvent: state => {
-      state.event_date_time = combineDateTime(state.start_date, state.start_time);
+      state.event_date_time = (0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_0__.combineDateTime)(state.start_date, state.start_time);
     }
   },
   extraReducers: builder => {
-    builder.addCase(fetchCalendarEvents.pending, state => {
+    builder.addCase(getOfficeHours.pending, state => {
+      state.loading = true;
+      state.scheduleError = null;
+    }).addCase(getOfficeHours.fulfilled, (state, action) => {
+      state.loading = false;
+      state.office_hours = action.payload;
+      state.scheduleError = null;
+    }).addCase(getOfficeHours.rejected, (state, action) => {
+      state.loading = false;
+      state.scheduleError = action.error.message || 'Failed to get office hours';
+    }).addCase(fetchCalendarEvents.pending, state => {
       state.loading = true;
       state.scheduleError = null;
     }).addCase(fetchCalendarEvents.fulfilled, (state, action) => {
@@ -11059,13 +11105,7 @@ const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
     }).addCase(sendInvites.fulfilled, (state, action) => {
       state.loading = false;
       state.scheduleError = null;
-      state.event_id = action.payload.event_id;
-      state.google_event_id = action.payload.google_event_id;
-      state.invoice_id = action.payload.invoice_id;
-      state.start_date = action.payload.start_date;
-      state.start_time = action.payload.start_time;
-      state.attendees = action.payload.attendees;
-      state.calendar_link = action.payload.htmlLink;
+      state.event_id = action.payload;
     }).addCase(sendInvites.rejected, (state, action) => {
       state.loading = false;
       state.scheduleError = action.error.message || 'Failed to send out invites';
@@ -11094,14 +11134,14 @@ const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
     }).addCase(getEvent.rejected, (state, action) => {
       state.loading = false;
       state.scheduleError = action.error.message || 'Failed to send out invites';
-    }).addCase(getEvents.pending, state => {
+    }).addCase(getClientEvents.pending, state => {
       state.loading = true;
       state.scheduleError = null;
-    }).addCase(getEvents.fulfilled, (state, action) => {
+    }).addCase(getClientEvents.fulfilled, (state, action) => {
       state.loading = false;
       state.events = action.payload;
       state.scheduleError = null;
-    }).addCase(getEvents.rejected, (state, action) => {
+    }).addCase(getClientEvents.rejected, (state, action) => {
       state.loading = false;
       state.scheduleError = action.error.message || 'Failed to send out invites';
     });
@@ -11364,6 +11404,123 @@ const store = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_10__.configureStore)(
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
+
+/***/ }),
+
+/***/ "./src/utils/Schedule.js":
+/*!*******************************!*\
+  !*** ./src/utils/Schedule.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   combineDateTime: () => (/* binding */ combineDateTime),
+/* harmony export */   combineDateTimeToTimestamp: () => (/* binding */ combineDateTimeToTimestamp),
+/* harmony export */   datesAvail: () => (/* binding */ datesAvail),
+/* harmony export */   formatOfficeHours: () => (/* binding */ formatOfficeHours),
+/* harmony export */   formatTime: () => (/* binding */ formatTime),
+/* harmony export */   formattedDate: () => (/* binding */ formattedDate),
+/* harmony export */   formattedTime: () => (/* binding */ formattedTime),
+/* harmony export */   timesAvail: () => (/* binding */ timesAvail)
+/* harmony export */ });
+const combineDateTimeToTimestamp = (dateString, timeString) => {
+  const date = new Date(dateString);
+  const [hours, minutes] = timeString.split(':');
+  date.setHours(parseInt(hours, 10));
+  date.setMinutes(parseInt(minutes, 10));
+  return date.getTime() / 1000;
+};
+const formattedDate = start_date => {
+  const date = new Date(start_date);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+const formattedTime = start_time => {
+  const [time, period] = start_time.split(' ');
+  const [hours, minutes] = time.split(':');
+  let formattedHours = parseInt(hours, 10);
+  if (period === 'PM' && formattedHours !== 12) {
+    formattedHours += 12;
+  } else if (period === 'AM' && formattedHours === 12) {
+    formattedHours = 0;
+  }
+  const formattedHoursString = String(formattedHours).padStart(2, '0');
+  const formattedMinutesString = String(minutes).padStart(2, '0');
+  return `${formattedHoursString}:${formattedMinutesString}:00`;
+};
+const combineDateTime = (start_date, start_time) => {
+  const date = formattedDate(start_date);
+  const time = formattedTime(start_time);
+  return `${date}T${time}`;
+};
+const formatTime = time => {
+  const hr = time.split(':')[0];
+  return new Date(0, 0, 0, hr, 0, 0, 0).toLocaleTimeString('en-US', {
+    hour12: true,
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+const formatOfficeHours = office_hours => {
+  let officeHours = [];
+  office_hours.map(day => {
+    let workDay = {};
+    if (day.start === '' || day.end === '') {
+      workDay = {
+        'dayofweek': day.day,
+        'start': day.start,
+        'end': day.end
+      };
+    } else {
+      workDay = {
+        'dayofweek': day.day,
+        'start': formatTime(day.start),
+        'end': formatTime(day.end)
+      };
+    }
+    officeHours.push(workDay);
+  });
+  return officeHours;
+};
+const datesAvail = events => {
+  return events.map(event => {
+    const dateTime = event.start;
+    const date = dateTime.split('T')[0];
+    const year = date.split('-')[0];
+    const month = date.split('-')[1];
+    const day = date.split('-')[2];
+    const formatedDate = `${month}-${day}-${year}`;
+    return new Date(formatedDate).toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  });
+};
+const timesAvail = (events, selectedIndex) => {
+  const dateSelected = events[selectedIndex];
+  const dateTime = dateSelected.start;
+  const time = dateTime.split('T')[1];
+  const start = time.split('-')[0];
+  const endTime = time.split('-')[1];
+  const startHour = parseInt(start, 10);
+  const endHour = parseInt(endTime, 10) < 12 ? parseInt(endTime, 10) + 12 : parseInt(endTime, 10);
+  const hours = [];
+  for (let i = startHour; i <= endHour; i++) {
+    hours.push(i);
+  }
+  return hours.map(hr => {
+    return new Date(0, 0, 0, hr, 0, 0, 0).toLocaleTimeString('en-US', {
+      hour12: true,
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  });
+};
 
 /***/ }),
 

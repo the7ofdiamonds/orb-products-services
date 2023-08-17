@@ -13,11 +13,14 @@ import {
   sendInvites,
   updateDescription,
   updateAttendees,
+  getOfficeHours,
 } from '../controllers/scheduleSlice.js';
 import { getAvailableServices } from '../controllers/servicesSlice';
 import { getClientQuotes } from '../controllers/quoteSlice';
 import { getClientInvoices } from '../controllers/invoiceSlice';
 import { getClientReceipts } from '../controllers/receiptSlice';
+
+import { formatOfficeHours, datesAvail, timesAvail } from '../utils/Schedule';
 
 function ScheduleComponent() {
   const { id } = useParams();
@@ -36,12 +39,14 @@ function ScheduleComponent() {
     summary,
     description,
     attendees,
+    office_hours,
   } = useSelector((state) => state.schedule);
   const { availableServices } = useSelector((state) => state.services);
   const { quotes } = useSelector((state) => state.quote);
   const { invoices } = useSelector((state) => state.invoice);
   const { receipts } = useSelector((state) => state.receipt);
 
+  const [officeHours, setOfficeHours] = useState('');
   const [availableDates, setAvailableDates] = useState('');
   const [availableTimes, setAvailableTimes] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
@@ -52,7 +57,7 @@ function ScheduleComponent() {
   const [showAdditionalAttendee, setShowAdditionalAttendee] = useState(false);
   const [additionalAttendeeEmail, setAdditionalAttendeeEmail] = useState('');
   const [messageType, setMessageType] = useState('info');
-  const [message, setMessage] = useState('Choose a date and time to start');
+  const [message, setMessage] = useState('Choose a date');
 
   const dateSelectRef = useRef(null);
   const timeSelectRef = useRef(null);
@@ -63,10 +68,23 @@ function ScheduleComponent() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Office Hours
+  useEffect(() => {
+    dispatch(getOfficeHours());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (office_hours) {
+      setOfficeHours(formatOfficeHours(office_hours));
+    }
+  }, [office_hours]);
+
+  // Client info
   useEffect(() => {
     dispatch(getClient());
-  }, [user_email, dispatch]);
+  }, [dispatch]);
 
+  // Events
   useEffect(() => {
     if (client_id && stripe_customer_id) {
       dispatch(fetchCalendarEvents());
@@ -80,56 +98,9 @@ function ScheduleComponent() {
     }
   }, [messageType, message]);
 
-  const getEvents = () => {
-    const datesAvail = events.map((event) => {
-      const dateTime = event.start;
-      const date = dateTime.split('T')[0];
-      return new Date(date).toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    });
-    setAvailableDates(datesAvail);
-    setSelectedDate(datesAvail[0]);
-
-    if (dateSelectRef.current) {
-      const selectedIndex = dateSelectRef.current.selectedIndex;
-
-      if (selectedIndex >= 0) {
-        const timesAvail = events.map((event) => {
-          const dateTime = event.start;
-          const time = dateTime.split('T')[1];
-          const start = time.split('-')[0];
-          const endTime = time.split('-')[1];
-          const startHour = parseInt(start, 10);
-          const endHour =
-            parseInt(endTime, 10) < 12
-              ? parseInt(endTime, 10) + 12
-              : parseInt(endTime, 10);
-
-          const hours = [];
-
-          for (let i = startHour; i <= endHour; i++) {
-            hours.push(i);
-          }
-
-          return hours.map((hr) => {
-            return new Date(0, 0, 0, hr, 0, 0, 0).toLocaleTimeString('en-US', {
-              hour12: true,
-              hour: '2-digit',
-              minute: '2-digit',
-            });
-          });
-        });
-        setAvailableTimes(timesAvail[selectedIndex]);
-      }
-    }
-  };
-
   useEffect(() => {
-    if (events) {
-      getEvents();
+    if (events && Array.isArray(events)) {
+      setAvailableDates(datesAvail(events));
     }
   }, [events]);
 
@@ -140,27 +111,48 @@ function ScheduleComponent() {
     descriptionSelectRef.current =
       document.getElementById('description_select');
     attendeesSelectRef.current = document.getElementById('description_select');
+  }, []);
 
+  useEffect(() => {
     if (availableDates && availableDates.length > 0) {
       setSelectedDate(availableDates[0]);
     }
   }, [availableDates]);
 
+  useEffect(() => {
+    if (
+      selectedDate &&
+      dateSelectRef.current &&
+      events.length > 0 &&
+      Array.isArray(events)
+    ) {
+      const selectedIndex = dateSelectRef.current.selectedIndex;
+      setAvailableTimes(timesAvail(events, selectedIndex));
+    }
+  }, [selectedDate]);
+
+  useEffect(() => {
+    if (availableTimes) {
+      setSelectedTime(availableTimes[0]);
+    }
+  }, [availableTimes]);
+
   const handleDateChange = (event) => {
     if (dateSelectRef.current) {
-      getEvents();
       setSelectedDate(event.target.value);
       dispatch(updateDate(event.target.value));
       dispatch(updateDueDate());
+      setMessage('Choose a time');
+      timesAvail();
     }
   };
 
   const handleTimeChange = (event) => {
     if (timeSelectRef.current) {
-      getEvents();
       setSelectedTime(event.target.value);
       dispatch(updateTime(event.target.value));
       dispatch(updateDueDate());
+      setMessage('Choose a topic');
     }
   };
 
@@ -226,10 +218,10 @@ function ScheduleComponent() {
 
   // Attendees
   useEffect(() => {
-    if (description !== '' && user_email) {
+    if (summary !== '' && user_email) {
       dispatch(updateAttendees(selectedAttendees));
     }
-  }, [description, dispatch]);
+  }, [summary, dispatch]);
 
   const handleAttendeeChange = () => {
     if (additionalAttendeeEmail) {
@@ -251,7 +243,7 @@ function ScheduleComponent() {
 
   const handleClick = () => {
     if (event_date_time) {
-      dispatch(sendInvites(id));
+      dispatch(sendInvites());
     }
   };
 
@@ -275,28 +267,38 @@ function ScheduleComponent() {
 
   return (
     <>
-      <div class="office-hours-card card">
-        <table>
-          <thead>
-            <th>SUN</th>
-            <th>MON</th>
-            <th>TUE</th>
-            <th>WED</th>
-            <th>THU</th>
-            <th>FRI</th>
-            <th>SAT</th>
-          </thead>
-          <tr>
-            <td>1PM - 5PM</td>
-            <td>9AM - 5PM</td>
-            <td>9AM - 5PM</td>
-            <td>9AM - 5PM</td>
-            <td>9AM - 5PM</td>
-            <td>8AM - 4PM</td>
-            <td>CLOSED</td>
-          </tr>
-        </table>
-      </div>
+      {officeHours && officeHours.length > 0 ? (
+        <div className="office-hours-card card">
+          <table>
+            <thead>
+              <tr>
+                <th>SUN</th>
+                <th>MON</th>
+                <th>TUE</th>
+                <th>WED</th>
+                <th>THU</th>
+                <th>FRI</th>
+                <th>SAT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {officeHours.map((hours) => (
+                  <>
+                    <td key={hours.day}>
+                      {hours.start && hours.end
+                        ? `${hours.start} - ${hours.end}`
+                        : 'CLOSED'}
+                    </td>
+                  </>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        ''
+      )}
 
       <div className="schedule" id="schedule">
         <div className="schedule-select">
@@ -438,12 +440,13 @@ function ScheduleComponent() {
         </div>
       </div>
 
-      {user_email &&
-        message(
-          <div className={`status-bar card ${messageType}`}>
-            <span>{message}</span>
-          </div>
-        )}
+      {user_email && message ? (
+        <div className={`status-bar card ${messageType}`}>
+          <span>{message}</span>
+        </div>
+      ) : (
+        ''
+      )}
 
       {user_email ? (
         <button onClick={handleClick}>

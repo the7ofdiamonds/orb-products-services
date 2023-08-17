@@ -38,6 +38,8 @@ class AdminLocation
     function headquarters()
     {
         $headquarters = get_option('orb-headquarters');
-        echo '<textarea type="text" name="orb-headquarters" value="' . $headquarters . '" ></textarea>';
+?>
+        <textarea type="text" name="orb-headquarters" value="<?php echo $headquarters ?>"></textarea>
+<?php
     }
 }

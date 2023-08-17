@@ -35,6 +35,14 @@ class Schedule
         });
 
         add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/schedule/events', array(
+                'methods' => 'GET',
+                'callback' => array($this, 'get_available_times'),
+                'permission_callback' => '__return_true',
+            ));
+        });
+
+        add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/schedule/events/invite', array(
                 'methods' => 'POST',
                 'callback' => array($this, 'send_invite'),
@@ -59,9 +67,44 @@ class Schedule
         });
     }
 
-    public function get_office_hours(WP_REST_Request $request)
+    public function get_office_hours()
+    {
+        try {
+            $orb_office_hours = get_option('orb_office_hours');
+            $office_hours = array();
+
+            $days = array(
+                'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'
+            );
+
+            foreach ($days as $day) {
+                $start_time = isset($orb_office_hours["{$day}_start"]) ? $orb_office_hours["{$day}_start"] : '';
+                $end_time = isset($orb_office_hours["{$day}_end"]) ? $orb_office_hours["{$day}_end"] : '';
+
+                $office_hours[] = array(
+                    'day' => $day,
+                    'start' => $start_time,
+                    'end' => $end_time,
+                );
+            }
+
+            return rest_ensure_response($office_hours);
+        } catch (Exception $e) {
+            $msg = $e->getMessage();
+            $message = [
+                'message' => $msg,
+            ];
+            $response = rest_ensure_response($message);
+            $response->set_status(404);
+
+            return $response;
+        }
+    }
+
+    public function get_available_times(WP_REST_Request $request)
     {
         $maxResults = intval(get_option('orb_event_max_results'));
+        $summary = get_option('orb_event_summary');
         $calendarId = get_option('orb_calendar_id');
 
         $optParams = array(
@@ -69,6 +112,7 @@ class Schedule
             'orderBy' => 'startTime',
             'singleEvents' => true,
             'timeMin' => date('c'),
+            'q' => '-summary: ' . $summary
         );
 
         $events = $this->service->events->listEvents($calendarId, $optParams);
@@ -77,16 +121,28 @@ class Schedule
             return "No upcoming events found.";
         } else {
             $upcomingEvents = array();
+            $currentTime = time();
+
             foreach ($events->getItems() as $event) {
                 $start = $event->getStart()->dateTime;
                 if (empty($start)) {
                     $start = $event->getStart()->date;
                 }
+
+                // Convert start time to timestamp
+                $startTimeStamp = strtotime($start);
+
+                // Skip events that have already occurred or are marked as busy
+                if ($startTimeStamp <= $currentTime || $event->transparency === 'opaque') {
+                    continue;
+                }
+
                 $upcomingEvents[] = array(
                     'start' => $start,
                     'summary' => $event->getSummary(),
                 );
             }
+
             return rest_ensure_response($upcomingEvents);
         }
     }
@@ -116,16 +172,7 @@ class Schedule
             $end->modify('+' . $event_duration_minutes . ' minutes');
 
             $summary = $body['summary'];
-
-            if (empty($body['summary'])) {
-                $summary = get_option('orb_event_summary');
-            }
-
             $description = $body['description'];
-
-            if (empty($body['description'])) {
-                $description = get_option('orb_event_description');
-            }
 
             $timeZone = get_option('orb_event_time_zone');
 
@@ -144,6 +191,7 @@ class Schedule
                     return array('email' => $email);
                 }, $body['attendees']),
                 'transparency' => 'opaque',
+                'visibility' => 'default',
                 'status' => 'confirmed',
             ));
 
@@ -163,7 +211,6 @@ class Schedule
                     'google_event_id' => $createdEvent->id,
                     'start_date' => $body['start_date'],
                     'start_time' => $body['start_time'],
-                    'attendees' => $body['attendees'],
                     'calendar_link' => $createdEvent->htmlLink,
                 ]
             );

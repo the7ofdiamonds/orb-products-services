@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { combineDateTimeToTimestamp, combineDateTime } from '../utils/Schedule';
 
 const initialState = {
   loading: false,
@@ -17,56 +17,59 @@ const initialState = {
   start_time: '',
   due_date: '',
   event_date_time: '',
-  event: ''
+  event: '',
+  office_hours: []
 };
 
-export const fetchCalendarEvents = createAsyncThunk(
-  'schedule/fetchCalendarEvents',
+export const getOfficeHours = createAsyncThunk('schedule/getOfficeHours',
   async () => {
-    const response = await axios.get('/wp-json/orb/v1/office-hours');
-    return response.data;
+
+    try {
+      const response = await fetch('/wp-json/orb/v1/office-hours', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage = errorData.message;
+        throw new Error(errorMessage);
+      }
+
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.log(error)
+      throw error.message;
+    }
   });
 
-function combineDateTimeToTimestamp(dateString, timeString) {
-  const date = new Date(dateString);
-  const [hours, minutes] = timeString.split(':');
-  date.setHours(parseInt(hours, 10));
-  date.setMinutes(parseInt(minutes, 10));
-  return (date.getTime()) / 1000;
-}
+export const fetchCalendarEvents = createAsyncThunk('schedule/fetchCalendarEvents',
+  async () => {
 
-function formattedDate(start_date) {
-  const date = new Date(start_date);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+    try {
+      const response = await fetch('/wp-json/orb/v1/schedule/events', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
 
-  return `${year}-${month}-${day}`;
-}
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage = errorData.message;
+        throw new Error(errorMessage);
+      }
 
-function formattedTime(start_time) {
-  const [time, period] = start_time.split(' ');
-  const [hours, minutes] = time.split(':');
-
-  let formattedHours = parseInt(hours, 10);
-  if (period === 'PM' && formattedHours !== 12) {
-    formattedHours += 12;
-  } else if (period === 'AM' && formattedHours === 12) {
-    formattedHours = 0;
-  }
-
-  const formattedHoursString = String(formattedHours).padStart(2, '0');
-  const formattedMinutesString = String(minutes).padStart(2, '0');
-
-  return `${formattedHoursString}:${formattedMinutesString}:00`;
-}
-
-function combineDateTime(start_date, start_time) {
-  const date = formattedDate(start_date);
-  const time = formattedTime(start_time);
-
-  return `${date}T${time}`
-}
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.log(error)
+      throw error.message;
+    }
+  });
 
 export const sendInvites = createAsyncThunk('schedule/sendInvites',
   async (_, { getState }) => {
@@ -89,7 +92,6 @@ export const sendInvites = createAsyncThunk('schedule/sendInvites',
           attendees: attendees,
         })
       });
-      console.log(response)
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -116,23 +118,34 @@ export const saveEvent = createAsyncThunk('schedule/saveEvent',
       attendees,
       calendar_link } = getState().schedule;
 
-    const eventData = {
-      client_id: client_id,
-      event_id: event_id,
-      invoice_id: invoice_id,
-      start_date_time: start_date_time,
-      end_date_time: end_date_time,
-      attendees: attendees,
-      calendar_link: calendar_link
-    };
-
     try {
-      const response = await axios.post('/wp-json/orb/v1/schedule', eventData);
-      console.log(response.data)
-      return response.data;
+      const response = await fetch('/wp-json/orb/v1/schedule', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          client_id: client_id,
+          event_id: event_id,
+          invoice_id: invoice_id,
+          start_date_time: start_date_time,
+          end_date_time: end_date_time,
+          attendees: attendees,
+          calendar_link: calendar_link
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage = errorData.message;
+        throw new Error(errorMessage);
+      }
+
+      const responseData = await response.json();
+      return responseData;
     } catch (error) {
-      console.error('Error getting event:', error);
-      throw new Error('Error getting event:', error);
+      console.log(error)
+      throw error.message;
     }
   });
 
@@ -140,23 +153,49 @@ export const getEvent = createAsyncThunk('schedule/getEvent', async (_, { getSta
   const { invoice_id } = getState().receipt;
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/schedule/event/${invoice_id}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/schedule/event/${invoice_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    console.error('Error getting event:', error);
-    throw new Error('Error getting event:', error);
+    console.log(error)
+    throw error.message;
   }
 });
 
-export const getEvents = createAsyncThunk('schedule/getEvents', async (_, { getState }) => {
+export const getClientEvents = createAsyncThunk('schedule/getClientEvents', async (_, { getState }) => {
   const { client_id } = getState().client;
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/schedule/events/${client_id}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/schedule/events/${client_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    console.error('Error getting event:', error);
-    throw new Error('Error getting event:', error);
+    console.log(error)
+    throw error.message;
   }
 });
 
@@ -194,6 +233,19 @@ export const scheduleSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getOfficeHours.pending, (state) => {
+        state.loading = true;
+        state.scheduleError = null;
+      })
+      .addCase(getOfficeHours.fulfilled, (state, action) => {
+        state.loading = false;
+        state.office_hours = action.payload;
+        state.scheduleError = null;
+      })
+      .addCase(getOfficeHours.rejected, (state, action) => {
+        state.loading = false;
+        state.scheduleError = action.error.message || 'Failed to get office hours';
+      })
       .addCase(fetchCalendarEvents.pending, (state) => {
         state.loading = true;
         state.scheduleError = null;
@@ -214,13 +266,7 @@ export const scheduleSlice = createSlice({
       .addCase(sendInvites.fulfilled, (state, action) => {
         state.loading = false;
         state.scheduleError = null;
-        state.event_id = action.payload.event_id;
-        state.google_event_id = action.payload.google_event_id;
-        state.invoice_id = action.payload.invoice_id;
-        state.start_date = action.payload.start_date;
-        state.start_time = action.payload.start_time;
-        state.attendees = action.payload.attendees;
-        state.calendar_link = action.payload.htmlLink;
+        state.event_id = action.payload;
       })
       .addCase(sendInvites.rejected, (state, action) => {
         state.loading = false;
@@ -257,16 +303,16 @@ export const scheduleSlice = createSlice({
         state.loading = false;
         state.scheduleError = action.error.message || 'Failed to send out invites';
       })
-      .addCase(getEvents.pending, (state) => {
+      .addCase(getClientEvents.pending, (state) => {
         state.loading = true;
         state.scheduleError = null;
       })
-      .addCase(getEvents.fulfilled, (state, action) => {
+      .addCase(getClientEvents.fulfilled, (state, action) => {
         state.loading = false;
         state.events = action.payload;
         state.scheduleError = null;
       })
-      .addCase(getEvents.rejected, (state, action) => {
+      .addCase(getClientEvents.rejected, (state, action) => {
         state.loading = false;
         state.scheduleError = action.error.message || 'Failed to send out invites';
       });

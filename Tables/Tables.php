@@ -170,7 +170,6 @@ class Tables
         google_event_id VARCHAR(255) DEFAULT NULL,
         start_date VARCHAR(255) DEFAULT NULL,
         start_time VARCHAR(255) DEFAULT NULL,
-        attendees VARCHAR(255) DEFAULT NULL,
         calendar_link VARCHAR(255) DEFAULT NULL,
         PRIMARY KEY (id)
     ) $charset_collate;";
