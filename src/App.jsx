@@ -27,10 +27,9 @@ function App() {
       <Router basename="/">
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
-            <Route index path="/services" element={<ServicesComponent />} />
             <Route index path="/" element={<ServicesComponent />} />
-            <Route index path="/about" element={<ScheduleComponent />} />
-            <Route path="/dashboard" element={<DashboardComponent />} />
+            <Route path="services" element={<ServicesComponent />} />
+            <Route path="dashboard" element={<DashboardComponent />} />
             <Route path="services/:service" element={<ServiceComponent />} />
             <Route path="services/start" element={<StartComponent />} />
             <Route path="services/start/client" element={<ClientComponent />} />
@@ -53,7 +52,6 @@ function App() {
               element={<MobileComponent />}
             />
             <Route path="services/receipt/:id" element={<ReceiptComponent />} />
-            <Route path="schedule" element={<ScheduleComponent />} />
             <Route path="services/*" element={<ErrorComponent />} />
           </Routes>
         </Suspense>

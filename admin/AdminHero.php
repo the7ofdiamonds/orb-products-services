@@ -48,7 +48,6 @@ class AdminHero
 
     function hero_pitch()
     {
-
         $pitch = get_option('hero-pitch');
         echo '<input type="text" name="hero-pitch" value="' . $pitch . '" />';
     }

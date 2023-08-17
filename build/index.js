@@ -9263,7 +9263,7 @@ const QuoteComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpa
 const StartComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Start_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Start.jsx */ "./src/views/Start.jsx")));
 const ClientComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_start_Client_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/start/Client.jsx */ "./src/views/start/Client.jsx")));
 const InvoiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Invoice_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Invoice.jsx */ "./src/views/Invoice.jsx")));
-const ScheduleComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Schedule_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Schedule.jsx */ "./src/views/Schedule.jsx")));
+const ScheduleComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => Promise.resolve(/*! import() */).then(__webpack_require__.bind(__webpack_require__, /*! ./views/Schedule.jsx */ "./src/views/Schedule.jsx")));
 const PaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Payment_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Payment.jsx */ "./src/views/Payment.jsx")));
 const CardPaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_payment_Card_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/payment/Card.jsx */ "./src/views/payment/Card.jsx")));
 const MobileComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_payment_Mobile_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/payment/Mobile.jsx */ "./src/views/payment/Mobile.jsx")));
@@ -9280,18 +9280,13 @@ function App() {
     fallback: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingFallback, null)
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Routes, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     index: true,
-    path: "/services",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    index: true,
     path: "/",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    index: true,
-    path: "/about",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ScheduleComponent, null)
+    path: "services",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "/dashboard",
+    path: "dashboard",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(DashboardComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/:service",
@@ -9323,9 +9318,6 @@ function App() {
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/receipt/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ReceiptComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "schedule",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ScheduleComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/*",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ErrorComponent, null)
@@ -9382,25 +9374,37 @@ const addClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncTh
     zipcode,
     country
   } = getState().customer;
-  const customer_data = {
-    company_name: company_name,
-    tax_id: tax_id,
-    first_name: first_name,
-    last_name: last_name,
-    user_email: user_email,
-    phone: phone,
-    address_line_1: address_line_1,
-    address_line_2: address_line_2,
-    city: city,
-    state: state,
-    zipcode: zipcode,
-    country: country
-  };
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/users/clients', customer_data);
-    return response.data;
+    const response = await fetch('/wp-json/orb/v1/users/clients', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        company_name: company_name,
+        tax_id: tax_id,
+        first_name: first_name,
+        last_name: last_name,
+        user_email: user_email,
+        phone: phone,
+        address_line_1: address_line_1,
+        address_line_2: address_line_2,
+        city: city,
+        state: state,
+        zipcode: zipcode,
+        country: country
+      })
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    console.log(error);
+    throw error.message;
   }
 });
 const getClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('client/getClient', async (_, {
@@ -9409,15 +9413,24 @@ const getClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncTh
   const {
     user_email
   } = getState().client;
+  const encodedEmail = encodeURIComponent(user_email);
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get('/wp-json/orb/v1/users/clients', {
-      params: {
-        user_email
+    const response = await fetch(`/wp-json/orb/v1/users/clients/${encodedEmail}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
       }
     });
-    return response.data;
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    console.log(error);
+    throw error.message;
   }
 });
 const clientSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
@@ -11521,6 +11534,365 @@ const timesAvail = (events, selectedIndex) => {
     });
   });
 };
+
+/***/ }),
+
+/***/ "./src/views/Schedule.jsx":
+/*!********************************!*\
+  !*** ./src/views/Schedule.jsx ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/clientSlice */ "./src/controllers/clientSlice.js");
+/* harmony import */ var _controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/scheduleSlice.js */ "./src/controllers/scheduleSlice.js");
+/* harmony import */ var _controllers_servicesSlice__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../controllers/servicesSlice */ "./src/controllers/servicesSlice.js");
+/* harmony import */ var _controllers_quoteSlice__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../controllers/quoteSlice */ "./src/controllers/quoteSlice.js");
+/* harmony import */ var _controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../controllers/invoiceSlice */ "./src/controllers/invoiceSlice.js");
+/* harmony import */ var _controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../controllers/receiptSlice */ "./src/controllers/receiptSlice.js");
+/* harmony import */ var _utils_Schedule__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/Schedule */ "./src/utils/Schedule.js");
+
+
+
+
+
+
+
+
+
+
+
+function ScheduleComponent() {
+  const {
+    id
+  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_10__.useParams)();
+  const {
+    user_email,
+    client_id,
+    stripe_customer_id
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
+  const {
+    loading,
+    scheduleError,
+    events,
+    start_date,
+    start_time,
+    event_id,
+    event_date_time,
+    summary,
+    description,
+    attendees,
+    office_hours
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.schedule);
+  const {
+    availableServices
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.services);
+  const {
+    quotes
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.quote);
+  const {
+    invoices
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
+  const {
+    receipts
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.receipt);
+  const [officeHours, setOfficeHours] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [availableDates, setAvailableDates] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [availableTimes, setAvailableTimes] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [selectedDate, setSelectedDate] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [selectedTime, setSelectedTime] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [selectedSummary, setSelectedSummary] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [selectedDescription, setSelectedDescription] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [selectedAttendees, setSelectedAttendees] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([user_email]);
+  const [showAdditionalAttendee, setShowAdditionalAttendee] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
+  const [additionalAttendeeEmail, setAdditionalAttendeeEmail] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
+  const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('Choose a date');
+  const dateSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  const timeSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  const summarySelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  const descriptionSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  const attendeesSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_10__.useNavigate)();
+
+  // Office Hours
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.getOfficeHours)());
+  }, [dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (office_hours) {
+      setOfficeHours((0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_9__.formatOfficeHours)(office_hours));
+    }
+  }, [office_hours]);
+
+  // Client info
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.getClient)());
+  }, [dispatch]);
+
+  // Events
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (client_id && stripe_customer_id) {
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.fetchCalendarEvents)());
+    }
+  }, [client_id, stripe_customer_id, dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (scheduleError) {
+      setMessageType('error');
+      setMessage(scheduleError);
+    }
+  }, [messageType, message]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (events && Array.isArray(events)) {
+      setAvailableDates((0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_9__.datesAvail)(events));
+    }
+  }, [events]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    dateSelectRef.current = document.getElementById('date_select');
+    timeSelectRef.current = document.getElementById('time_select');
+    summarySelectRef.current = document.getElementById('summary_select');
+    descriptionSelectRef.current = document.getElementById('description_select');
+    attendeesSelectRef.current = document.getElementById('description_select');
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (availableDates && availableDates.length > 0) {
+      setSelectedDate(availableDates[0]);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDate)(availableDates[0]));
+    }
+  }, [availableDates]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (selectedDate && dateSelectRef.current && events.length > 0 && Array.isArray(events)) {
+      const selectedIndex = dateSelectRef.current.selectedIndex;
+      setAvailableTimes((0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_9__.timesAvail)(events, selectedIndex));
+    }
+  }, [selectedDate]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (availableTimes) {
+      setSelectedTime(availableTimes[0]);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateTime)(availableTimes[0]));
+    }
+  }, [availableTimes]);
+  const handleDateChange = event => {
+    if (dateSelectRef.current) {
+      setSelectedDate(event.target.value);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDate)(event.target.value));
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDueDate)());
+      setMessage('Choose a time');
+      (0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_9__.timesAvail)();
+    }
+  };
+  const handleTimeChange = event => {
+    if (timeSelectRef.current) {
+      setSelectedTime(event.target.value);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateTime)(event.target.value));
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDueDate)());
+      setMessage('Choose a topic');
+    }
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (start_date && start_time) {
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateEvent)());
+    }
+  }, [start_date, start_time, dispatch]);
+
+  // Summary
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (selectedTime) {
+      dispatch((0,_controllers_servicesSlice__WEBPACK_IMPORTED_MODULE_5__.getAvailableServices)());
+    }
+  }, [selectedTime, dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (availableServices && availableServices.length > 0) {
+      setSelectedSummary(availableServices[0].description);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateSummary)(availableServices[0].description));
+    }
+  }, [availableServices, dispatch]);
+  const handleSummaryChange = event => {
+    if (summarySelectRef.current) {
+      setSelectedSummary(event.target.value);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateSummary)(event.target.value));
+    }
+  };
+
+  // Description
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (summary && stripe_customer_id) {
+      dispatch((0,_controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_8__.getClientReceipts)()).then(() => {
+        dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_7__.getClientInvoices)());
+      }).then(() => {
+        dispatch((0,_controllers_quoteSlice__WEBPACK_IMPORTED_MODULE_6__.getClientQuotes)());
+      });
+    }
+  }, [summary, stripe_customer_id, dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (summary && descriptionSelectRef.current && descriptionSelectRef.current.options.length > 0) {
+      setSelectedDescription(descriptionSelectRef.current.options[0].value);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDescription)(descriptionSelectRef.current.options[0].value));
+    }
+  }, [summary, dispatch]);
+  const handleDescriptionChange = event => {
+    if (descriptionSelectRef.current) {
+      setSelectedDescription(event.target.value);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDescription)(event.target.value));
+    }
+  };
+
+  // Attendees
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (summary !== '' && user_email) {
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateAttendees)(selectedAttendees));
+    }
+  }, [summary, dispatch]);
+  const handleAttendeeChange = () => {
+    if (additionalAttendeeEmail) {
+      const updatedAttendees = [user_email, additionalAttendeeEmail];
+      setAdditionalAttendeeEmail('');
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateAttendees)(updatedAttendees));
+    }
+  };
+  const handleAddAttendee = () => {
+    setShowAdditionalAttendee(prevState => !prevState);
+  };
+  const handleRemoveAttendee = index => {
+    const updatedAttendees = selectedAttendees.filter((_, i) => i !== index);
+    setSelectedAttendees(updatedAttendees);
+    dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateAttendees)(updatedAttendees));
+  };
+  const handleClick = () => {
+    if (event_date_time) {
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.sendInvites)());
+    }
+  };
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (event_id) {
+      window.location.href = '/dashboard';
+    }
+  }, [event_id]);
+  if (scheduleError) {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "status-bar card error"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, scheduleError));
+  }
+  if (loading) {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
+  }
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, officeHours && officeHours.length > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "office-hours-card card"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("thead", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "SUN"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "MON"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "TUE"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "WED"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "THU"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "FRI"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", null, "SAT"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, officeHours.map(hours => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    key: hours.day
+  }, hours.start && hours.end ? `${hours.start} - ${hours.end}` : 'CLOSED'))))))) : '', (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "schedule",
+    id: "schedule"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "schedule-select"
+  }, availableDates && availableDates.length > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "date-select card"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "date"
+  }, "Choose a Date"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+    type: "text",
+    name: "date",
+    id: "date_select",
+    ref: dateSelectRef,
+    onChange: handleDateChange,
+    defaultValue: selectedDate,
+    min: new Date().toISOString().split('T')[0]
+  }, availableDates.map((date, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    key: index,
+    value: date
+  }, date)))) : '', availableTimes && availableTimes.length > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "time-select card"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "time"
+  }, "Choose a Time"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+    type: "time",
+    name: "time",
+    id: "time_select",
+    ref: timeSelectRef,
+    defaultValue: selectedTime,
+    onChange: handleTimeChange
+  }, availableTimes.map((time, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    key: index,
+    value: time
+  }, time)))) : '')), availableServices && availableServices.length > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "summary-select card"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "summary"
+  }, "About"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+    type: "text",
+    name: "summary",
+    id: "summary_select",
+    ref: summarySelectRef,
+    onChange: handleSummaryChange,
+    defaultValue: selectedSummary
+  }, availableServices.map((service, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    key: index,
+    value: service.description
+  }, service.description)))) : '', receipts && receipts.length > 0 || invoices && invoices.length > 0 || quotes && quotes.length > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "description-select card"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "description"
+  }, "Details"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+    type: "text",
+    name: "description",
+    id: "description_select",
+    ref: descriptionSelectRef,
+    onChange: handleDescriptionChange,
+    defaultValue: selectedDescription
+  }, receipts.map((receipt, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    key: index,
+    value: `Receipt#${receipt.id}`
+  }, "Receipt#", receipt.id)), invoices.map((invoice, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    key: index,
+    value: `Invoice#${invoice.id}`
+  }, "Invoice#", invoice.id)), quotes.map((quote, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    key: index,
+    value: `Quote#${quote.id}`
+  }, "Quote#", quote.id)))) : '', attendees && attendees.length > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "attendees-select card"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "attendees"
+  }, "Attendees"), attendees.map((attendee, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "attendee"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", {
+    key: index
+  }, attendee), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "remove-attendee",
+    onClick: handleRemoveAttendee
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "-")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: handleAddAttendee
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "+"))))) : '', (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `additional-attendee card ${showAdditionalAttendee ? 'view' : ''}`,
+    id: "additional_attendee"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "attendees"
+  }, "Additional Attendee"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "attendee"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "email",
+    value: additionalAttendeeEmail,
+    onChange: event => setAdditionalAttendeeEmail(event.target.value)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "add-attendee",
+    onClick: handleAttendeeChange
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "+")))), user_email && message ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `status-bar card ${messageType}`
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message)) : '', user_email ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: handleClick
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SCHEDULE")) : '');
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ScheduleComponent);
 
 /***/ }),
 
@@ -18486,25 +18858,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
 /* harmony import */ var _App_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./App.jsx */ "./src/App.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _model_store_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./model/store.js */ "./src/model/store.js");
 /* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @stripe/react-stripe-js */ "./node_modules/@stripe/react-stripe-js/dist/react-stripe.umd.js");
 /* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _stripe_stripe_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @stripe/stripe-js */ "./node_modules/@stripe/stripe-js/dist/stripe.esm.js");
+/* harmony import */ var _views_Schedule_jsx__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./views/Schedule.jsx */ "./src/views/Schedule.jsx");
 
 
 
+
+ // Import Router components
 
 
 
 
 
 const stripe = (0,_stripe_stripe_js__WEBPACK_IMPORTED_MODULE_7__.loadStripe)('pk_test_51NKFzqKNsWPbtVUMWvTJqD8nAWkpG0aaMrJtmkCLurHXMSwinKilB5yacy2OUUsoveCP7SednwlV0bKpXZIhadUI00SvobnJW7');
-react_dom_client__WEBPACK_IMPORTED_MODULE_2__.createRoot(document.getElementById('orb_services')).render((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_1___default().StrictMode), null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_redux__WEBPACK_IMPORTED_MODULE_4__.Provider, {
-  store: _model_store_js__WEBPACK_IMPORTED_MODULE_5__["default"]
-}, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__.Elements, {
-  stripe: stripe
-}, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_App_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null)))));
+const orbServicesContainer = document.getElementById('orb_services');
+if (orbServicesContainer) {
+  react_dom_client__WEBPACK_IMPORTED_MODULE_2__.createRoot(orbServicesContainer).render((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_1___default().StrictMode), null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_redux__WEBPACK_IMPORTED_MODULE_4__.Provider, {
+    store: _model_store_js__WEBPACK_IMPORTED_MODULE_5__["default"]
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__.Elements, {
+    stripe: stripe
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_App_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null)))));
+}
+const orbScheduleContainer = document.getElementById('orb_schedule');
+if (orbScheduleContainer) {
+  react_dom_client__WEBPACK_IMPORTED_MODULE_2__.createRoot(orbScheduleContainer).render((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_1___default().StrictMode), null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_redux__WEBPACK_IMPORTED_MODULE_4__.Provider, {
+    store: _model_store_js__WEBPACK_IMPORTED_MODULE_5__["default"]
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.BrowserRouter, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Routes, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Route, {
+    path: "/",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_Schedule_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Route, {
+    path: "/about",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_Schedule_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_10__.Route, {
+    path: "/schedule",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_Schedule_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], null)
+  }))))));
+}
 })();
 
 /******/ })()

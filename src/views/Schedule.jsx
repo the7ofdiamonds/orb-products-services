@@ -116,6 +116,7 @@ function ScheduleComponent() {
   useEffect(() => {
     if (availableDates && availableDates.length > 0) {
       setSelectedDate(availableDates[0]);
+      dispatch(updateDate(availableDates[0]));
     }
   }, [availableDates]);
 
@@ -134,6 +135,7 @@ function ScheduleComponent() {
   useEffect(() => {
     if (availableTimes) {
       setSelectedTime(availableTimes[0]);
+      dispatch(updateTime(availableTimes[0]));
     }
   }, [availableTimes]);
 

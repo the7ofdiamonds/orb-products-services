@@ -131,6 +131,7 @@ function ScheduleComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (availableDates && availableDates.length > 0) {
       setSelectedDate(availableDates[0]);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDate)(availableDates[0]));
     }
   }, [availableDates]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -142,6 +143,7 @@ function ScheduleComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (availableTimes) {
       setSelectedTime(availableTimes[0]);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateTime)(availableTimes[0]));
     }
   }, [availableTimes]);
   const handleDateChange = event => {

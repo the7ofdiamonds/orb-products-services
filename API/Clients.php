@@ -23,19 +23,9 @@ class Clients
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/users/clients', array(
+            register_rest_route('orb/v1', '/users/clients/(?P<slug>[a-zA-Z0-9-_%.]+)', array(
                 'methods' => 'GET',
                 'callback' => array($this, 'get_client'),
-                'args' => [
-                    'user_email' => [
-                        'required' => true, // Set to true if this parameter is mandatory
-                        'validate_callback' => function ($param, $request, $key) {
-                            // Add any custom validation for the 'stripe_customer_id' here
-                            // Return true if validation passes, or WP_Error object if it fails
-                            return true;
-                        },
-                    ],
-                ],
                 'permission_callback' => '__return_true',
             ));
         });
@@ -139,8 +129,8 @@ class Clients
 
     function get_client(WP_REST_Request $request)
     {
-        $user_email = urldecode($request->get_param('user_email'));
-
+        $user_email_encoded = $request->get_param('slug');
+        $user_email = urldecode($user_email_encoded);
         $user = get_user_by('email', $user_email);
 
         $user_id = $user->id;
