@@ -84,6 +84,13 @@ function ScheduleComponent() {
     dispatch(getClient());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (!user_email) {
+      setMessageType('info');
+      setMessage('Login to schedule an appointment');
+    }
+  }, [user_email]);
+
   // Events
   useEffect(() => {
     if (client_id && stripe_customer_id) {
@@ -247,6 +254,11 @@ function ScheduleComponent() {
     if (event_date_time) {
       dispatch(sendInvites());
     }
+  };
+
+  const handleLogin = () => {
+    const baseHost = window.location.protocol + '//' + window.location.host;
+    window.location.href = `/login/?redirectTo=${baseHost}/schedule/`;
   };
 
   useEffect(() => {
@@ -442,7 +454,7 @@ function ScheduleComponent() {
         </div>
       </div>
 
-      {user_email && message ? (
+      {message ? (
         <div className={`status-bar card ${messageType}`}>
           <span>{message}</span>
         </div>
@@ -455,7 +467,9 @@ function ScheduleComponent() {
           <h3>SCHEDULE</h3>
         </button>
       ) : (
-        ''
+        <button onClick={handleLogin}>
+          <h3>LOGIN</h3>
+        </button>
       )}
     </>
   );

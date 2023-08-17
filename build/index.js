@@ -11640,6 +11640,12 @@ function ScheduleComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.getClient)());
   }, [dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (!user_email) {
+      setMessageType('info');
+      setMessage('Login to schedule an appointment');
+    }
+  }, [user_email]);
 
   // Events
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -11774,6 +11780,10 @@ function ScheduleComponent() {
       dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.sendInvites)());
     }
   };
+  const handleLogin = () => {
+    const baseHost = window.location.protocol + '//' + window.location.host;
+    window.location.href = `/login/?redirectTo=${baseHost}/schedule/`;
+  };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (event_id) {
       window.location.href = '/dashboard';
@@ -11886,11 +11896,13 @@ function ScheduleComponent() {
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "add-attendee",
     onClick: handleAttendeeChange
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "+")))), user_email && message ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "+")))), message ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: `status-bar card ${messageType}`
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message)) : '', user_email ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SCHEDULE")) : '');
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SCHEDULE")) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: handleLogin
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "LOGIN")));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ScheduleComponent);
 
