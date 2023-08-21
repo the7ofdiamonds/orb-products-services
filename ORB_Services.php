@@ -1,5 +1,7 @@
 <?php
+
 namespace ORB_Services;
+
 /**
  * @package ORB_Services
  */
@@ -41,9 +43,13 @@ use ORB_Services\Templates\Templates;
 
 class ORB_Services
 {
+    public $plugin;
 
     public function __construct()
     {
+        $this->plugin = plugin_basename(__FILE__);
+        add_filter("plugin_action_links_$this->plugin", [$this, 'settings_link']);
+
         $dotenv = Dotenv::createImmutable(ORB_SERVICES);
         $dotenv->load(__DIR__);
 
@@ -64,6 +70,14 @@ class ORB_Services
     {
         flush_rewrite_rules();
     }
+
+    public function settings_link($links)
+    {
+        $settings_link = '<a href="' . admin_url('admin.php?page=orb_services') . '">Settings</a>';
+        array_push($links, $settings_link);
+
+        return $links;
+    }
 }
 
 $orb_services = new ORB_Services();
@@ -71,8 +85,8 @@ register_activation_hook(__FILE__, [$orb_services, 'activate']);
 // register_deactivation_hook( __FILE__, [ $thfw, 'deactivate' ]);
 
 $orb_services_pages = new Pages();
-register_activation_hook( __FILE__, [$orb_services_pages, 'add_pages'] );
-register_activation_hook( __FILE__, [$orb_services_pages, 'add_services_subpages'] );
+register_activation_hook(__FILE__, [$orb_services_pages, 'add_pages']);
+register_activation_hook(__FILE__, [$orb_services_pages, 'add_services_subpages']);
 
 $orb_services_menus = new Menus();
-register_activation_hook( __FILE__, [$orb_services_menus, 'create_mobile_menu'] );
+register_activation_hook(__FILE__, [$orb_services_menus, 'create_mobile_menu']);

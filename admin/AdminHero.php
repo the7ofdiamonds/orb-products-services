@@ -13,7 +13,7 @@ class AdminHero
     function register_custom_submenu_page()
     {
 
-        add_submenu_page('thfw_admin', 'Edit Hero Section', 'Edit Hero', 'manage_options', 'orb_hero', [$this, 'create_section'], 0);
+        add_submenu_page('orb_services', 'Edit Hero Section', 'Edit Hero', 'manage_options', 'orb_hero', [$this, 'create_section'], 0);
 
         add_action('admin_init', [$this, 'register_section']);
     }

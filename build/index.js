@@ -10855,12 +10855,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   fetchCalendarEvents: () => (/* binding */ fetchCalendarEvents),
 /* harmony export */   getClientEvents: () => (/* binding */ getClientEvents),
+/* harmony export */   getCommunicationPreferences: () => (/* binding */ getCommunicationPreferences),
 /* harmony export */   getEvent: () => (/* binding */ getEvent),
 /* harmony export */   getOfficeHours: () => (/* binding */ getOfficeHours),
 /* harmony export */   saveEvent: () => (/* binding */ saveEvent),
 /* harmony export */   scheduleSlice: () => (/* binding */ scheduleSlice),
 /* harmony export */   sendInvites: () => (/* binding */ sendInvites),
 /* harmony export */   updateAttendees: () => (/* binding */ updateAttendees),
+/* harmony export */   updateCommunicationPreference: () => (/* binding */ updateCommunicationPreference),
 /* harmony export */   updateDate: () => (/* binding */ updateDate),
 /* harmony export */   updateDescription: () => (/* binding */ updateDescription),
 /* harmony export */   updateDueDate: () => (/* binding */ updateDueDate),
@@ -10889,7 +10891,9 @@ const initialState = {
   due_date: '',
   event_date_time: '',
   event: '',
-  office_hours: []
+  office_hours: [],
+  communication_preferences: '',
+  preferred_communication_type: ''
 };
 const getOfficeHours = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/getOfficeHours', async () => {
   try {
@@ -11065,6 +11069,28 @@ const getClientEvents = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createA
     throw error.message;
   }
 });
+const getCommunicationPreferences = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/getCommunicationPreferences', async (_, {
+  getState
+}) => {
+  try {
+    const response = await fetch(`/wp-json/orb/v1/schedule/communication`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.log(error);
+    throw error.message;
+  }
+});
 const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
   name: 'schedule',
   initialState,
@@ -11080,6 +11106,9 @@ const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
     },
     updateDescription: (state, action) => {
       state.description = action.payload;
+    },
+    updateCommunicationPreference: (state, action) => {
+      state.preferred_communication_type = action.payload;
     },
     updateAttendees: (state, action) => {
       state.attendees = action.payload;
@@ -11157,6 +11186,16 @@ const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
     }).addCase(getClientEvents.rejected, (state, action) => {
       state.loading = false;
       state.scheduleError = action.error.message || 'Failed to send out invites';
+    }).addCase(getCommunicationPreferences.pending, state => {
+      state.loading = true;
+      state.scheduleError = null;
+    }).addCase(getCommunicationPreferences.fulfilled, (state, action) => {
+      state.loading = false;
+      state.communication_preferences = action.payload;
+      state.scheduleError = null;
+    }).addCase(getCommunicationPreferences.rejected, (state, action) => {
+      state.loading = false;
+      state.scheduleError = action.error.message || 'Failed to send out invites';
     });
   }
 });
@@ -11166,6 +11205,7 @@ const {
   updateDueDate,
   updateSummary,
   updateDescription,
+  updateCommunicationPreference,
   updateAttendees,
   updateEvent
 } = scheduleSlice.actions;
@@ -11502,16 +11542,15 @@ const formatOfficeHours = office_hours => {
 const datesAvail = events => {
   return events.map(event => {
     const dateTime = event.start;
-    const date = dateTime.split('T')[0];
-    const year = date.split('-')[0];
-    const month = date.split('-')[1];
-    const day = date.split('-')[2];
-    const formatedDate = `${month}-${day}-${year}`;
-    return new Date(formatedDate).toLocaleDateString(undefined, {
+    const date = new Date(dateTime);
+    const options = {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
-    });
+      day: 'numeric',
+      weekday: 'long'
+    };
+    const formattedDate = date.toLocaleDateString(undefined, options);
+    return formattedDate;
   });
 };
 const timesAvail = (events, selectedIndex) => {
@@ -11592,7 +11631,8 @@ function ScheduleComponent() {
     summary,
     description,
     attendees,
-    office_hours
+    office_hours,
+    communication_preferences
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.schedule);
   const {
     availableServices
@@ -11613,6 +11653,7 @@ function ScheduleComponent() {
   const [selectedTime, setSelectedTime] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [selectedSummary, setSelectedSummary] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [selectedDescription, setSelectedDescription] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [selectedCommunicationPreference, setCommunicationPreference] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [selectedAttendees, setSelectedAttendees] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([user_email]);
   const [showAdditionalAttendee, setShowAdditionalAttendee] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
   const [additionalAttendeeEmail, setAdditionalAttendeeEmail] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
@@ -11622,6 +11663,7 @@ function ScheduleComponent() {
   const timeSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   const summarySelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   const descriptionSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  const communicationPreferenceSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   const attendeesSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
   const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_10__.useNavigate)();
@@ -11742,15 +11784,32 @@ function ScheduleComponent() {
     }
   }, [summary, stripe_customer_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (summary && stripe_customer_id) {
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.getCommunicationPreferences)());
+    }
+  }, [summary, stripe_customer_id, dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (summary && descriptionSelectRef.current && descriptionSelectRef.current.options.length > 0) {
       setSelectedDescription(descriptionSelectRef.current.options[0].value);
       dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDescription)(descriptionSelectRef.current.options[0].value));
+    }
+  }, [summary, dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (summary && communicationPreferenceSelectRef.current && communicationPreferenceSelectRef.current.options.length > 0) {
+      setCommunicationPreference(communicationPreferenceSelectRef.current.options[0].value);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateCommunicationPreference)(communicationPreferenceSelectRef.current.options[0].value));
     }
   }, [summary, dispatch]);
   const handleDescriptionChange = event => {
     if (descriptionSelectRef.current) {
       setSelectedDescription(event.target.value);
       dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDescription)(event.target.value));
+    }
+  };
+  const handleCommunicationPreferenceChange = event => {
+    if (communicationPreferenceSelectRef.current) {
+      setCommunicationPreference(event.target.value);
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateCommunicationPreference)(event.target.value));
     }
   };
 
@@ -11869,7 +11928,21 @@ function ScheduleComponent() {
   }, "Invoice#", invoice.id)), quotes.map((quote, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
     key: index,
     value: `Quote#${quote.id}`
-  }, "Quote#", quote.id)))) : '', attendees && attendees.length > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, "Quote#", quote.id)))) : '', communication_preferences && communication_preferences.length > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "communication-select card"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
+    htmlFor: "summary"
+  }, "Preferred Communication Type"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("select", {
+    type: "text",
+    name: "preferred_communication_type",
+    id: "communication_select",
+    ref: communicationPreferenceSelectRef,
+    onChange: handleCommunicationPreferenceChange,
+    defaultValue: selectedCommunicationPreference
+  }, communication_preferences.map((communication, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("option", {
+    key: index,
+    value: communication.type
+  }, communication.type)))) : '', attendees && attendees.length > 0 ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "attendees-select card"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     htmlFor: "attendees"

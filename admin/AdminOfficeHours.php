@@ -13,7 +13,7 @@ class AdminOfficeHours
     function register_custom_menu_page()
     {
 
-        add_submenu_page('thfw_admin', 'Add Office Hours', 'Add Hours', 'manage_options', 'orb_office_hours', [$this, 'create_section'], 30);
+        add_submenu_page('orb_services', 'Add Office Hours', 'Add Hours', 'manage_options', 'orb_office_hours', [$this, 'create_section'], 30);
         add_action('admin_init', [$this, 'register_section']);
     }
 

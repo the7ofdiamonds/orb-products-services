@@ -65,6 +65,14 @@ class Schedule
                 'permission_callback' => '__return_true',
             ));
         });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/schedule/communication', array(
+                'methods' => 'GET',
+                'callback' => array($this, 'get_communication_preferences'),
+                'permission_callback' => '__return_true',
+            ));
+        });
     }
 
     public function get_office_hours()
@@ -251,6 +259,7 @@ class Schedule
         $id = $request->get_param('slug');
 
         if (empty($id)) {
+
             return rest_ensure_response('invalid_invoice_id', 'Invalid invoice ID', array('status' => 400));
         }
 
@@ -303,5 +312,33 @@ class Schedule
         }
 
         return rest_ensure_response($events, 200);
+    }
+
+    function get_communication_preferences()
+    {
+        global $wpdb;
+
+        $communication_types = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM orb_communication_types",
+            )
+        );
+
+        if (!$communication_types) {
+            $error_message = 'No Communication Types found';
+            $status_code = 404;
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
+        }
+
+        return rest_ensure_response($communication_types);
     }
 }

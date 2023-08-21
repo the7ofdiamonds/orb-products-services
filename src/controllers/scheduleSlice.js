@@ -18,7 +18,9 @@ const initialState = {
   due_date: '',
   event_date_time: '',
   event: '',
-  office_hours: []
+  office_hours: [],
+  communication_preferences: '',
+  preferred_communication_type: ''
 };
 
 export const getOfficeHours = createAsyncThunk('schedule/getOfficeHours',
@@ -199,6 +201,30 @@ export const getClientEvents = createAsyncThunk('schedule/getClientEvents', asyn
   }
 });
 
+export const getCommunicationPreferences = createAsyncThunk('schedule/getCommunicationPreferences', async (_, { getState }) => {
+
+  try {
+    const response = await fetch(`/wp-json/orb/v1/schedule/communication`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.log(error)
+    throw error.message;
+  }
+});
+
 export const scheduleSlice = createSlice({
   name: 'schedule',
   initialState,
@@ -214,6 +240,9 @@ export const scheduleSlice = createSlice({
     },
     updateDescription: (state, action) => {
       state.description = action.payload;
+    },
+    updateCommunicationPreference: (state, action) => {
+      state.preferred_communication_type = action.payload;
     },
     updateAttendees: (state, action) => {
       state.attendees = action.payload;
@@ -315,6 +344,19 @@ export const scheduleSlice = createSlice({
       .addCase(getClientEvents.rejected, (state, action) => {
         state.loading = false;
         state.scheduleError = action.error.message || 'Failed to send out invites';
+      })
+      .addCase(getCommunicationPreferences.pending, (state) => {
+        state.loading = true;
+        state.scheduleError = null;
+      })
+      .addCase(getCommunicationPreferences.fulfilled, (state, action) => {
+        state.loading = false;
+        state.communication_preferences = action.payload;
+        state.scheduleError = null;
+      })
+      .addCase(getCommunicationPreferences.rejected, (state, action) => {
+        state.loading = false;
+        state.scheduleError = action.error.message || 'Failed to send out invites';
       });
   },
 });
@@ -325,6 +367,7 @@ export const {
   updateDueDate,
   updateSummary,
   updateDescription,
+  updateCommunicationPreference,
   updateAttendees,
   updateEvent } = scheduleSlice.actions;
 export default scheduleSlice.reducer;

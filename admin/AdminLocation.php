@@ -13,7 +13,7 @@ class AdminLocation
     function register_custom_menu_page()
     {
 
-        add_submenu_page('thfw_admin', 'Add Location', 'Add Location', 'manage_options', 'orb_location', [$this, 'create_section'], 3);
+        add_submenu_page('orb_services', 'Add Location', 'Add Location', 'manage_options', 'orb_location', [$this, 'create_section'], 3);
         add_action('admin_init', [$this, 'register_section']);
     }
 

@@ -16,6 +16,7 @@ class Tables
         $this->create_receipt_table();
         $this->create_accounts_receivable();
         $this->create_schedule_table();
+        $this->create_communication_types_table();
     }
 
     function create_services_table()
@@ -171,6 +172,23 @@ class Tables
         start_date VARCHAR(255) DEFAULT NULL,
         start_time VARCHAR(255) DEFAULT NULL,
         calendar_link VARCHAR(255) DEFAULT NULL,
+        PRIMARY KEY (id)
+    ) $charset_collate;";
+
+        dbDelta($sql);
+    }
+
+    function create_communication_types_table()
+    {
+        global $wpdb;
+        $table_name = 'orb_communication_types';
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE {$table_name} (
+        id INT NOT NULL AUTO_INCREMENT,
+        created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        type VARCHAR(255) DEFAULT NULL,
+        contact_info VARCHAR(255) DEFAULT NULL,
         PRIMARY KEY (id)
     ) $charset_collate;";
 

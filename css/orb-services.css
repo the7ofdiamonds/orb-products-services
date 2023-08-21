@@ -450,6 +450,7 @@ section.invoice {
 .schedule .time-select.card,
 .schedule .summary-select.card,
 .schedule .description-select.card,
+.schedule .communication-select.card,
 .schedule .attendees-select.card,
 .schedule .additional-attendee.card {
   padding: 0;
@@ -459,6 +460,7 @@ section.invoice {
 .schedule .time-select.card label,
 .schedule .summary-select.card label,
 .schedule .description-select.card label,
+.schedule .communication-select.card label,
 .schedule .attendees-select.card label,
 .schedule .additional-attendee.card label {
   background-color: black;

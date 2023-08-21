@@ -14,6 +14,8 @@ import {
   updateDescription,
   updateAttendees,
   getOfficeHours,
+  getCommunicationPreferences,
+  updateCommunicationPreference,
 } from '../controllers/scheduleSlice.js';
 import { getAvailableServices } from '../controllers/servicesSlice';
 import { getClientQuotes } from '../controllers/quoteSlice';
@@ -40,6 +42,7 @@ function ScheduleComponent() {
     description,
     attendees,
     office_hours,
+    communication_preferences,
   } = useSelector((state) => state.schedule);
   const { availableServices } = useSelector((state) => state.services);
   const { quotes } = useSelector((state) => state.quote);
@@ -53,6 +56,8 @@ function ScheduleComponent() {
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedSummary, setSelectedSummary] = useState('');
   const [selectedDescription, setSelectedDescription] = useState('');
+  const [selectedCommunicationPreference, setCommunicationPreference] =
+    useState('');
   const [selectedAttendees, setSelectedAttendees] = useState([user_email]);
   const [showAdditionalAttendee, setShowAdditionalAttendee] = useState(false);
   const [additionalAttendeeEmail, setAdditionalAttendeeEmail] = useState('');
@@ -63,6 +68,7 @@ function ScheduleComponent() {
   const timeSelectRef = useRef(null);
   const summarySelectRef = useRef(null);
   const descriptionSelectRef = useRef(null);
+  const communicationPreferenceSelectRef = useRef(null);
   const attendeesSelectRef = useRef(null);
 
   const dispatch = useDispatch();
@@ -206,6 +212,12 @@ function ScheduleComponent() {
   }, [summary, stripe_customer_id, dispatch]);
 
   useEffect(() => {
+    if (summary && stripe_customer_id) {
+      dispatch(getCommunicationPreferences());
+    }
+  }, [summary, stripe_customer_id, dispatch]);
+
+  useEffect(() => {
     if (
       summary &&
       descriptionSelectRef.current &&
@@ -218,10 +230,34 @@ function ScheduleComponent() {
     }
   }, [summary, dispatch]);
 
+  useEffect(() => {
+    if (
+      summary &&
+      communicationPreferenceSelectRef.current &&
+      communicationPreferenceSelectRef.current.options.length > 0
+    ) {
+      setCommunicationPreference(
+        communicationPreferenceSelectRef.current.options[0].value
+      );
+      dispatch(
+        updateCommunicationPreference(
+          communicationPreferenceSelectRef.current.options[0].value
+        )
+      );
+    }
+  }, [summary, dispatch]);
+
   const handleDescriptionChange = (event) => {
     if (descriptionSelectRef.current) {
       setSelectedDescription(event.target.value);
       dispatch(updateDescription(event.target.value));
+    }
+  };
+
+  const handleCommunicationPreferenceChange = (event) => {
+    if (communicationPreferenceSelectRef.current) {
+      setCommunicationPreference(event.target.value);
+      dispatch(updateCommunicationPreference(event.target.value));
     }
   };
 
@@ -407,6 +443,27 @@ function ScheduleComponent() {
             {quotes.map((quote, index) => (
               <option key={index} value={`Quote#${quote.id}`}>
                 Quote#{quote.id}
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : (
+        ''
+      )}
+
+      {communication_preferences && communication_preferences.length > 0 ? (
+        <div className="communication-select card">
+          <label htmlFor="summary">Preferred Communication Type</label>
+          <select
+            type="text"
+            name="preferred_communication_type"
+            id="communication_select"
+            ref={communicationPreferenceSelectRef}
+            onChange={handleCommunicationPreferenceChange}
+            defaultValue={selectedCommunicationPreference}>
+            {communication_preferences.map((communication, index) => (
+              <option key={index} value={communication.type}>
+                {communication.type}
               </option>
             ))}
           </select>

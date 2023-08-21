@@ -38,7 +38,7 @@ class AdminEmail
     function register_custom_menu_page()
     {
 
-        add_submenu_page('thfw_admin', 'Edit Email SMTP Settings', 'Edit Email', 'manage_options', 'orb_email_settings', [$this, 'create_section'], 5);
+        add_submenu_page('orb_services', 'Edit Email SMTP Settings', 'Edit Email', 'manage_options', 'orb_email_settings', [$this, 'create_section'], 5);
 
         add_action('admin_init', [$this, 'register_section']);
     }

@@ -78,17 +78,12 @@ export const formatOfficeHours = (office_hours) => {
 export const datesAvail = (events) => {
     return events.map((event) => {
         const dateTime = event.start;
-        const date = dateTime.split('T')[0];
-        const year = date.split('-')[0];
-        const month = date.split('-')[1];
-        const day = date.split('-')[2];
-        const formatedDate = `${month}-${day}-${year}`;
+        const date = new Date(dateTime);
+        
+        const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+        const formattedDate = date.toLocaleDateString(undefined, options);
 
-        return new Date(formatedDate).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        });
+        return formattedDate;
     });
 };
 
