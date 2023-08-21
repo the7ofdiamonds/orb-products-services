@@ -1,0 +1,15 @@
+.orb-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+.orb-admin form table {
+  border-spacing: 0.5em;
+}
+.orb-admin form table tfoot tr td .submit-btn {
+  background-color: black;
+  color: white;
+  padding: 0.5em;
+}
+
+/*# sourceMappingURL=Admin.css.map */

@@ -14,6 +14,7 @@ class Admin
     public function __construct()
     {
         add_action('admin_menu', [$this, 'register_custom_menu_page']);
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_styles']);
 
         new AdminEmail;
         new AdminHero;
@@ -26,5 +27,10 @@ class Admin
     {
 
         add_menu_page('Admin', 'ORB Services', 'menu_options', 'orb_services', 'orb_services', 'dashicons-info', 3);
+    }
+
+    function enqueue_admin_styles()
+    {
+        wp_enqueue_style('orb-admin-styles', ORB_SERVICES_URL . 'Admin/CSS/Admin.css');
     }
 }

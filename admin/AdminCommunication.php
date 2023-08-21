@@ -11,6 +11,7 @@ class AdminCommunication
         $this->table_name = 'orb_communication_types';
         add_action('admin_menu', [$this, 'register_custom_menu_page']);
         add_action('admin_post_handle_communication_form_submission', [$this, 'handle_communication_form_submission']);
+        add_action('wp_ajax_remove_communication_type', [$this, 'remove_communication_type_callback']);
     }
 
     function register_custom_menu_page()
@@ -36,7 +37,7 @@ class AdminCommunication
         echo 'Add your preferred communication channels';
     }
 
-    function communication_types()
+    public function communication_types()
     {
         global $wpdb;
 
@@ -58,6 +59,9 @@ class AdminCommunication
                         <td>
                             <input type="text" name="<?php echo esc_attr($communication_type->type . '_contact'); ?>" value="<?php echo esc_attr($communication_type->contact_info); ?>">
                         </td>
+                        <td>
+                            <button class="remove-button" type="button" data-type="<?php echo esc_attr($communication_type->type); ?>">Remove</button>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
                 <tr>
@@ -67,20 +71,16 @@ class AdminCommunication
                     <td>
                         <input type="text" name="new_communication_type_contact" placeholder="New Contact Info">
                     </td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
-        <input type="hidden" name="action" value="handle_communication_form_submission">
-        <input type="submit" value="Submit">
 <?php
     }
 
     function handle_communication_form_submission()
     {
         global $wpdb;
-
-        check_admin_referer('handle_communication_form_submission');
-        echo "It works";
 
         foreach ($_POST as $field_name => $field_value) {
             if (strpos($field_name, '_contact') !== false) {
@@ -95,25 +95,43 @@ class AdminCommunication
             }
         }
 
-        $new_type = sanitize_text_field($_POST['new_communication_type']);
-        $new_contact = sanitize_text_field($_POST['new_communication_type_contact']);
-        if (empty($new_type) && empty($new_contact)) {
-            echo "Empty";
+        if (isset($_POST['new_communication_type']) && isset($_POST['new_communication_type_contact'])) {
+            $new_type = sanitize_text_field($_POST['new_communication_type']);
+            $new_contact = sanitize_text_field($_POST['new_communication_type_contact']);
+
+            if (!empty($new_type) && !empty($new_contact)) {
+                $wpdb->insert(
+                    $this->table_name,
+                    array(
+                        'type' => $new_type,
+                        'contact_info' => $new_contact,
+                    )
+                );
+            }
+        }
+    }
+
+    public function remove_communication_type($type)
+    {
+        global $wpdb;
+        $type = sanitize_text_field($type);
+
+        $wpdb->delete(
+            $this->table_name,
+            array('type' => $type)
+        );
+    }
+
+    function remove_communication_type_callback()
+    {
+        if (!isset($_POST['communication_type'])) {
+            wp_send_json_error('Communication type not specified.');
         }
 
-        // if (!empty($new_type) && !empty($new_contact)) {
-        $wpdb->insert(
-            $this->table_name,
-            array(
-                'type' => $new_type,
-                'contact_info' => $new_contact,
-            )
-        );
-        // }
-        echo "Database operations complete!<br>";
+        $communication_type = sanitize_text_field($_POST['communication_type']);
 
-        $nonce_url = wp_nonce_url(admin_url('admin.php?page=orb_communication_types'), 'handle_communication_form_submission');
-        wp_safe_redirect($nonce_url);
-        exit();
+        $this->remove_communication_type($communication_type);
+
+        wp_send_json_success('Communication type removed successfully.');
     }
 }
