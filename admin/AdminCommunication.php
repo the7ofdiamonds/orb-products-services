@@ -16,7 +16,7 @@ class AdminCommunication
 
     function register_custom_menu_page()
     {
-        add_submenu_page('orb_services', 'Add Communication Preferences', 'Add Contact', 'manage_options', 'orb_communication_types', [$this, 'create_section'], 30);
+        add_submenu_page('orb_services', 'Add Communication Preferences', 'Add Contact', 'manage_options', 'orb_communication_types', [$this, 'create_section'], 4);
         add_action('admin_init', [$this, 'register_section']);
     }
 
@@ -27,14 +27,14 @@ class AdminCommunication
 
     function register_section()
     {
-        add_settings_section('orb-admin-communication-types', 'Add Office Hours', [$this, 'section_description'], 'orb_communication_types');
+        add_settings_section('orb-admin-communication-types', '', [$this, 'section_description'], 'orb_communication_types');
         register_setting('orb-admin-communication-types-group', 'orb_communication_types');
-        add_settings_field('orb_communication_types', 'Add Preferred Communcation Types', [$this, 'communication_types'], 'orb_communication_types', 'orb-admin-communication-types');
+        add_settings_field('orb_communication_types', '', [$this, 'communication_types'], 'orb_communication_types', 'orb-admin-communication-types');
     }
 
     function section_description()
     {
-        echo 'Add your preferred communication channels';
+        echo 'Add your preferred communication channels below.';
     }
 
     public function communication_types()
@@ -57,7 +57,7 @@ class AdminCommunication
                             <?php echo esc_html($communication_type->type); ?>
                         </td>
                         <td>
-                            <input type="text" name="<?php echo esc_attr($communication_type->type . '_contact'); ?>" value="<?php echo esc_attr($communication_type->contact_info); ?>">
+                            <input class="admin-input" type="text" name="<?php echo esc_attr($communication_type->type . '_contact'); ?>" value="<?php echo esc_attr($communication_type->contact_info); ?>">
                         </td>
                         <td>
                             <button class="remove-button" type="button" data-type="<?php echo esc_attr($communication_type->type); ?>">Remove</button>
@@ -66,10 +66,10 @@ class AdminCommunication
                 <?php endforeach; ?>
                 <tr>
                     <td>
-                        <input type="text" name="new_communication_type" placeholder="New Type">
+                        <input class="admin-input" type="text" name="new_communication_type" placeholder="New Type">
                     </td>
                     <td>
-                        <input type="text" name="new_communication_type_contact" placeholder="New Contact Info">
+                        <input class="admin-input" type="text" name="new_communication_type_contact" placeholder="New Contact Info">
                     </td>
                     <td></td>
                 </tr>

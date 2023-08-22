@@ -52,7 +52,7 @@ class AdminEmail
     function register_section()
     {
 
-        add_settings_section('orb-admin-email', 'Edit Email SMTP settings', [$this, 'section_description'], 'orb_email_smtp');
+        add_settings_section('orb-admin-email', '', [$this, 'section_description'], 'orb_email_smtp');
         register_setting('orb-admin-email-group', 'smtp_username');
         register_setting('orb-admin-email-group', 'smtp_host');
         register_setting('orb-admin-email-group', 'smtp_auth');
@@ -69,42 +69,42 @@ class AdminEmail
 
     function section_description()
     {
-        echo 'Edit your email SMTP settings to send messages from your website';
+        echo 'Edit your email SMTP settings to send messages from your website below.';
     }
 
     function smtp_username()
     {
         $smtp_username = esc_attr(get_option('smtp_username'));
-        echo '<input type="text" name="smtp_username" value="' . $smtp_username . '" />';
+        echo '<input class="admin-input" type="text" name="smtp_username" value="' . $smtp_username . '" />';
     }
 
     function smtp_password()
     {
         $smtp_password = esc_attr(get_option('smtp_password'));
-        echo '<input type="text" name="smtp_password" value="' . $smtp_password . '" />';
+        echo '<input class="admin-input" type="text" name="smtp_password" value="' . $smtp_password . '" />';
     }
 
     function smtp_port()
     {
         $smtp_port = esc_attr(get_option('smtp_port'));
-        echo '<input type="text" name="smtp_port" value="' . $smtp_port . '" />';
+        echo '<input class="admin-input" type="text" name="smtp_port" value="' . $smtp_port . '" />';
     }
 
     function smtp_host()
     {
         $smtp_host = esc_attr(get_option('smtp_host'));
-        echo '<input type="text" name="smtp_host" value="' . $smtp_host . '" />';
+        echo '<input class="admin-input" type="text" name="smtp_host" value="' . $smtp_host . '" />';
     }
 
     function smtp_auth()
     {
         $smtpAuth = esc_attr(get_option('smtp_auth'));
-        echo '<input type="text" name="smtp_auth" value="' . $smtpAuth . '" />';
+        echo '<input class="admin-input" type="text" name="smtp_auth" value="' . $smtpAuth . '" />';
     }
 
     function smtp_secure()
     {
         $smtpSecure = esc_attr(get_option('smtp_secure'));
-        echo '<input type="text" name="smtp_secure" value="' . $smtpSecure . '" />';
+        echo '<input class="admin-input" type="text" name="smtp_secure" value="' . $smtpSecure . '" />';
     }
 }

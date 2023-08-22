@@ -12,33 +12,22 @@ use ORB_Services\API\Invoice;
 use ORB_Services\API\Payment;
 use ORB_Services\API\Receipt;
 
-use Stripe\Stripe;
-use Stripe\StripeClient;
-
 class API
 {
-    private $stripeSecretKey;
-    private $stripeClient;
-
-    public function __construct()
+    public function __construct($credentialsPath, $stripeClient)
     {
         add_action('rest_api_init', [$this, 'add_to_rest_api']);
         add_action('rest_api_init', [$this, 'allow_cors_headers']);
 
-        $this->stripeSecretKey = $_ENV['STRIPE_SECRET_KEY'];
-        Stripe::setApiKey($this->stripeSecretKey);
-        $this->stripeClient = new StripeClient($this->stripeSecretKey);
-
-        new Services($this->stripeClient);
-        new Service($this->stripeClient);
-        new Clients($this->stripeClient);
-        new Customers($this->stripeClient);
-        new Quote($this->stripeClient);
-        new Invoice($this->stripeClient);
-        new Payment($this->stripeClient);
-        new Receipt($this->stripeClient);
-
-        new Schedule();
+        new Clients($stripeClient);
+        new Customers($stripeClient);
+        new Invoice($stripeClient);
+        new Payment($stripeClient);
+        new Quote($stripeClient);
+        new Receipt($stripeClient);
+        new Schedule($credentialsPath);
+        new Service($stripeClient);
+        new Services($stripeClient);
     }
 
     public function add_to_rest_api()

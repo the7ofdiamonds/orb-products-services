@@ -1,25 +1,28 @@
-<?php
-require_once ORB_SERVICES . 'Admin/AdminCommunication.php';
+<section class="orb-services-admin">
+    <h1>Contact</h1>
+    <?php
+    require_once ORB_SERVICES . 'Admin/AdminCommunication.php';
 
-use ORB_Services\Admin\AdminCommunication;
+    use ORB_Services\Admin\AdminCommunication;
 
-$admin_communication = new AdminCommunication();
+    $admin_communication = new AdminCommunication();
 
-global $wpdb;
-$table_name = 'orb_communication_types';
-$nonce_action = 'handle_communication_form_submission';
+    global $wpdb;
+    $table_name = 'orb_communication_types';
+    $nonce_action = 'handle_communication_form_submission';
 
-if (isset($_POST)) {
-    $admin_communication->handle_communication_form_submission($_POST);
-}
+    if (isset($_POST)) {
+        $admin_communication->handle_communication_form_submission($_POST);
+    }
 
-settings_errors();
-?>
-<form method="post" action="/wp-admin/admin.php?page=orb_communication_types">
-    <?php settings_fields('orb-admin-communication-types-group'); ?>
-    <?php do_settings_sections('orb_communication_types'); ?>
-    <?php submit_button(); ?>
-</form>
+    settings_errors();
+    ?>
+    <form method="post" action="/wp-admin/admin.php?page=orb_communication_types">
+        <?php settings_fields('orb-admin-communication-types-group'); ?>
+        <?php do_settings_sections('orb_communication_types'); ?>
+        <?php submit_button(); ?>
+    </form>
+</section>
 
 <script>
     jQuery(document).ready(function($) {

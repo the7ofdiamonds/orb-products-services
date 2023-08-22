@@ -41,6 +41,9 @@ use ORB_Services\Shortcodes\Shortcodes;
 use ORB_Services\Tables\Tables;
 use ORB_Services\Templates\Templates;
 
+use Stripe\Stripe;
+use Stripe\StripeClient;
+
 class ORB_Services
 {
     public $plugin;
@@ -50,17 +53,71 @@ class ORB_Services
         $this->plugin = plugin_basename(__FILE__);
         add_filter("plugin_action_links_$this->plugin", [$this, 'settings_link']);
 
+        new Admin;
+
+        $credentialsPath = ORB_SERVICES . 'serviceAccount.json';
+
+        if (file_exists($credentialsPath)) {
+            $jsonFileContents = file_get_contents($credentialsPath);
+
+            if ($jsonFileContents !== false) {
+                $decodedData = json_decode($jsonFileContents, true);
+
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decodedData)) {
+                    if (
+                        isset($decodedData['type']) && $decodedData['type'] === 'service_account' &&
+                        isset($decodedData['project_id']) &&
+                        isset($decodedData['private_key_id']) &&
+                        isset($decodedData['private_key']) &&
+                        isset($decodedData['client_email'])
+                    ) {
+                        $credentialsPath = ORB_SERVICES . 'serviceAccount.json';
+                    } else {
+                        error_log('This is not a valid service account JSON');
+                        $credentialsPath = null;
+                    }
+                } else {
+                    error_log('Failed to decode JSON');
+                    $credentialsPath = null;
+                }
+            } else {
+                error_log('Failed to read file contents');
+                $credentialsPath = null;
+            }
+        } else {
+            error_log('File does not exist');
+            $credentialsPath = null;
+        }
+
         $dotenv = Dotenv::createImmutable(ORB_SERVICES);
         $dotenv->load(__DIR__);
+        $envFilePath = ORB_SERVICES . '.env'; // Replace with the actual path to your .env file
+        $envContents = file_get_contents($envFilePath);
+        $lines = explode("\n", $envContents);
+        $stripeSecretKey = null;
 
-        new Admin;
-        new API;
+        // Loop through each line to find the STRIPE_SECRET_KEY
+        foreach ($lines as $line) {
+            $parts = explode('=', $line, 2);
+            if (count($parts) === 2 && $parts[0] === 'STRIPE_SECRET_KEY') {
+                $stripeSecretKey = trim($parts[1]);
+                break;
+            }
+        }
+
+        if ($credentialsPath !== null && $stripeSecretKey !== null) {
+            Stripe::setApiKey($stripeSecretKey);
+            $stripeClient = new StripeClient($stripeSecretKey);
+
+            new API($credentialsPath, $stripeClient);
+            new Services($stripeClient);
+        }
+
         new CSS;
         // new Email;
         new JS;
         new Pages;
         new Roles;
-        new Services;
         new Shortcodes;
         new Tables;
         new Templates;

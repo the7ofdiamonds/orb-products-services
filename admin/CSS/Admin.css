@@ -1,12 +1,41 @@
-.orb-admin {
+.orb-services-admin {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1.5em;
+  background-color: black;
+  min-height: 100vh;
 }
-.orb-admin form table {
+.orb-services-admin h1,
+.orb-services-admin h2,
+.orb-services-admin a,
+.orb-services-admin th {
+  color: white;
+}
+.orb-services-admin .stripe-secret-key,
+.orb-services-admin .admin-input {
+  min-width: 100%;
+  max-width: fit-content;
+}
+.orb-services-admin .button.button-primary,
+.orb-services-admin .remove-button {
+  padding: 0.5em;
+  color: white;
+  background-color: black;
+  border: unset;
+  box-shadow: 0 0 1em rgba(255, 255, 255, 0.85);
+}
+.orb-services-admin .button.button-primary:hover,
+.orb-services-admin .remove-button:hover {
+  box-shadow: unset;
+}
+.orb-services-admin form {
+  color: white;
+}
+.orb-services-admin form table {
   border-spacing: 0.5em;
 }
-.orb-admin form table tfoot tr td .submit-btn {
+.orb-services-admin form table tfoot tr td .submit-btn {
   background-color: black;
   color: white;
   padding: 0.5em;

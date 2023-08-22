@@ -19,15 +19,15 @@ class AdminLocation
 
     function create_section()
     {
-        include plugin_dir_path(__FILE__) . 'includes/admin-add-location.php';
+        include ORB_SERVICES . 'Admin/includes/admin-add-location.php';
     }
 
     function register_section()
     {
 
-        add_settings_section('orb-admin-location', 'Add Location', [$this, 'section_description'], 'orb_location');
+        add_settings_section('orb-admin-location', '', [$this, 'section_description'], 'orb_location');
         register_setting('orb-admin-location-group', 'orb-headquarters');
-        add_settings_field('orb-headquarters', 'Add Location', [$this, 'headquarters'], 'orb_location', 'orb-admin-location');
+        add_settings_field('orb-headquarters', '', [$this, 'headquarters'], 'orb_location', 'orb-admin-location');
     }
 
     function section_description()
@@ -38,7 +38,7 @@ class AdminLocation
     function headquarters()
     {
 ?>
-        <textarea type="text" name="orb-headquarters"><?php echo esc_textarea(get_option('orb-headquarters')); ?></textarea>
+        <textarea type="text" name="orb-headquarters" cols="60" rows="20"><?php echo esc_textarea(get_option('orb-headquarters')); ?></textarea>
 <?php
     }
 }

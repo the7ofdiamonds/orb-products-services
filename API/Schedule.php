@@ -14,16 +14,17 @@ use WP_REST_Request;
 
 class Schedule
 {
+    private $credentialsPath;
     private $client;
     private $service;
 
-    public function __construct()
+    public function __construct($credentialsPath)
     {
-        $credentialsPath = ORB_SERVICES . 'API/serviceAccount.json';
+        $this->credentialsPath = $credentialsPath;
         $this->client = new Client();
         $this->client->setApplicationName('Your Application Name');
         $this->client->setScopes(Calendar::CALENDAR_EVENTS);
-        $this->client->setAuthConfig($credentialsPath);
+        $this->client->setAuthConfig($this->credentialsPath);
         $this->service = new Calendar($this->client);
 
         add_action('rest_api_init', function () {

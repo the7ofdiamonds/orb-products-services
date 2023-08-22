@@ -12,21 +12,19 @@ class AdminHero
 
     function register_custom_submenu_page()
     {
-
-        add_submenu_page('orb_services', 'Edit Hero Section', 'Edit Hero', 'manage_options', 'orb_hero', [$this, 'create_section'], 0);
-
+        add_submenu_page('orb_services', 'Edit Hero Section', 'Edit Hero', 'manage_options', 'orb_hero', [$this, 'create_section'], 1);
         add_action('admin_init', [$this, 'register_section']);
     }
 
     function create_section()
     {
 
-        include plugin_dir_path(__FILE__) . 'includes/admin-edit-hero.php';
+        include ORB_SERVICES . 'Admin/includes/admin-edit-hero.php';
     }
 
     function register_section()
     {
-        add_settings_section('orb-admin-hero', 'Edit Hero', [$this, 'section_description'], 'orb_hero');
+        add_settings_section('orb-admin-hero', '', [$this, 'section_description'], 'orb_hero');
         register_setting('orb-admin-hero-group', 'hero-pitch');
         register_setting('orb-admin-hero-group', 'hero-button-link');
         register_setting('orb-admin-hero-group', 'hero-button-text');
@@ -49,18 +47,18 @@ class AdminHero
     function hero_pitch()
     {
         $pitch = get_option('hero-pitch');
-        echo '<input type="text" name="hero-pitch" value="' . $pitch . '" />';
+        echo '<input class="admin-input" type="text" name="hero-pitch" value="' . $pitch . '" />';
     }
 
     function hero_button_link()
     {
         $button_link = get_option('hero-button-link');
-        echo '<input type="text" name="hero-button-link" value="' . $button_link . '" />';
+        echo '<input class="admin-input" type="text" name="hero-button-link" value="' . $button_link . '" />';
     }
 
     function hero_button_text()
     {
         $button_text = get_option('hero-button-text');
-        echo '<input type="text" name="hero-button-text" value="' . $button_text . '" />';
+        echo '<input class="admin-input" type="text" name="hero-button-text" value="' . $button_text . '" />';
     }
 }

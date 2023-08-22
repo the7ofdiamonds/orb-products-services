@@ -18,7 +18,7 @@ class Meta
     private $stripeSecretKey;
     private $stripeClient;
     // Use stripe to enter prices and making updates
-    public function __construct()
+    public function __construct($stripeClient)
     {
         if (!session_id()) {
             session_start();
@@ -39,9 +39,7 @@ class Meta
         $this->serviceID = get_the_ID();
         $this->servicePriceID = '';
 
-        $this->stripeSecretKey = $_ENV['STRIPE_SECRET_KEY'];
-        \Stripe\Stripe::setApiKey($this->stripeSecretKey);
-        $this->stripeClient = new \Stripe\StripeClient($this->stripeSecretKey);
+        $this->stripeClient = $stripeClient;
     }
 
     function add_services_meta_boxes()

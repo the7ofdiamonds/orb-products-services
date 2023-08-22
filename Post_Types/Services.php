@@ -4,12 +4,12 @@ namespace ORB_Services\Post_Types;
 use ORB_Services\Post_Types\Meta;
 
 class Services
-{
-    public function __construct()
+{    
+    public function __construct($stripeClient)
     {
         add_action('init', [$this, 'services_custom_post_type']);
         
-        new Meta;
+        new Meta($stripeClient);
     }
 
     public function services_custom_post_type()

@@ -1,9 +1,40 @@
-.orb-admin {
+.orb-services-admin {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1.5em;
+  background-color: black;
+  min-height: 100vh;
 
+  h1,
+  h2,
+  a,
+  th {
+    color: white;
+  }
+
+  .stripe-secret-key,
+  .admin-input {
+    min-width: 100%;
+    max-width: fit-content;
+  }
+
+  .button.button-primary,
+  .remove-button {
+    padding: 0.5em;
+    color: white;
+    background-color: black;
+    border: unset;
+    box-shadow: 0 0 1em rgba(255, 255, 255, 0.85);
+  }
+
+  .button.button-primary:hover,
+  .remove-button:hover {
+    box-shadow: unset;
+  }
+  
   form {
+    color: white;
     table {
       border-spacing: 0.5em;
       tfoot {
