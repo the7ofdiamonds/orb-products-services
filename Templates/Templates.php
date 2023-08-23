@@ -130,7 +130,7 @@ class Templates
 
     function get_custom_schedule_page_template($template)
     {
-        $services_schedule = get_page_by_path('services/schedule');
+        $services_schedule = get_page_by_path('schedule');
 
         if ($services_schedule && is_page($services_schedule->ID)) {
             $custom_template = ORB_SERVICES . 'pages/page-schedule.php';
