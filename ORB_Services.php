@@ -17,7 +17,7 @@ Text Domain: orb-services
 */
 
 /*
-Licensing Info Here
+Licensing Info Here needed
 */
 
 defined('ABSPATH') or die('Hey, what are you doing here? You silly human!');
