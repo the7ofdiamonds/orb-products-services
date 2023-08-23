@@ -20,10 +20,6 @@ Text Domain: orb-services
 Licensing Info Here needed
 */
 
-defined('ABSPATH') or die('Hey, what are you doing here? You silly human!');
-define('ORB_SERVICES', WP_PLUGIN_DIR . '/orb-services/');
-define('ORB_SERVICES_URL', WP_PLUGIN_URL . '/orb-services/');
-
 spl_autoload_register(function ($class) {
     $prefix = 'ORB_Services\\'; // Namespace prefix
     $baseDir = __DIR__ . '/'; // Base directory for the plugin's classes
@@ -40,6 +36,10 @@ spl_autoload_register(function ($class) {
         }
     }
 });
+
+defined('ABSPATH') or die('Hey, what are you doing here? You silly human!');
+define('ORB_SERVICES', WP_PLUGIN_DIR . '/orb-services/');
+define('ORB_SERVICES_URL', WP_PLUGIN_URL . '/orb-services/');
 
 require_once ORB_SERVICES . 'vendor/autoload.php';
 
