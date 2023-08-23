@@ -12,7 +12,7 @@
   font-size: 3rem;
 }
 .hero-card .hero-animation .hero-icons i.fa-lightbulb {
-  color: rgba(255, 240, 0, 0.85);
+  color: var(--orb-color-caution);
 }
 .hero-card .hero-animation .hero-icons i.fa-plus, .hero-card .hero-animation .hero-icons i.fa-equals {
   font-size: 1.5rem;
@@ -84,7 +84,7 @@ i.fa-brands.fa-android {
   color: limegreen;
 }
 i.fa-solid.fa-globe {
-  color: blue;
+  color: var(--orb-color-info);
 }
 
 .headquarters-card.card {
@@ -101,11 +101,11 @@ i.fa-solid.fa-globe {
 }
 .office-hours-card table th + th,
 .office-hours-card table td + td {
-  border-left: 0.25em solid white;
+  border-left: 0.25em solid var(--orb-color-secondary);
 }
 .office-hours-card table thead th {
-  background-color: black;
-  color: white;
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
 }
 
 .orb-service-navigation {
@@ -142,22 +142,22 @@ i.fa-solid.fa-globe {
 }
 .orb-service-navigation .step a button span h3 {
   padding: 0;
-  color: black;
+  color: var(--orb-color-primary);
 }
 .orb-service-navigation .step a button h4 {
-  color: black;
+  color: var(--orb-color-primary);
   padding: 0.5em;
 }
 
 .orb-service-navigation .step-number.active {
-  background-color: black;
+  background-color: var(--orb-color-primary);
   border-radius: 2em;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .orb-service-navigation .step-number.active h3 {
-  color: white;
+  color: var(--orb-color-secondary);
 }
 
 section.invoice {
@@ -213,8 +213,8 @@ section.invoice {
   padding: 0.5em;
 }
 .payment-options a.active button {
-  background-color: white;
-  color: black;
+  background-color: var(--orb-color-secondary);
+  color: var(--orb-color-primary);
   box-shadow: none;
 }
 
@@ -229,7 +229,7 @@ section.invoice {
   width: 100%;
   top: 0;
   left: 0;
-  background: black;
+  background: var(--orb-color-primary);
   border-radius: 5px;
   backface-visibility: hidden;
   padding: 20px;
@@ -248,7 +248,7 @@ section.invoice {
 .debit-credit-card .front .card-number-box {
   padding: 30px 0;
   font-size: 22px;
-  color: #fff;
+  color: var(--orb-color-secondary);
 }
 .debit-credit-card .front .flexbox {
   display: flex;
@@ -258,7 +258,7 @@ section.invoice {
 }
 .debit-credit-card .front .flexbox .box {
   font-size: 15px;
-  color: #fff;
+  color: var(--orb-color-secondary);
 }
 .debit-credit-card .back {
   position: absolute;
@@ -271,7 +271,7 @@ section.invoice {
   padding: 20px 0;
   text-align: right;
   backface-visibility: hidden;
-  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--orb-box-shadow);
   transform: perspective(1000px) rotateY(180deg);
   transition: transform 0.4s ease-out;
 }
@@ -285,15 +285,15 @@ section.invoice {
   padding: 0 20px;
 }
 .debit-credit-card .back .box span {
-  color: #fff;
+  color: var(--orb-color-secondary);
   font-size: 15px;
 }
 .debit-credit-card .back .box .cvv-box {
   height: 50px;
   padding: 10px;
   margin-top: 5px;
-  color: #333;
-  background: #fff;
+  color: var(--orb-color-primary);
+  background: var(--orb-color-secondary);
   border-radius: 5px;
   width: 100%;
 }
@@ -365,19 +365,19 @@ section.invoice {
   text-align: right;
 }
 .wire-transfer-container .bank-check .check-pay-to-border {
-  border-bottom: #000 solid;
+  border-bottom: var(--orb-color-primary) solid;
 }
 .wire-transfer-container .bank-check .check-pay-to-border .check-pay-to {
   text-align: left;
 }
 .wire-transfer-container .bank-check .check-amount-box {
-  border: #000 solid;
+  border: var(--orb-color-primary) solid;
 }
 .wire-transfer-container .bank-check .check-amount-box .check-amount {
   text-align: right;
 }
 .wire-transfer-container .bank-check .amount-words-border {
-  border-bottom: #000 solid;
+  border-bottom: var(--orb-color-primary) solid;
 }
 .wire-transfer-container .bank-check .amount-words-border .amount-words {
   text-align: left;
@@ -387,13 +387,13 @@ section.invoice {
   flex-direction: row;
 }
 .wire-transfer-container .bank-check .memo-border .memo {
-  border-bottom: #000 solid;
+  border-bottom: var(--orb-color-primary) solid;
   width: 100%;
   text-align: left;
   padding-left: 0.5rem;
 }
 .wire-transfer-container .bank-check .signature-border {
-  border-bottom: #000 solid;
+  border-bottom: var(--orb-color-primary) solid;
 }
 .wire-transfer-container .bank-check .bank-numbers {
   display: flex;
@@ -463,8 +463,8 @@ section.invoice {
 .schedule .communication-select.card label,
 .schedule .attendees-select.card label,
 .schedule .additional-attendee.card label {
-  background-color: black;
-  color: white;
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
   padding: 0.25em;
   margin: 0;
   width: 100%;
@@ -515,8 +515,8 @@ section.invoice {
   gap: 0;
 }
 .service-features-card.card h3 {
-  background-color: black;
-  color: white;
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
   padding: 0.25em;
   width: 100%;
   margin: 0;
@@ -531,8 +531,8 @@ section.invoice {
 }
 .details-card h4 {
   width: 100%;
-  background-color: black;
-  color: white;
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
   padding: 0.25em;
   margin: 0;
 }
@@ -618,8 +618,8 @@ section.invoice {
 .receipt-card.card .th h4,
 .receipt-card.card th h4 {
   padding: 0.25em 0;
-  background-color: black;
-  color: white;
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
 }
 .receipt-card.card .td h5,
 .receipt-card.card td h5 {
@@ -784,8 +784,8 @@ table {
 
 thead th h4,
 tfoot th h4 {
-  background-color: black;
-  color: white;
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
   padding: 0.375em;
 }
 
@@ -810,9 +810,10 @@ td {
 }
 .dashboard .orb-services .card tr td,
 .dashboard .orb-services .card tr th {
-  border-right: solid white 0.25em;
+  border-right: solid 0.25em;
+  border-color: var(--orb-color-secondary);
 }
-.dashboard .orb-services .card tr td:last-child,
+.dashboard .orb-services .card tr Í td:last-child,
 .dashboard .orb-services .card tr th:last-child {
   border-right: none;
 }
@@ -828,22 +829,22 @@ td {
 }
 
 .status-bar.card {
-  background-color: black;
+  background-color: var(--orb-color-primary);
 }
 .status-bar.card.info {
-  background-color: blue;
+  background-color: var(--orb-color-info);
 }
 .status-bar.card.caution {
-  background-color: yellow;
+  background-color: var(--orb-color-caution);
 }
 .status-bar.card.error {
-  background-color: red;
+  background-color: var(--orb-color-error);
 }
 .status-bar.card.success {
-  background-color: green;
+  background-color: var(--orb-color-success);
 }
 .status-bar.card span {
-  color: white;
+  color: var(--orb-color-secondary);
 }
 .status-bar.card span h4 {
   padding: 0.5em;

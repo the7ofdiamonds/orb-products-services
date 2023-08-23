@@ -9,8 +9,8 @@
   th {
     h4 {
       padding: 0.25em 0;
-      background-color: black;
-      color: white;
+      background-color: var(--orb-color-primary);
+      color: var(--orb-color-secondary);
     }
   }
 
@@ -237,8 +237,8 @@ thead,
 tfoot {
   th {
     h4 {
-      background-color: black;
-      color: white;
+      background-color: var(--orb-color-primary);
+      color: var(--orb-color-secondary);
       padding: 0.375em;
     }
   }

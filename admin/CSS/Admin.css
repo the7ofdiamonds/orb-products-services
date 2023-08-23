@@ -31,14 +31,10 @@
 }
 .orb-services-admin form {
   color: white;
+  font-size: 1rem;
 }
-.orb-services-admin form table {
-  border-spacing: 0.5em;
-}
-.orb-services-admin form table tfoot tr td .submit-btn {
-  background-color: black;
-  color: white;
-  padding: 0.5em;
+.orb-services-admin form table tfoot tr td {
+  padding: 0.25em;
 }
 
 /*# sourceMappingURL=Admin.css.map */

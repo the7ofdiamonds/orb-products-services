@@ -8,8 +8,8 @@
       padding: 0.5em;
     }
     &.active button {
-      background-color: white;
-      color: black;
+      background-color: var(--orb-color-secondary);
+      color: var(--orb-color-primary);
       box-shadow: none;
     }
   }
@@ -27,7 +27,7 @@
     width: 100%;
     top: 0;
     left: 0;
-    background: black;
+    background: var(--orb-color-primary);
     border-radius: 5px;
     backface-visibility: hidden;
     padding: 20px;
@@ -48,7 +48,7 @@
     .card-number-box {
       padding: 30px 0;
       font-size: 22px;
-      color: #fff;
+      color: var(--orb-color-secondary);
     }
 
     .flexbox {
@@ -61,7 +61,7 @@
 
     .flexbox .box {
       font-size: 15px;
-      color: #fff;
+      color: var(--orb-color-secondary);
     }
   }
 
@@ -76,7 +76,7 @@
     padding: 20px 0;
     text-align: right;
     backface-visibility: hidden;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--orb-box-shadow);
     transform: perspective(1000px) rotateY(180deg);
     transition: transform 0.4s ease-out;
 
@@ -92,7 +92,7 @@
     }
 
     .box span {
-      color: #fff;
+      color: var(--orb-color-secondary);
       font-size: 15px;
     }
 
@@ -100,8 +100,8 @@
       height: 50px;
       padding: 10px;
       margin-top: 5px;
-      color: #333;
-      background: #fff;
+      color: var(--orb-color-primary);
+      background: var(--orb-color-secondary);
       border-radius: 5px;
       width: 100%;
     }
@@ -192,7 +192,7 @@
     }
 
     .check-pay-to-border {
-      border-bottom: #000 solid;
+      border-bottom: var(--orb-color-primary) solid;
 
       .check-pay-to {
         text-align: left;
@@ -200,7 +200,7 @@
     }
 
     .check-amount-box {
-      border: #000 solid;
+      border: var(--orb-color-primary) solid;
 
       .check-amount {
         text-align: right;
@@ -208,7 +208,7 @@
     }
 
     .amount-words-border {
-      border-bottom: #000 solid;
+      border-bottom: var(--orb-color-primary) solid;
 
       .amount-words {
         text-align: left;
@@ -220,7 +220,7 @@
       flex-direction: row;
 
       .memo {
-        border-bottom: #000 solid;
+        border-bottom: var(--orb-color-primary) solid;
         width: 100%;
         text-align: left;
         padding-left: 0.5rem;
@@ -228,7 +228,7 @@
     }
 
     .signature-border {
-      border-bottom: #000 solid;
+      border-bottom: var(--orb-color-primary) solid;
     }
 
     .bank-numbers {

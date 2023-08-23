@@ -1,19 +1,19 @@
 .status-bar.card {
-  background-color: black;
+  background-color: var(--orb-color-primary);
   &.info {
-    background-color: blue;
+    background-color: var(--orb-color-info);
   }
   &.caution {
-    background-color: yellow;
+    background-color: var(--orb-color-caution);
   }
   &.error {
-    background-color: red;
+    background-color: var(--orb-color-error);
   }
   &.success {
-    background-color: green;
+    background-color: var(--orb-color-success);
   }
   span {
-    color: white;
+    color: var(--orb-color-secondary);
 
     h4 {
       padding: 0.5em;

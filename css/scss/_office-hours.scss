@@ -4,12 +4,12 @@
   table {
     th + th,
     td + td {
-      border-left: 0.25em solid white;
+      border-left: 0.25em solid var(--orb-color-secondary);
     }
     thead {
       th {
-        background-color: black;
-        color: white;
+        background-color: var(--orb-color-primary);
+        color: var(--orb-color-secondary);
       }
     }
   }

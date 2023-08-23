@@ -32,12 +32,12 @@
 
           h3 {
             padding: 0;
-            color: black;
+            color: var(--orb-color-primary);
           }
         }
 
         h4 {
-          color: black;
+          color: var(--orb-color-primary);
           padding: 0.5em;
         }
       }
@@ -46,13 +46,13 @@
 }
 
 .orb-service-navigation .step-number.active {
-  background-color: black;
+  background-color: var(--orb-color-primary);
   border-radius: 2em;
   display: flex;
   justify-content: center;
   align-items: center;
 
   h3 {
-    color: white;
+    color: var(--orb-color-secondary);
   }
 }
