@@ -17,7 +17,7 @@ Text Domain: orb-services
 */
 
 /*
-Licensing Info Here needed
+Licensing Info is needed
 */
 
 require_once 'vendor/autoload.php';
