@@ -74,6 +74,7 @@ class Pages
         $service_page_id = get_page_by_path('services/service')->ID;
 
         add_rewrite_rule('^services/([0-9]+)/([^/]+)/?$', 'index.php?page_id=' . $service_page_id, 'top');
+        $schedule_page_id = get_page_by_path('schedule')->ID;
 
         $services_page_id = get_page_by_path('services')->ID;
         $start_page_id = get_page_by_path('services/start')->ID;
@@ -82,7 +83,6 @@ class Pages
         $invoice_page_id = get_page_by_path('services/invoice')->ID;
         $payment_page_id = get_page_by_path('services/payment')->ID;
         $receipt_page_id = get_page_by_path('services/receipt')->ID;
-        $schedule_page_id = get_page_by_path('services/schedule')->ID;
 
         if ($services_page_id && $start_page_id && $selections_page_id && $quote_page_id && $invoice_page_id && $payment_page_id && $receipt_page_id && $schedule_page_id) {
             add_rewrite_rule('^schedule/?$', 'index.php?page_id=' . $schedule_page_id . '&id=$matches[1]', 'top');

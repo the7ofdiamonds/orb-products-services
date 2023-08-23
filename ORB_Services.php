@@ -20,28 +20,11 @@ Text Domain: orb-services
 Licensing Info Here needed
 */
 
-spl_autoload_register(function ($class) {
-    $prefix = 'ORB_Services\\'; // Namespace prefix
-    $baseDir = __DIR__ . '/'; // Base directory for the plugin's classes
-
-    // Check if the class uses the plugin's namespace
-    if (strncmp($prefix, $class, strlen($prefix)) === 0) {
-        // Remove the namespace prefix and convert to file path
-        $relativeClass = substr($class, strlen($prefix));
-        $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
-
-        // If the file exists, include it
-        if (file_exists($file)) {
-            require $file;
-        }
-    }
-});
+require_once 'vendor/autoload.php';
 
 defined('ABSPATH') or die('Hey, what are you doing here? You silly human!');
 define('ORB_SERVICES', WP_PLUGIN_DIR . '/orb-services/');
 define('ORB_SERVICES_URL', WP_PLUGIN_URL . '/orb-services/');
-
-require_once ORB_SERVICES . 'vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
