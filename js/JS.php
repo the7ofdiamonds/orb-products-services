@@ -43,12 +43,12 @@ class JS
         $pages = [
             'about',
             'dashboard',
+            'schedule',
             'services',
             'services/start',
             'services/selections',
             'services/quote',
             'services/invoice',
-            'services/schedule',
             'services/payment',
             'services/receipt',
         ];
