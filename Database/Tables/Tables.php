@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\Tables;
+namespace ORB_Services\Database\Tables;
 
 require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 

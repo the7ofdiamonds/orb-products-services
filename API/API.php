@@ -2,6 +2,17 @@
 
 namespace ORB_Services\API;
 
+use ORB_Services\API\Stripe\StripeQuote;
+use ORB_Services\API\Stripe\StripeInvoice;
+
+use ORB_Services\Database\DatabaseQuote;
+use ORB_Services\Database\DatabaseInvoice;
+use ORB_Services\Database\DatabaseReceipt;
+
+use ORB_Services\Email\EmailQuote;
+use ORB_Services\Email\EmailInvoice;
+use ORB_Services\Email\EmailReceipt;
+
 use ORB_Services\API\Schedule;
 use ORB_Services\API\Services;
 use ORB_Services\API\Service;
@@ -12,6 +23,8 @@ use ORB_Services\API\Invoice;
 use ORB_Services\API\Payment;
 use ORB_Services\API\Receipt;
 
+use ORB_Services\API\Stripe\Stripe;
+
 class API
 {
     public function __construct($credentialsPath, $stripeClient)
@@ -19,15 +32,33 @@ class API
         add_action('rest_api_init', [$this, 'add_to_rest_api']);
         add_action('rest_api_init', [$this, 'allow_cors_headers']);
 
+        $tax_enabled = get_option('stripe_automatic_tax_enabled');
+        $list_limit = get_option('stripe_list_limit');
+
+        $stripe_quote = new StripeQuote($stripeClient, $tax_enabled, $list_limit);
+        $stripe_invoice = new StripeInvoice($stripeClient, $tax_enabled, $list_limit);
+
+        $database_quote = new DatabaseQuote;
+        $database_invoice = new DatabaseInvoice;
+        $database_receipt = new DatabaseReceipt;
+
+        $email_quote = new EmailQuote($stripe_quote, $database_quote);
+        $email_invoice = new EmailInvoice($stripe_invoice, $database_invoice);
+        $email_receipt = new EmailReceipt($stripe_invoice, $database_receipt);
+        new Email($email_quote, $email_invoice, $email_receipt);
+
+        new Quote($stripe_quote, $database_quote);
+        new Invoice($stripe_invoice, $database_invoice);
+        new Receipt($stripe_invoice, $database_receipt);
+
+        new Stripe($stripeClient);
+        new Services($stripeClient);
+        new Service($stripeClient);
         new Clients($stripeClient);
         new Customers($stripeClient);
-        new Invoice($stripeClient);
         new Payment($stripeClient);
-        new Quote($stripeClient);
-        new Receipt($stripeClient);
+
         new Schedule($credentialsPath);
-        new Service($stripeClient);
-        new Services($stripeClient);
     }
 
     public function add_to_rest_api()

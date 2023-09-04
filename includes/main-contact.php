@@ -1,7 +1,7 @@
 <main>
     <div class="contact-card card">
         <p class="contact-form-message" id="contact_form_message"></p>
-        <form name="contact_form" id="contact_form" method="post" action="">
+        <form name="contact_form" id="contact_form" method="post" action="/wp-json/orb/v1/email/contact">
 
             <label for="name">Name</label>
             <input name="contact_name" type="text" id="contact_name" class="input">

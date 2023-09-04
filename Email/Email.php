@@ -1,64 +1,76 @@
 <?php
+
 namespace ORB_Services\Email;
 
-require ORB_SERVICES . '/vendor/autoload.php';
-
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 class Email
 {
-    public $mailer;
+    private $mailer;
+    private $smtp_auth;
+    private $smtp_host;
+    private $smtp_secure;
+    private $smtp_port;
+    private $smtp_username;
+    private $smtp_password;
+    private $from_email;
+    private $from_name;
 
-    public function __construct()
+    public function __construct($smtp_auth, $smtp_host, $smtp_secure, $smtp_port, $smtp_username, $smtp_password, $from_email, $from_name)
     {
         $this->mailer = new PHPMailer();
+        $this->smtp_auth = $smtp_auth;
+        $this->smtp_host = $smtp_host;
+        $this->smtp_secure = $smtp_secure;
+        $this->smtp_port = $smtp_port;
+        $this->smtp_username = $smtp_username;
+        $this->smtp_password = $smtp_password;
+        $this->from_email = $from_email;
+        $this->from_name = $from_name;
     }
 
-    protected function orb_smtp_settings($mailer)
+    public function sendEmail($to_email, $to_name, $reply_to_email, $reply_to_name, $subject, $body, $alt_body, $path = '', $attachment_name = '')
     {
-        $mailer->isSMTP();
-        $mailer->Host = SMTP_HOST;
-        $mailer->Port = SMTP_PORT;
-        $mailer->SMTPSecure = SMTP_ENCRYPTION;
-        $mailer->SMTPAuth = SMTP_AUTH;
-        $mailer->Username = SMTP_USERNAME;
-        $mailer->Password = SMTP_PASSWORD;
-        $mailer->setFrom(SMTP_USERNAME, 'Contact');
-    }
+        try {
+            $this->mailer->SMTPDebug = SMTP::DEBUG_SERVER;
+            $this->mailer->isSMTP();
+            $this->mailer->SMTPAuth = $this->smtp_auth;
+            $this->mailer->Host = $this->smtp_host;
+            $this->mailer->SMTPSecure = $this->smtp_secure;
+            $this->mailer->Port = $this->smtp_port;
 
-    protected function setSender($email, $name)
-    {
-        $this->mailer->setFrom($email, $name);
-        $this->mailer->addReplyTo($email, $name);
-    }
+            $this->mailer->Username = $this->smtp_username;
+            $this->mailer->Password = $this->smtp_password;
 
-    protected function addRecipient($email, $name)
-    {
-        $this->mailer->addAddress($email, $name);
-    }
+            $this->mailer->setFrom($this->from_email, $this->from_name);
+            $this->mailer->addAddress($to_email, $to_name);
+            $this->mailer->addReplyTo($reply_to_email, $reply_to_name);
 
-    protected function setSubject($subject)
-    {
-        $this->mailer->Subject = $subject;
-    }
+            $this->mailer->isHTML(true);
+            $this->mailer->Subject = $subject;
+            $this->mailer->Body = $body;
+            $this->mailer->AltBody = $alt_body;
 
-    protected function setBody($body)
-    {
-        $this->mailer->Body = $body;
-    }
+            // $headers = get_headers($path);
+            // $statusCode = substr($headers[0], 9, 3);
 
-    public function sendEmail($fromEmail, $fromName, $toEmail, $toName, $subject, $body)
-    {
-        // $this->orb_smtp_settings($mailer);
-        $this->setSender($fromEmail, $fromName);
-        $this->addRecipient($toEmail, $toName);
-        $this->setSubject($subject);
-        $this->setBody($body);
+            // return $statusCode;
 
-        if (!$this->mailer->send()) {
-            echo 'Email Error: ' . $this->mailer->ErrorInfo;
-        } else {
-            echo 'The email message was sent.';
+            if (isset($path) && isset($attachment_name)) {
+                
+                $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
+            }
+
+            if ($this->mailer->send()) {
+                return ['message' => 'Message has been sent'];
+            } else {
+                throw new Exception("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
+            }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return ['error' => $e->getMessage()];
         }
     }
 }

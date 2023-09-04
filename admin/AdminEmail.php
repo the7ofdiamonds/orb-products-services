@@ -2,7 +2,7 @@
 
 namespace ORB_Services\Admin;
 
-$smtp_host = esc_attr(get_option('smtp_host'));
+$smtp_host = get_option('smtp_host');
 $smtp_port = get_option('smtp_port');
 $smtp_secure = get_option('smtp_secure');
 $smtp_auth = get_option('smtp_auth');

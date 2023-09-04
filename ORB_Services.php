@@ -1,24 +1,10 @@
 <?php
 
+/*
+ * Plugin Name: ORB Services
+*/
+
 namespace ORB_Services;
-
-/**
- * @package ORB_Services
- */
-/*
-Plugin Name: ORB Services
-Plugin URI: 
-Description: Services Custom Post Type.
-Version: 1.0.0
-Author: THE7OFDIAMONDS.TECH
-Author URI: http://THE7OFDIAMONDS.TECH
-License: 
-Text Domain: orb-services
-*/
-
-/*
-Licensing Info is needed
-*/
 
 require_once 'vendor/autoload.php';
 
@@ -38,7 +24,7 @@ use ORB_Services\Pages\Pages;
 use ORB_Services\Post_Types\Services;
 use ORB_Services\Roles\Roles;
 use ORB_Services\Shortcodes\Shortcodes;
-use ORB_Services\Tables\Tables;
+use ORB_Services\Database\Tables\Tables;
 use ORB_Services\Templates\Templates;
 
 use Stripe\Stripe;
@@ -114,7 +100,7 @@ class ORB_Services
         }
 
         new CSS;
-        // new Email;
+		// new Email;
         new JS;
         new Pages;
         new Roles;

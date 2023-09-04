@@ -7,6 +7,7 @@ use ORB_Services\Admin\AdminHero;
 use ORB_Services\Admin\AdminLocation;
 use ORB_Services\Admin\AdminOfficeHours;
 use ORB_Services\Admin\AdminCommunication;
+use ORB_Services\Admin\AdminStripe;
 
 class Admin
 {
@@ -21,6 +22,7 @@ class Admin
         new AdminOfficeHours;
         new AdminLocation;
         new AdminCommunication;
+        new AdminStripe;
     }
 
     function register_custom_menu_page()

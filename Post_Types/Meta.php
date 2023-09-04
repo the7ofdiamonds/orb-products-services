@@ -296,12 +296,17 @@ class Meta
 
     function add_service_price_to_stripe()
     {
-        $price = $this->stripeClient->prices->create([
-            'unit_amount' => str_replace('.', '', $this->serviceCost),
-            'currency' => 'usd',
-            'product' => $this->serviceID,
-        ]);
+        if ($this->serviceCost !== null) {
+            $price = $this->stripeClient->prices->create([
+                'unit_amount' => str_replace('.', '', $this->serviceCost),
+                'currency' => 'usd',
+                'product' => $this->serviceID,
+            ]);
 
-        return $price->id = $this->servicePriceID;
+            // Use the arrow operator to set the value of the id property
+            $price->id = $this->servicePriceID;
+
+            return $price->id; // Return the updated id value
+        }
     }
 }
