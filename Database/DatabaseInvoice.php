@@ -57,7 +57,7 @@ class DatabaseInvoice
 
         $invoice = $this->wpdb->get_row(
             $this->wpdb->prepare(
-                "SELECT * FROM . $this->table_name . WHERE stripe_invoice_id = %s",
+                "SELECT * FROM {$this->table_name} WHERE stripe_invoice_id = %s",
                 $stripe_invoice_id
             )
         );
@@ -101,7 +101,7 @@ class DatabaseInvoice
 
         $invoice = $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT * FROM . $this->table_name . WHERE id = %d",
+                "SELECT * FROM {$this->table_name} WHERE id = %d",
                 $id
             )
         );
@@ -154,35 +154,31 @@ class DatabaseInvoice
     {
         if (empty($stripe_customer_id)) {
             $msg = 'Stripe Customer ID is required';
-            $message = array(
-                'message' => $msg,
+            $response = array(
+                'error' => $msg,
             );
-            $response = rest_ensure_response($message);
-            $response->set_status(404);
-
-            return $response;
+            return rest_ensure_response($response)->set_status(400);
         }
-
+    
         $invoices = $this->wpdb->get_results(
             $this->wpdb->prepare(
-                "SELECT * FROM . $this->table_name . WHERE stripe_customer_id = %d",
+                "SELECT * FROM {$this->table_name} WHERE stripe_customer_id = %s",
                 $stripe_customer_id
             )
         );
-
+    
         if (!$invoices) {
             $msg = 'There are no invoices to display.';
-            $message = array(
+            $response = array(
                 'message' => $msg,
             );
-            $response = rest_ensure_response($message);
-            $response->set_status(404);
-
-            return $response;
+            return rest_ensure_response($response)->set_status(404);
         }
-
-        return $invoices;
+    
+        // You can return a JSON response with the invoices
+        return rest_ensure_response($invoices);
     }
+    
 
     public function updateInvoice($stripe_invoice)
     {

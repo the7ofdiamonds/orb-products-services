@@ -11454,8 +11454,11 @@ const store = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_10__.configureStore)(
     schedule: _controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_7__.scheduleSlice.reducer,
     payment: _controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_8__.paymentSlice.reducer,
     receipt: _controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_9__.receiptSlice.reducer
-  }
+  },
+  // Enable the Redux DevTools Extension
+  devTools: "development" !== 'production' // Optional: Disable in production
 });
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
 
 /***/ }),
@@ -12599,33 +12602,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
-const ContextKey = Symbol.for(`react-redux-context-${react__WEBPACK_IMPORTED_MODULE_0__.version}`);
-const gT = globalThis;
+const ContextKey = Symbol.for(`react-redux-context`);
+const gT = typeof globalThis !== "undefined" ? globalThis :
+/* fall back to a per-module scope (pre-8.1 behaviour) if `globalThis` is not available */
+{};
 
 function getContext() {
-  let realContext = gT[ContextKey];
+  var _gT$ContextKey;
+
+  if (!react__WEBPACK_IMPORTED_MODULE_0__.createContext) return {};
+  const contextMap = (_gT$ContextKey = gT[ContextKey]) != null ? _gT$ContextKey : gT[ContextKey] = new Map();
+  let realContext = contextMap.get(react__WEBPACK_IMPORTED_MODULE_0__.createContext);
 
   if (!realContext) {
-    realContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)(null);
+    realContext = react__WEBPACK_IMPORTED_MODULE_0__.createContext(null);
 
     if (true) {
       realContext.displayName = 'ReactRedux';
     }
 
-    gT[ContextKey] = realContext;
+    contextMap.set(react__WEBPACK_IMPORTED_MODULE_0__.createContext, realContext);
   }
 
   return realContext;
 }
 
-const ReactReduxContext = /*#__PURE__*/new Proxy({}, /*#__PURE__*/new Proxy({}, {
-  get(_, handler) {
-    const target = getContext(); // @ts-ignore
-
-    return (_target, ...args) => Reflect[handler](target, ...args);
-  }
-
-}));
+const ReactReduxContext = /*#__PURE__*/getContext();
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ReactReduxContext);
 
 /***/ }),
@@ -12659,7 +12661,7 @@ function Provider({
   stabilityCheck = 'once',
   noopCheck = 'once'
 }) {
-  const contextValue = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+  const contextValue = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
     const subscription = (0,_utils_Subscription__WEBPACK_IMPORTED_MODULE_2__.createSubscription)(store);
     return {
       store,
@@ -12669,7 +12671,7 @@ function Provider({
       noopCheck
     };
   }, [store, serverState, stabilityCheck, noopCheck]);
-  const previousState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => store.getState(), [store]);
+  const previousState = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => store.getState(), [store]);
   (0,_utils_useIsomorphicLayoutEffect__WEBPACK_IMPORTED_MODULE_3__.useIsomorphicLayoutEffect)(() => {
     const {
       subscription
@@ -12688,7 +12690,7 @@ function Provider({
   }, [contextValue, previousState]);
   const Context = context || _Context__WEBPACK_IMPORTED_MODULE_1__.ReactReduxContext; // @ts-ignore 'AnyAction' is assignable to the constraint of type 'A', but 'A' could be instantiated with a different subtype
 
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Context.Provider, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Context.Provider, {
     value: contextValue
   }, children);
 }
@@ -12943,7 +12945,7 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
     };
 
     function ConnectFunction(props) {
-      const [propsContext, reactReduxForwardedRef, wrapperProps] = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(() => {
+      const [propsContext, reactReduxForwardedRef, wrapperProps] = react__WEBPACK_IMPORTED_MODULE_3__.useMemo(() => {
         // Distinguish between actual "data" props that were passed to the wrapper component,
         // and values needed to control behavior (forwarded refs, alternate context instances).
         // To maintain the wrapperProps object reference, memoize this destructuring.
@@ -12954,14 +12956,14 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
 
         return [props.context, reactReduxForwardedRef, wrapperProps];
       }, [props]);
-      const ContextToUse = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(() => {
+      const ContextToUse = react__WEBPACK_IMPORTED_MODULE_3__.useMemo(() => {
         // Users may optionally pass in a custom context instance to use instead of our ReactReduxContext.
         // Memoize the check that determines which context instance we should use.
         return propsContext && propsContext.Consumer && // @ts-ignore
-        (0,react_is__WEBPACK_IMPORTED_MODULE_4__.isContextConsumer)( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(propsContext.Consumer, null)) ? propsContext : Context;
+        (0,react_is__WEBPACK_IMPORTED_MODULE_4__.isContextConsumer)( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(propsContext.Consumer, null)) ? propsContext : Context;
       }, [propsContext, Context]); // Retrieve the store and ancestor subscription via context, if available
 
-      const contextValue = (0,react__WEBPACK_IMPORTED_MODULE_3__.useContext)(ContextToUse); // The store _must_ exist as either a prop or in context.
+      const contextValue = react__WEBPACK_IMPORTED_MODULE_3__.useContext(ContextToUse); // The store _must_ exist as either a prop or in context.
       // We'll check to see if it _looks_ like a Redux store first.
       // This allows us to pass through a `store` prop that is just a plain value.
 
@@ -12975,12 +12977,12 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
 
       const store = didStoreComeFromProps ? props.store : contextValue.store;
       const getServerState = didStoreComeFromContext ? contextValue.getServerState : store.getState;
-      const childPropsSelector = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(() => {
+      const childPropsSelector = react__WEBPACK_IMPORTED_MODULE_3__.useMemo(() => {
         // The child props selector needs the store reference as an input.
         // Re-create this selector whenever the store changes.
         return (0,_connect_selectorFactory__WEBPACK_IMPORTED_MODULE_5__["default"])(store.dispatch, selectorFactoryOptions);
       }, [store]);
-      const [subscription, notifyNestedSubs] = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(() => {
+      const [subscription, notifyNestedSubs] = react__WEBPACK_IMPORTED_MODULE_3__.useMemo(() => {
         if (!shouldHandleStateChanges) return NO_SUBSCRIPTION_ARRAY; // This Subscription's source should match where store came from: props vs. context. A component
         // connected to the store via props shouldn't use subscription from context, or vice versa.
 
@@ -12994,7 +12996,7 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
       }, [store, didStoreComeFromProps, contextValue]); // Determine what {store, subscription} value should be put into nested context, if necessary,
       // and memoize that value to avoid unnecessary context updates.
 
-      const overriddenContextValue = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(() => {
+      const overriddenContextValue = react__WEBPACK_IMPORTED_MODULE_3__.useMemo(() => {
         if (didStoreComeFromProps) {
           // This component is directly subscribed to a store from props.
           // We don't want descendants reading from this store - pass down whatever
@@ -13009,20 +13011,20 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
         });
       }, [didStoreComeFromProps, contextValue, subscription]); // Set up refs to coordinate values between the subscription effect and the render logic
 
-      const lastChildProps = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)();
-      const lastWrapperProps = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(wrapperProps);
-      const childPropsFromStoreUpdate = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)();
-      const renderIsScheduled = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(false);
-      const isProcessingDispatch = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(false);
-      const isMounted = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)(false);
-      const latestSubscriptionCallbackError = (0,react__WEBPACK_IMPORTED_MODULE_3__.useRef)();
+      const lastChildProps = react__WEBPACK_IMPORTED_MODULE_3__.useRef();
+      const lastWrapperProps = react__WEBPACK_IMPORTED_MODULE_3__.useRef(wrapperProps);
+      const childPropsFromStoreUpdate = react__WEBPACK_IMPORTED_MODULE_3__.useRef();
+      const renderIsScheduled = react__WEBPACK_IMPORTED_MODULE_3__.useRef(false);
+      const isProcessingDispatch = react__WEBPACK_IMPORTED_MODULE_3__.useRef(false);
+      const isMounted = react__WEBPACK_IMPORTED_MODULE_3__.useRef(false);
+      const latestSubscriptionCallbackError = react__WEBPACK_IMPORTED_MODULE_3__.useRef();
       (0,_utils_useIsomorphicLayoutEffect__WEBPACK_IMPORTED_MODULE_10__.useIsomorphicLayoutEffect)(() => {
         isMounted.current = true;
         return () => {
           isMounted.current = false;
         };
       }, []);
-      const actualChildPropsSelector = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(() => {
+      const actualChildPropsSelector = react__WEBPACK_IMPORTED_MODULE_3__.useMemo(() => {
         const selector = () => {
           // Tricky logic here:
           // - This render may have been triggered by a Redux store update that produced new child props
@@ -13046,7 +13048,7 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
       // about useLayoutEffect in SSR, so we try to detect environment and fall back to
       // just useEffect instead to avoid the warning, since neither will run anyway.
 
-      const subscribeForReact = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(() => {
+      const subscribeForReact = react__WEBPACK_IMPORTED_MODULE_3__.useMemo(() => {
         const subscribe = reactListener => {
           if (!subscription) {
             return () => {};
@@ -13082,23 +13084,23 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
       }); // Now that all that's done, we can finally try to actually render the child component.
       // We memoize the elements for the rendered child component as an optimization.
 
-      const renderedWrappedComponent = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(() => {
+      const renderedWrappedComponent = react__WEBPACK_IMPORTED_MODULE_3__.useMemo(() => {
         return (
           /*#__PURE__*/
           // @ts-ignore
-          react__WEBPACK_IMPORTED_MODULE_3___default().createElement(WrappedComponent, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, actualChildProps, {
+          react__WEBPACK_IMPORTED_MODULE_3__.createElement(WrappedComponent, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, actualChildProps, {
             ref: reactReduxForwardedRef
           }))
         );
       }, [reactReduxForwardedRef, WrappedComponent, actualChildProps]); // If React sees the exact same element reference as last time, it bails out of re-rendering
       // that child, same as if it was wrapped in React.memo() or returned false from shouldComponentUpdate.
 
-      const renderedChild = (0,react__WEBPACK_IMPORTED_MODULE_3__.useMemo)(() => {
+      const renderedChild = react__WEBPACK_IMPORTED_MODULE_3__.useMemo(() => {
         if (shouldHandleStateChanges) {
           // If this component is subscribed to store updates, we need to pass its own
           // subscription instance down to our descendants. That means rendering the same
           // Context instance, and putting a different value into the context.
-          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(ContextToUse.Provider, {
+          return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(ContextToUse.Provider, {
             value: overriddenContextValue
           }, renderedWrappedComponent);
         }
@@ -13108,7 +13110,7 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
       return renderedChild;
     }
 
-    const _Connect = react__WEBPACK_IMPORTED_MODULE_3___default().memo(ConnectFunction);
+    const _Connect = react__WEBPACK_IMPORTED_MODULE_3__.memo(ConnectFunction);
 
     // Add a hacky cast to get the right output type
     const Connect = _Connect;
@@ -13116,9 +13118,9 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
     Connect.displayName = ConnectFunction.displayName = displayName;
 
     if (forwardRef) {
-      const _forwarded = react__WEBPACK_IMPORTED_MODULE_3___default().forwardRef(function forwardConnectRef(props, ref) {
+      const _forwarded = react__WEBPACK_IMPORTED_MODULE_3__.forwardRef(function forwardConnectRef(props, ref) {
         // @ts-ignore
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(Connect, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, props, {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(Connect, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, props, {
           reactReduxForwardedRef: ref
         }));
       });

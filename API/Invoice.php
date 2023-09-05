@@ -130,7 +130,9 @@ class Invoice
     {
         $stripe_customer_id = $request->get_param('slug');
 
-        return $this->database_invoice->getClientInvoices($stripe_customer_id);
+        $invoices = $this->database_invoice->getClientInvoices($stripe_customer_id);
+    
+        return rest_ensure_response($invoices);
     }
 
     public function finalize_invoice(WP_REST_Request $request)

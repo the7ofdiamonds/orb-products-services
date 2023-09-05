@@ -5,7 +5,7 @@ namespace ORB_Services\API;
 use WP_REST_Request;
 use WP_Query;
 
-class Service
+class Product
 {
     private $post_type;
     private $stripe_products;
@@ -13,29 +13,29 @@ class Service
 
     public function __construct($stripe_products, $stripe_prices)
     {
-        $this->post_type = 'services';
+        $this->post_type = 'products';
         $this->stripe_products = $stripe_products;
         $this->stripe_prices = $stripe_prices;
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/service/(?P<slug>[a-z0-9-]+)', [
-                'methods' => 'POST',
-                'callback' => [$this, 'add_service'],
+            register_rest_route('orb/v1', '/product', [
+                'methods' => 'GET',
+                'callback' => [$this, 'add_product'],
                 'permission_callback' => '__return_true',
             ]);
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/service/(?P<slug>[a-z0-9-]+)', [
+            register_rest_route('orb/v1', '/product/available', [
                 'methods' => 'GET',
-                'callback' => [$this, 'get_service'],
+                'callback' => [$this, 'get_product'],
                 'permission_callback' => '__return_true',
             ]);
         });
     }
 
     //Create service at the backend ???
-    function add_service(WP_REST_Request $request)
+    function add_product(WP_REST_Request $request)
     {
         $id = $request['id'];
         $name = $request['name'];
@@ -74,7 +74,7 @@ class Service
         return rest_ensure_response($price);
     }
 
-    function get_service(WP_REST_Request $request)
+    function get_product(WP_REST_Request $request)
     {
         $slug = $request->get_param('slug');
         $args = array(
@@ -89,14 +89,15 @@ class Service
             $post_data = array(
                 'id' => get_the_ID(),
                 'title' => get_the_title(),
-                'description' => get_post_meta(get_the_ID(), '_service_description', true),
+                'description' => get_post_meta(get_the_ID(), '_products_description', true),
                 'content' => strip_tags(strip_shortcodes(get_the_content())),
-                'features' => get_post_meta(get_the_ID(), '_service_features', true),
-                'icon' => get_post_meta(get_the_ID(), '_service_icon', true),
-                'action_word' => get_post_meta(get_the_ID(), '_services_button', true),
+                'features' => get_post_meta(get_the_ID(), '_products_features', true),
+                'icon' => get_post_meta(get_the_ID(), '_products_icon', true),
+                'action_word' => get_post_meta(get_the_ID(), '_productss_button', true),
                 'slug' => get_post_field('post_name', get_the_ID()),
-                'cost' => get_post_meta(get_the_ID(), '_service_cost', true),
+                'cost' => get_post_meta(get_the_ID(), '_products_cost', true),
             );
+
             return rest_ensure_response($post_data, 200);
         } else {
             return rest_ensure_response('Post not found');
