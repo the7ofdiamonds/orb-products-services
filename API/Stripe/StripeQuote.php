@@ -7,17 +7,13 @@ use Stripe\Exception\ApiErrorException;
 class StripeQuote
 {
     private $stripeClient;
-    private $tax_enabled;
-    private $list_limit;
 
-    public function __construct($stripeClient, $tax_enabled, $list_limit)
+    public function __construct($stripeClient)
     {
         $this->stripeClient = $stripeClient;
-        $this->tax_enabled = $tax_enabled;
-        $this->list_limit = $list_limit;
     }
 
-    public function createStripeQuote($stripe_customer_id, $selections, $quote_id='')
+    public function createStripeQuote($stripe_customer_id, $selections, $quote_id = '', $tax_enabled = false)
     {
         try {
             if (empty($stripe_customer_id)) {
@@ -42,10 +38,6 @@ class StripeQuote
                 return $response;
             }
 
-            if (empty($this->tax_enabled)) {
-                $this->tax_enabled = 'false';
-            }
-
             $line_items = [];
 
             foreach ($selections as $selection) {
@@ -58,7 +50,7 @@ class StripeQuote
 
             $stripe_quote = $this->stripeClient->quotes->create([
                 'automatic_tax' => [
-                    'enabled' => $this->tax_enabled,
+                    'enabled' => $tax_enabled,
                 ],
                 'collection_method' => 'send_invoice',
                 'invoice_settings' => [
@@ -293,12 +285,12 @@ class StripeQuote
         }
     }
 
-    public function getStripeQuotes()
+    public function getStripeQuotes($list_limit = 10)
     {
         try {
             $quotes = $this->stripeClient->quotes->all(
                 [
-                    'limit' => $this->list_limit
+                    'limit' => $list_limit
                 ],
             );
 
@@ -319,7 +311,7 @@ class StripeQuote
         }
     }
 
-    public function getStripeClientQuotes($stripe_customer_id)
+    public function getStripeClientQuotes($stripe_customer_id, $list_limit = 10)
     {
         try {
             if (empty($stripe_customer_id)) {
@@ -333,7 +325,7 @@ class StripeQuote
             $quotes = $this->stripeClient->quotes->all(
                 [
                     'customer' => $stripe_customer_id,
-                    'limit' => $this->list_limit
+                    'limit' => $list_limit
                 ],
             );
 

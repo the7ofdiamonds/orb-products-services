@@ -7,12 +7,10 @@ use Stripe\Exception\ApiErrorException;
 class StripePaymentIntents
 {
     private $stripeClient;
-    private $list_limit;
 
-    public function __construct($stripeClient, $list_limit)
+    public function __construct($stripeClient)
     {
-        $this->$stripeClient = $stripeClient;
-        $this->$list_limit = $list_limit;
+        $this->stripeClient = $stripeClient;
     }
 
     public function createPaymentIntent($amount, $automatic_payment_methods, $currency, $email, $invoice_id)
@@ -168,10 +166,10 @@ class StripePaymentIntents
         }
     }
 
-    public function getPaymentIntents()
+    public function getPaymentIntents($list_limit = '')
     {
         try {
-            $payment_intents = $this->stripeClient->paymentIntents->all(['limit' => $this->list_limit]);
+            $payment_intents = $this->stripeClient->paymentIntents->all(['limit' => $list_limit]);
 
             return $payment_intents;
         } catch (ApiErrorException $e) {

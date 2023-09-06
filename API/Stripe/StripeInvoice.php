@@ -7,17 +7,13 @@ use Stripe\Exception\ApiErrorException;
 class StripeInvoice
 {
     private $stripeClient;
-    private $tax_enabled;
-    private $list_limit;
 
-    public function __construct($stripeClient, $tax_enabled, $list_limit)
+    public function __construct($stripeClient)
     {
         $this->stripeClient = $stripeClient;
-        $this->tax_enabled = $tax_enabled;
-        $this->$list_limit = $list_limit;
     }
 
-    public function createStripeInvoice($stripe_customer_id, $selections)
+    public function createStripeInvoice($stripe_customer_id, $selections, $tax_enabled = false)
     {
         try {
             if (empty($stripe_customer_id)) {
@@ -42,10 +38,6 @@ class StripeInvoice
                 return $response;
             }
 
-            if (empty($this->tax_enabled)) {
-                $this->tax_enabled = 'false';
-            }
-
             $line_items = [];
 
             foreach ($selections as $selection) {
@@ -58,7 +50,7 @@ class StripeInvoice
 
             $stripe_quote = $this->stripeClient->quotes->create([
                 'automatic_tax' => [
-                    'enabled' => $this->tax_enabled,
+                    'enabled' => $tax_enabled,
                 ],
                 'collection_method' => 'send_invoice',
                 'invoice_settings' => [
@@ -110,12 +102,12 @@ class StripeInvoice
         }
     }
 
-    public function getStripeInvoices()
+    public function getStripeInvoices($list_limit = '')
     {
 
         try {
             $stripe_invoice = $this->stripeClient->invoices->all(
-                ['limit' => $this->list_limit]
+                ['limit' => $list_limit]
             );
 
             return $stripe_invoice;
@@ -135,7 +127,7 @@ class StripeInvoice
         }
     }
 
-    public function getStripeClientInvoices($stripe_customer_id)
+    public function getStripeClientInvoices($stripe_customer_id, $list_limit = 10)
     {
         try {
             if (empty($stripe_customer_id)) {
@@ -149,7 +141,7 @@ class StripeInvoice
             $invoices = $this->stripeClient->invoices->all(
                 [
                     'customer' => $stripe_customer_id,
-                    'limit' => $this->list_limit
+                    'limit' => $list_limit
                 ],
             );
 

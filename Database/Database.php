@@ -1,16 +1,17 @@
 <?php
 
-namespace ORB_Services\Database\Tables;
+namespace ORB_Services\Database;
 
 require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
-class Tables
+class Database
 {
 
     public function __construct()
     {
         $this->create_services_table();
         $this->create_client_table();
+        $this->create_customer_table();
         $this->create_quote_table();
         $this->create_invoice_table();
         $this->create_receipt_table();
@@ -49,6 +50,27 @@ class Tables
             created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             user_id VARCHAR(255) DEFAULT NULL,
             stripe_customer_id VARCHAR(255) DEFAULT NULL,
+            company_name VARCHAR(255) DEFAULT NULL,
+            first_name VARCHAR(255) DEFAULT NULL,
+            last_name VARCHAR(255) DEFAULT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+
+        dbDelta($sql);
+    }
+
+    function create_customer_table()
+    {
+        global $wpdb;
+        $table_name = 'orb_customer';
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE {$table_name} (
+            id INT NOT NULL AUTO_INCREMENT,
+            created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            user_id VARCHAR(255) DEFAULT NULL,
+            stripe_customer_id VARCHAR(255) DEFAULT NULL,
+            company_name VARCHAR(255) DEFAULT NULL,
             first_name VARCHAR(255) DEFAULT NULL,
             last_name VARCHAR(255) DEFAULT NULL,
             PRIMARY KEY (id)

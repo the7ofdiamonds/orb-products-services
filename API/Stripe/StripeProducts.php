@@ -7,12 +7,10 @@ use Stripe\Exception\ApiErrorException;
 class StripeProducts
 {
     private $stripeClient;
-    private $list_limit;
 
-    public function __construct($stripeClient, $list_limit)
+    public function __construct($stripeClient)
     {
-        $this->$stripeClient = $stripeClient;
-        $this->$list_limit = $list_limit;
+        $this->stripeClient = $stripeClient;
     }
 
     public function createProduct(
@@ -135,10 +133,10 @@ class StripeProducts
         }
     }
 
-    public function getProducts()
+    public function getProducts($list_limit = 10)
     {
         try {
-            $products = $this->stripeClient->products->all(['limit' => $this->list_limit]);
+            $products = $this->stripeClient->products->all(['limit' => $list_limit]);
 
             return $products;
         } catch (ApiErrorException $e) {

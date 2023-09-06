@@ -17,14 +17,13 @@ use Dotenv\Dotenv;
 use ORB_Services\Admin\Admin;
 use ORB_Services\API\API;
 use ORB_Services\CSS\CSS;
-use ORB_Services\Email\Email;
 use ORB_Services\JS\JS;
 use ORB_Services\Menus\Menus;
 use ORB_Services\Pages\Pages;
 use ORB_Services\Post_Types\Services;
 use ORB_Services\Roles\Roles;
 use ORB_Services\Shortcodes\Shortcodes;
-use ORB_Services\Database\Tables\Tables;
+use ORB_Services\Database\Database;
 use ORB_Services\Templates\Templates;
 
 use Stripe\Stripe;
@@ -100,12 +99,11 @@ class ORB_Services
         }
 
         new CSS;
-		// new Email;
         new JS;
         new Pages;
         new Roles;
         new Shortcodes;
-        new Tables;
+        new Database;
         new Templates;
     }
 

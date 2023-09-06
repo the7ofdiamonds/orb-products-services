@@ -2,6 +2,8 @@
 
 namespace ORB_Services\Admin;
 
+use ORB_Services\Email\Email;
+
 $smtp_host = get_option('smtp_host');
 $smtp_port = get_option('smtp_port');
 $smtp_secure = get_option('smtp_secure');
@@ -13,25 +15,26 @@ $invoice_email = get_option('invoice_email');
 $receipt_email = get_option('receipt_email');
 $support_email = get_option('support_email');
 
-define('WP_MAIL_SMTP', true);
-define('SMTP_HOST', $smtp_host);
-define('SMTP_PORT', $smtp_port);
-define('SMTP_SECURE', $smtp_secure);
-define('SMTP_ENCRYPTION', $smtp_secure);
-define('SMTP_AUTH', $smtp_auth);
-define('SMTP_USERNAME', $smtp_username);
-define('SMTP_PASSWORD', $smtp_password);
-
-define('CONTACT_EMAIL', $contact_email);
-define('INVOICE_EMAIL', $invoice_email);
-define('RECEIPT_EMAIL', $receipt_email);
-define('SUPPORT_EMAIL', $support_email);
-
 class AdminEmail
 {
 
     public function __construct()
     {
+        $smtp_host = get_option('smtp_host');
+        $smtp_port = get_option('smtp_port');
+        $smtp_secure = get_option('smtp_secure');
+        $smtp_auth = get_option('smtp_auth');
+        $smtp_username = get_option('smtp_username');
+        $smtp_password   = get_option('smtp_password');
+        $contact_email = get_option('contact_email');
+        $invoice_email = get_option('invoice_email');
+        $receipt_email = get_option('receipt_email');
+        $support_email = get_option('support_email');
+        // Signup Email
+        // Quote Email
+
+        new Email($smtp_auth, $smtp_host, $smtp_secure, $smtp_port, $smtp_username, $smtp_password, $from_email, $from_name);
+
         add_action('admin_menu', [$this, 'register_custom_menu_page']);
     }
 

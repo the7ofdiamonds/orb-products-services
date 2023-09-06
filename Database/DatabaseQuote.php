@@ -232,9 +232,7 @@ class DatabaseQuote
 
         if (!empty($data)) {
             $updated = $this->wpdb->update($this->table_name, $data, $where);
-        } else {
-            $updated = 0;
-        }
+        } 
 
         if ($updated === false) {
             $error_message = $this->wpdb->last_error ?: 'Quote not found';

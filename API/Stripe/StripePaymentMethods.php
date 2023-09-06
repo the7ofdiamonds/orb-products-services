@@ -7,12 +7,10 @@ use Stripe\Exception\ApiErrorException;
 class StripePaymentMethods
 {
     private $stripeClient;
-    private $list_limit;
 
-    public function __construct($stripeClient, $list_limit)
+    public function __construct($stripeClient)
     {
-        $this->$stripeClient = $stripeClient;
-        $this->$list_limit = $list_limit;
+        $this->stripeClient = $stripeClient;
     }
 
     public function createPaymentMethod($type, $details)
@@ -93,7 +91,7 @@ class StripePaymentMethods
     }
 
 
-    public function getPaymentMethods($type = '', $customer = '', $ending_before = '', $starting_after = '')
+    public function getPaymentMethods($type = '', $customer = '', $ending_before = '', $starting_after = '', $list_limit = '')
     {
         try {
             $payment_methods = $this->stripeClient->paymentMethods->all([
@@ -101,7 +99,7 @@ class StripePaymentMethods
                 'customer' => $customer,
                 'ending_before' => $ending_before,
                 'starting_after' => $starting_after,
-                'limit' => $this->list_limit
+                'limit' => $list_limit
             ]);
 
             return $payment_methods;

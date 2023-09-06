@@ -4,15 +4,15 @@ namespace ORB_Services\API;
 
 use WP_REST_Request;
 
-use Stripe\Exception\ApiErrorException;
-
 class Clients
 {
-    private $stripeClient;
+    private $stripe_customers;
+    private $database_client;
 
-    public function __construct($stripeClient)
+    public function __construct($stripe_customers, $database_client)
     {
-        $this->stripeClient = $stripeClient;
+        $this->stripe_customers = $stripe_customers;
+        $this->database_client = $database_client;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/users/clients', array(
@@ -33,101 +33,127 @@ class Clients
 
     function add_client(WP_REST_Request $request)
     {
-        try {
-            $company_name = $request['company_name'];
-            $tax_id = $request['tax_id'];
-            $first_name = $request['first_name'];
-            $last_name = $request['last_name'];
-            $user_email = $request['user_email'];
-            $phone = $request['phone'];
-            $address_line_1 = $request['address_line_1'];
-            $address_line_2 = $request['address_line_2'];
-            $city = $request['city'];
-            $state = $request['state'];
-            $zipcode = $request['zipcode'];
-            $country = $request['country'];
+        $company_name = $request['company_name'];
+        $tax_id = $request['tax_id'];
+        $first_name = $request['first_name'];
+        $last_name = $request['last_name'];
+        $email = $request['user_email'];
+        $phone = $request['phone'];
+        $address_line_1 = $request['address_line_1'];
+        $address_line_2 = $request['address_line_2'];
+        $city = $request['city'];
+        $state = $request['state'];
+        $zipcode = $request['zipcode'];
+        $country = $request['country'];
+        $metadata = $request['metadata'];
+        $payment_method_id = $request['payment_method_id'];
+        $description = $request['description'];
+        $balance = $request['balance'];
+        $cash_balance = $request['cash_balance'];
+        $coupon = $request['coupon'];
+        $invoice_prefix = $request['invoice_prefix'];
+        $invoice_settings = $request['invoice_settings'];
+        $next_invoice_sequence = $request['next_invoice_sequence'];
+        $preferred_locales = $request['preferred_locales'];
+        $promotion_code = $request['promotion_code'];
+        $source = $request['source'];
+        $tax = $request['tax'];
+        $tax_id_type = $request['tax_id_type'];
+        $tax_exempt = $request['tax_exempt'];
+        $test_clock = $request['test_clock'];
 
-            $user = get_user_by('email', $user_email);
-            $user_id = $user->ID;
+        $address = [
+            'line1' => $address_line_1,
+            'line2' => $address_line_2,
+            'city' => $city,
+            'state' => $state,
+            'postal_code' => $zipcode,
+            'country' => $country
+        ];
 
-            if (is_wp_error($user)) {
-                $error_message = $user->get_error_message();
-                return rest_ensure_response(array('error' => $error_message));
-            }
-
-            if (!isset($first_name)) {
-                return rest_ensure_response('There was an error updating the users first name.');
-            }
-
-            if (!isset($last_name)) {
-                return rest_ensure_response('There was an error updating the users last name.');
-            }
-
-            update_user_meta($user_id, 'first_name', sanitize_text_field($first_name));
-            update_user_meta($user_id, 'last_name', sanitize_text_field($last_name));
-
-            if (!$company_name) {
-                $company_name = $first_name . ' ' . $last_name;
-            }
-
-            $customer = $this->stripeClient->customers->create([
-                'name' => $company_name,
-                'email' => $user_email,
-                'phone' => $phone,
-                'address' => [
-                    'line1' => $address_line_1,
-                    'line2' => $address_line_2,
-                    'city' => $city,
-                    'state' => $state,
-                    'postal_code' => $zipcode,
-                    'country' => $country
-                ],
-                'tax_id_data' => [
-                    [
-                        'type' => 'us_ein',
-                        'value' => $tax_id
-                    ]
-                ],
-                'metadata' => [
-                    'user_id' => $user_id,
-                    'client_name' => $first_name . ' ' . $last_name
-                ]
-            ]);
-
-            $stripe_customer_id = $customer->id;
-
-            global $wpdb;
-
-            $table_name = 'orb_client';
-            $result = $wpdb->insert(
-                $table_name,
-                [
-                    'user_id' => $user_id,
-                    'stripe_customer_id' => $stripe_customer_id,
-                    "first_name" => $first_name,
-                    "last_name" => $last_name,
-                ]
-            );
-
-            if (!$result) {
-                $error_message = $wpdb->last_error;
-                return rest_ensure_response($error_message);
-            }
-
-            $client_id = $wpdb->insert_id;
-
-            $data = [
-                'client_id' => $client_id,
-                'stripe_customer_id' => $stripe_customer_id
+        if (!isset($shipping)) {
+            $shipping = [
+                'line1' => $address_line_1,
+                'line2' => $address_line_2,
+                'city' => $city,
+                'state' => $state,
+                'postal_code' => $zipcode,
+                'country' => $country
             ];
-
-            return rest_ensure_response($data);
-        } catch (ApiErrorException $e) {
-            return rest_ensure_response($e);
         }
+
+        $tax_id_data = array(
+            'type' => $tax_id_type,
+            'value' => $tax_id
+        );
+
+        $user = get_user_by('email', $email);
+
+        if (is_wp_error($user)) {
+            $error_message = $user->get_error_message();
+            return rest_ensure_response(array('error' => $error_message));
+        }
+
+        $user_id = $user->ID;
+
+        if (isset($first_name)) {
+            update_user_meta($user_id, 'first_name', sanitize_text_field($first_name));
+        }
+
+        if (isset($last_name)) {
+            update_user_meta($user_id, 'last_name', sanitize_text_field($last_name));
+        }
+
+        if (isset($first_name) && isset($last_name)) {
+            $name = $first_name . ' ' . $last_name;
+        }
+
+        if (isset($company_name)) {
+            $name = $company_name;
+        }
+
+        $metadata = array(
+            'user_id' => $user_id,
+            'client_name' => $first_name . ' ' . $last_name
+        );
+
+        $customer = $this->stripe_customers->createCustomer(
+            $name,
+            $email,
+            $address,
+            $shipping,
+            $phone,
+            $payment_method_id,
+            $description,
+            $balance,
+            $cash_balance,
+            $coupon,
+            $invoice_prefix,
+            $invoice_settings,
+            $next_invoice_sequence,
+            $preferred_locales,
+            $promotion_code,
+            $source,
+            $tax,
+            $tax_exempt,
+            $tax_id_data,
+            $test_clock,
+            $metadata
+        );
+
+        $stripe_customer_id = $customer->id;
+
+        $client_id = $this->database_client->saveClient($user_id, $stripe_customer_id, $first_name, $last_name);
+
+        $data = [
+            'client_id' => $client_id,
+            'stripe_customer_id' => $stripe_customer_id
+        ];
+
+        return rest_ensure_response($data);
     }
 
-    function get_client(WP_REST_Request $request)
+    public function get_client(WP_REST_Request $request)
     {
         $user_email_encoded = $request->get_param('slug');
         $user_email = urldecode($user_email_encoded);
@@ -135,27 +161,20 @@ class Clients
 
         $user_id = $user->id;
 
-        global $wpdb;
+        $client = $this->database_client->getClient($user_id);
 
-        $client = $wpdb->get_row(
-            $wpdb->prepare(
-                "SELECT * FROM orb_client WHERE user_id = %d",
-                $user_id
-            )
-        );
+        return rest_ensure_response($client);
+    }
 
-        if ($client === null) {
-            return rest_ensure_response('Client not found');
-        }
+    public function update_client(WP_REST_Request $request)
+    {
+        $stripe_customer_id = $request->get_param('slug');
+        $company_name = $request['company_name'];
+        $first_name = $request['first_name'];
+        $last_name = $request['last_name'];
 
-        $client_data = [
-            "id" => $client->id,
-            "user_id" => $client->user_id,
-            "stripe_customer_id" => $client->stripe_customer_id,
-            "first_name" => $client->first_name,
-            "last_name" => $client->last_name,
-        ];
+        $updated_client = $this->database_client->updateClient($stripe_customer_id, $company_name, $first_name, $last_name);
 
-        return rest_ensure_response($client_data);
+        return $updated_client;
     }
 }
