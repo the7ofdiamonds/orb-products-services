@@ -9263,7 +9263,8 @@ const QuoteComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpa
 const StartComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Start_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Start.jsx */ "./src/views/Start.jsx")));
 const ClientComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_start_Client_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/start/Client.jsx */ "./src/views/start/Client.jsx")));
 const InvoiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Invoice_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Invoice.jsx */ "./src/views/Invoice.jsx")));
-const ScheduleComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => Promise.resolve(/*! import() */).then(__webpack_require__.bind(__webpack_require__, /*! ./views/Schedule.jsx */ "./src/views/Schedule.jsx")));
+const ContactComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Contact_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Contact.jsx */ "./src/views/Contact.jsx")));
+const ContactSuccessComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ContactSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ContactSuccess.jsx */ "./src/views/ContactSuccess.jsx")));
 const PaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Payment_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Payment.jsx */ "./src/views/Payment.jsx")));
 const CardPaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_payment_Card_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/payment/Card.jsx */ "./src/views/payment/Card.jsx")));
 const MobileComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_payment_Mobile_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/payment/Mobile.jsx */ "./src/views/payment/Mobile.jsx")));
@@ -9321,6 +9322,12 @@ function App() {
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/*",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ErrorComponent, null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    path: "contact",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactComponent, null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    path: "contact/success",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactSuccessComponent, null)
   })))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);

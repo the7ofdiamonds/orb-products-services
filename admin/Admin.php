@@ -3,6 +3,8 @@
 namespace ORB_Services\Admin;
 
 use ORB_Services\Admin\AdminEmail;
+use ORB_Services\Admin\AdminEmailContact;
+use ORB_Services\Admin\AdminEmailSupport;
 use ORB_Services\Admin\AdminHero;
 use ORB_Services\Admin\AdminLocation;
 use ORB_Services\Admin\AdminOfficeHours;
@@ -18,6 +20,8 @@ class Admin
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_styles']);
 
         new AdminEmail;
+        new AdminEmailContact;
+        new AdminEmailSupport;
         new AdminHero;
         new AdminOfficeHours;
         new AdminLocation;

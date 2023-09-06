@@ -42,6 +42,8 @@ class JS
         $directory = ORB_SERVICES . 'build';
         $pages = [
             'about',
+            'contact',
+            'contact/success',
             'dashboard',
             'schedule',
             'services',

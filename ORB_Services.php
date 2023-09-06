@@ -17,6 +17,7 @@ use Dotenv\Dotenv;
 use ORB_Services\Admin\Admin;
 use ORB_Services\API\API;
 use ORB_Services\CSS\CSS;
+use ORB_Services\Email\Email;
 use ORB_Services\JS\JS;
 use ORB_Services\Menus\Menus;
 use ORB_Services\Pages\Pages;
@@ -28,6 +29,8 @@ use ORB_Services\Templates\Templates;
 
 use Stripe\Stripe;
 use Stripe\StripeClient;
+
+use PHPMailer\PHPMailer\PHPMailer;
 
 class ORB_Services
 {
@@ -90,11 +93,14 @@ class ORB_Services
             }
         }
 
+        $mailer = new PHPMailer();
+        $email = new Email($mailer);
+
         if ($credentialsPath !== null && $stripeSecretKey !== null) {
             Stripe::setApiKey($stripeSecretKey);
             $stripeClient = new StripeClient($stripeSecretKey);
 
-            new API($credentialsPath, $stripeClient);
+            new API($credentialsPath, $stripeClient, $mailer);
             new Services($stripeClient);
         }
 
@@ -128,6 +134,7 @@ register_activation_hook(__FILE__, [$orb_services, 'activate']);
 $orb_services_pages = new Pages();
 register_activation_hook(__FILE__, [$orb_services_pages, 'add_pages']);
 register_activation_hook(__FILE__, [$orb_services_pages, 'add_services_subpages']);
+register_activation_hook(__FILE__, [$orb_services_pages, 'add_contact_subpage']);
 
 $orb_services_menus = new Menus();
 register_activation_hook(__FILE__, [$orb_services_menus, 'create_mobile_menu']);

@@ -2,33 +2,70 @@
 
 namespace ORB_Services\Email;
 
-use ORB_Services\Email\Email;
+use PHPMailer\PHPMailer\Exception;
 
-class EmailContact extends Email
+class EmailContact
 {
-    private $email;
+    private $mailer;
+    private $smtp_host;
+    private $smtp_port;
+    private $smtp_secure;
+    private $smtp_auth;
+    private $smtp_username;
+    private $smtp_password;
     private $to_email;
     private $to_name;
 
-    public function __construct()
+    public function __construct($mailer)
     {
-        $smtp_host = get_option('smtp_host');
-        $smtp_port = get_option('smtp_port');
-        $smtp_secure = get_option('smtp_secure');
-        $smtp_auth = get_option('smtp_auth');
-        $smtp_username = get_option('smtp_username');
-        $smtp_password = get_option('smtp_password');
-        $this->to_email = 'jamel.c.lyons@outlook.com';
-        $this->to_name = 'Contact @ THE7OFDIAMONDS.TECH';
-
-        $this->email = new Email($smtp_auth, $smtp_host, $smtp_secure, $smtp_port, $smtp_username, $smtp_password, $this->to_email, $this->to_name);
+        $this->mailer = $mailer;
+        $this->smtp_host = get_option('contact_smtp_host');
+        $this->smtp_port = get_option('contact_smtp_port');
+        $this->smtp_secure = get_option('contact_smtp_secure');
+        $this->smtp_auth = get_option('contact_smtp_auth');
+        $this->smtp_username = get_option('contact_smtp_username');
+        $this->smtp_password = get_option('contact_smtp_password');
+        $this->to_email = get_option('contact_email');
+        $this->to_name = get_option('contact_name');
     }
 
     public function sendContactEmail($reply_to_email, $reply_to_name, $subject, $message)
     {
         $body = '<p>' . $message . '</p>';
         $alt_body = $message;
+    
+        try {
+            $this->mailer->isSMTP();
+            $this->mailer->SMTPAuth = $this->smtp_auth;
+            $this->mailer->Host = $this->smtp_host;
+            $this->mailer->SMTPSecure = $this->smtp_secure;
+            $this->mailer->Port = $this->smtp_port;
 
-        return $this->email->sendEmail($this->to_email, $this->to_name, $reply_to_email, $reply_to_name, $subject, $body, $alt_body);
+            $this->mailer->Username = $this->smtp_username;
+            $this->mailer->Password = $this->smtp_password;
+
+            $this->mailer->setFrom($this->to_email, $this->to_name);
+            $this->mailer->addAddress($this->to_email, $this->to_name);
+            $this->mailer->addReplyTo($reply_to_email, $reply_to_name);
+
+            $this->mailer->isHTML(true);
+            $this->mailer->Subject = $subject;
+            $this->mailer->Body = $body;
+            $this->mailer->AltBody = $alt_body;
+
+            if (isset($path) && isset($attachment_name)) {
+                
+                $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
+            }
+
+            if ($this->mailer->send()) {
+                return ['message' => 'Message has been sent'];
+            } else {
+                throw new Exception("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
+            }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return ['error' => $e->getMessage()];
+        }
     }
 }

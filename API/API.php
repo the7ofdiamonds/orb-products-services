@@ -5,15 +5,70 @@ namespace ORB_Services\API;
 use ORB_Services\API\Stripe\Stripe;
 use ORB_Services\API\Schedule;
 
+use ORB_Services\API\Stripe\StripeQuote;
+use ORB_Services\API\Stripe\StripeInvoice;
+use ORB_Services\API\Stripe\StripePaymentIntents;
+use ORB_Services\API\Stripe\StripeCharges;
+use ORB_Services\API\Stripe\StripePaymentMethods;
+use ORB_Services\API\Stripe\StripeProducts;
+use ORB_Services\API\Stripe\StripePrices;
+use ORB_Services\API\Stripe\StripeCustomers;
+
+use ORB_Services\Database\DatabaseClient;
+use ORB_Services\Database\DatabaseCustomer;
+use ORB_Services\Database\DatabaseQuote;
+use ORB_Services\Database\DatabaseInvoice;
+use ORB_Services\Database\DatabaseReceipt;
+
+use ORB_Services\Email\EmailContact;
+use ORB_Services\Email\EmailSupport;
+use ORB_Services\Email\EmailQuote;
+use ORB_Services\Email\EmailInvoice;
+use ORB_Services\Email\EmailReceipt;
+use ORB_Services\Email\EmailSchedule;
+
+use PHPMailer\PHPMailer\PHPMailer;
+
 class API
 {
-    public function __construct($credentialsPath, $stripeClient)
+    public function __construct($credentialsPath, $stripeClient, $mailer)
     {
         add_action('rest_api_init', [$this, 'add_to_rest_api']);
         add_action('rest_api_init', [$this, 'allow_cors_headers']);
 
         new Stripe($stripeClient);
         new Schedule($credentialsPath);
+
+        $stripe_quote = new StripeQuote($stripeClient);
+        $stripe_invoice = new StripeInvoice($stripeClient);
+        $stripe_payment_intent = new StripePaymentIntents($stripeClient);
+        $stripe_charges = new StripeCharges($stripeClient);
+        $stripe_payment_methods = new StripePaymentMethods($stripeClient);
+        $stripe_products = new StripeProducts($stripeClient);
+        $stripe_prices = new StripePrices($stripeClient);
+        $stripe_customers = new StripeCustomers($stripeClient);
+
+        $database_client = new DatabaseClient;
+        $database_customer = new DatabaseCustomer;
+        $database_quote = new DatabaseQuote;
+        $database_invoice = new DatabaseInvoice;
+        $database_receipt = new DatabaseReceipt;
+
+        $mailer = new PHPMailer();
+        $contact_email = new EmailContact($mailer);
+        $support_email = new EmailSupport($mailer);
+        $schedule_email = new EmailSchedule($mailer);
+        $quote_email = new EmailQuote($mailer, $stripe_quote, $database_quote);
+        $invoice_email = new EmailInvoice($mailer, $stripe_invoice, $database_invoice);
+        $receipt_email = new EmailReceipt($mailer, $stripe_invoice, $database_receipt);
+        new Email(
+            $contact_email,
+            $support_email,
+            $schedule_email,
+            $quote_email,
+            $invoice_email,
+            $receipt_email
+        );
     }
 
     public function add_to_rest_api()

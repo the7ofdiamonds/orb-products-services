@@ -9,7 +9,10 @@ const QuoteComponent = lazy(() => import('./views/Quote.jsx'));
 const StartComponent = lazy(() => import('./views/Start.jsx'));
 const ClientComponent = lazy(() => import('./views/start/Client.jsx'));
 const InvoiceComponent = lazy(() => import('./views/Invoice.jsx'));
-const ScheduleComponent = lazy(() => import('./views/Schedule.jsx'));
+const ContactComponent = lazy(() => import('./views/Contact.jsx'));
+const ContactSuccessComponent = lazy(() =>
+  import('./views/ContactSuccess.jsx')
+);
 const PaymentComponent = lazy(() => import('./views/Payment.jsx'));
 const CardPaymentComponent = lazy(() => import('./views/payment/Card.jsx'));
 const MobileComponent = lazy(() => import('./views/payment/Mobile.jsx'));
@@ -53,6 +56,11 @@ function App() {
             />
             <Route path="services/receipt/:id" element={<ReceiptComponent />} />
             <Route path="services/*" element={<ErrorComponent />} />
+            <Route path="contact" element={<ContactComponent />} />
+            <Route
+              path="contact/success"
+              element={<ContactSuccessComponent />}
+            />
           </Routes>
         </Suspense>
       </Router>

@@ -18,6 +18,9 @@ use ORB_Services\Database\DatabaseInvoice;
 use ORB_Services\Database\DatabaseReceipt;
 
 use ORB_Services\Email\Email;
+use ORB_Services\Email\EmailContact;
+use ORB_Services\Email\EmailSupport;
+use ORB_Services\Email\EmailSchedule;
 use ORB_Services\Email\EmailQuote;
 use ORB_Services\Email\EmailInvoice;
 use ORB_Services\Email\EmailReceipt;
@@ -32,6 +35,8 @@ use ORB_Services\API\Quote;
 use ORB_Services\API\Invoice;
 use ORB_Services\API\Payment;
 use ORB_Services\API\Receipt;
+
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Stripe
 {
@@ -52,10 +57,6 @@ class Stripe
         $database_invoice = new DatabaseInvoice;
         $database_receipt = new DatabaseReceipt;
 
-        $email_quote = new EmailQuote($stripe_quote, $database_quote);
-        $email_invoice = new EmailInvoice($stripe_invoice, $database_invoice);
-        $email_receipt = new EmailReceipt($stripe_invoice, $database_receipt);
-
         new Quote($stripe_quote, $database_quote);
         new Invoice($stripe_invoice, $database_invoice);
         new Receipt($stripe_invoice, $stripe_payment_intent, $stripe_charges, $database_receipt);
@@ -69,5 +70,20 @@ class Stripe
         new Clients($stripe_customers, $database_client);
         new Customers($stripe_customers, $database_customer);
 
+        $mailer = new PHPMailer();
+        $contact_email = new EmailContact($mailer);
+        $support_email = new EmailSupport($mailer);
+        $quote_email = new EmailQuote($mailer, $stripe_quote, $database_quote);
+        $invoice_email = new EmailInvoice($mailer, $stripe_invoice, $database_invoice);
+        $receipt_email = new EmailReceipt($mailer, $stripe_invoice, $database_receipt);
+        $schedule_email = new EmailSchedule($mailer);
+        new Email(
+            $contact_email,
+            $support_email,
+            $quote_email,
+            $invoice_email,
+            $receipt_email,
+            $schedule_email
+        );
     }
 }

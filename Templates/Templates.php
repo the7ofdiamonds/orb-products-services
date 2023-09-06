@@ -19,6 +19,7 @@ class Templates
         add_filter('page_template', [$this, 'get_custom_faq_page_template']);
         add_filter('page_template', [$this, 'get_custom_support_page_template']);
         add_filter('page_template', [$this, 'get_custom_contact_page_template']);
+        add_filter('page_template', [$this, 'get_custom_contact_success_page_template']);
     }
 
     function get_archive_page_template($single_template)
@@ -172,4 +173,15 @@ class Templates
 
         return $page_template;
     }
+
+    function get_custom_contact_success_page_template($page_template)
+    {
+
+        if (is_page('contact/success')) {
+            $page_template = ORB_SERVICES . 'Pages/page-contact-success.php';
+        }
+
+        return $page_template;
+    }
+
 }

@@ -4,22 +4,11 @@ namespace ORB_Services\API;
 
 use WP_REST_Request;
 
-use ORB_Services\Email\EmailContact;
-use ORB_Services\Email\EmailSupport;
-use ORB_Services\Email\EmailQuote;
-use ORB_Services\Email\EmailInvoice;
-use ORB_Services\Email\EmailReceipt;
-
-use ORB_Services\Database\DatabaseQuote;
-use ORB_Services\Database\DatabaseInvoice;
-use ORB_Services\Database\DatabaseReceipt;
-
-use ORB_Services\API\Stripe\StripeInvoice;
-
 class Email
 {
-    private $email_contact;
-    private $email_support;
+    private $contact_email;
+    private $support_email;
+    private $schedule_email;
     private $email_quote;
     private $email_invoice;
     private $email_receipt;
@@ -29,60 +18,131 @@ class Email
     private $stripe_invoice;
 
     public function __construct(
-        $stripe_quote,
-        $stripe_invoice,
+        $contact_email,
+        $support_email,
+        $schedule_email,
+        $quote_email,
+        $invoice_email,
+        $receipt_email
     ) {
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/contact', [
                 'methods' => 'POST',
-                'callback' => [$this, 'sendContact'],
+                'callback' => [$this, 'send_contact_email'],
                 'permission_callback' => '__return_true',
             ]);
         });
-        $this->email_contact = new EmailContact;
-
-        // $this->email_support = new EmailSupport();
-
-        // add_action('rest_api_init', function () {
-        //     register_rest_route('orb/v1', '/email/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
-        //         'methods' => 'GET',
-        //         'callback' => [$this, 'sendInvoice'],
-        //         'permission_callback' => '__return_true',
-        //     ]);
-        // });
-        // $this->quote_table = new DatabaseQuote();
-        // $this->stripe_quote = $stripe_quote;
-        // $this->email_quote = new EmailQuote();
+        $this->contact_email = $contact_email;
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/email/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
-                'methods' => 'GET',
-                'callback' => [$this, 'sendInvoice'],
+            register_rest_route('orb/v1', '/email/support', [
+                'methods' => 'POST',
+                'callback' => [$this, 'send_support_email'],
                 'permission_callback' => '__return_true',
             ]);
         });
-        $this->invoice_table = new DatabaseInvoice();
-        $this->stripe_invoice = $stripe_invoice;
-        $this->email_invoice = new EmailInvoice;
+        $this->support_email = $support_email;
 
-        // $this->email_receipt = new EmailReceipt();
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/email/schedule', [
+                'methods' => 'POST',
+                'callback' => [$this, 'send_schedule_email'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+        $this->schedule_email = $schedule_email;
     }
 
-    public function sendContact(WP_REST_Request $request)
+    public function send_contact_email(WP_REST_Request $request)
     {
-        $from_email = $request['contact_email'];
-        $from_name = $request['contact_name'];
-        $subject = $request['contact_subject'];
-        $message = $request['contact_message'];
+        $from_email = $request['email'];
+        $first_name = $request['first_name'];
+        $last_name = $request['first_name'];
+        $subject = $request['subject'];
+        $message = $request['message'];
 
-        return $this->email_contact->sendContactEmail($from_email, $from_name, $subject, $message);
+        if (empty($from_email)) {
+            $msg = 'Email is required';
+        } elseif (empty($first_name)) {
+            $msg = 'First name is required';
+        } elseif (empty($last_name)) {
+            $msg = 'Last name is required';
+        } elseif (empty($subject)) {
+            $msg = 'Subject is required';
+        } elseif (empty($message)) {
+            $msg = 'Message is required';
+        }
+
+        if (isset($msg)) {
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(400);
+            return $response;
+        }
+
+        $from_email = sanitize_email($from_email);
+        $first_name = sanitize_text_field($first_name);
+        $last_name = sanitize_text_field($last_name);
+        $subject = sanitize_text_field($subject);
+        $message = sanitize_textarea_field($message);
+
+        $contactEmail = $this->contact_email->sendContactEmail($from_email, $first_name, $subject, $message);
+
+        return rest_ensure_response($contactEmail);
     }
 
-    public function sendQuote()
+
+    public function send_support_email(WP_REST_Request $request)
+    {
+        $from_email = $request['email'];
+        $from_name = $request['name'];
+        $subject = $request['subject'];
+        $message = $request['message'];
+
+        if (empty($from_email)) {
+            $msg = 'Email is required';
+        } elseif (empty($from_name)) {
+            $msg = 'Name is required';
+        } elseif (empty($subject)) {
+            $msg = 'Subject is required';
+        } elseif (empty($message)) {
+            $msg = 'Message is required';
+        }
+
+        if (isset($msg)) {
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(400);
+            return $response;
+        }
+
+        $from_email = sanitize_email($from_email);
+        $from_name = sanitize_text_field($from_name);
+        $subject = sanitize_text_field($subject);
+        $message = sanitize_textarea_field($message);
+
+        $supportEmail = $this->support_email->sendSupportEmail($from_email, $from_name, $subject, $message);
+
+        if ($supportEmail) {
+            $success_url = '/support/success?name=' . urlencode($from_name) . '&email=' . urlencode($from_email);
+            wp_redirect($success_url);
+            exit;
+        }
+    }
+
+    public function send_schedule_email()
     {
     }
 
-    public function sendInvoice(WP_REST_Request $request)
+    public function send_quote_email()
+    {
+    }
+
+    public function send_invoice_email(WP_REST_Request $request)
     {
         $stripe_invoice_id = $request->get_param('slug');
 
@@ -106,7 +166,7 @@ class Email
         return $this->email_invoice->sendInvoiceEmail($to_email, $to_name, $subject, $message, $path, $attachment_name);
     }
 
-    public function sendReceipt()
+    public function send_receipt_email()
     {
     }
 }

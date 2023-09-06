@@ -4,37 +4,11 @@ namespace ORB_Services\Admin;
 
 use ORB_Services\Email\Email;
 
-$smtp_host = get_option('smtp_host');
-$smtp_port = get_option('smtp_port');
-$smtp_secure = get_option('smtp_secure');
-$smtp_auth = get_option('smtp_auth');
-$smtp_username = get_option('smtp_username');
-$smtp_password   = get_option('smtp_password');
-$contact_email = get_option('contact_email');
-$invoice_email = get_option('invoice_email');
-$receipt_email = get_option('receipt_email');
-$support_email = get_option('support_email');
-
 class AdminEmail
 {
 
     public function __construct()
     {
-        $smtp_host = get_option('smtp_host');
-        $smtp_port = get_option('smtp_port');
-        $smtp_secure = get_option('smtp_secure');
-        $smtp_auth = get_option('smtp_auth');
-        $smtp_username = get_option('smtp_username');
-        $smtp_password   = get_option('smtp_password');
-        $contact_email = get_option('contact_email');
-        $invoice_email = get_option('invoice_email');
-        $receipt_email = get_option('receipt_email');
-        $support_email = get_option('support_email');
-        // Signup Email
-        // Quote Email
-
-        new Email($smtp_auth, $smtp_host, $smtp_secure, $smtp_port, $smtp_username, $smtp_password, $from_email, $from_name);
-
         add_action('admin_menu', [$this, 'register_custom_menu_page']);
     }
 
@@ -48,7 +22,6 @@ class AdminEmail
 
     function create_section()
     {
-
         include plugin_dir_path(__FILE__) . 'includes/admin-edit-email.php';
     }
 
