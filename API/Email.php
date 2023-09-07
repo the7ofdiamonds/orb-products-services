@@ -51,6 +51,15 @@ class Email
             ]);
         });
         $this->schedule_email = $schedule_email;
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/email/quote', [
+                'methods' => 'POST',
+                'callback' => [$this, 'send_quote_email'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+        $this->quote_email = $quote_email;
     }
 
     public function send_contact_email(WP_REST_Request $request)
@@ -174,8 +183,46 @@ class Email
         return rest_ensure_response($supportEmail);
     }
 
-    public function send_quote_email()
+    public function send_quote_email(WP_REST_Request $request)
     {
+        $stripe_quote_id = $request->get_param('slug');
+
+        $from_email = $request['email'];
+        $first_name = $request['first_name'];
+        $last_name = $request['first_name'];
+        $subject = $request['subject'];
+        $message = $request['message'];
+
+        if (empty($from_email)) {
+            $msg = 'Email is required';
+        } elseif (empty($first_name)) {
+            $msg = 'First name is required';
+        } elseif (empty($last_name)) {
+            $msg = 'Last name is required';
+        } elseif (empty($subject)) {
+            $msg = 'Subject is required';
+        } elseif (empty($message)) {
+            $msg = 'Message is required';
+        }
+
+        if (isset($msg)) {
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(400);
+            return $response;
+        }
+
+        $from_email = sanitize_email($from_email);
+        $first_name = sanitize_text_field($first_name);
+        $last_name = sanitize_text_field($last_name);
+        $subject = sanitize_text_field($subject);
+        $message = sanitize_textarea_field($message);
+
+        $quoteEmail = $this->quote_email->sendQuoteEmail($from_email, $first_name, $subject, $message);
+
+        return rest_ensure_response($quoteEmail);
     }
 
     public function send_invoice_email(WP_REST_Request $request)

@@ -6,6 +6,7 @@ use ORB_Services\Admin\AdminEmail;
 use ORB_Services\Admin\AdminEmailContact;
 use ORB_Services\Admin\AdminEmailSupport;
 use ORB_Services\Admin\AdminEmailSchedule;
+use ORB_Services\Admin\AdminEmailQuote;
 use ORB_Services\Admin\AdminHero;
 use ORB_Services\Admin\AdminLocation;
 use ORB_Services\Admin\AdminOfficeHours;
@@ -24,6 +25,7 @@ class Admin
         new AdminEmailContact;
         new AdminEmailSupport;
         new AdminEmailSchedule;
+        new AdminEmailQuote;
         new AdminHero;
         new AdminOfficeHours;
         new AdminLocation;
