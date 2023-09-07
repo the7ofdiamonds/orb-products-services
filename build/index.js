@@ -9265,6 +9265,8 @@ const ClientComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webp
 const InvoiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Invoice_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Invoice.jsx */ "./src/views/Invoice.jsx")));
 const ContactComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Contact_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Contact.jsx */ "./src/views/Contact.jsx")));
 const ContactSuccessComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ContactSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ContactSuccess.jsx */ "./src/views/ContactSuccess.jsx")));
+const SupportComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Support_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Support.jsx */ "./src/views/Support.jsx")));
+const SupportSuccessComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_SupportSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/SupportSuccess.jsx */ "./src/views/SupportSuccess.jsx")));
 const PaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Payment_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Payment.jsx */ "./src/views/Payment.jsx")));
 const CardPaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_payment_Card_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/payment/Card.jsx */ "./src/views/payment/Card.jsx")));
 const MobileComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_payment_Mobile_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/payment/Mobile.jsx */ "./src/views/payment/Mobile.jsx")));
@@ -9328,6 +9330,12 @@ function App() {
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "contact/success",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactSuccessComponent, null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    path: "support",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(SupportComponent, null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    path: "support/success",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(SupportSuccessComponent, null)
   })))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);

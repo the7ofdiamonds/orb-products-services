@@ -9,9 +9,9 @@ class Email
     private $contact_email;
     private $support_email;
     private $schedule_email;
-    private $email_quote;
-    private $email_invoice;
-    private $email_receipt;
+    private $quote_email;
+    private $invoice_email;
+    private $receipt_email;
 
     private $invoice_table;
 
@@ -97,14 +97,17 @@ class Email
     public function send_support_email(WP_REST_Request $request)
     {
         $from_email = $request['email'];
-        $from_name = $request['name'];
+        $first_name = $request['first_name'];
+        $last_name = $request['first_name'];
         $subject = $request['subject'];
         $message = $request['message'];
 
         if (empty($from_email)) {
             $msg = 'Email is required';
-        } elseif (empty($from_name)) {
-            $msg = 'Name is required';
+        } elseif (empty($first_name)) {
+            $msg = 'First name is required';
+        } elseif (empty($last_name)) {
+            $msg = 'Last name is required';
         } elseif (empty($subject)) {
             $msg = 'Subject is required';
         } elseif (empty($message)) {
@@ -121,17 +124,14 @@ class Email
         }
 
         $from_email = sanitize_email($from_email);
-        $from_name = sanitize_text_field($from_name);
+        $first_name = sanitize_text_field($first_name);
+        $last_name = sanitize_text_field($last_name);
         $subject = sanitize_text_field($subject);
         $message = sanitize_textarea_field($message);
 
-        $supportEmail = $this->support_email->sendSupportEmail($from_email, $from_name, $subject, $message);
+        $supportEmail = $this->support_email->sendSupportEmail($from_email, $first_name, $subject, $message);
 
-        if ($supportEmail) {
-            $success_url = '/support/success?name=' . urlencode($from_name) . '&email=' . urlencode($from_email);
-            wp_redirect($success_url);
-            exit;
-        }
+        return rest_ensure_response($supportEmail);
     }
 
     public function send_schedule_email()
@@ -163,7 +163,7 @@ class Email
             $attachment_name = $invoice_title . '.pdf';
         }
 
-        return $this->email_invoice->sendInvoiceEmail($to_email, $to_name, $subject, $message, $path, $attachment_name);
+        return $this->invoice_email->sendInvoiceEmail($to_email, $to_name, $subject, $message, $path, $attachment_name);
     }
 
     public function send_receipt_email()

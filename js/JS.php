@@ -44,6 +44,8 @@ class JS
             'about',
             'contact',
             'contact/success',
+            'support',
+            'support/success',
             'dashboard',
             'schedule',
             'services',

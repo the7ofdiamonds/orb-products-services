@@ -13,6 +13,10 @@ const ContactComponent = lazy(() => import('./views/Contact.jsx'));
 const ContactSuccessComponent = lazy(() =>
   import('./views/ContactSuccess.jsx')
 );
+const SupportComponent = lazy(() => import('./views/Support.jsx'));
+const SupportSuccessComponent = lazy(() =>
+  import('./views/SupportSuccess.jsx')
+);
 const PaymentComponent = lazy(() => import('./views/Payment.jsx'));
 const CardPaymentComponent = lazy(() => import('./views/payment/Card.jsx'));
 const MobileComponent = lazy(() => import('./views/payment/Mobile.jsx'));
@@ -60,6 +64,11 @@ function App() {
             <Route
               path="contact/success"
               element={<ContactSuccessComponent />}
+            />
+            <Route path="support" element={<SupportComponent />} />
+            <Route
+              path="support/success"
+              element={<SupportSuccessComponent />}
             />
           </Routes>
         </Suspense>
