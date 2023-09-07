@@ -53,6 +53,46 @@ class DatabaseReceipt
         return $receipt_id;
     }
 
+    public function getReceipt($stripe_invoice_id)
+    {
+        if (empty($stripe_invoice_id)) {
+            $msg = 'No Invoice ID was provided.';
+
+            return $msg;
+        }
+
+        $receipt = $this->wpdb->get_row(
+            $this->wpdb->prepare(
+                "SELECT * FROM {$this->table_name} WHERE stripe_invoice_id = %s",
+                $stripe_invoice_id
+            )
+        );
+
+        if (!$receipt) {
+            $msg = 'Receipt not found';
+
+            return $msg;
+        }
+
+        $data = [
+            'id' => $receipt->id,
+            'created_at' => $receipt->created_at,
+            'status' => $receipt->status,
+            'stripe_customer_id' => $receipt->stripe_customer_id,
+            'quote_id' => $receipt->quote_id,
+            'stripe_invoice_id' => $receipt->stripe_invoice_id,
+            'payment_intent_id' => $receipt->payment_intent_id,
+            'client_secret' => $receipt->client_secret,
+            'due_date' => $receipt->due_date,
+            'subtotal' => $receipt->subtotal,
+            'tax' => $receipt->tax,
+            'amount_due' => $receipt->amount_due,
+            'amount_remaining' => $receipt->amount_remaining
+        ];
+
+        return $data;
+    }
+
     public function getReceiptByID($id)
     {
         $receipt = $this->wpdb->get_row(

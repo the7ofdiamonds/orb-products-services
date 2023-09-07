@@ -13,8 +13,8 @@ class EmailQuote
     private $smtp_auth;
     private $smtp_username;
     private $smtp_password;
-    private $to_email;
-    private $to_name;
+    private $from_email;
+    private $from_name;
 
     public function __construct($mailer)
     {
@@ -25,11 +25,11 @@ class EmailQuote
         $this->smtp_auth = get_option('quote_smtp_auth');
         $this->smtp_username = get_option('quote_smtp_username');
         $this->smtp_password = get_option('quote_smtp_password');
-        $this->to_email = get_option('quote_email');
-        $this->to_name = get_option('quote_name');
+        $this->from_email = get_option('quote_email');
+        $this->from_name = get_option('quote_name');
     }
 
-    public function sendQuoteEmail($reply_to_email, $reply_to_name, $subject, $message)
+    public function sendQuoteEmail($to_email, $to_name, $subject, $message)
     {
         $body = '<p>' . $message . '</p>';
         $alt_body = $message;
@@ -44,9 +44,8 @@ class EmailQuote
             $this->mailer->Username = $this->smtp_username;
             $this->mailer->Password = $this->smtp_password;
 
-            $this->mailer->setFrom($this->to_email, $this->to_name);
-            $this->mailer->addAddress($this->to_email, $this->to_name);
-            $this->mailer->addReplyTo($reply_to_email, $reply_to_name);
+            $this->mailer->setFrom($this->from_email, $this->from_name);
+            $this->mailer->addAddress($to_email, $to_name);
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;

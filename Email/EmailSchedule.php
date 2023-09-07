@@ -13,8 +13,8 @@ class EmailSchedule
     private $smtp_auth;
     private $smtp_username;
     private $smtp_password;
-    private $to_email;
-    private $to_name;
+    private $from_email;
+    private $from_name;
 
     public function __construct($mailer)
     {
@@ -25,11 +25,11 @@ class EmailSchedule
         $this->smtp_auth = get_option('schedule_smtp_auth');
         $this->smtp_username = get_option('schedule_smtp_username');
         $this->smtp_password = get_option('schedule_smtp_password');
-        $this->to_email = get_option('schedule_email');
-        $this->to_name = get_option('schedule_name');
+        $this->from_name = get_option('schedule_email');
+        $this->from_name = get_option('schedule_name');
     }
 
-    public function sendScheduleEmail($reply_to_email, $reply_to_name, $subject, $message)
+    public function sendScheduleEmail($to_email, $to_name, $subject, $message)
     {
         $body = '<p>' . $message . '</p>';
         $alt_body = $message;
@@ -44,9 +44,9 @@ class EmailSchedule
             $this->mailer->Username = $this->smtp_username;
             $this->mailer->Password = $this->smtp_password;
 
-            $this->mailer->setFrom($this->to_email, $this->to_name);
-            $this->mailer->addAddress($this->to_email, $this->to_name);
-            $this->mailer->addReplyTo($reply_to_email, $reply_to_name);
+            $this->mailer->setFrom($this->from_email, $this->from_name);
+            $this->mailer->addAddress($to_email, $to_name); //Add more addresses
+            $this->mailer->addReplyTo($this->from_email, $this->from_name);
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;

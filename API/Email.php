@@ -65,6 +65,15 @@ class Email
             ]);
         });
         $this->invoice_email = $invoice_email;
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/email/receipt/(?P<slug>[a-zA-Z0-9-_]+)', [
+                'methods' => 'POST',
+                'callback' => [$this, 'send_receipt_email'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+        $this->receipt_email = $receipt_email;
     }
 
     public function send_contact_email(WP_REST_Request $request)
@@ -252,7 +261,25 @@ class Email
         return rest_ensure_response($invoiceEmail);
     }
 
-    public function send_receipt_email()
+    public function send_receipt_email(WP_REST_Request $request)
     {
+        $stripe_invoice_id = $request->get_param('slug');
+
+        if (empty($stripe_invoice_id)) {
+            $msg = 'Invoice ID is required';
+        } 
+
+        if (isset($msg)) {
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(400);
+            return $response;
+        }
+
+        $receiptEmail = $this->receipt_email->sendReceiptEmail($stripe_invoice_id);
+        
+        return rest_ensure_response($receiptEmail);
     }
 }
