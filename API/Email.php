@@ -13,10 +13,6 @@ class Email
     private $invoice_email;
     private $receipt_email;
 
-    private $invoice_table;
-
-    private $stripe_invoice;
-
     public function __construct(
         $contact_email,
         $support_email,
@@ -60,6 +56,15 @@ class Email
             ]);
         });
         $this->quote_email = $quote_email;
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/email/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
+                'methods' => 'POST',
+                'callback' => [$this, 'send_invoice_email'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+        $this->invoice_email = $invoice_email;
     }
 
     public function send_contact_email(WP_REST_Request $request)
@@ -229,24 +234,22 @@ class Email
     {
         $stripe_invoice_id = $request->get_param('slug');
 
-        $invoice = $this->invoice_table->getInvoice($stripe_invoice_id);
-        $stripe_invoice = $this->stripe_invoice->getInvoice($stripe_invoice_id);
+        if (empty($stripe_invoice_id)) {
+            $msg = 'Invoice ID is required';
+        } 
 
-        $to_email = $stripe_invoice->customer_email;
-        $invoice_title = 'Invoice #' . $invoice['id'];
-        $name = $stripe_invoice->customer_name;
-        $to_name = $name;
-
-        $subject = $invoice_title . ' for ' . $name;
-
-        $message = '<pre>' . $stripe_invoice . '</pre>';
-
-        if ($stripe_invoice->status === 'paid' || $stripe_invoice->status === 'open') {
-            $path = $stripe_invoice->invoice_pdf;
-            $attachment_name = $invoice_title . '.pdf';
+        if (isset($msg)) {
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(400);
+            return $response;
         }
 
-        return $this->invoice_email->sendInvoiceEmail($to_email, $to_name, $subject, $message, $path, $attachment_name);
+        $invoiceEmail = $this->invoice_email->sendInvoiceEmail($stripe_invoice_id);
+        
+        return rest_ensure_response($invoiceEmail);
     }
 
     public function send_receipt_email()

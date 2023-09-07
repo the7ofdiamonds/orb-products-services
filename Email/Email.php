@@ -8,5 +8,6 @@ class Email
     {
         new EmailContact($mailer);
         new EmailSupport($mailer);
+        new EmailSchedule($mailer);
     }
 }
