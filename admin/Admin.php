@@ -5,6 +5,7 @@ namespace ORB_Services\Admin;
 use ORB_Services\Admin\AdminEmail;
 use ORB_Services\Admin\AdminEmailContact;
 use ORB_Services\Admin\AdminEmailSupport;
+use ORB_Services\Admin\AdminEmailSchedule;
 use ORB_Services\Admin\AdminHero;
 use ORB_Services\Admin\AdminLocation;
 use ORB_Services\Admin\AdminOfficeHours;
@@ -22,6 +23,7 @@ class Admin
         new AdminEmail;
         new AdminEmailContact;
         new AdminEmailSupport;
+        new AdminEmailSchedule;
         new AdminHero;
         new AdminOfficeHours;
         new AdminLocation;
@@ -104,7 +106,7 @@ class Admin
     function stripe_secret_key()
     { ?>
         <input class="admin-input" type="text" name="stripe_secret_key" maxlength="100">
-    <?php }
+<?php }
 
     function save_stripe_secret_key($data)
     {

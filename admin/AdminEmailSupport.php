@@ -18,7 +18,7 @@ class AdminEmailSupport
 
     function create_section()
     {
-        include plugin_dir_path(__FILE__) . 'includes/admin-edit-support-email.php';
+        include plugin_dir_path(__FILE__) . 'includes/admin-edit-email-support.php';
     }
 
     function register_section()

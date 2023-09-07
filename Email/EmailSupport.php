@@ -4,8 +4,8 @@ namespace ORB_Services\Email;
 
 use PHPMailer\PHPMailer\Exception;
 
-class EmailSupport{
-
+class EmailSupport
+{
     private $mailer;
     private $smtp_host;
     private $smtp_port;
@@ -18,7 +18,7 @@ class EmailSupport{
 
     public function __construct($mailer)
     {
-     $this->mailer = $mailer;
+        $this->mailer = $mailer;
         $this->smtp_host = get_option('support_smtp_host');
         $this->smtp_port = get_option('support_smtp_port');
         $this->smtp_secure = get_option('support_smtp_secure');
@@ -26,14 +26,14 @@ class EmailSupport{
         $this->smtp_username = get_option('support_smtp_username');
         $this->smtp_password = get_option('support_smtp_password');
         $this->to_email = get_option('support_email');
-        $this->to_name = get_option('support_name');   
+        $this->to_name = get_option('support_name');
     }
 
     public function sendSupportEmail($reply_to_email, $reply_to_name, $subject, $message)
     {
         $body = '<p>' . $message . '</p>';
         $alt_body = $message;
-    
+
         try {
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth = $this->smtp_auth;
@@ -54,7 +54,7 @@ class EmailSupport{
             $this->mailer->AltBody = $alt_body;
 
             if (isset($path) && isset($attachment_name)) {
-                
+
                 $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
             }
 

@@ -18,7 +18,7 @@ class AdminEmailContact
 
     function create_section()
     {
-        include plugin_dir_path(__FILE__) . 'includes/admin-edit-contact-email.php';
+        include plugin_dir_path(__FILE__) . 'includes/admin-edit-email-contact.php';
     }
 
     function register_section()
