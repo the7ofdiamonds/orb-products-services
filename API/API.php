@@ -58,7 +58,7 @@ class API
         $contact_email = new EmailContact($mailer);
         $support_email = new EmailSupport($mailer);
         $schedule_email = new EmailSchedule($mailer);
-        $quote_email = new EmailQuote($mailer, $stripe_quote, $database_quote);
+        $quote_email = new EmailQuote($database_quote, $stripe_quote, $stripe_customers, $mailer);
         $invoice_email = new EmailInvoice($mailer, $stripe_invoice, $database_invoice);
         $receipt_email = new EmailReceipt($mailer, $stripe_invoice, $database_receipt);
         new Email(

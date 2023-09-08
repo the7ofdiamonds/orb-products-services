@@ -7,6 +7,9 @@ use PHPMailer\PHPMailer\Exception;
 class EmailQuote
 {
     private $mailer;
+    private $stripe_quote;
+    private $database_quote;
+    private $stripe_customers;
     private $smtp_host;
     private $smtp_port;
     private $smtp_secure;
@@ -16,9 +19,13 @@ class EmailQuote
     private $from_email;
     private $from_name;
 
-    public function __construct($mailer)
+    public function __construct($database_quote, $stripe_quote, $stripe_customers, $mailer)
     {
         $this->mailer = $mailer;
+        $this->stripe_quote = $stripe_quote;
+        $this->database_quote = $database_quote;
+        $this->stripe_customers = $stripe_customers;
+
         $this->smtp_host = get_option('quote_smtp_host');
         $this->smtp_port = get_option('quote_smtp_port');
         $this->smtp_secure = get_option('quote_smtp_secure');
@@ -29,10 +36,49 @@ class EmailQuote
         $this->from_name = get_option('quote_name');
     }
 
-    public function sendQuoteEmail($to_email, $to_name, $subject, $message)
+    public function sendQuoteEmail($stripe_quote_id)
     {
-        $body = '<p>' . $message . '</p>';
-        $alt_body = $message;
+        $databaseQuote = $this->database_quote->getQuote($stripe_quote_id);
+        $stripeQuote = $this->stripe_quote->getStripeQuote($databaseQuote['stripe_quote_id']);
+        $stripeCustomer = $this->stripe_customers->getCustomer($stripeQuote->customer);
+        
+        $to_email = $stripeCustomer->email;
+        $quote_number = 'Quote #' . $databaseQuote['id'];
+        $name = $stripeCustomer->name;
+        $to_name = $name;
+
+        $subject = $quote_number . ' for ' . $name;
+
+        $quoteEmailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailQuote.php';
+
+        $swap_var = array(
+            "{CUSTOMER_EMAIL}" => $to_email,
+            "{CUSTOMER_NAME}" => $name,
+            "{INVOICE_NUMBER}" => $quote_number,
+        );
+
+        if (file_exists($quoteEmailTemplate))
+            $body = file_get_contents($quoteEmailTemplate);
+        else {
+            $msg = array(
+                'message' => 'Unable to locate quote email template.'
+            );
+            $response = rest_ensure_response($msg);
+            $response->set_status(400);
+            return $response;
+        }
+
+        foreach (array_keys($swap_var) as $key) {
+            if (strlen($key) > 2 && trim($key) != '')
+                $body = str_replace($key, $swap_var[$key], $body);
+        }
+
+        $alt_body = $stripeQuote;
+
+        if ($stripeQuote->status === 'paid' || $stripeQuote->status === 'open') {
+            $path = $stripeQuote->quote_pdf;
+            $attachment_name = $quote_number . '.pdf';
+        }
 
         try {
             $this->mailer->isSMTP();

@@ -31,7 +31,31 @@ class EmailSupport
 
     public function sendSupportEmail($reply_to_email, $reply_to_name, $subject, $message)
     {
-        $body = '<p>' . $message . '</p>';
+        $supportEmailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailSupport.php';
+
+        $swap_var = array(
+            "{REPLY_TO_EMAIL}" => $reply_to_email,
+            "{REPLY_TO_NAME}" => $reply_to_name,
+            "{SUBJECT}" => $subject,
+            "{MESSAGE}" => $message
+        );
+
+        if (file_exists($supportEmailTemplate))
+            $body = file_get_contents($supportEmailTemplate);
+        else {
+            $msg = array(
+                'message' => 'Unable to locate support email template.'
+            );
+            $response = rest_ensure_response($msg);
+            $response->set_status(400);
+            return $response;
+        }
+
+        foreach (array_keys($swap_var) as $key) {
+            if (strlen($key) > 2 && trim($key) != '')
+                $body = str_replace($key, $swap_var[$key], $body);
+        }
+
         $alt_body = $message;
 
         try {

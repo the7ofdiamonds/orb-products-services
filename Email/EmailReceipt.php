@@ -40,21 +40,44 @@ class EmailReceipt
         $stripeInvoice = $this->stripe_invoice->getStripeInvoice($databaseReceipt['stripe_invoice_id']);
 
         $to_email = $stripeInvoice->customer_email;
-        $receipt_title = 'Invoice #' . $databaseReceipt['id'];
+        $receipt_number = 'Receipt #' . $databaseReceipt['id'];
         $name = $stripeInvoice->customer_name;
         $to_name = $name;
 
-        $subject = $receipt_title . ' for ' . $name;
+        $subject = $receipt_number . ' for ' . $name;
 
         $message = '<pre>' . $stripeInvoice . '</pre>';
 
-        if ($stripeInvoice->status === 'paid' || $stripeInvoice->status === 'open') {
-            $path = $stripeInvoice->receipt_pdf;
-            $attachment_name = $receipt_title . '.pdf';
+        $alt_body = $message;
+
+        $receiptEmailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailReceipt.php';
+
+        $swap_var = array(
+            "{CUSTOMER_EMAIL}" => $to_email,
+            "{CUSTOMER_NAME}" => $name,
+            "{RECEIPT_NUMBER}" => $receipt_number,
+        );
+
+        if (file_exists($receiptEmailTemplate))
+            $body = file_get_contents($receiptEmailTemplate);
+        else {
+            $msg = array(
+                'message' => 'Unable to locate receipt email template.'
+            );
+            $response = rest_ensure_response($msg);
+            $response->set_status(400);
+            return $response;
         }
 
-        $body = '<p>' . $message . '</p>';
-        $alt_body = $message;
+        foreach (array_keys($swap_var) as $key) {
+            if (strlen($key) > 2 && trim($key) != '')
+                $body = str_replace($key, $swap_var[$key], $body);
+        }
+
+        if ($stripeInvoice->status === 'paid' || $stripeInvoice->status === 'open') {
+            $path = $stripeInvoice->receipt_pdf;
+            $attachment_name = $receipt_number . '.pdf';
+        }
 
         try {
             $this->mailer->isSMTP();

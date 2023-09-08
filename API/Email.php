@@ -49,7 +49,7 @@ class Email
         $this->schedule_email = $schedule_email;
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/email/quote', [
+            register_rest_route('orb/v1', '/email/quote/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'POST',
                 'callback' => [$this, 'send_quote_email'],
                 'permission_callback' => '__return_true',
@@ -80,7 +80,7 @@ class Email
     {
         $from_email = $request['email'];
         $first_name = $request['first_name'];
-        $last_name = $request['first_name'];
+        $last_name = $request['last_name'];
         $subject = $request['subject'];
         $message = $request['message'];
 
@@ -106,12 +106,14 @@ class Email
         }
 
         $from_email = sanitize_email($from_email);
-        $first_name = sanitize_text_field($first_name);
-        $last_name = sanitize_text_field($last_name);
+        $firstName = sanitize_text_field($first_name);
+        $lastName = sanitize_text_field($last_name);
         $subject = sanitize_text_field($subject);
         $message = sanitize_textarea_field($message);
 
-        $contactEmail = $this->contact_email->sendContactEmail($from_email, $first_name, $subject, $message);
+        $name = $firstName . ' ' . $lastName;
+
+        $contactEmail = $this->contact_email->sendContactEmail($from_email, $name, $subject, $message);
 
         return rest_ensure_response($contactEmail);
     }
@@ -201,22 +203,8 @@ class Email
     {
         $stripe_quote_id = $request->get_param('slug');
 
-        $from_email = $request['email'];
-        $first_name = $request['first_name'];
-        $last_name = $request['first_name'];
-        $subject = $request['subject'];
-        $message = $request['message'];
-
-        if (empty($from_email)) {
-            $msg = 'Email is required';
-        } elseif (empty($first_name)) {
-            $msg = 'First name is required';
-        } elseif (empty($last_name)) {
-            $msg = 'Last name is required';
-        } elseif (empty($subject)) {
-            $msg = 'Subject is required';
-        } elseif (empty($message)) {
-            $msg = 'Message is required';
+        if (empty($stripe_quote_id)) {
+            $msg = 'Quote ID is required';
         }
 
         if (isset($msg)) {
@@ -228,13 +216,7 @@ class Email
             return $response;
         }
 
-        $from_email = sanitize_email($from_email);
-        $first_name = sanitize_text_field($first_name);
-        $last_name = sanitize_text_field($last_name);
-        $subject = sanitize_text_field($subject);
-        $message = sanitize_textarea_field($message);
-
-        $quoteEmail = $this->quote_email->sendQuoteEmail($from_email, $first_name, $subject, $message);
+        $quoteEmail = $this->quote_email->sendQuoteEmail($stripe_quote_id);
 
         return rest_ensure_response($quoteEmail);
     }
@@ -245,7 +227,7 @@ class Email
 
         if (empty($stripe_invoice_id)) {
             $msg = 'Invoice ID is required';
-        } 
+        }
 
         if (isset($msg)) {
             $message = array(
@@ -257,7 +239,7 @@ class Email
         }
 
         $invoiceEmail = $this->invoice_email->sendInvoiceEmail($stripe_invoice_id);
-        
+
         return rest_ensure_response($invoiceEmail);
     }
 
@@ -267,7 +249,7 @@ class Email
 
         if (empty($stripe_invoice_id)) {
             $msg = 'Invoice ID is required';
-        } 
+        }
 
         if (isset($msg)) {
             $message = array(
@@ -279,7 +261,7 @@ class Email
         }
 
         $receiptEmail = $this->receipt_email->sendReceiptEmail($stripe_invoice_id);
-        
+
         return rest_ensure_response($receiptEmail);
     }
 }

@@ -61,7 +61,7 @@ class StripeQuote
                 'metadata' => ['quote_id' => $quote_id]
             ]);
 
-            return rest_ensure_response($stripe_quote);
+            return $stripe_quote;
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();
@@ -81,7 +81,7 @@ class StripeQuote
     {
 
         try {
-            if (empty($stripe_customer_id)) {
+            if (empty($stripe_quote_id)) {
                 $msg = 'Stripe Customer ID is required';
                 $message = array(
                     'message' => $msg,
@@ -97,7 +97,7 @@ class StripeQuote
                 []
             );
 
-            return rest_ensure_response($quote);
+            return $quote;
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();

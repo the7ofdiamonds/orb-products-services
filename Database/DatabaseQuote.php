@@ -69,14 +69,14 @@ class DatabaseQuote
     public function getQuote($stripe_quote_id)
     {
         if (empty($stripe_quote_id)) {
-            $msg = 'No Invoice ID was provided.';
+            $msg = 'No Quote ID was provided.';
 
             return $msg;
         }
 
         $quote = $this->wpdb->get_row(
             $this->wpdb->prepare(
-                "SELECT * FROM . $this->table_name . WHERE stripe_quote_id = %s",
+                "SELECT * FROM $this->table_name WHERE stripe_quote_id = %s",
                 $stripe_quote_id
             )
         );
@@ -92,15 +92,14 @@ class DatabaseQuote
             'created_at' => $quote->created_at,
             'status' => $quote->status,
             'stripe_customer_id' => $quote->stripe_customer_id,
-            'quote_id' => $quote->quote_id,
-            'stripe_invoice_id' => $quote->stripe_invoice_id,
-            'payment_intent_id' => $quote->payment_intent_id,
-            'client_secret' => $quote->client_secret,
-            'due_date' => $quote->due_date,
-            'subtotal' => $quote->subtotal,
-            'tax' => $quote->tax,
-            'amount_due' => $quote->amount_due,
-            'amount_remaining' => $quote->amount_remaining
+            'stripe_quote_id' => $quote->stripe_quote_id,
+            'expires_at' => $quote->expires_at,
+            'selections' => $quote->selections,
+            'amount_subtotal' => $quote->amount_subtotal,
+            'amount_discount' => $quote->amount_discount,
+            'amount_shipping' => $quote->amount_shipping,
+            'amount_tax' => $quote->amount_tax,
+            'amount_total' => $quote->amount_total
         ];
 
         return $data;
@@ -110,7 +109,7 @@ class DatabaseQuote
     {
         $quote = $this->wpdb->get_row(
             $this->wpdb->prepare(
-                "SELECT * FROM orb_quote WHERE id = %d",
+                "SELECT * FROM $this->table_name WHERE id = %d",
                 $id
             )
         );
@@ -144,7 +143,7 @@ class DatabaseQuote
     {
         $quotes = $this->wpdb->get_results(
             $this->wpdb->prepare(
-                "SELECT * FROM orb_quote"
+                "SELECT * FROM $this->table_name"
             )
         );
 
@@ -177,7 +176,7 @@ class DatabaseQuote
 
         $quotes = $this->wpdb->get_results(
             $this->wpdb->prepare(
-                "SELECT * FROM orb_quote WHERE stripe_customer_id = %d",
+                "SELECT * FROM $this->table_name WHERE stripe_customer_id = %d",
                 $stripe_customer_id
             )
         );

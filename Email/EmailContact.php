@@ -31,9 +31,33 @@ class EmailContact
 
     public function sendContactEmail($reply_to_email, $reply_to_name, $subject, $message)
     {
-        $body = '<p>' . $message . '</p>';
+        $contactEmailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailContact.php';
+
+        $swap_var = array(
+            "{REPLY_TO_EMAIL}" => $reply_to_email,
+            "{REPLY_TO_NAME}" => $reply_to_name,
+            "{SUBJECT}" => $subject,
+            "{MESSAGE}" => $message
+        );
+
+        if (file_exists($contactEmailTemplate))
+            $body = file_get_contents($contactEmailTemplate);
+        else {
+            $msg = array(
+                'message' => 'Unable to locate contact email template.'
+            );
+            $response = rest_ensure_response($msg);
+            $response->set_status(400);
+            return $response;
+        }
+
+        foreach (array_keys($swap_var) as $key) {
+            if (strlen($key) > 2 && trim($key) != '')
+                $body = str_replace($key, $swap_var[$key], $body);
+        }
+
         $alt_body = $message;
-    
+
         try {
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth = $this->smtp_auth;
@@ -54,7 +78,7 @@ class EmailContact
             $this->mailer->AltBody = $alt_body;
 
             if (isset($path) && isset($attachment_name)) {
-                
+
                 $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
             }
 

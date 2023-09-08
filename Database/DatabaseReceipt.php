@@ -77,17 +77,17 @@ class DatabaseReceipt
         $data = [
             'id' => $receipt->id,
             'created_at' => $receipt->created_at,
-            'status' => $receipt->status,
             'stripe_customer_id' => $receipt->stripe_customer_id,
-            'quote_id' => $receipt->quote_id,
             'stripe_invoice_id' => $receipt->stripe_invoice_id,
-            'payment_intent_id' => $receipt->payment_intent_id,
-            'client_secret' => $receipt->client_secret,
-            'due_date' => $receipt->due_date,
-            'subtotal' => $receipt->subtotal,
-            'tax' => $receipt->tax,
-            'amount_due' => $receipt->amount_due,
-            'amount_remaining' => $receipt->amount_remaining
+            'payment_method_id' => $receipt->payment_method_id,
+            'amount_paid' => $receipt->amount_paid,
+            'payment_date' => $receipt->payment_date,
+            'balance' => $receipt->balance,
+            'payment_method' => $receipt->payment_method,
+            'first_name' => $receipt->first_name,
+            'last_name' => $receipt->last_name,
+            'receipt_pdf_url' => $receipt->receipt_pdf_url,
+            'invoice_id' => $receipt->invoice_id
         ];
 
         return $data;

@@ -40,21 +40,45 @@ class EmailInvoice
         $stripeInvoice = $this->stripe_invoice->getStripeInvoice($databaseInvoice['stripe_invoice_id']);
 
         $to_email = $stripeInvoice->customer_email;
-        $invoice_title = 'Invoice #' . $databaseInvoice['id'];
+        $invoice_number = 'Invoice #' . $databaseInvoice['id'];
         $name = $stripeInvoice->customer_name;
         $to_name = $name;
 
-        $subject = $invoice_title . ' for ' . $name;
+        $subject = $invoice_number . ' for ' . $name;
 
         $message = '<pre>' . $stripeInvoice . '</pre>';
 
-        if ($stripeInvoice->status === 'paid' || $stripeInvoice->status === 'open') {
-            $path = $stripeInvoice->invoice_pdf;
-            $attachment_name = $invoice_title . '.pdf';
+        $invoiceEmailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailInvoice.php';
+
+        $swap_var = array(
+            "{CUSTOMER_EMAIL}" => $to_email,
+            "{CUSTOMER_NAME}" => $name,
+            "{INVOICE_NUMBER}" => $invoice_number,
+            "{MESSAGE}" => $message
+        );
+
+        if (file_exists($invoiceEmailTemplate))
+            $body = file_get_contents($invoiceEmailTemplate);
+        else {
+            $msg = array(
+                'message' => 'Unable to locate invoice email template.'
+            );
+            $response = rest_ensure_response($msg);
+            $response->set_status(400);
+            return $response;
         }
 
-        $body = '<p>' . $message . '</p>';
+        foreach (array_keys($swap_var) as $key) {
+            if (strlen($key) > 2 && trim($key) != '')
+                $body = str_replace($key, $swap_var[$key], $body);
+        }
+
         $alt_body = $message;
+
+        if ($stripeInvoice->status === 'paid' || $stripeInvoice->status === 'open') {
+            $path = $stripeInvoice->invoice_pdf;
+            $attachment_name = $invoice_number . '.pdf';
+        }
 
         try {
             $this->mailer->isSMTP();
