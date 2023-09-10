@@ -20,12 +20,15 @@ use ORB_Services\Database\DatabaseQuote;
 use ORB_Services\Database\DatabaseInvoice;
 use ORB_Services\Database\DatabaseReceipt;
 
+use ORB_Services\Email\Email as EmailTemplate;
 use ORB_Services\Email\EmailContact;
 use ORB_Services\Email\EmailSupport;
 use ORB_Services\Email\EmailQuote;
 use ORB_Services\Email\EmailInvoice;
 use ORB_Services\Email\EmailReceipt;
 use ORB_Services\Email\EmailSchedule;
+
+use ORB_Services\PDF\PDF;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -54,13 +57,16 @@ class API
         $database_invoice = new DatabaseInvoice;
         $database_receipt = new DatabaseReceipt;
 
+        $pdf = new PDF();
         $mailer = new PHPMailer();
-        $contact_email = new EmailContact($mailer);
-        $support_email = new EmailSupport($mailer);
-        $schedule_email = new EmailSchedule($mailer);
-        $quote_email = new EmailQuote($database_quote, $stripe_quote, $stripe_customers, $mailer);
-        $invoice_email = new EmailInvoice($mailer, $stripe_invoice, $database_invoice);
-        $receipt_email = new EmailReceipt($mailer, $stripe_invoice, $database_receipt);
+
+        $email = new EmailTemplate();
+        $contact_email = new EmailContact($email, $mailer);
+        $support_email = new EmailSupport($email, $mailer);
+        $schedule_email = new EmailSchedule($email, $mailer);
+        $quote_email = new EmailQuote($database_quote, $stripe_quote, $stripe_customers, $email, $pdf, $mailer);
+        $invoice_email = new EmailInvoice($database_invoice, $stripe_invoice, $email, $pdf, $mailer);
+        $receipt_email = new EmailReceipt($database_receipt, $stripe_invoice, $email, $pdf, $mailer);
         new Email(
             $contact_email,
             $support_email,

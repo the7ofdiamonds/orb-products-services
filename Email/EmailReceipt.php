@@ -6,9 +6,11 @@ use PHPMailer\PHPMailer\Exception;
 
 class EmailReceipt
 {
-    private $mailer;
-    private $stripe_invoice;
     private $database_receipt;
+    private $stripe_receipt;
+    private $email;
+    private $pdf;
+    private $mailer;
     private $smtp_host;
     private $smtp_port;
     private $smtp_secure;
@@ -18,11 +20,13 @@ class EmailReceipt
     private $from_email;
     private $from_name;
 
-    public function __construct($mailer, $stripe_invoice, $database_receipt)
+    public function __construct($database_receipt, $stripe_receipt, $email, $pdf, $mailer)
     {
-        $this->mailer = $mailer;
-        $this->stripe_invoice = $stripe_invoice;
         $this->database_receipt = $database_receipt;
+        $this->stripe_receipt = $stripe_receipt;
+        $this->email = $email;
+        $this->pdf = $pdf;
+        $this->mailer = $mailer;
 
         $this->smtp_host = get_option('receipt_smtp_host');
         $this->smtp_port = get_option('receipt_smtp_port');
@@ -34,10 +38,40 @@ class EmailReceipt
         $this->from_name = get_option('receipt_name');
     }
 
+    public function receiptEmailBody($databaseReceipt, $stripeInvoice)
+    {
+        $receiptEmailBodyTemplate = ORB_SERVICES . 'Templates/TemplatesEmailBodyReceipt.php';
+
+        $swap_var = array(
+            "{CUSTOMER_EMAIL}" => $stripeInvoice->customer_email,
+            "{CUSTOMER_NAME}" => $stripeInvoice->customer_name,
+            "{RECEIPT_NUMBER}" => 'Receipt #' . $databaseReceipt['id'],
+        );
+
+        if (file_exists($receiptEmailBodyTemplate)) {
+            $body = file_get_contents($receiptEmailBodyTemplate);
+
+            foreach (array_keys($swap_var) as $key) {
+                if (strlen($key) > 2 && trim($key) != '') {
+                    $body = str_replace($key, $swap_var[$key], $body);
+                }
+            }
+
+            $header = $this->email->emailHeader();
+            $footer = $this->email->emailFooter();
+
+            $fullEmailBody = $header . $body . $footer;
+
+            return $fullEmailBody;
+        } else {
+            throw new Exception('Unable to locate receipt email template.');
+        }
+    }
+
     public function sendReceiptEmail($stripe_invoice_id)
     {
         $databaseReceipt = $this->database_receipt->getReceipt($stripe_invoice_id);
-        $stripeInvoice = $this->stripe_invoice->getStripeInvoice($databaseReceipt['stripe_invoice_id']);
+        $stripeInvoice = $this->stripe_receipt->getStripeInvoice($databaseReceipt['stripe_invoice_id']);
 
         $to_email = $stripeInvoice->customer_email;
         $receipt_number = 'Receipt #' . $databaseReceipt['id'];
@@ -46,11 +80,8 @@ class EmailReceipt
 
         $subject = $receipt_number . ' for ' . $name;
 
-        $message = '<pre>' . $stripeInvoice . '</pre>';
 
-        $alt_body = $message;
-
-        $receiptEmailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailReceipt.php';
+        $receiptEmailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailBodyReceipt.php';
 
         $swap_var = array(
             "{CUSTOMER_EMAIL}" => $to_email,
@@ -74,11 +105,6 @@ class EmailReceipt
                 $body = str_replace($key, $swap_var[$key], $body);
         }
 
-        if ($stripeInvoice->status === 'paid' || $stripeInvoice->status === 'open') {
-            $path = $stripeInvoice->receipt_pdf;
-            $attachment_name = $receipt_number . '.pdf';
-        }
-
         try {
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth = $this->smtp_auth;
@@ -94,13 +120,19 @@ class EmailReceipt
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $body;
-            $this->mailer->AltBody = $alt_body;
+            $this->mailer->Body = $this->receiptEmailBody($databaseReceipt, $stripeInvoice);
+            $this->mailer->AltBody = '<pre>' . $stripeInvoice . '</pre>';
 
-            if (isset($path) && isset($attachment_name)) {
+            // Make the body the pdf
+            // if ($stripeInvoice->status === 'paid' || $stripeInvoice->status === 'open') {
+            //     $path = $stripeInvoice->receipt_pdf;
+            //     $attachment_name = $receipt_number . '.pdf';
+            // }
 
-                $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
-            }
+            // if (isset($path) && isset($attachment_name)) {
+
+            //     $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
+            // }
 
             if ($this->mailer->send()) {
                 return ['message' => 'Message has been sent'];

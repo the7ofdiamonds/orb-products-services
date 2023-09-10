@@ -21,6 +21,7 @@ use ORB_Services\Email\Email;
 use ORB_Services\JS\JS;
 use ORB_Services\Menus\Menus;
 use ORB_Services\Pages\Pages;
+use ORB_Services\PDF\PDF;
 use ORB_Services\Post_Types\Services;
 use ORB_Services\Roles\Roles;
 use ORB_Services\Shortcodes\Shortcodes;
@@ -94,7 +95,8 @@ class ORB_Services
         }
 
         $mailer = new PHPMailer();
-        $email = new Email($mailer);
+        $pdf = new PDF;
+        new Email($mailer, $pdf);
 
         if ($credentialsPath !== null && $stripeSecretKey !== null) {
             Stripe::setApiKey($stripeSecretKey);

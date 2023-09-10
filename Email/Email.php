@@ -4,10 +4,85 @@ namespace ORB_Services\Email;
 
 class Email
 {
-    public function __construct($mailer)
+    private $web_address;
+    private $logo_link;
+    private $site_name;
+    private $facebook;
+    private $twitter;
+    private $contact_email;
+    private $linkedin;
+    private $instagram;
+    private $year;
+    private $company_name;
+
+    public function __construct()
     {
-        new EmailContact($mailer);
-        new EmailSupport($mailer);
-        new EmailSchedule($mailer);
+        $custom_logo_id = get_theme_mod('custom_logo');
+        $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
+        $this->web_address = esc_url(home_url());
+        $this->logo_link = esc_url($logo[0]);
+        $this->site_name = get_bloginfo('name');
+
+        $this->facebook = esc_attr(get_option('facebook_link'));
+        $this->twitter = esc_attr(get_option('twitter_link'));
+        $this->contact_email = esc_attr(get_option('contact_email'));
+        $this->linkedin = esc_attr(get_option('linkedin_link'));
+        $this->instagram = esc_attr(get_option('instagram_link'));
+        $this->year = date("Y");
+        $this->company_name = get_theme_mod('footer_company');
+    }
+
+    public function emailHeader()
+    {
+        $emailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailHeader.php';
+
+        $swap_var = array(
+            "{WEB_ADDRESS}" => $this->web_address,
+            "{LOGO_LINK}" => $this->logo_link,
+            "{SITE_NAME}" => $this->site_name,
+        );
+
+        if (file_exists($emailTemplate)) {
+            $header = file_get_contents($emailTemplate);
+
+            foreach (array_keys($swap_var) as $key) {
+                if (strlen($key) > 2 && trim($key) != '') {
+                    $header = str_replace($key, $swap_var[$key], $header);
+                }
+            }
+
+            return $header;
+        } else {
+            throw new \Exception('Unable to locate contact email template.');
+        }
+    }
+
+    public function emailFooter()
+    {
+        $emailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailFooter.php';
+
+        $swap_var = array(
+            "{FACEBOOK}" => $this->facebook,
+            "{TWITTER}" => $this->twitter,
+            "{CONTACT_EMAIL}" => $this->contact_email,
+            "{LINKEDIN}" => $this->linkedin,
+            "{INSTAGRAM}" => $this->instagram,
+            "{YEAR}" => $this->year,
+            "{COMPANY_NAME}" => $this->company_name
+        );
+
+        if (file_exists($emailTemplate)) {
+            $footer = file_get_contents($emailTemplate);
+
+            foreach (array_keys($swap_var) as $key) {
+                if (strlen($key) > 2 && trim($key) != '') {
+                    $footer = str_replace($key, $swap_var[$key], $footer);
+                }
+            }
+
+            return $footer;
+        } else {
+            throw new \Exception('Unable to locate contact email template.');
+        }
     }
 }

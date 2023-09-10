@@ -105,15 +105,13 @@ class Email
             return $response;
         }
 
-        $from_email = sanitize_email($from_email);
+        $fromEmail = sanitize_email($from_email);
         $firstName = sanitize_text_field($first_name);
         $lastName = sanitize_text_field($last_name);
         $subject = sanitize_text_field($subject);
         $message = sanitize_textarea_field($message);
 
-        $name = $firstName . ' ' . $lastName;
-
-        $contactEmail = $this->contact_email->sendContactEmail($from_email, $name, $subject, $message);
+        $contactEmail = $this->contact_email->sendContactEmail($firstName, $lastName, $fromEmail, $subject, $message);
 
         return rest_ensure_response($contactEmail);
     }
@@ -121,13 +119,13 @@ class Email
 
     public function send_support_email(WP_REST_Request $request)
     {
-        $from_email = $request['email'];
+        $email = $request['email'];
         $first_name = $request['first_name'];
         $last_name = $request['first_name'];
         $subject = $request['subject'];
         $message = $request['message'];
 
-        if (empty($from_email)) {
+        if (empty($email)) {
             $msg = 'Email is required';
         } elseif (empty($first_name)) {
             $msg = 'First name is required';
@@ -148,26 +146,26 @@ class Email
             return $response;
         }
 
-        $from_email = sanitize_email($from_email);
+        $email = sanitize_email($email);
         $first_name = sanitize_text_field($first_name);
         $last_name = sanitize_text_field($last_name);
         $subject = sanitize_text_field($subject);
         $message = sanitize_textarea_field($message);
 
-        $supportEmail = $this->support_email->sendSupportEmail($from_email, $first_name, $subject, $message);
+        $supportEmail = $this->support_email->sendSupportEmail($first_name, $last_name, $email, $subject, $message);
 
         return rest_ensure_response($supportEmail);
     }
 
     public function send_schedule_email(WP_REST_Request $request)
     {
-        $from_email = $request['email'];
+        $email = $request['email'];
         $first_name = $request['first_name'];
-        $last_name = $request['first_name'];
+        $last_name = $request['last_name'];
         $subject = $request['subject'];
         $message = $request['message'];
 
-        if (empty($from_email)) {
+        if (empty($email)) {
             $msg = 'Email is required';
         } elseif (empty($first_name)) {
             $msg = 'First name is required';
@@ -188,15 +186,15 @@ class Email
             return $response;
         }
 
-        $from_email = sanitize_email($from_email);
+        $email = sanitize_email($email);
         $first_name = sanitize_text_field($first_name);
         $last_name = sanitize_text_field($last_name);
         $subject = sanitize_text_field($subject);
         $message = sanitize_textarea_field($message);
 
-        $supportEmail = $this->schedule_email->sendScheduleEmail($from_email, $first_name, $subject, $message);
+        $scheduleEmail = $this->schedule_email->sendScheduleEmail($first_name, $last_name, $email, $subject, $message);
 
-        return rest_ensure_response($supportEmail);
+        return rest_ensure_response($scheduleEmail);
     }
 
     public function send_quote_email(WP_REST_Request $request)

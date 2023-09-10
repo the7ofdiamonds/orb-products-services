@@ -6,6 +6,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class EmailSchedule
 {
+    private $email;
     private $mailer;
     private $smtp_host;
     private $smtp_port;
@@ -16,9 +17,11 @@ class EmailSchedule
     private $from_email;
     private $from_name;
 
-    public function __construct($mailer)
+    public function __construct($email, $mailer)
     {
+        $this->email = $email;
         $this->mailer = $mailer;
+
         $this->smtp_host = get_option('schedule_smtp_host');
         $this->smtp_port = get_option('schedule_smtp_port');
         $this->smtp_secure = get_option('schedule_smtp_secure');
@@ -29,35 +32,40 @@ class EmailSchedule
         $this->from_name = get_option('schedule_name');
     }
 
-    public function sendScheduleEmail($to_email, $to_name, $subject, $message)
+    public function scheduleEmailBody($first_name, $last_name, $email, $subject, $message)
     {
-        $contactEmailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailContact.php';
+        $scheduleEmailBodyTemplate = ORB_SERVICES . 'Templates/TemplatesEmailBodySchedule.php';
 
         $swap_var = array(
-            "{REPLY_TO_EMAIL}" => $to_email,
-            "{REPLY_TO_NAME}" => $to_name,
+            "{EMAIL}" => $email,
+            "{FIRST_NAME}" => $first_name,
+            "{LAST_NAME}" => $last_name,
             "{SUBJECT}" => $subject,
             "{MESSAGE}" => $message
         );
 
-        if (file_exists($contactEmailTemplate))
-            $body = file_get_contents($contactEmailTemplate);
-        else {
-            $msg = array(
-                'message' => 'Unable to locate schedule email template.'
-            );
-            $response = rest_ensure_response($msg);
-            $response->set_status(400);
-            return $response;
+        if (file_exists($scheduleEmailBodyTemplate)) {
+            $body = file_get_contents($scheduleEmailBodyTemplate);
+
+            foreach (array_keys($swap_var) as $key) {
+                if (strlen($key) > 2 && trim($key) != '') {
+                    $body = str_replace($key, $swap_var[$key], $body);
+                }
+            }
+
+            $header = $this->email->emailHeader();
+            $footer = $this->email->emailFooter();
+
+            $fullEmailBody = $header . $body . $footer;
+
+            return $fullEmailBody;
+        } else {
+            throw new Exception('Unable to locate schedule email template.');
         }
+    }
 
-        foreach (array_keys($swap_var) as $key) {
-            if (strlen($key) > 2 && trim($key) != '')
-                $body = str_replace($key, $swap_var[$key], $body);
-        }
-
-        $alt_body = $message;
-
+    public function sendScheduleEmail($first_name, $last_name, $email, $subject, $message)
+    {
         try {
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth = $this->smtp_auth;
@@ -69,18 +77,13 @@ class EmailSchedule
             $this->mailer->Password = $this->smtp_password;
 
             $this->mailer->setFrom($this->from_email, $this->from_name);
-            $this->mailer->addAddress($to_email, $to_name); //Add more addresses
+            $this->mailer->addAddress($email, $first_name . ' ' . $last_name); //Add more addresses
             $this->mailer->addReplyTo($this->from_email, $this->from_name);
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $body;
-            $this->mailer->AltBody = $alt_body;
-
-            if (isset($path) && isset($attachment_name)) {
-
-                $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
-            }
+            $this->mailer->Body = $this->scheduleEmailBody($first_name, $last_name, $email, $subject, $message);
+            $this->mailer->AltBody = $message;
 
             if ($this->mailer->send()) {
                 return ['message' => 'Message has been sent'];

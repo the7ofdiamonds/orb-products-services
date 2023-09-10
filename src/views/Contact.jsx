@@ -69,6 +69,7 @@ function ContactComponent() {
 
   return (
     <>
+      <h2 className="title">CONTACT</h2>
       <div className="contact-card card">
         <form>
           <table>

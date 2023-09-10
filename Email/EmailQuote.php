@@ -6,10 +6,12 @@ use PHPMailer\PHPMailer\Exception;
 
 class EmailQuote
 {
-    private $mailer;
-    private $stripe_quote;
     private $database_quote;
+    private $stripe_quote;
     private $stripe_customers;
+    private $email;
+    private $pdf;
+    private $mailer;
     private $smtp_host;
     private $smtp_port;
     private $smtp_secure;
@@ -19,12 +21,14 @@ class EmailQuote
     private $from_email;
     private $from_name;
 
-    public function __construct($database_quote, $stripe_quote, $stripe_customers, $mailer)
+    public function __construct($database_quote, $stripe_quote, $stripe_customers, $email, $pdf, $mailer)
     {
-        $this->mailer = $mailer;
-        $this->stripe_quote = $stripe_quote;
         $this->database_quote = $database_quote;
+        $this->stripe_quote = $stripe_quote;
         $this->stripe_customers = $stripe_customers;
+        $this->email = $email;
+        $this->pdf = $pdf;
+        $this->mailer = $mailer;
 
         $this->smtp_host = get_option('quote_smtp_host');
         $this->smtp_port = get_option('quote_smtp_port');
@@ -36,51 +40,50 @@ class EmailQuote
         $this->from_name = get_option('quote_name');
     }
 
-    public function sendQuoteEmail($stripe_quote_id)
+    public function quoteEmailBody($stripeQuote, $stripeCustomer, $databaseQuote)
     {
-        $databaseQuote = $this->database_quote->getQuote($stripe_quote_id);
-        $stripeQuote = $this->stripe_quote->getStripeQuote($databaseQuote['stripe_quote_id']);
-        $stripeCustomer = $this->stripe_customers->getCustomer($stripeQuote->customer);
-        
-        $to_email = $stripeCustomer->email;
-        $quote_number = 'Quote #' . $databaseQuote['id'];
-        $name = $stripeCustomer->name;
-        $to_name = $name;
-
-        $subject = $quote_number . ' for ' . $name;
-
-        $quoteEmailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailQuote.php';
+        $quoteEmailBodyTemplate = ORB_SERVICES . 'Templates/TemplatesEmailBodyQuote.php';
 
         $swap_var = array(
-            "{CUSTOMER_EMAIL}" => $to_email,
-            "{CUSTOMER_NAME}" => $name,
-            "{INVOICE_NUMBER}" => $quote_number,
+            "{CUSTOMER_EMAIL}" => $stripeCustomer->email,
+            "{CUSTOMER_NAME}" => $stripeCustomer->name,
+            "{QUOTE_NUMBER}" => 'Quote #' . $databaseQuote['id'],
         );
 
-        if (file_exists($quoteEmailTemplate))
-            $body = file_get_contents($quoteEmailTemplate);
-        else {
-            $msg = array(
-                'message' => 'Unable to locate quote email template.'
-            );
-            $response = rest_ensure_response($msg);
-            $response->set_status(400);
-            return $response;
+        if (file_exists($quoteEmailBodyTemplate)) {
+            $body = file_get_contents($quoteEmailBodyTemplate);
+
+            foreach (array_keys($swap_var) as $key) {
+                if (strlen($key) > 2 && trim($key) != '') {
+                    $body = str_replace($key, $swap_var[$key], $body);
+                }
+            }
+
+            $header = $this->email->emailHeader();
+            $footer = $this->email->emailFooter();
+
+            $fullEmailBody = $header . $body . $footer;
+
+            return $fullEmailBody;
+        } else {
+            throw new Exception('Unable to locate quote email template.');
         }
+    }
 
-        foreach (array_keys($swap_var) as $key) {
-            if (strlen($key) > 2 && trim($key) != '')
-                $body = str_replace($key, $swap_var[$key], $body);
-        }
-
-        $alt_body = $stripeQuote;
-
-        if ($stripeQuote->status === 'paid' || $stripeQuote->status === 'open') {
-            $path = $stripeQuote->quote_pdf;
-            $attachment_name = $quote_number . '.pdf';
-        }
-
+    public function sendQuoteEmail($stripe_quote_id)
+    {
         try {
+            $databaseQuote = $this->database_quote->getQuote($stripe_quote_id);
+            $stripeQuote = $this->stripe_quote->getStripeQuote($databaseQuote['stripe_quote_id']);
+            $stripeCustomer = $this->stripe_customers->getCustomer($stripeQuote->customer);
+
+            $to_email = $stripeCustomer->email;
+            $quote_number = 'Quote #' . $databaseQuote['id'];
+            $name = $stripeCustomer->name;
+            $to_name = $name;
+
+            $subject = $quote_number . ' for ' . $name;
+
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth = $this->smtp_auth;
             $this->mailer->Host = $this->smtp_host;
@@ -95,13 +98,19 @@ class EmailQuote
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $body;
-            $this->mailer->AltBody = $alt_body;
+            $this->mailer->Body = $this->quoteEmailBody($stripeQuote, $stripeCustomer, $databaseQuote);
+            $this->mailer->AltBody = $stripeQuote;
 
-            if (isset($path) && isset($attachment_name)) {
+            // Make the body the pdf
+            // if ($stripeQuote->status === 'paid' || $stripeQuote->status === 'open') {
+            //     $path = $stripeQuote->quote_pdf;
+            //     $attachment_name = $quote_number . '.pdf';
+            // }
 
-                $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
-            }
+            // if (isset($path) && isset($attachment_name)) {
+
+            //     $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
+            // }
 
             if ($this->mailer->send()) {
                 return ['message' => 'Message has been sent'];
@@ -110,7 +119,7 @@ class EmailQuote
             }
         } catch (Exception $e) {
             error_log($e->getMessage());
-            return ['error' => $e->getMessage()];
+            return $e->getMessage();
         }
     }
 }

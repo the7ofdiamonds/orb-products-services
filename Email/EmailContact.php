@@ -6,6 +6,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class EmailContact
 {
+    private $email;
     private $mailer;
     private $smtp_host;
     private $smtp_port;
@@ -16,9 +17,11 @@ class EmailContact
     private $to_email;
     private $to_name;
 
-    public function __construct($mailer)
+    public function __construct($email, $mailer)
     {
+        $this->email = $email;
         $this->mailer = $mailer;
+
         $this->smtp_host = get_option('contact_smtp_host');
         $this->smtp_port = get_option('contact_smtp_port');
         $this->smtp_secure = get_option('contact_smtp_secure');
@@ -29,35 +32,40 @@ class EmailContact
         $this->to_name = get_option('contact_name');
     }
 
-    public function sendContactEmail($reply_to_email, $reply_to_name, $subject, $message)
+    public function contactEmailBody($first_name, $last_name, $email, $subject, $message)
     {
-        $contactEmailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailContact.php';
+        $contactEmailBodyTemplate = ORB_SERVICES . 'Templates/TemplatesEmailBodyContact.php';
 
         $swap_var = array(
-            "{REPLY_TO_EMAIL}" => $reply_to_email,
-            "{REPLY_TO_NAME}" => $reply_to_name,
+            "{EMAIL}" => $email,
+            "{FIRST_NAME}" => $first_name,
+            "{LAST_NAME}" => $last_name,
             "{SUBJECT}" => $subject,
             "{MESSAGE}" => $message
         );
 
-        if (file_exists($contactEmailTemplate))
-            $body = file_get_contents($contactEmailTemplate);
-        else {
-            $msg = array(
-                'message' => 'Unable to locate contact email template.'
-            );
-            $response = rest_ensure_response($msg);
-            $response->set_status(400);
-            return $response;
+        if (file_exists($contactEmailBodyTemplate)) {
+            $body = file_get_contents($contactEmailBodyTemplate);
+
+            foreach (array_keys($swap_var) as $key) {
+                if (strlen($key) > 2 && trim($key) != '') {
+                    $body = str_replace($key, $swap_var[$key], $body);
+                }
+            }
+
+            $header = $this->email->emailHeader();
+            $footer = $this->email->emailFooter();
+
+            $fullEmailBody = $header . $body . $footer;
+
+            return $fullEmailBody;
+        } else {
+            throw new Exception('Unable to locate contact email template.');
         }
+    }
 
-        foreach (array_keys($swap_var) as $key) {
-            if (strlen($key) > 2 && trim($key) != '')
-                $body = str_replace($key, $swap_var[$key], $body);
-        }
-
-        $alt_body = $message;
-
+    public function sendContactEmail($first_name, $last_name, $email, $subject, $message)
+    {
         try {
             $this->mailer->isSMTP();
             $this->mailer->SMTPAuth = $this->smtp_auth;
@@ -70,17 +78,12 @@ class EmailContact
 
             $this->mailer->setFrom($this->to_email, $this->to_name);
             $this->mailer->addAddress($this->to_email, $this->to_name);
-            $this->mailer->addReplyTo($reply_to_email, $reply_to_name);
+            $this->mailer->addReplyTo($email, $first_name . ' ' . $last_name);
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $body;
-            $this->mailer->AltBody = $alt_body;
-
-            if (isset($path) && isset($attachment_name)) {
-
-                $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
-            }
+            $this->mailer->Body = $this->contactEmailBody($first_name, $last_name, $email, $subject, $message);
+            $this->mailer->AltBody = $message;
 
             if ($this->mailer->send()) {
                 return ['message' => 'Message has been sent'];
