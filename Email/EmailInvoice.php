@@ -19,15 +19,11 @@ class EmailInvoice
     private $smtp_password;
     private $from_email;
     private $from_name;
+    private $invoiceEmailBodyTemplateBody;
+    private $invoiceEmailBodyTemplate;
 
     public function __construct($database_invoice, $stripe_invoice, $email, $pdf, $mailer)
     {
-        $this->database_invoice = $database_invoice;
-        $this->stripe_invoice = $stripe_invoice;
-        $this->email = $email;
-        $this->pdf = $pdf;
-        $this->mailer = $mailer;
-
         $this->smtp_host = get_option('invoice_smtp_host');
         $this->smtp_port = get_option('invoice_smtp_port');
         $this->smtp_secure = get_option('invoice_smtp_secure');
@@ -36,42 +32,142 @@ class EmailInvoice
         $this->smtp_password = get_option('invoice_smtp_password');
         $this->from_email = get_option('invoice_email');
         $this->from_name = get_option('invoice_name');
+
+        $this->database_invoice = $database_invoice;
+        $this->stripe_invoice = $stripe_invoice;
+        $this->email = $email;
+        $this->pdf = $pdf;
+        $this->mailer = $mailer;
     }
 
-    public function invoiceEmailBody($stripe_invoice_id)
+    function invoiceEmailBodyHeader($databaseInvoice, $stripeInvoice)
     {
-        $invoiceEmailBodyTemplate = ORB_SERVICES . 'Templates/TemplatesEmailBodyInvoice.php';
-
-        $databaseInvoice = $this->database_invoice->getInvoice($stripe_invoice_id);
-        $stripeInvoice = $this->stripe_invoice->getStripeInvoice($databaseInvoice['stripe_invoice_id']);
+        $invoiceEmailBodyTemplateHeader = ORB_SERVICES . 'Templates/TemplatesEmailBodyInvoiceHeader.php';
 
         $swap_var = array(
-            "{CUSTOMER_EMAIL}" => $stripeInvoice->customer_email,
-            "{CUSTOMER_NAME}" => $stripeInvoice->customer_name,
             "{INVOICE_NUMBER}" => 'Invoice #' . $databaseInvoice['id'],
+            "{CUSTOMER_NAME}" => $stripeInvoice->customer_name,
+            "{CUSTOMER_EMAIL}" => $stripeInvoice->customer_email,
+            "{TAX_TYPE}" => $stripeInvoice->customer_tax_ids[0]->type,
+            "{TAX_ID}" => $stripeInvoice->customer_tax_ids[0]->value,
+            "{ADDRESS_LINE_1}" => $stripeInvoice->customer_address->line1,
+            "{ADDRESS_LINE_2}" => $stripeInvoice->customer_address->line2,
+            "{CITY}" => $stripeInvoice->customer_address->city,
+            "{STATE}" => $stripeInvoice->customer_address->state,
+            "{POSTAL_CODE}" => $stripeInvoice->customer_address->postal_code,
+            "{CUSTOMER_PHONE}" => $stripeInvoice->customer_phone,
+            "{DUE_DATE}" => $stripeInvoice->due_date,
+            "{AMOUNT_DUE}" => $stripeInvoice->amount_due,
+            "{SUBTOTAL}" => $stripeInvoice->subtotal,
+            "{TAX}" => $stripeInvoice->tax,
+            "{GRAND_TOTAL}" => $stripeInvoice->total,
         );
 
-        if (file_exists($invoiceEmailBodyTemplate)) {
-            $body = file_get_contents($invoiceEmailBodyTemplate);
+        if (file_exists($invoiceEmailBodyTemplateHeader)) {
+            $bodyHeader = file_get_contents($invoiceEmailBodyTemplateHeader);
 
             foreach (array_keys($swap_var) as $key) {
                 if (strlen($key) > 2 && trim($key) != '') {
-                    $body = str_replace($key, $swap_var[$key], $body);
+                    $bodyHeader = str_replace($key, $swap_var[$key], $bodyHeader);
+                }
+            }
+        } else {
+
+        }
+
+        return $bodyHeader;
+    }
+
+    function invoiceEmailBodyLines($lines)
+    {
+        $invoiceEmailBodyTemplateBody = ORB_SERVICES . 'Templates/TemplatesEmailBodyInvoiceBody.php';
+
+        $lineItems = [];
+
+        foreach ($lines as $line) {
+            $lineItem = [
+                "Product" => $line->price->product,
+                "Description" => $line->description,
+                "Quantity" => $line->quantity,
+                "Unit Price" => $line->price->unit_amount / 100,
+                "Total" => $line->amount / 100,
+            ];
+
+            $lineItems[] = $lineItem;
+        }
+
+        $swap_var = array(
+            "{LINES}" => $lineItems,
+        );
+
+        if (file_exists($invoiceEmailBodyTemplateBody)) {
+            $lines = file_get_contents($invoiceEmailBodyTemplateBody);
+
+            foreach (array_keys($swap_var) as $key) {
+                if (strlen($key) > 2 && trim($key) != '') {
+                    if ($key === "{LINES}") {
+                        $linesHtml = '';
+
+                        foreach ($lineItems as $lineItem) {
+                            $linesHtml .= '<tr>';
+                            foreach ($lineItem as $value) {
+                                $linesHtml .= '<td>' . $value . '</td>';
+                            }
+                            $linesHtml .= '</tr>';
+                        }
+
+                        $lines = str_replace($key, $linesHtml, $lines);
+                    } else {
+                        $lines = str_replace($key, $swap_var[$key], $lines);
+                    }
                 }
             }
 
-            $header = $this->email->emailHeader();
-            $footer = $this->email->emailFooter();
-
-            $fullEmailBody = $header . $body . $footer;
-
-            return $fullEmailBody;
-        } else {
-            throw new Exception('Unable to locate invoice email template.');
+            return $lines;
         }
     }
 
-    public function sendInvoiceEmail($stripe_invoice_id)
+    function invoiceEmailBodyFooter($stripeInvoice)
+    {
+        $invoiceEmailBodyTemplateFooter = ORB_SERVICES . 'Templates/TemplatesEmailBodyInvoiceFooter.php';
+
+        $swap_var = array(
+            "{AMOUNT_DUE}" => $stripeInvoice->amount_due,
+            "{SUBTOTAL}" => $stripeInvoice->subtotal,
+            "{TAX}" => $stripeInvoice->tax,
+            "{GRAND_TOTAL}" => $stripeInvoice->total,
+        );
+
+        if (file_exists($invoiceEmailBodyTemplateFooter)) {
+            $bodyFooter = file_get_contents($invoiceEmailBodyTemplateFooter);
+
+            foreach (array_keys($swap_var) as $key) {
+                if (strlen($key) > 2 && trim($key) != '') {
+                    $bodyFooter = str_replace($key, $swap_var[$key], $bodyFooter);
+                }
+            }
+
+            return $bodyFooter;
+        }
+    }
+
+    function invoiceEmailBody($stripe_invoice_id)
+    {
+        $databaseInvoice = $this->database_invoice->getInvoice($stripe_invoice_id);
+        $stripeInvoice = $this->stripe_invoice->getStripeInvoice($databaseInvoice['stripe_invoice_id']);
+
+        $header = $this->email->emailHeader();
+        $bodyHeader = $this->invoiceEmailBodyHeader($databaseInvoice, $stripeInvoice);
+        $bodyBody = $this->invoiceEmailBodyLines($stripeInvoice->lines);
+        $bodyFooter = $this->invoiceEmailBodyFooter($stripeInvoice);
+        $footer = $this->email->emailFooter();
+
+        $fullEmailBody = $header . $bodyHeader . $bodyBody . $bodyFooter . $footer;
+
+        return $fullEmailBody;
+    }
+
+    function sendInvoiceEmail($stripe_invoice_id)
     {
         try {
             $databaseInvoice = $this->database_invoice->getInvoice($stripe_invoice_id);

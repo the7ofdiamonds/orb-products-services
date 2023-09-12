@@ -2,6 +2,7 @@
 
 namespace ORB_Services\API;
 
+use ORB_Services\API\Google\Google;
 use ORB_Services\API\Stripe\Stripe;
 use ORB_Services\API\Schedule;
 
@@ -39,6 +40,7 @@ class API
         add_action('rest_api_init', [$this, 'add_to_rest_api']);
         add_action('rest_api_init', [$this, 'allow_cors_headers']);
 
+        new Google($credentialsPath);
         new Stripe($stripeClient);
         new Schedule($credentialsPath);
 
@@ -51,11 +53,12 @@ class API
         $stripe_prices = new StripePrices($stripeClient);
         $stripe_customers = new StripeCustomers($stripeClient);
 
-        $database_client = new DatabaseClient;
-        $database_customer = new DatabaseCustomer;
-        $database_quote = new DatabaseQuote;
-        $database_invoice = new DatabaseInvoice;
-        $database_receipt = new DatabaseReceipt;
+        global $wpdb;
+        $client_database = new DatabaseClient($wpdb);
+        $customer_database = new DatabaseCustomer($wpdb);
+        $quote_database = new DatabaseQuote($wpdb);
+        $invoice_database = new DatabaseInvoice($wpdb);
+        $receipt_database = new DatabaseReceipt($wpdb);
 
         $pdf = new PDF();
         $mailer = new PHPMailer();
@@ -64,9 +67,9 @@ class API
         $contact_email = new EmailContact($email, $mailer);
         $support_email = new EmailSupport($email, $mailer);
         $schedule_email = new EmailSchedule($email, $mailer);
-        $quote_email = new EmailQuote($database_quote, $stripe_quote, $stripe_customers, $email, $pdf, $mailer);
-        $invoice_email = new EmailInvoice($database_invoice, $stripe_invoice, $email, $pdf, $mailer);
-        $receipt_email = new EmailReceipt($database_receipt, $stripe_invoice, $email, $pdf, $mailer);
+        $quote_email = new EmailQuote($quote_database, $stripe_quote, $stripe_customers, $email, $pdf, $mailer);
+        $invoice_email = new EmailInvoice($invoice_database, $stripe_invoice, $email, $pdf, $mailer);
+        $receipt_email = new EmailReceipt($receipt_database, $stripe_invoice, $email, $pdf, $mailer);
         new Email(
             $contact_email,
             $support_email,
@@ -75,6 +78,8 @@ class API
             $invoice_email,
             $receipt_email
         );
+
+        new Invoice($invoice_database, $stripe_invoice);
     }
 
     public function add_to_rest_api()

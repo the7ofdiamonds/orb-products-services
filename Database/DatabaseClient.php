@@ -2,14 +2,15 @@
 
 namespace ORB_Services\Database;
 
+use Exception;
+
 class DatabaseClient
 {
     private $wpdb;
     private $table_name;
 
-    public function __construct()
+    public function __construct($wpdb)
     {
-        global $wpdb;
         $this->wpdb = $wpdb;
         $this->table_name = 'orb_client';
     }
@@ -29,7 +30,7 @@ class DatabaseClient
 
         if (!$result) {
             $error_message = $this->wpdb->last_error;
-            return rest_ensure_response($error_message);
+            throw new Exception($error_message);
         }
 
         $client_id = $this->wpdb->insert_id;

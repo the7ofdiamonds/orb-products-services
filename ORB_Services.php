@@ -24,6 +24,7 @@ use ORB_Services\Pages\Pages;
 use ORB_Services\PDF\PDF;
 use ORB_Services\Post_Types\Services;
 use ORB_Services\Roles\Roles;
+use ORB_Services\Schedule\Schedule;
 use ORB_Services\Shortcodes\Shortcodes;
 use ORB_Services\Database\Database;
 use ORB_Services\Templates\Templates;
@@ -110,6 +111,7 @@ class ORB_Services
         new JS;
         new Pages;
         new Roles;
+        // new Schedule();
         new Shortcodes;
         new Database;
         new Templates;

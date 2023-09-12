@@ -9,10 +9,10 @@ class Invoice
     private $stripe_invoice;
     private $database_invoice;
 
-    public function __construct($stripe_invoice, $database_invoice)
+    public function __construct($database_invoice, $stripe_invoice)
     {
-        $this->stripe_invoice = $stripe_invoice;
         $this->database_invoice = $database_invoice;
+        $this->stripe_invoice = $stripe_invoice;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [

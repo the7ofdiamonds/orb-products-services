@@ -6,8 +6,24 @@ require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
 class Database
 {
+    private $wpdb;
 
     public function __construct()
+    {
+        global $wpdb;
+        $this->wpdb = $wpdb;
+
+        $this->createTables();
+
+        new DatabaseClient($wpdb);
+        new DatabaseCustomer($wpdb);
+        new DatabaseEvent($wpdb);
+        new DatabaseInvoice($wpdb);
+        new DatabaseQuote($wpdb);
+        new DatabaseReceipt($wpdb);
+    }
+
+    function createTables()
     {
         $this->create_services_table();
         $this->create_client_table();
@@ -22,9 +38,8 @@ class Database
 
     function create_services_table()
     {
-        global $wpdb;
         $table_name = 'orb_services';
-        $charset_collate = $wpdb->get_charset_collate();
+        $charset_collate = $this->wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE {$table_name} (
             id INT NOT NULL AUTO_INCREMENT,
@@ -41,9 +56,8 @@ class Database
 
     function create_client_table()
     {
-        global $wpdb;
         $table_name = 'orb_client';
-        $charset_collate = $wpdb->get_charset_collate();
+        $charset_collate = $this->wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE {$table_name} (
             id INT NOT NULL AUTO_INCREMENT,
@@ -61,9 +75,8 @@ class Database
 
     function create_customer_table()
     {
-        global $wpdb;
         $table_name = 'orb_customer';
-        $charset_collate = $wpdb->get_charset_collate();
+        $charset_collate = $this->wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE {$table_name} (
             id INT NOT NULL AUTO_INCREMENT,
@@ -81,9 +94,8 @@ class Database
 
     function create_quote_table()
     {
-        global $wpdb;
         $table_name = 'orb_quote';
-        $charset_collate = $wpdb->get_charset_collate();
+        $charset_collate = $this->wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE {$table_name} (
             id INT NOT NULL AUTO_INCREMENT,
@@ -106,9 +118,8 @@ class Database
 
     function create_invoice_table()
     {
-        global $wpdb;
         $table_name = 'orb_invoice';
-        $charset_collate = $wpdb->get_charset_collate();
+        $charset_collate = $this->wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE {$table_name} (
             id INT NOT NULL AUTO_INCREMENT,
@@ -133,9 +144,8 @@ class Database
 
     function create_receipt_table()
     {
-        global $wpdb;
         $table_name = 'orb_receipt';
-        $charset_collate = $wpdb->get_charset_collate();
+        $charset_collate = $this->wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE {$table_name} (
         id INT NOT NULL AUTO_INCREMENT,
@@ -159,9 +169,8 @@ class Database
 
     function create_accounts_receivable()
     {
-        global $wpdb;
         $table_name = 'orb_accounts_receivable';
-        $charset_collate = $wpdb->get_charset_collate();
+        $charset_collate = $this->wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE {$table_name} (
         id INT NOT NULL AUTO_INCREMENT,
@@ -180,9 +189,8 @@ class Database
 
     function create_schedule_table()
     {
-        global $wpdb;
         $table_name = 'orb_schedule';
-        $charset_collate = $wpdb->get_charset_collate();
+        $charset_collate = $this->wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE {$table_name} (
         id INT NOT NULL AUTO_INCREMENT,
@@ -202,9 +210,8 @@ class Database
 
     function create_communication_types_table()
     {
-        global $wpdb;
         $table_name = 'orb_communication_types';
-        $charset_collate = $wpdb->get_charset_collate();
+        $charset_collate = $this->wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE {$table_name} (
         id INT NOT NULL AUTO_INCREMENT,

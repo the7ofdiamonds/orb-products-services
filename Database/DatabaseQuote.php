@@ -7,9 +7,8 @@ class DatabaseQuote
     private $wpdb;
     private $table_name;
 
-    public function __construct()
+    public function __construct($wpdb)
     {
-        global $wpdb;
         $this->wpdb = $wpdb;
         $this->table_name = 'orb_quote';
     }
