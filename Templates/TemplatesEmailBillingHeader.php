@@ -3,7 +3,7 @@
     <thead>
       <tr>
         <td style="text-align: center;">
-          <h2 className="title">INVOICE</h2>
+          <h2 className="title">{BILLING_TYPE}</h2>
         </td>
       </tr>
     </thead>

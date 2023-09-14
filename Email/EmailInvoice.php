@@ -2,6 +2,9 @@
 
 namespace ORB_Services\Email;
 
+use ORB_Services\Database\DatabaseInvoice;
+use ORB_Services\API\Stripe\StripeInvoice;
+
 use PHPMailer\PHPMailer\Exception;
 
 class EmailInvoice
@@ -22,7 +25,7 @@ class EmailInvoice
     private $invoiceEmailBodyTemplateBody;
     private $invoiceEmailBodyTemplate;
 
-    public function __construct($database_invoice, $stripe_invoice, $email, $pdf, $mailer)
+    public function __construct($stripeClient, $mailer)
     {
         $this->smtp_host = get_option('invoice_smtp_host');
         $this->smtp_port = get_option('invoice_smtp_port');
@@ -33,19 +36,19 @@ class EmailInvoice
         $this->from_email = get_option('invoice_email');
         $this->from_name = get_option('invoice_name');
 
-        $this->database_invoice = $database_invoice;
-        $this->stripe_invoice = $stripe_invoice;
-        $this->email = $email;
-        $this->pdf = $pdf;
+        $this->database_invoice = new DatabaseInvoice();
+        $this->stripe_invoice = new StripeInvoice($stripeClient);
+        // $this->email = $email;
+        // $this->pdf = $pdf;
         $this->mailer = $mailer;
     }
 
     function invoiceEmailBodyHeader($databaseInvoice, $stripeInvoice)
     {
-        $invoiceEmailBodyTemplateHeader = ORB_SERVICES . 'Templates/TemplatesEmailBodyInvoiceHeader.php';
+        $invoiceEmailBodyTemplateHeader = ORB_SERVICES . 'Templates/TemplatesEmailBodyBillingHeader.php';
 
         $swap_var = array(
-            "{INVOICE_NUMBER}" => 'Invoice #' . $databaseInvoice['id'],
+            "{BILLING_NUMBER}" => 'IN' . $databaseInvoice['id'],
             "{CUSTOMER_NAME}" => $stripeInvoice->customer_name,
             "{CUSTOMER_EMAIL}" => $stripeInvoice->customer_email,
             "{TAX_TYPE}" => $stripeInvoice->customer_tax_ids[0]->type,
@@ -129,7 +132,7 @@ class EmailInvoice
 
     function invoiceEmailBodyFooter($stripeInvoice)
     {
-        $invoiceEmailBodyTemplateFooter = ORB_SERVICES . 'Templates/TemplatesEmailBodyInvoiceFooter.php';
+        $invoiceEmailBodyTemplateFooter = ORB_SERVICES . 'Templates/TemplatesEmailBodyBillingFooter.php';
 
         $swap_var = array(
             "{AMOUNT_DUE}" => $stripeInvoice->amount_due,

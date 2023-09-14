@@ -17,9 +17,9 @@ class EmailSupport
     private $to_email;
     private $to_name;
 
-    public function __construct($email, $mailer)
+    public function __construct($mailer)
     {
-        $this->email = $email;
+        // $this->email = $email;
         $this->mailer = $mailer;
 
         $this->smtp_host = get_option('support_smtp_host');

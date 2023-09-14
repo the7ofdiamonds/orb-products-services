@@ -17,9 +17,9 @@ class EmailSchedule
     private $from_email;
     private $from_name;
 
-    public function __construct($email, $mailer)
+    public function __construct($mailer)
     {
-        $this->email = $email;
+        // $this->email = $email;
         $this->mailer = $mailer;
 
         $this->smtp_host = get_option('schedule_smtp_host');

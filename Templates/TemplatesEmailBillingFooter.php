@@ -33,7 +33,7 @@
             <td></td>
             <td></td>
             <th>
-              <h4 className="grand-total-label">GRAND TOTAL</h4>
+              <h4 className="grand-total-label">TOTAL</h4>
             </th>
             <th>
               <h4 className="grand-total table-number">

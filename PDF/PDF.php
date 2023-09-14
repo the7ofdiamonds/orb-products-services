@@ -2,7 +2,7 @@
 
 namespace ORB_Services\PDF;
 
-use Mpdf\Mpdf;
+// use Mpdf\Mpdf;
 
 class PDF
 {
@@ -10,7 +10,7 @@ class PDF
 
     public function __construct()
     {
-        $this->mpdf = new Mpdf();
+        // $this->mpdf = new Mpdf();
     }
 
     public function createPDF($htmlFilePath, $name, $dest)

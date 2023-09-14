@@ -94,8 +94,7 @@ class StripeQuote
 
             $quote = $this->stripeClient->quotes->retrieve(
                 $stripe_quote_id,
-                []
-            );
+                ['expand' => ['customer', 'invoice.subscription', 'line_items']]            );
 
             return $quote;
         } catch (ApiErrorException $e) {

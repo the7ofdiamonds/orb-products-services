@@ -2,13 +2,16 @@
 
 namespace ORB_Services\Email;
 
-use PHPMailer\PHPMailer\Exception;
+use ORB_Services\Database\DatabaseQuote;
+use ORB_Services\API\Stripe\StripeQuote;
+use ORB_Services\Email\Email;
+
+use Exception;
 
 class EmailQuote
 {
     private $database_quote;
     private $stripe_quote;
-    private $stripe_customers;
     private $email;
     private $pdf;
     private $mailer;
@@ -21,14 +24,12 @@ class EmailQuote
     private $from_email;
     private $from_name;
 
-    public function __construct($database_quote, $stripe_quote, $stripe_customers, $email, $pdf, $mailer)
+    public function __construct($stripeClient, $mailer)
     {
-        $this->database_quote = $database_quote;
-        $this->stripe_quote = $stripe_quote;
-        $this->stripe_customers = $stripe_customers;
-        $this->email = $email;
-        $this->pdf = $pdf;
+        $this->database_quote = new DatabaseQuote();
+        $this->stripe_quote = new StripeQuote($stripeClient);
         $this->mailer = $mailer;
+        // $this->pdf = $pdf;
 
         $this->smtp_host = get_option('quote_smtp_host');
         $this->smtp_port = get_option('quote_smtp_port');
@@ -38,48 +39,143 @@ class EmailQuote
         $this->smtp_password = get_option('quote_smtp_password');
         $this->from_email = get_option('quote_email');
         $this->from_name = get_option('quote_name');
+
+        $this->email = new Email();
     }
 
-    public function quoteEmailBody($stripeQuote, $stripeCustomer, $databaseQuote)
+    function quoteEmailBodyHeader($databaseQuote, $stripeQuote)
     {
-        $quoteEmailBodyTemplate = ORB_SERVICES . 'Templates/TemplatesEmailBodyQuote.php';
-
         $swap_var = array(
-            "{CUSTOMER_EMAIL}" => $stripeCustomer->email,
-            "{CUSTOMER_NAME}" => $stripeCustomer->name,
-            "{QUOTE_NUMBER}" => 'Quote #' . $databaseQuote['id'],
+            "{BILLING_TYPE}" => 'QUOTE',
+            "{BILLING_NUMBER}" => 'QT' . $databaseQuote['id'],
+            "{CUSTOMER_NAME}" => $stripeQuote->customer->name,
+            "{CUSTOMER_EMAIL}" => $stripeQuote->customer->email,
+            "{CUSTOMER_PHONE}" => $stripeQuote->customer->phone,
+            "{TAX_TYPE}" => $stripeQuote->invoice->customer_tax_ids[0]->type,
+            "{TAX_ID}" => $stripeQuote->invoice->customer_tax_ids[0]->value,
+            "{ADDRESS_LINE_1}" => $stripeQuote->customer->address->line1,
+            "{ADDRESS_LINE_2}" => $stripeQuote->customer->address->line2,
+            "{CITY}" => $stripeQuote->customer->address->city,
+            "{STATE}" => $stripeQuote->customer->address->state,
+            "{POSTAL_CODE}" => $stripeQuote->customer->address->postal_code,
+            "{DUE_DATE}" => $stripeQuote->invoice->due_date,
+            "{AMOUNT_DUE}" => $stripeQuote->invoice->amount_due,
+            "{SUBTOTAL}" => $stripeQuote->amount_subtotal,
+            "{TOTAL}" => $stripeQuote->amount_total,
         );
 
-        if (file_exists($quoteEmailBodyTemplate)) {
-            $body = file_get_contents($quoteEmailBodyTemplate);
+        if (file_exists($this->email->billingHeader)) {
+            $bodyHeader = file_get_contents($this->email->billingHeader);
 
             foreach (array_keys($swap_var) as $key) {
                 if (strlen($key) > 2 && trim($key) != '') {
-                    $body = str_replace($key, $swap_var[$key], $body);
+                    $bodyHeader = str_replace($key, $swap_var[$key], $bodyHeader);
+                }
+            }
+        } else {
+            throw new Exception('Could not find billing header template.');
+        }
+
+        return $bodyHeader;
+    }
+
+    function quoteEmailBodyLines($lines)
+    {
+        $lineItems = [];
+
+        foreach ($lines as $line) {
+            $lineItem = [
+                "Product" => $line->price->product,
+                "Description" => $line->description,
+                "Quantity" => $line->quantity,
+                "Unit Price" => $line->price->unit_amount / 100,
+                "Total" => $line->amount_total / 100,
+            ];
+
+            $lineItems[] = $lineItem;
+        }
+
+        $swap_var = array(
+            "{LINES}" => $lineItems,
+        );
+
+        if (file_exists($this->email->billingBody)) {
+            $lines = file_get_contents($this->email->billingBody);
+
+            foreach (array_keys($swap_var) as $key) {
+                if (strlen($key) > 2 && trim($key) != '') {
+                    if ($key === "{LINES}") {
+                        $linesHtml = '';
+
+                        foreach ($lineItems as $lineItem) {
+                            $linesHtml .= '<tr>';
+                            foreach ($lineItem as $value) {
+                                $linesHtml .= '<td>' . $value . '</td>';
+                            }
+                            $linesHtml .= '</tr>';
+                        }
+
+                        $lines = str_replace($key, $linesHtml, $lines);
+                    } else {
+                        $lines = str_replace($key, $swap_var[$key], $lines);
+                    }
                 }
             }
 
-            $header = $this->email->emailHeader();
-            $footer = $this->email->emailFooter();
-
-            $fullEmailBody = $header . $body . $footer;
-
-            return $fullEmailBody;
+            return $lines;
         } else {
-            throw new Exception('Unable to locate quote email template.');
+            throw new Exception('Could not find billing body template.');
         }
     }
 
-    public function sendQuoteEmail($stripe_quote_id)
+    function quoteEmailBodyFooter($stripeQuote)
+    {
+        $swap_var = array(
+            "{SUBTOTAL}" => $stripeQuote->amount_subtotal,
+            "{TAX}" => '-',
+            "{TOTAL}" => $stripeQuote->amount_total,
+        );
+
+        if (file_exists($this->email->billingFooter)) {
+            $bodyFooter = file_get_contents($this->email->billingFooter);
+
+            foreach (array_keys($swap_var) as $key) {
+                if (strlen($key) > 2 && trim($key) != '') {
+                    $bodyFooter = str_replace($key, $swap_var[$key], $bodyFooter);
+                }
+            }
+
+            return $bodyFooter;
+        } else {
+            throw new Exception('Could not find billing footer template.');
+        }
+    }
+
+    function quoteEmailBody($stripe_quote_id)
+    {
+        $databaseQuote = $this->database_quote->getQuote($stripe_quote_id);
+        $stripeQuote = $this->stripe_quote->getStripeQuote($databaseQuote['stripe_quote_id']);
+
+        $header = $this->email->emailHeader();
+        $bodyHeader = $this->quoteEmailBodyHeader($databaseQuote, $stripeQuote);
+        $bodyBody = $this->quoteEmailBodyLines($stripeQuote->line_items);
+        $bodyFooter = $this->quoteEmailBodyFooter($stripeQuote);
+        $footer = $this->email->emailFooter();
+
+        $fullEmailBody = $header . $bodyHeader . $bodyBody . $bodyFooter . $footer;
+
+        return $fullEmailBody;
+    }
+
+    function sendQuoteEmail($stripe_quote_id)
     {
         try {
             $databaseQuote = $this->database_quote->getQuote($stripe_quote_id);
             $stripeQuote = $this->stripe_quote->getStripeQuote($databaseQuote['stripe_quote_id']);
-            $stripeCustomer = $this->stripe_customers->getCustomer($stripeQuote->customer);
 
-            $to_email = $stripeCustomer->email;
+            $to_email = $stripeQuote->customer->email;
             $quote_number = 'Quote #' . $databaseQuote['id'];
-            $name = $stripeCustomer->name;
+            $name = $stripeQuote->customer->name;
             $to_name = $name;
 
             $subject = $quote_number . ' for ' . $name;
@@ -98,8 +194,8 @@ class EmailQuote
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $this->quoteEmailBody($stripeQuote, $stripeCustomer, $databaseQuote);
-            $this->mailer->AltBody = $stripeQuote;
+            $this->mailer->Body = $this->quoteEmailBody($stripe_quote_id);
+            $this->mailer->AltBody = '<pre>' . $stripeQuote . '</pre>';
 
             // Make the body the pdf
             // if ($stripeQuote->status === 'paid' || $stripeQuote->status === 'open') {
@@ -108,7 +204,6 @@ class EmailQuote
             // }
 
             // if (isset($path) && isset($attachment_name)) {
-
             //     $this->mailer->addAttachment($path, $attachment_name, 'base64', 'application/pdf');
             // }
 

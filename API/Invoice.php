@@ -2,6 +2,9 @@
 
 namespace ORB_Services\API;
 
+use ORB_Services\API\Stripe\StripeInvoice;
+use ORB_Services\Database\DatabaseInvoice;
+
 use WP_REST_Request;
 
 class Invoice
@@ -9,10 +12,10 @@ class Invoice
     private $stripe_invoice;
     private $database_invoice;
 
-    public function __construct($database_invoice, $stripe_invoice)
+    public function __construct($stripeClient)
     {
-        $this->database_invoice = $database_invoice;
-        $this->stripe_invoice = $stripe_invoice;
+        $this->database_invoice = new DatabaseInvoice();
+        $this->stripe_invoice = new StripeInvoice($stripeClient);
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [

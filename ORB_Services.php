@@ -18,6 +18,12 @@ use ORB_Services\Admin\Admin;
 use ORB_Services\API\API;
 use ORB_Services\CSS\CSS;
 use ORB_Services\Email\Email;
+use ORB_Services\Email\EmailContact;
+use ORB_Services\Email\EmailInvoice;
+use ORB_Services\Email\EmailQuote;
+use ORB_Services\Email\EmailReceipt;
+use ORB_Services\Email\EmailSchedule;
+use ORB_Services\Email\EmailSupport;
 use ORB_Services\JS\JS;
 use ORB_Services\Menus\Menus;
 use ORB_Services\Pages\Pages;
@@ -94,10 +100,9 @@ class ORB_Services
                 break;
             }
         }
-
+        
         $mailer = new PHPMailer();
         $pdf = new PDF;
-        new Email($mailer, $pdf);
 
         if ($credentialsPath !== null && $stripeSecretKey !== null) {
             Stripe::setApiKey($stripeSecretKey);
@@ -115,6 +120,13 @@ class ORB_Services
         new Shortcodes;
         new Database;
         new Templates;
+
+        new EmailContact($mailer);
+        new EmailSupport($mailer);
+        new EmailSchedule($mailer);
+        new EmailQuote($stripeClient, $mailer);
+        new EmailInvoice($stripeClient, $mailer);
+        new EmailReceipt($stripeClient, $mailer);
     }
 
     public function activate()

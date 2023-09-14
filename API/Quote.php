@@ -2,11 +2,10 @@
 
 namespace ORB_Services\API;
 
-use WP_REST_Request;
-use WP_Error;
-
 use ORB_Services\API\Stripe\StripeQuote;
 use ORB_Services\Database\DatabaseQuote;
+use WP_REST_Request;
+use WP_Error;
 
 use Stripe\Exception\ApiErrorException;
 
@@ -14,12 +13,11 @@ class Quote
 {
     private $stripe_quote;
     private $database_quote;
-    private $email_quote;
 
-    public function __construct($stripe_quote, $database_quote)
+    public function __construct($stripeClient)
     {
-        $this->stripe_quote = $stripe_quote;
-        $this->database_quote = $database_quote;
+        $this->stripe_quote = new StripeQuote($stripeClient);
+        $this->database_quote = new DatabaseQuote();
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/quote', array(

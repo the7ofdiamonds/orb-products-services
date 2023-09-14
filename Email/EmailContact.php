@@ -17,11 +17,8 @@ class EmailContact
     private $to_email;
     private $to_name;
 
-    public function __construct($email, $mailer)
+    public function __construct($mailer)
     {
-        $this->email = $email;
-        $this->mailer = $mailer;
-
         $this->smtp_host = get_option('contact_smtp_host');
         $this->smtp_port = get_option('contact_smtp_port');
         $this->smtp_secure = get_option('contact_smtp_secure');
@@ -30,6 +27,9 @@ class EmailContact
         $this->smtp_password = get_option('contact_smtp_password');
         $this->to_email = get_option('contact_email');
         $this->to_name = get_option('contact_name');
+
+        // $this->email = $email;
+        $this->mailer = $mailer;
     }
 
     public function contactEmailBody($first_name, $last_name, $email, $subject, $message)

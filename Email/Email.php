@@ -2,6 +2,27 @@
 
 namespace ORB_Services\Email;
 
+use ORB_Services\Database\DatabaseClient;
+use ORB_Services\Database\DatabaseCustomer;
+use ORB_Services\Database\DatabaseQuote;
+use ORB_Services\Database\DatabaseInvoice;
+use ORB_Services\Database\DatabaseReceipt;
+
+use ORB_Services\API\Stripe\StripeQuote;
+use ORB_Services\API\Stripe\StripeInvoice;
+use ORB_Services\API\Stripe\StripePaymentIntents;
+use ORB_Services\API\Stripe\StripeCharges;
+use ORB_Services\API\Stripe\StripePaymentMethods;
+use ORB_Services\API\Stripe\StripeProducts;
+use ORB_Services\API\Stripe\StripePrices;
+use ORB_Services\API\Stripe\StripeCustomers;
+
+use ORB_Services\API\Email as EmailAPI;
+
+// use ORB_Services\PDF\PDF;
+
+use PHPMailer\PHPMailer\PHPMailer;
+
 class Email
 {
     private $web_address;
@@ -14,6 +35,11 @@ class Email
     private $instagram;
     private $year;
     private $company_name;
+    private $emailTemplateHeader;
+    public $billingHeader;
+    public $billingBody;
+    public $billingFooter;
+    private $emailTemplateFooter;
 
     public function __construct()
     {
@@ -30,11 +56,16 @@ class Email
         $this->instagram = esc_attr(get_option('instagram_link'));
         $this->year = date("Y");
         $this->company_name = get_theme_mod('footer_company');
+
+        $this->emailTemplateHeader = ORB_SERVICES . 'Templates/TemplatesEmailHeader.php';
+        $this->billingHeader = ORB_SERVICES . 'Templates/TemplatesEmailBillingHeader.php';
+        $this->billingBody = ORB_SERVICES . 'Templates/TemplatesEmailBillingBody.php';
+        $this->billingFooter = ORB_SERVICES . 'Templates/TemplatesEmailBillingFooter.php';
+        $this->emailTemplateFooter = ORB_SERVICES . 'Templates/TemplatesEmailFooter.php';
     }
 
     public function emailHeader()
     {
-        $emailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailHeader.php';
 
         $swap_var = array(
             "{WEB_ADDRESS}" => $this->web_address,
@@ -42,8 +73,8 @@ class Email
             "{SITE_NAME}" => $this->site_name,
         );
 
-        if (file_exists($emailTemplate)) {
-            $header = file_get_contents($emailTemplate);
+        if (file_exists($this->emailTemplateHeader)) {
+            $header = file_get_contents($this->emailTemplateHeader);
 
             foreach (array_keys($swap_var) as $key) {
                 if (strlen($key) > 2 && trim($key) != '') {
@@ -59,8 +90,6 @@ class Email
 
     public function emailFooter()
     {
-        $emailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailFooter.php';
-
         $swap_var = array(
             "{FACEBOOK}" => $this->facebook,
             "{TWITTER}" => $this->twitter,
@@ -71,8 +100,8 @@ class Email
             "{COMPANY_NAME}" => $this->company_name
         );
 
-        if (file_exists($emailTemplate)) {
-            $footer = file_get_contents($emailTemplate);
+        if (file_exists( $this->emailTemplateFooter)) {
+            $footer = file_get_contents( $this->emailTemplateFooter);
 
             foreach (array_keys($swap_var) as $key) {
                 if (strlen($key) > 2 && trim($key) != '') {

@@ -2,6 +2,9 @@
 
 namespace ORB_Services\Email;
 
+use ORB_Services\Database\DatabaseReceipt;
+use ORB_Services\API\Stripe\StripeInvoice;
+
 use PHPMailer\PHPMailer\Exception;
 
 class EmailReceipt
@@ -20,12 +23,12 @@ class EmailReceipt
     private $from_email;
     private $from_name;
 
-    public function __construct($database_receipt, $stripe_receipt, $email, $pdf, $mailer)
+    public function __construct($stripeClient, $mailer)
     {
-        $this->database_receipt = $database_receipt;
-        $this->stripe_receipt = $stripe_receipt;
-        $this->email = $email;
-        $this->pdf = $pdf;
+        $this->database_receipt = new DatabaseReceipt();
+        $this->stripe_receipt = new StripeInvoice($stripeClient);
+        // $this->email = new Email();
+        // $this->pdf = $pdf;
         $this->mailer = $mailer;
 
         $this->smtp_host = get_option('receipt_smtp_host');

@@ -2,6 +2,8 @@
 
 namespace ORB_Services\API;
 
+use ORB_Services\Email\EmailQuote;
+
 use WP_REST_Request;
 
 class Email
@@ -13,14 +15,7 @@ class Email
     private $invoice_email;
     private $receipt_email;
 
-    public function __construct(
-        $contact_email,
-        $support_email,
-        $schedule_email,
-        $quote_email,
-        $invoice_email,
-        $receipt_email
-    ) {
+    public function __construct($stripeClient, $mailer) {
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/contact', [
                 'methods' => 'POST',
@@ -28,7 +23,7 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        $this->contact_email = $contact_email;
+        // $this->contact_email = $contact_email;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/support', [
@@ -37,7 +32,7 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        $this->support_email = $support_email;
+        // $this->support_email = $support_email;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/schedule', [
@@ -46,7 +41,7 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        $this->schedule_email = $schedule_email;
+        // $this->schedule_email = $schedule_email;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/quote/(?P<slug>[a-zA-Z0-9-_]+)', [
@@ -55,7 +50,7 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        $this->quote_email = $quote_email;
+        $this->quote_email = new EmailQuote($stripeClient, $mailer);
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
@@ -64,7 +59,7 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        $this->invoice_email = $invoice_email;
+        // $this->invoice_email = $invoice_email;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/receipt/(?P<slug>[a-zA-Z0-9-_]+)', [
@@ -73,7 +68,7 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        $this->receipt_email = $receipt_email;
+        // $this->receipt_email = $receipt_email;
     }
 
     public function send_contact_email(WP_REST_Request $request)

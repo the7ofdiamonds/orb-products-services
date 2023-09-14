@@ -7,8 +7,9 @@ class DatabaseReceipt
     private $wpdb;
     private $table_name;
 
-    public function __construct($wpdb)
+    public function __construct()
     {
+        global $wpdb;
         $this->wpdb = $wpdb;
         $this->table_name = 'orb_receipt';
     }
