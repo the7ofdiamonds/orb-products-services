@@ -37,7 +37,7 @@
             </th>
             <th>
               <h4 className="grand-total table-number">
-                {GRAND_TOTAL}
+                {TOTAL}
               </h4>
             </th>
           </tr>

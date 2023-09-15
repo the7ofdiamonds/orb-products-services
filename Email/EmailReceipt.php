@@ -2,16 +2,19 @@
 
 namespace ORB_Services\Email;
 
+use Exception;
+
 use ORB_Services\Database\DatabaseReceipt;
 use ORB_Services\API\Stripe\StripeInvoice;
 
-use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 class EmailReceipt
 {
     private $database_receipt;
     private $stripe_receipt;
     private $email;
+    private $billing;
     private $pdf;
     private $mailer;
     private $smtp_host;
@@ -27,9 +30,10 @@ class EmailReceipt
     {
         $this->database_receipt = new DatabaseReceipt();
         $this->stripe_receipt = new StripeInvoice($stripeClient);
-        // $this->email = new Email();
-        // $this->pdf = $pdf;
+        $this->email = new Email();
+        $this->billing = new EmailBilling($stripeClient);
         $this->mailer = $mailer;
+        // $this->pdf = $pdf;
 
         $this->smtp_host = get_option('receipt_smtp_host');
         $this->smtp_port = get_option('receipt_smtp_port');
@@ -41,34 +45,55 @@ class EmailReceipt
         $this->from_name = get_option('receipt_name');
     }
 
-    public function receiptEmailBody($databaseReceipt, $stripeInvoice)
+    function receiptEmailBodyHeader($databaseInvoice, $stripeInvoice)
     {
-        $receiptEmailBodyTemplate = ORB_SERVICES . 'Templates/TemplatesEmailBodyReceipt.php';
-
         $swap_var = array(
-            "{CUSTOMER_EMAIL}" => $stripeInvoice->customer_email,
+            "{BILLING_TYPE}" => 'RECEIPT',
+            "{BILLING_NUMBER}" => 'RE' . $databaseInvoice['id'],
             "{CUSTOMER_NAME}" => $stripeInvoice->customer_name,
-            "{RECEIPT_NUMBER}" => 'Receipt #' . $databaseReceipt['id'],
+            "{CUSTOMER_EMAIL}" => $stripeInvoice->customer_email,
+            "{TAX_TYPE}" => $stripeInvoice->customer_tax_ids[0]->type,
+            "{TAX_ID}" => $stripeInvoice->customer_tax_ids[0]->value,
+            "{ADDRESS_LINE_1}" => $stripeInvoice->customer_address->line1,
+            "{ADDRESS_LINE_2}" => $stripeInvoice->customer_address->line2,
+            "{CITY}" => $stripeInvoice->customer_address->city,
+            "{STATE}" => $stripeInvoice->customer_address->state,
+            "{POSTAL_CODE}" => $stripeInvoice->customer_address->postal_code,
+            "{CUSTOMER_PHONE}" => $stripeInvoice->customer_phone,
+            "{DUE_DATE}" => $stripeInvoice->due_date,
+            "{AMOUNT_DUE}" => $stripeInvoice->amount_due,
         );
 
-        if (file_exists($receiptEmailBodyTemplate)) {
-            $body = file_get_contents($receiptEmailBodyTemplate);
+        if (file_exists($this->billing->header)) {
+            $bodyHeader = file_get_contents($this->billing->header);
 
             foreach (array_keys($swap_var) as $key) {
                 if (strlen($key) > 2 && trim($key) != '') {
-                    $body = str_replace($key, $swap_var[$key], $body);
+                    if ($swap_var[$key] != '') {
+                        $bodyHeader = str_replace($key, $swap_var[$key], $bodyHeader);
+                    } else {
+                        $bodyHeader = str_replace($key, '', $bodyHeader);
+                    }
                 }
             }
-
-            $header = $this->email->emailHeader();
-            $footer = $this->email->emailFooter();
-
-            $fullEmailBody = $header . $body . $footer;
-
-            return $fullEmailBody;
         } else {
-            throw new Exception('Unable to locate receipt email template.');
+            throw new Exception('Unable to find billing header template.');
         }
+
+        return $bodyHeader;
+    }
+
+    public function receiptEmailBody($databaseReceipt, $stripeInvoice)
+    {
+        $header = $this->email->emailHeader();
+        $bodyHeader = $this->receiptEmailBodyHeader($databaseReceipt, $stripeInvoice);
+        $bodyBody = $this->billing->billingBody($stripeInvoice->lines);
+        $bodyFooter = $this->billing->billingFooter($stripeInvoice);
+        $footer = $this->email->emailFooter();
+
+        $fullEmailBody = $header . $bodyHeader . $bodyBody . $bodyFooter . $footer;
+
+        return $fullEmailBody;
     }
 
     public function sendReceiptEmail($stripe_invoice_id)
@@ -82,31 +107,6 @@ class EmailReceipt
         $to_name = $name;
 
         $subject = $receipt_number . ' for ' . $name;
-
-
-        $receiptEmailTemplate = ORB_SERVICES . 'Templates/TemplatesEmailBodyReceipt.php';
-
-        $swap_var = array(
-            "{CUSTOMER_EMAIL}" => $to_email,
-            "{CUSTOMER_NAME}" => $name,
-            "{RECEIPT_NUMBER}" => $receipt_number,
-        );
-
-        if (file_exists($receiptEmailTemplate))
-            $body = file_get_contents($receiptEmailTemplate);
-        else {
-            $msg = array(
-                'message' => 'Unable to locate receipt email template.'
-            );
-            $response = rest_ensure_response($msg);
-            $response->set_status(400);
-            return $response;
-        }
-
-        foreach (array_keys($swap_var) as $key) {
-            if (strlen($key) > 2 && trim($key) != '')
-                $body = str_replace($key, $swap_var[$key], $body);
-        }
 
         try {
             $this->mailer->isSMTP();
@@ -140,7 +140,7 @@ class EmailReceipt
             if ($this->mailer->send()) {
                 return ['message' => 'Message has been sent'];
             } else {
-                throw new Exception("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
+                throw new PHPMailerException("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
             }
         } catch (Exception $e) {
             error_log($e->getMessage());

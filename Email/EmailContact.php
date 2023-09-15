@@ -28,7 +28,7 @@ class EmailContact
         $this->to_email = get_option('contact_email');
         $this->to_name = get_option('contact_name');
 
-        // $this->email = $email;
+        $this->email = new Email();
         $this->mailer = $mailer;
     }
 

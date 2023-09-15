@@ -33,6 +33,7 @@ use ORB_Services\Roles\Roles;
 use ORB_Services\Schedule\Schedule;
 use ORB_Services\Shortcodes\Shortcodes;
 use ORB_Services\Database\Database;
+use ORB_Services\Email\EmailBilling;
 use ORB_Services\Templates\Templates;
 
 use Stripe\Stripe;
@@ -100,7 +101,7 @@ class ORB_Services
                 break;
             }
         }
-        
+
         $mailer = new PHPMailer();
         $pdf = new PDF;
 
@@ -122,6 +123,7 @@ class ORB_Services
         new Templates;
 
         new EmailContact($mailer);
+        // new EmailBilling($stripeClient);
         new EmailSupport($mailer);
         new EmailSchedule($mailer);
         new EmailQuote($stripeClient, $mailer);

@@ -2,26 +2,7 @@
 
 namespace ORB_Services\Email;
 
-use ORB_Services\Database\DatabaseClient;
-use ORB_Services\Database\DatabaseCustomer;
-use ORB_Services\Database\DatabaseQuote;
-use ORB_Services\Database\DatabaseInvoice;
-use ORB_Services\Database\DatabaseReceipt;
-
-use ORB_Services\API\Stripe\StripeQuote;
-use ORB_Services\API\Stripe\StripeInvoice;
-use ORB_Services\API\Stripe\StripePaymentIntents;
-use ORB_Services\API\Stripe\StripeCharges;
-use ORB_Services\API\Stripe\StripePaymentMethods;
-use ORB_Services\API\Stripe\StripeProducts;
-use ORB_Services\API\Stripe\StripePrices;
-use ORB_Services\API\Stripe\StripeCustomers;
-
-use ORB_Services\API\Email as EmailAPI;
-
-// use ORB_Services\PDF\PDF;
-
-use PHPMailer\PHPMailer\PHPMailer;
+use Exception;
 
 class Email
 {
@@ -36,9 +17,6 @@ class Email
     private $year;
     private $company_name;
     private $emailTemplateHeader;
-    public $billingHeader;
-    public $billingBody;
-    public $billingFooter;
     private $emailTemplateFooter;
 
     public function __construct()
@@ -58,15 +36,11 @@ class Email
         $this->company_name = get_theme_mod('footer_company');
 
         $this->emailTemplateHeader = ORB_SERVICES . 'Templates/TemplatesEmailHeader.php';
-        $this->billingHeader = ORB_SERVICES . 'Templates/TemplatesEmailBillingHeader.php';
-        $this->billingBody = ORB_SERVICES . 'Templates/TemplatesEmailBillingBody.php';
-        $this->billingFooter = ORB_SERVICES . 'Templates/TemplatesEmailBillingFooter.php';
         $this->emailTemplateFooter = ORB_SERVICES . 'Templates/TemplatesEmailFooter.php';
     }
 
     public function emailHeader()
     {
-
         $swap_var = array(
             "{WEB_ADDRESS}" => $this->web_address,
             "{LOGO_LINK}" => $this->logo_link,
@@ -84,7 +58,7 @@ class Email
 
             return $header;
         } else {
-            throw new \Exception('Unable to locate contact email template.');
+            throw new Exception('Unable to locate contact email template.');
         }
     }
 

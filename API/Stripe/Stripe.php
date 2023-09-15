@@ -54,7 +54,5 @@ class Stripe
         new Services($stripe_products, $stripe_prices);
         new Product($stripe_products, $stripe_prices);
         new Products($stripe_products, $stripe_prices);
-
-
     }
 }

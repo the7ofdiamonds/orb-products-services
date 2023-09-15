@@ -2,16 +2,19 @@
 
 namespace ORB_Services\Email;
 
+use Exception;
+
 use ORB_Services\Database\DatabaseInvoice;
 use ORB_Services\API\Stripe\StripeInvoice;
 
-use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 class EmailInvoice
 {
     private $database_invoice;
     private $stripe_invoice;
     private $email;
+    private $billing;
     private $pdf;
     private $mailer;
     private $smtp_host;
@@ -22,8 +25,6 @@ class EmailInvoice
     private $smtp_password;
     private $from_email;
     private $from_name;
-    private $invoiceEmailBodyTemplateBody;
-    private $invoiceEmailBodyTemplate;
 
     public function __construct($stripeClient, $mailer)
     {
@@ -38,16 +39,16 @@ class EmailInvoice
 
         $this->database_invoice = new DatabaseInvoice();
         $this->stripe_invoice = new StripeInvoice($stripeClient);
-        // $this->email = $email;
-        // $this->pdf = $pdf;
+        $this->email = new Email();
+        $this->billing = new EmailBilling($stripeClient);
         $this->mailer = $mailer;
+        // $this->pdf = $pdf;
     }
 
     function invoiceEmailBodyHeader($databaseInvoice, $stripeInvoice)
     {
-        $invoiceEmailBodyTemplateHeader = ORB_SERVICES . 'Templates/TemplatesEmailBodyBillingHeader.php';
-
         $swap_var = array(
+            "{BILLING_TYPE}" => 'INVOICE',
             "{BILLING_NUMBER}" => 'IN' . $databaseInvoice['id'],
             "{CUSTOMER_NAME}" => $stripeInvoice->customer_name,
             "{CUSTOMER_EMAIL}" => $stripeInvoice->customer_email,
@@ -61,108 +62,33 @@ class EmailInvoice
             "{CUSTOMER_PHONE}" => $stripeInvoice->customer_phone,
             "{DUE_DATE}" => $stripeInvoice->due_date,
             "{AMOUNT_DUE}" => $stripeInvoice->amount_due,
-            "{SUBTOTAL}" => $stripeInvoice->subtotal,
-            "{TAX}" => $stripeInvoice->tax,
-            "{GRAND_TOTAL}" => $stripeInvoice->total,
         );
 
-        if (file_exists($invoiceEmailBodyTemplateHeader)) {
-            $bodyHeader = file_get_contents($invoiceEmailBodyTemplateHeader);
+        if (file_exists($this->billing->header)) {
+            $bodyHeader = file_get_contents($this->billing->header);
 
             foreach (array_keys($swap_var) as $key) {
                 if (strlen($key) > 2 && trim($key) != '') {
-                    $bodyHeader = str_replace($key, $swap_var[$key], $bodyHeader);
+                    if ($swap_var[$key] != '') {
+                        $bodyHeader = str_replace($key, $swap_var[$key], $bodyHeader);
+                    } else {
+                        $bodyHeader = str_replace($key, '', $bodyHeader);
+                    }
                 }
             }
         } else {
-
+            throw new Exception('Unable to find billing header template.');
         }
 
         return $bodyHeader;
     }
 
-    function invoiceEmailBodyLines($lines)
+    function invoiceEmailBody($databaseInvoice, $stripeInvoice)
     {
-        $invoiceEmailBodyTemplateBody = ORB_SERVICES . 'Templates/TemplatesEmailBodyInvoiceBody.php';
-
-        $lineItems = [];
-
-        foreach ($lines as $line) {
-            $lineItem = [
-                "Product" => $line->price->product,
-                "Description" => $line->description,
-                "Quantity" => $line->quantity,
-                "Unit Price" => $line->price->unit_amount / 100,
-                "Total" => $line->amount / 100,
-            ];
-
-            $lineItems[] = $lineItem;
-        }
-
-        $swap_var = array(
-            "{LINES}" => $lineItems,
-        );
-
-        if (file_exists($invoiceEmailBodyTemplateBody)) {
-            $lines = file_get_contents($invoiceEmailBodyTemplateBody);
-
-            foreach (array_keys($swap_var) as $key) {
-                if (strlen($key) > 2 && trim($key) != '') {
-                    if ($key === "{LINES}") {
-                        $linesHtml = '';
-
-                        foreach ($lineItems as $lineItem) {
-                            $linesHtml .= '<tr>';
-                            foreach ($lineItem as $value) {
-                                $linesHtml .= '<td>' . $value . '</td>';
-                            }
-                            $linesHtml .= '</tr>';
-                        }
-
-                        $lines = str_replace($key, $linesHtml, $lines);
-                    } else {
-                        $lines = str_replace($key, $swap_var[$key], $lines);
-                    }
-                }
-            }
-
-            return $lines;
-        }
-    }
-
-    function invoiceEmailBodyFooter($stripeInvoice)
-    {
-        $invoiceEmailBodyTemplateFooter = ORB_SERVICES . 'Templates/TemplatesEmailBodyBillingFooter.php';
-
-        $swap_var = array(
-            "{AMOUNT_DUE}" => $stripeInvoice->amount_due,
-            "{SUBTOTAL}" => $stripeInvoice->subtotal,
-            "{TAX}" => $stripeInvoice->tax,
-            "{GRAND_TOTAL}" => $stripeInvoice->total,
-        );
-
-        if (file_exists($invoiceEmailBodyTemplateFooter)) {
-            $bodyFooter = file_get_contents($invoiceEmailBodyTemplateFooter);
-
-            foreach (array_keys($swap_var) as $key) {
-                if (strlen($key) > 2 && trim($key) != '') {
-                    $bodyFooter = str_replace($key, $swap_var[$key], $bodyFooter);
-                }
-            }
-
-            return $bodyFooter;
-        }
-    }
-
-    function invoiceEmailBody($stripe_invoice_id)
-    {
-        $databaseInvoice = $this->database_invoice->getInvoice($stripe_invoice_id);
-        $stripeInvoice = $this->stripe_invoice->getStripeInvoice($databaseInvoice['stripe_invoice_id']);
-
         $header = $this->email->emailHeader();
         $bodyHeader = $this->invoiceEmailBodyHeader($databaseInvoice, $stripeInvoice);
-        $bodyBody = $this->invoiceEmailBodyLines($stripeInvoice->lines);
-        $bodyFooter = $this->invoiceEmailBodyFooter($stripeInvoice);
+        $bodyBody = $this->billing->billingBody($stripeInvoice->lines);
+        $bodyFooter = $this->billing->billingFooter($stripeInvoice);
         $footer = $this->email->emailFooter();
 
         $fullEmailBody = $header . $bodyHeader . $bodyBody . $bodyFooter . $footer;
@@ -197,7 +123,7 @@ class EmailInvoice
 
             $this->mailer->isHTML(true);
             $this->mailer->Subject = $subject;
-            $this->mailer->Body = $this->invoiceEmailBody($stripe_invoice_id);
+            $this->mailer->Body = $this->invoiceEmailBody($databaseInvoice, $stripeInvoice);
             $this->mailer->AltBody = '<pre>' . $stripeInvoice . '</pre>';
 
             // Make the body the pdf
@@ -213,7 +139,7 @@ class EmailInvoice
             if ($this->mailer->send()) {
                 return ['message' => 'Message has been sent'];
             } else {
-                throw new Exception("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
+                throw new PHPMailerException("Message could not be sent. Mailer Error: {$this->mailer->ErrorInfo}");
             }
         } catch (Exception $e) {
             error_log($e->getMessage());

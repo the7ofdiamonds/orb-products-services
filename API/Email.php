@@ -2,18 +2,19 @@
 
 namespace ORB_Services\API;
 
+use ORB_Services\Email\EmailContact;
+use ORB_Services\Email\EmailSchedule;
+use ORB_Services\Email\EmailSupport;
 use ORB_Services\Email\EmailQuote;
+use ORB_Services\Email\EmailInvoice;
+use ORB_Services\Email\EmailReceipt;
 
 use WP_REST_Request;
 
 class Email
 {
-    private $contact_email;
-    private $support_email;
-    private $schedule_email;
-    private $quote_email;
-    private $invoice_email;
-    private $receipt_email;
+    private $stripeClient;
+    private $mailer;
 
     public function __construct($stripeClient, $mailer) {
         add_action('rest_api_init', function () {
@@ -23,7 +24,6 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        // $this->contact_email = $contact_email;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/support', [
@@ -32,7 +32,6 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        // $this->support_email = $support_email;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/schedule', [
@@ -41,7 +40,6 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        // $this->schedule_email = $schedule_email;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/quote/(?P<slug>[a-zA-Z0-9-_]+)', [
@@ -50,7 +48,6 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        $this->quote_email = new EmailQuote($stripeClient, $mailer);
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
@@ -59,7 +56,6 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        // $this->invoice_email = $invoice_email;
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/receipt/(?P<slug>[a-zA-Z0-9-_]+)', [
@@ -68,11 +64,15 @@ class Email
                 'permission_callback' => '__return_true',
             ]);
         });
-        // $this->receipt_email = $receipt_email;
+
+        $this->stripeClient = $stripeClient;
+        $this->mailer = $mailer;
     }
 
     public function send_contact_email(WP_REST_Request $request)
     {
+        $contact_email = new EmailContact($this->mailer);
+
         $from_email = $request['email'];
         $first_name = $request['first_name'];
         $last_name = $request['last_name'];
@@ -106,7 +106,7 @@ class Email
         $subject = sanitize_text_field($subject);
         $message = sanitize_textarea_field($message);
 
-        $contactEmail = $this->contact_email->sendContactEmail($firstName, $lastName, $fromEmail, $subject, $message);
+        $contactEmail = $contact_email->sendContactEmail($firstName, $lastName, $fromEmail, $subject, $message);
 
         return rest_ensure_response($contactEmail);
     }
@@ -114,6 +114,8 @@ class Email
 
     public function send_support_email(WP_REST_Request $request)
     {
+        $support_email = new EmailSupport($this->stripeClient, $this->mailer);
+
         $email = $request['email'];
         $first_name = $request['first_name'];
         $last_name = $request['first_name'];
@@ -147,13 +149,15 @@ class Email
         $subject = sanitize_text_field($subject);
         $message = sanitize_textarea_field($message);
 
-        $supportEmail = $this->support_email->sendSupportEmail($first_name, $last_name, $email, $subject, $message);
+        $supportEmail = $support_email->sendSupportEmail($first_name, $last_name, $email, $subject, $message);
 
         return rest_ensure_response($supportEmail);
     }
 
     public function send_schedule_email(WP_REST_Request $request)
     {
+        $schedule_email = new EmailSchedule($this->stripeClient, $this->mailer);
+
         $email = $request['email'];
         $first_name = $request['first_name'];
         $last_name = $request['last_name'];
@@ -187,13 +191,14 @@ class Email
         $subject = sanitize_text_field($subject);
         $message = sanitize_textarea_field($message);
 
-        $scheduleEmail = $this->schedule_email->sendScheduleEmail($first_name, $last_name, $email, $subject, $message);
+        $scheduleEmail = $schedule_email->sendScheduleEmail($first_name, $last_name, $email, $subject, $message);
 
         return rest_ensure_response($scheduleEmail);
     }
 
     public function send_quote_email(WP_REST_Request $request)
     {
+        $quote_email = new EmailQuote($this->stripeClient, $this->mailer);
         $stripe_quote_id = $request->get_param('slug');
 
         if (empty($stripe_quote_id)) {
@@ -209,13 +214,14 @@ class Email
             return $response;
         }
 
-        $quoteEmail = $this->quote_email->sendQuoteEmail($stripe_quote_id);
+        $quoteEmail = $quote_email->sendQuoteEmail($stripe_quote_id);
 
         return rest_ensure_response($quoteEmail);
     }
 
     public function send_invoice_email(WP_REST_Request $request)
     {
+        $invoice_email = new EmailInvoice($this->stripeClient, $this->mailer);
         $stripe_invoice_id = $request->get_param('slug');
 
         if (empty($stripe_invoice_id)) {
@@ -231,13 +237,15 @@ class Email
             return $response;
         }
 
-        $invoiceEmail = $this->invoice_email->sendInvoiceEmail($stripe_invoice_id);
+        $invoiceEmail = $invoice_email->sendInvoiceEmail($stripe_invoice_id);
 
         return rest_ensure_response($invoiceEmail);
     }
 
     public function send_receipt_email(WP_REST_Request $request)
     {
+        $receipt_email = new EmailReceipt($this->stripeClient, $this->mailer);
+
         $stripe_invoice_id = $request->get_param('slug');
 
         if (empty($stripe_invoice_id)) {
@@ -253,7 +261,7 @@ class Email
             return $response;
         }
 
-        $receiptEmail = $this->receipt_email->sendReceiptEmail($stripe_invoice_id);
+        $receiptEmail = $receipt_email->sendReceiptEmail($stripe_invoice_id);
 
         return rest_ensure_response($receiptEmail);
     }

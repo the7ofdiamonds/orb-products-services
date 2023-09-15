@@ -2,6 +2,7 @@
 
 namespace ORB_Services\API\Stripe;
 
+use Exception;
 use Stripe\Exception\ApiErrorException;
 
 class StripeCustomers
@@ -81,23 +82,19 @@ class StripeCustomers
     public function getCustomer($stripe_customer_id)
     {
         try {
-            $customer = $this->stripeClient->customers->retrieve(
-                $stripe_customer_id,
-                []
-            );
-            return $customer;
+            if (!empty($stripe_customer_id)) {
+                $customer = $this->stripeClient->customers->retrieve(
+                    $stripe_customer_id,
+                    ['expand' => ['tax_ids']]
+                );
+                return $customer;
+            } else {
+                throw new Exception('A Stripe Customer ID is required.');
+            }
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
-            $status_code = $e->getHttpStatus();
-            $response_data = [
-                'message' => $error_message,
-                'status' => $status_code
-            ];
 
-            $response = rest_ensure_response($response_data);
-            $response->set_status($status_code);
-
-            return $response;
+            return $error_message;
         }
     }
 
