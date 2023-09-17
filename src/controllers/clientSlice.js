@@ -68,7 +68,7 @@ export const getClient = createAsyncThunk('client/getClient', async (_, { getSta
     const encodedEmail = encodeURIComponent(user_email);
 
     try {
-        const response = await fetch(`/wp-json/orb/v1/users/clients/${encodedEmail}`, {
+        const response = await fetch(`/wp-json/orb/v1/users/client/${encodedEmail}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

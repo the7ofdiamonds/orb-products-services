@@ -9430,7 +9430,7 @@ const getClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncTh
   } = getState().client;
   const encodedEmail = encodeURIComponent(user_email);
   try {
-    const response = await fetch(`/wp-json/orb/v1/users/clients/${encodedEmail}`, {
+    const response = await fetch(`/wp-json/orb/v1/users/client/${encodedEmail}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -10912,7 +10912,7 @@ const initialState = {
 };
 const getOfficeHours = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/getOfficeHours', async () => {
   try {
-    const response = await fetch('/wp-json/orb/v1/office-hours', {
+    const response = await fetch('/wp-json/orb/v1/schedule/office-hours', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -10932,7 +10932,7 @@ const getOfficeHours = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAs
 });
 const fetchCalendarEvents = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/fetchCalendarEvents', async () => {
   try {
-    const response = await fetch('/wp-json/orb/v1/schedule/events', {
+    const response = await fetch('/wp-json/orb/v1/schedule/available-times', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -10965,7 +10965,7 @@ const sendInvites = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
     attendees
   } = getState().schedule;
   try {
-    const response = await fetch('/wp-json/orb/v1/schedule/events/invite', {
+    const response = await fetch('/wp-json/orb/v1/event', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -11007,7 +11007,7 @@ const saveEvent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncTh
     calendar_link
   } = getState().schedule;
   try {
-    const response = await fetch('/wp-json/orb/v1/schedule', {
+    const response = await fetch('/wp-json/orb/v1/events', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -11041,7 +11041,7 @@ const getEvent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThu
     invoice_id
   } = getState().receipt;
   try {
-    const response = await fetch(`/wp-json/orb/v1/schedule/event/${invoice_id}`, {
+    const response = await fetch(`/wp-json/orb/v1/event/${invoice_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -11066,7 +11066,7 @@ const getClientEvents = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createA
     client_id
   } = getState().client;
   try {
-    const response = await fetch(`/wp-json/orb/v1/schedule/events/${client_id}`, {
+    const response = await fetch(`/wp-json/orb/v1/events/client/${client_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

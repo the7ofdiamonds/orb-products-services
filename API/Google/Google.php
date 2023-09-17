@@ -2,11 +2,13 @@
 
 namespace ORB_Services\API\Google;
 
-use Google\Client;
-use Google\Service\Calendar;
-
 use ORB_Services\API\Google\GoogleCalendar;
-use ORB_Services\Schedule\Schedule;
+use ORB_Services\API\Calendar;
+use ORB_Services\API\Event;
+use ORB_Services\API\Schedule;
+
+use Google\Client;
+use Google\Service\Calendar as GCalendar;
 
 class Google
 {
@@ -18,10 +20,13 @@ class Google
         $this->credentialsPath = $credentialsPath;
         $this->client = new Client();
         $this->client->setApplicationName('Your Application Name');
-        $this->client->setScopes(Calendar::CALENDAR_EVENTS);
+        $this->client->setScopes(GCalendar::CALENDAR_EVENTS);
         $this->client->setAuthConfig($this->credentialsPath);
+        $this->client->setScopes('https://www.googleapis.com/auth/calendar');
 
         new GoogleCalendar($this->client);
+        new Calendar($this->client);
+        new Event($this->client);
         new Schedule($this->client);
     }
 }

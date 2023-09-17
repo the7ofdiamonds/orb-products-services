@@ -9,8 +9,9 @@ class DatabaseEvent
     private $wpdb;
     private $table_name;
 
-    public function __construct($wpdb)
+    public function __construct()
     {
+        global $wpdb;
         $this->wpdb = $wpdb;
         $this->table_name = 'orb_schedule';
     }
@@ -62,7 +63,6 @@ class DatabaseEvent
             'schedule_id' => $event->id,
             'client_id' => $event->client_id,
             'google_event_id' => $event->google_event_id,
-            'invoice_id' => $event->invoice_id,
             'start_date' => $event->start_date,
             'start_time' => $event->start_time,
             'attendees' => $event->attendees,

@@ -15,12 +15,12 @@ class Database
 
         $this->createTables();
 
-        new DatabaseClient($wpdb);
-        new DatabaseCustomer($wpdb);
-        new DatabaseEvent($wpdb);
-        new DatabaseInvoice($wpdb);
-        new DatabaseQuote($wpdb);
-        new DatabaseReceipt($wpdb);
+        new DatabaseClient();
+        new DatabaseCustomer();
+        new DatabaseEvent();
+        new DatabaseInvoice();
+        new DatabaseQuote();
+        new DatabaseReceipt();
     }
 
     function createTables()

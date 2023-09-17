@@ -27,7 +27,7 @@ export const getOfficeHours = createAsyncThunk('schedule/getOfficeHours',
   async () => {
 
     try {
-      const response = await fetch('/wp-json/orb/v1/office-hours', {
+      const response = await fetch('/wp-json/orb/v1/schedule/office-hours', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -52,7 +52,7 @@ export const fetchCalendarEvents = createAsyncThunk('schedule/fetchCalendarEvent
   async () => {
 
     try {
-      const response = await fetch('/wp-json/orb/v1/schedule/events', {
+      const response = await fetch('/wp-json/orb/v1/schedule/available-times', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ export const sendInvites = createAsyncThunk('schedule/sendInvites',
     const { start_date, start_time, event_date_time, summary, description, attendees } = getState().schedule;
 
     try {
-      const response = await fetch('/wp-json/orb/v1/schedule/events/invite', {
+      const response = await fetch('/wp-json/orb/v1/event', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -121,7 +121,7 @@ export const saveEvent = createAsyncThunk('schedule/saveEvent',
       calendar_link } = getState().schedule;
 
     try {
-      const response = await fetch('/wp-json/orb/v1/schedule', {
+      const response = await fetch('/wp-json/orb/v1/events', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -155,7 +155,7 @@ export const getEvent = createAsyncThunk('schedule/getEvent', async (_, { getSta
   const { invoice_id } = getState().receipt;
 
   try {
-    const response = await fetch(`/wp-json/orb/v1/schedule/event/${invoice_id}`, {
+    const response = await fetch(`/wp-json/orb/v1/event/${invoice_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -180,7 +180,7 @@ export const getClientEvents = createAsyncThunk('schedule/getClientEvents', asyn
   const { client_id } = getState().client;
 
   try {
-    const response = await fetch(`/wp-json/orb/v1/schedule/events/${client_id}`, {
+    const response = await fetch(`/wp-json/orb/v1/events/client/${client_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

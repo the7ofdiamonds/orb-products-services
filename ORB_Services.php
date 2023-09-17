@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Plugin Name: ORB Services
+ * Plugin Name: ORB Products and Services
 */
 
 namespace ORB_Services;
@@ -15,9 +15,24 @@ define('ORB_SERVICES_URL', WP_PLUGIN_URL . '/orb-services/');
 use Dotenv\Dotenv;
 
 use ORB_Services\Admin\Admin;
-use ORB_Services\API\API;
+use ORB_Services\API\Google\Google;
+use ORB_Services\API\Email;
+use ORB_Services\API\Clients;
+use ORB_Services\API\Product;
+use ORB_Services\API\Products;
+use ORB_Services\API\Service;
+use ORB_Services\API\Services;
+use ORB_Services\API\Quote;
+use ORB_Services\API\Invoice;
+use ORB_Services\API\Receipt;
+use ORB_Services\API\Payment;
+use ORB_Services\API\Stripe\Stripe;
+use ORB_Services\API\Stripe\StripeCharges;
+use ORB_Services\API\Stripe\StripeProducts;
+use ORB_Services\API\Stripe\StripePrices;
+use ORB_Services\API\Stripe\StripePaymentMethods;
+use ORB_Services\API\Stripe\StripePaymentIntents;
 use ORB_Services\CSS\CSS;
-use ORB_Services\Email\Email;
 use ORB_Services\Email\EmailContact;
 use ORB_Services\Email\EmailInvoice;
 use ORB_Services\Email\EmailQuote;
@@ -28,15 +43,13 @@ use ORB_Services\JS\JS;
 use ORB_Services\Menus\Menus;
 use ORB_Services\Pages\Pages;
 use ORB_Services\PDF\PDF;
-use ORB_Services\Post_Types\Services;
+use ORB_Services\Post_Types\Services as ServicePostType;
 use ORB_Services\Roles\Roles;
-use ORB_Services\Schedule\Schedule;
 use ORB_Services\Shortcodes\Shortcodes;
 use ORB_Services\Database\Database;
-use ORB_Services\Email\EmailBilling;
 use ORB_Services\Templates\Templates;
 
-use Stripe\Stripe;
+use Stripe\Stripe as StripeAPI;
 use Stripe\StripeClient;
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -51,6 +64,13 @@ class ORB_Services
         add_filter("plugin_action_links_$this->plugin", [$this, 'settings_link']);
 
         new Admin;
+        new CSS;
+        new JS;
+        new Pages;
+        new Roles;
+        new Shortcodes;
+        new Database;
+        new Templates;
 
         $credentialsPath = ORB_SERVICES . 'serviceAccount.json';
 
@@ -88,12 +108,11 @@ class ORB_Services
 
         $dotenv = Dotenv::createImmutable(ORB_SERVICES);
         $dotenv->load(__DIR__);
-        $envFilePath = ORB_SERVICES . '.env'; // Replace with the actual path to your .env file
+        $envFilePath = ORB_SERVICES . '.env';
         $envContents = file_get_contents($envFilePath);
         $lines = explode("\n", $envContents);
         $stripeSecretKey = null;
 
-        // Loop through each line to find the STRIPE_SECRET_KEY
         foreach ($lines as $line) {
             $parts = explode('=', $line, 2);
             if (count($parts) === 2 && $parts[0] === 'STRIPE_SECRET_KEY') {
@@ -103,32 +122,48 @@ class ORB_Services
         }
 
         $mailer = new PHPMailer();
-        $pdf = new PDF;
-
-        if ($credentialsPath !== null && $stripeSecretKey !== null) {
-            Stripe::setApiKey($stripeSecretKey);
-            $stripeClient = new StripeClient($stripeSecretKey);
-
-            new API($credentialsPath, $stripeClient, $mailer);
-            new Services($stripeClient);
-        }
-
-        new CSS;
-        new JS;
-        new Pages;
-        new Roles;
-        // new Schedule();
-        new Shortcodes;
-        new Database;
-        new Templates;
-
         new EmailContact($mailer);
-        // new EmailBilling($stripeClient);
         new EmailSupport($mailer);
         new EmailSchedule($mailer);
-        new EmailQuote($stripeClient, $mailer);
-        new EmailInvoice($stripeClient, $mailer);
-        new EmailReceipt($stripeClient, $mailer);
+
+        if ($stripeSecretKey !== null) {
+            StripeAPI::setApiKey($stripeSecretKey);
+            $stripeClient = new StripeClient($stripeSecretKey);
+            new Email($stripeClient, $mailer);
+
+            new Stripe($stripeClient);
+
+            $stripe_payment_intent = new StripePaymentIntents($stripeClient);
+            $stripe_charges = new StripeCharges($stripeClient);
+            $stripe_payment_methods = new StripePaymentMethods($stripeClient);
+            $stripe_products = new StripeProducts($stripeClient);
+            $stripe_prices = new StripePrices($stripeClient);
+    
+            new Payment($stripe_payment_intent, $stripe_payment_methods);
+    
+            new Service($stripe_products, $stripe_prices);
+            new Services($stripe_products, $stripe_prices);
+            new Product($stripe_products, $stripe_prices);
+            new Products($stripe_products, $stripe_prices);
+    
+            new Clients($stripeClient);
+            new Quote($stripeClient);
+            new Invoice($stripeClient);
+            new Receipt($stripeClient);
+
+            $pdf = new PDF;
+            new EmailQuote($stripeClient, $mailer);
+            new EmailInvoice($stripeClient, $mailer);
+            new EmailReceipt($stripeClient, $mailer);
+        } else {
+            error_log('Stripe Secret Key is required.');
+        }
+
+        if ($credentialsPath !== null) {
+            new Google($credentialsPath);
+        } else {
+            error_log('A path to the Google Service Account file is required.');
+        }
     }
 
     public function activate()

@@ -4,6 +4,11 @@ namespace ORB_Services\API;
 
 use WP_REST_Request;
 
+use ORB_Services\API\Stripe\StripeInvoice;
+use ORB_Services\API\Stripe\StripeCharges;
+use ORB_Services\API\Stripe\StripePaymentIntents;
+use ORB_SERVICES\Database\DatabaseReceipt;
+
 use Stripe\Exception\ApiErrorException;
 
 class Receipt
@@ -14,12 +19,12 @@ class Receipt
     private $database_receipt;
     private $email;
 
-    public function __construct($stripe_invoice, $stripe_payment_intent, $stripe_charges, $database_receipt)
+    public function __construct($stripeClient)
     {
-        $this->stripe_invoice = $stripe_invoice;
-        $this->stripe_payment_intent = $stripe_payment_intent;
-        $this->stripe_charges = $stripe_charges;
-        $this->database_receipt = $database_receipt;
+        $this->stripe_invoice = new StripeInvoice($stripeClient);
+        $this->stripe_payment_intent = new StripePaymentIntents($stripeClient);
+        $this->stripe_charges = new StripeCharges($stripeClient);
+        $this->database_receipt = new DatabaseReceipt($stripeClient);
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/receipt', [
@@ -93,7 +98,7 @@ class Receipt
 
             $charges = $this->stripe_charges->getCharge($charge_id);
 
-            $receipt_id = $this->database_receipt->save_receipt($invoice_id, $stripe_invoice, $payment_method_id, $payment_method, $first_name, $last_name, $charges);
+            $receipt_id = $this->database_receipt->saveReceipt($invoice_id, $stripe_invoice, $payment_method_id, $payment_method, $first_name, $last_name, $charges);
 
             return rest_ensure_response($receipt_id);
         } catch (ApiErrorException $e) {

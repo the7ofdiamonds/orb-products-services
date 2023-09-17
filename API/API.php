@@ -2,24 +2,12 @@
 
 namespace ORB_Services\API;
 
-use ORB_Services\API\Google\Google;
-use ORB_Services\API\Stripe\Stripe;
-use ORB_Services\API\Schedule;
-
 class API
 {
-    public function __construct($credentialsPath, $stripeClient, $mailer)
+    public function __construct()
     {
         add_action('rest_api_init', [$this, 'add_to_rest_api']);
         add_action('rest_api_init', [$this, 'allow_cors_headers']);
-
-        new Google($credentialsPath);
-        new Stripe($stripeClient);
-        new Schedule($credentialsPath);
-
-        new Email($stripeClient, $mailer);
-        new Quote($stripeClient);
-        new Invoice($stripeClient);
     }
 
     public function add_to_rest_api()
