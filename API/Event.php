@@ -10,6 +10,8 @@ use ORB_Services\Database\DatabaseEvent;
 use ORB_Services\API\Google\GoogleCalendar;
 use ORB_Services\Schedule\Schedule;
 
+use Google\Service\Calendar\Event as CalendarEvent;
+
 class Event
 {
     private $event_database;
@@ -70,27 +72,28 @@ class Event
     public function create_event(WP_REST_Request $request)
     {
         try {
-            $request_body = $request->get_body();
-            $body = json_decode($request_body, true);
+            error_log($request['description']);
 
             if (
-                empty($body['client_id']) ||
-                empty($body['start']) ||
-                empty($body['start_date']) ||
-                empty($body['start_time']) ||
-                empty($body['attendees'])
+                empty($request['client_id']) ||
+                empty($request['start']) ||
+                empty($request['start_date']) ||
+                empty($request['start_time']) ||
+                empty($request['attendees'])
             ) {
                 throw new Exception('Invalid event data.');
             }
 
-            $client_id = $body['client_id'];
-            $date_time =  $body['start'];
-            $startDate = $body['start_date'];
-            $startTime = $body['start_time'];
-            $attendees = $body['attendees'];
+            $clientId = $request['client_id'];
+            $dateTime = $request['start'];
+            $startDate = $request['start_date'];
+            $startTime = $request['start_time'];
+            $attendees = $request['attendees'];
+            $summary = $request['summary'];
+            $description = $request['description'];
 
-            if (empty($calendarId)) {
-                throw new Exception('A Client ID is required.');
+            if (empty($this->calendar_id)) {
+                throw new Exception('A Google Calendar ID is required.');
             } else if (empty($clientId)) {
                 throw new Exception('A Client ID is required.');
             } else if (empty($dateTime)) {
@@ -107,7 +110,7 @@ class Event
                 throw new Exception('A desciption is required.');
             }
 
-            $start = $body['start'];
+            $start = $request['start'];
             $event_duration_hours = intval(get_option('orb_event_duration_hours'));
             $event_duration_minutes = intval(get_option('orb_event_duration_minutes'));
 
@@ -115,12 +118,9 @@ class Event
             $end->modify('+' . $event_duration_hours . ' hours');
             $end->modify('+' . $event_duration_minutes . ' minutes');
 
-            $summary = $body['summary'];
-            $description = $body['description'];
-
             $timeZone = get_option('orb_event_time_zone');
 
-            $event = new Event(array(
+            $event = new CalendarEvent(array(
                 'summary' => $summary,
                 'description' => $description,
                 'start' => array(
@@ -133,15 +133,15 @@ class Event
                 ),
                 'attendees' => array_map(function ($email) {
                     return array('email' => $email);
-                }, $body['attendees']),
+                }, $request['attendees']),
                 'transparency' => 'opaque',
                 'visibility' => 'default',
                 'status' => 'confirmed',
             ));
 
-            $createdEvent = $this->google_calendar->createCalendarEvent($this->calendar_id, $client_id, $date_time, $startDate, $startTime, $attendees, $summary, $description, $event_duration_hours, $event_duration_minutes, $timeZone);
+            $createdEvent = $this->google_calendar->createCalendarEvent($this->calendar_id, $event);
 
-            $event_id = $this->event_database->saveEvent($client_id, $createdEvent);
+            $event_id = $this->event_database->saveEvent($clientId, $createdEvent);
 
             return rest_ensure_response($event_id);
         } catch (Exception $e) {

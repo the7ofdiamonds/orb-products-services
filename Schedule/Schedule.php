@@ -8,7 +8,6 @@ use DateTime;
 use ORB_SERVICES\API\Google\GoogleCalendar;
 
 use Google\Service\Calendar;
-use Google\Service\Calendar\TimePeriod;
 
 class Schedule
 {
@@ -79,7 +78,7 @@ class Schedule
         }
     }
 
-    function getTimeStamp($dateTime)
+    function getBusyTimesTimeStamp($dateTime)
     {
         $date = explode('T', $dateTime)[0];
         $time = explode('-', explode('T', $dateTime)[1])[0];
@@ -106,9 +105,9 @@ class Schedule
                     $start = $busyTime['start'];
                     $end = $busyTime['end'];
 
-                    $startTimestamp = $this->getTimeStamp($start);
+                    $startTimestamp = $this->getBusyTimesTimeStamp($start);
                     $dayOfWeek = strtoupper(substr(date("l", $startTimestamp), 0, 3));
-                    $endTimestamp = $this->getTimeStamp($end);
+                    $endTimestamp = $this->getBusyTimesTimeStamp($end);
 
                     $startEndTimes[] = [
                         'day' => $dayOfWeek,
@@ -131,62 +130,126 @@ class Schedule
         }
     }
 
-    function findGapsBetweenBusyTimes($officeHours, $busyTimes)
+    function getDateByDayOfWeek($dayOfWeek)
     {
-        // Initialize an array to store available times
-        $availableTimes = [];
+        $currentDate = date('Y-m-d');
 
-        foreach ($busyTimes as $calendarId => $busyTimesForItem) {
-            // Initialize an array to store available times for the current calendar
-            $availableTimesForCalendar = [];
+        $currentDayOfWeek = strtoupper(substr(date('D', strtotime($currentDate)), 0, 3));
 
-            foreach ($officeHours as $officeHour) {
-                // Get the day of the week and office hour start and end timestamps
-                $dayOfWeek = $officeHour['day'];
-                $officeHourStart = strtotime($officeHour['start']);
-                $officeHourEnd = strtotime($officeHour['end']);
+        $daysToAdd = array_search($dayOfWeek, ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']) - array_search($currentDayOfWeek, ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']);
 
-                // Find available times for the current office hour and busy times
-                foreach ($busyTimesForItem as $busyTime) {
-                    // Check if the busy time matches the current day of the week
-                    if ($busyTime['day'] === $dayOfWeek) {
-                        // Calculate the overlap between busy time and office hour
-                        $overlapStart = max($officeHourStart, $busyTime['start']);
-                        $overlapEnd = min($officeHourEnd, $busyTime['end']);
-
-                        // If there's no overlap, it's an available time
-                        if ($overlapStart >= $overlapEnd) {
-                            $availableTimesForCalendar[] = [
-                                'day' => $dayOfWeek,
-                                'start' => $officeHourStart,
-                                'end' => $officeHourEnd,
-                            ];
-                        } else {
-                            // Otherwise, update the office hour based on the overlap
-                            if ($overlapStart > $officeHourStart) {
-                                $officeHourStart = $overlapEnd;
-                            } else {
-                                $officeHourEnd = $overlapStart;
-                            }
-                        }
-                    }
-                }
-            }
-
-            $availableTimes[$calendarId] = $availableTimesForCalendar;
+        if ($daysToAdd <= 0) {
+            $daysToAdd += 7;
         }
 
-        return $availableTimes;
+        $nextDate = date('Y-m-d', strtotime($currentDate . " +$daysToAdd days"));
+
+        return $nextDate;
     }
 
+    function getOfficeHoursTimeStamp($dateTime)
+    {
+        $dateTime = new DateTime($dateTime);
+        $timestamp = $dateTime->getTimestamp();
+
+        return $timestamp;
+    }
+
+    function getOfficeHoursTimestamps()
+    {
+        $officeHours = $this->getOfficeHours();
+
+        $officeHoursTimestamps = [];
+
+        foreach ($officeHours as $officeHour) {
+            $dayOfWeek = $officeHour['day'];
+            $startTime = $officeHour['start'];
+            $endTime = $officeHour['end'];
+
+            $date = $this->getDateByDayOfWeek($dayOfWeek);
+
+            if ($startTime !== '') {
+                $startTimestamp = $this->getOfficeHoursTimeStamp($date . ' ' . $startTime);
+            } else {
+                $startTimestamp = '';
+            }
+
+            if ($endTime !== '') {
+                $endTimestamp = $this->getOfficeHoursTimeStamp($date . ' ' . $endTime);
+            } else {
+                $endTimestamp = '';
+            }
+
+            $officeHoursTimestamps[] = [
+                'day' => $dayOfWeek,
+                'start' => $startTimestamp,
+                'end' => $endTimestamp
+            ];
+        }
+
+        return $officeHoursTimestamps;
+    }
+
+    function formatDateTimeForGoogle($startTimestamp, $endTimestamp)
+    {
+        $startDateTime = new DateTime('@' . $startTimestamp);
+        $endDateTime = new DateTime('@' . $endTimestamp);
+
+        $formattedStartDateTime = $startDateTime->format("Y-m-d\TH:i:s");
+        $formattedEndTime = $endDateTime->format("H:i:s");
+
+        return $formattedStartDateTime . '-' . $formattedEndTime;
+    }
 
     function getAvailableTimes($postBody)
     {
         try {
-            $officeHours = $this->getOfficeHours();
-            $busyTimes = $this->getBusyTimes($postBody);
+            $officeHoursTimestamps = $this->getOfficeHoursTimestamps();
+            $availableTimes = [];
 
-            $availableTimes = $this->findGapsBetweenBusyTimes($officeHours, $busyTimes);
+            foreach ($officeHoursTimestamps as $officeHour) {
+                if (isset($officeHour['day'], $officeHour['start'], $officeHour['end'])) {
+                    $startTimestamp = $officeHour['start'];
+                    $endTimestamp = $officeHour['end'];
+
+                    if ($startTimestamp !== '' && $endTimestamp !== '') {
+
+                        $busyTimestamps = $this->getBusyTimes($postBody);
+
+                        $dailyAvailableTimes = [];
+
+                        foreach ($busyTimestamps as $calendarId => $busyTimesForItem) {
+                            if ($busyTimesForItem !== []) {
+
+                                foreach ($busyTimesForItem as $busyTimestamp) {
+                                    if (isset($busyTimestamp['day'], $busyTimestamp['start'], $busyTimestamp['end'])) {
+
+                                        if ($startTimestamp < $busyTimestamp['start'] && $endTimestamp >= $busyTimestamp['end']) {
+                                            
+                                            $dailyAvailableTimes[] = [
+                                                'start' => $startTimestamp,
+                                                'end' => $busyTimestamp['start']
+                                            ];
+
+                                            $startTimestamp = $busyTimestamp['end'];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if ($startTimestamp < $endTimestamp) {
+                            $dailyAvailableTimes[] = [
+                                'start' => $startTimestamp,
+                                'end' => $endTimestamp
+                            ];
+                        }
+
+                        $date = date('Y-m-d', $startTimestamp);
+                        $availableTimes[$date] = $dailyAvailableTimes;
+                    }
+                }
+            }
 
             return $availableTimes;
         } catch (Exception $e) {

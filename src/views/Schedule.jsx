@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { getClient } from '../controllers/clientSlice';
 import {
-  fetchCalendarEvents,
+  getAvailableTimes,
   updateDate,
   updateTime,
   updateDueDate,
@@ -100,7 +100,7 @@ function ScheduleComponent() {
   // Events
   useEffect(() => {
     if (client_id && stripe_customer_id) {
-      dispatch(fetchCalendarEvents());
+      dispatch(getAvailableTimes());
     }
   }, [client_id, stripe_customer_id, dispatch]);
 
@@ -112,7 +112,7 @@ function ScheduleComponent() {
   }, [messageType, message]);
 
   useEffect(() => {
-    if (events && Array.isArray(events)) {
+    if (events) {
       setAvailableDates(datesAvail(events));
     }
   }, [events]);
@@ -141,7 +141,7 @@ function ScheduleComponent() {
       Array.isArray(events)
     ) {
       const selectedIndex = dateSelectRef.current.selectedIndex;
-      setAvailableTimes(timesAvail(events, selectedIndex));
+      // setAvailableTimes(timesAvail(events, selectedIndex));
     }
   }, [selectedDate]);
 
@@ -158,7 +158,8 @@ function ScheduleComponent() {
       dispatch(updateDate(event.target.value));
       dispatch(updateDueDate());
       setMessage('Choose a time');
-      timesAvail();
+      const selectedIndex = dateSelectRef.current.selectedIndex;
+      timesAvail(events, selectedIndex);
     }
   };
 
@@ -251,6 +252,7 @@ function ScheduleComponent() {
     if (descriptionSelectRef.current) {
       setSelectedDescription(event.target.value);
       dispatch(updateDescription(event.target.value));
+      console.log(selectedDescription);
     }
   };
 
@@ -297,11 +299,11 @@ function ScheduleComponent() {
     window.location.href = `/login/?redirectTo=${baseHost}/schedule/`;
   };
 
-  useEffect(() => {
-    if (event_id) {
-      window.location.href = '/dashboard';
-    }
-  }, [event_id]);
+  // useEffect(() => {
+  //   if (event_id) {
+  //     // window.location.href = '/dashboard';
+  //   }
+  // }, [event_id]);
 
   if (scheduleError) {
     return (

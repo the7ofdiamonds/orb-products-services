@@ -48,7 +48,7 @@ export const getOfficeHours = createAsyncThunk('schedule/getOfficeHours',
     }
   });
 
-export const fetchCalendarEvents = createAsyncThunk('schedule/fetchCalendarEvents',
+export const getAvailableTimes = createAsyncThunk('schedule/getAvailableTimes',
   async () => {
 
     try {
@@ -77,7 +77,7 @@ export const sendInvites = createAsyncThunk('schedule/sendInvites',
   async (_, { getState }) => {
     const { client_id } = getState().client;
     const { start_date, start_time, event_date_time, summary, description, attendees } = getState().schedule;
-
+    
     try {
       const response = await fetch('/wp-json/orb/v1/event', {
         method: 'POST',
@@ -275,16 +275,16 @@ export const scheduleSlice = createSlice({
         state.loading = false;
         state.scheduleError = action.error.message || 'Failed to get office hours';
       })
-      .addCase(fetchCalendarEvents.pending, (state) => {
+      .addCase(getAvailableTimes.pending, (state) => {
         state.loading = true;
         state.scheduleError = null;
       })
-      .addCase(fetchCalendarEvents.fulfilled, (state, action) => {
+      .addCase(getAvailableTimes.fulfilled, (state, action) => {
         state.loading = false;
         state.events = action.payload;
         state.scheduleError = null;
       })
-      .addCase(fetchCalendarEvents.rejected, (state, action) => {
+      .addCase(getAvailableTimes.rejected, (state, action) => {
         state.loading = false;
         state.scheduleError = action.error.message || 'Failed to fetch calendar events';
       })

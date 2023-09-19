@@ -10868,7 +10868,7 @@ const receiptSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   fetchCalendarEvents: () => (/* binding */ fetchCalendarEvents),
+/* harmony export */   getAvailableTimes: () => (/* binding */ getAvailableTimes),
 /* harmony export */   getClientEvents: () => (/* binding */ getClientEvents),
 /* harmony export */   getCommunicationPreferences: () => (/* binding */ getCommunicationPreferences),
 /* harmony export */   getEvent: () => (/* binding */ getEvent),
@@ -10930,7 +10930,7 @@ const getOfficeHours = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAs
     throw error.message;
   }
 });
-const fetchCalendarEvents = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/fetchCalendarEvents', async () => {
+const getAvailableTimes = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('schedule/getAvailableTimes', async () => {
   try {
     const response = await fetch('/wp-json/orb/v1/schedule/available-times', {
       method: 'GET',
@@ -11146,14 +11146,14 @@ const scheduleSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
     }).addCase(getOfficeHours.rejected, (state, action) => {
       state.loading = false;
       state.scheduleError = action.error.message || 'Failed to get office hours';
-    }).addCase(fetchCalendarEvents.pending, state => {
+    }).addCase(getAvailableTimes.pending, state => {
       state.loading = true;
       state.scheduleError = null;
-    }).addCase(fetchCalendarEvents.fulfilled, (state, action) => {
+    }).addCase(getAvailableTimes.fulfilled, (state, action) => {
       state.loading = false;
       state.events = action.payload;
       state.scheduleError = null;
-    }).addCase(fetchCalendarEvents.rejected, (state, action) => {
+    }).addCase(getAvailableTimes.rejected, (state, action) => {
       state.loading = false;
       state.scheduleError = action.error.message || 'Failed to fetch calendar events';
     }).addCase(sendInvites.pending, state => {
@@ -11497,11 +11497,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   timesAvail: () => (/* binding */ timesAvail)
 /* harmony export */ });
 const combineDateTimeToTimestamp = (dateString, timeString) => {
-  const date = new Date(dateString);
-  const [hours, minutes] = timeString.split(':');
-  date.setHours(parseInt(hours, 10));
-  date.setMinutes(parseInt(minutes, 10));
-  return date.getTime() / 1000;
+  try {
+    const date = new Date(dateString);
+    const [hours, minutes] = timeString.split(':');
+    date.setHours(parseInt(hours, 10));
+    date.setMinutes(parseInt(minutes, 10));
+    if (isNaN(date.getTime())) {
+      throw new Error('Invalid date or time format');
+    }
+    return Math.floor(date.getTime() / 1000);
+  } catch (error) {
+    console.error('Error in combineDateTimeToTimestamp:', error.message);
+    return null;
+  }
 };
 const formattedDate = start_date => {
   const date = new Date(start_date);
@@ -11558,38 +11566,69 @@ const formatOfficeHours = office_hours => {
   return officeHours;
 };
 const datesAvail = events => {
-  return events.map(event => {
-    const dateTime = event.start;
-    const date = new Date(dateTime);
-    const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long'
-    };
-    const formattedDate = date.toLocaleDateString(undefined, options);
-    return formattedDate;
-  });
+  const availableDates = [];
+  for (const key in events) {
+    if (events.hasOwnProperty(key)) {
+      const value = events[key];
+      const [year, month, day] = key.split('-');
+      const date = new Date(year, month - 1, day);
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+      };
+      const formattedDate = date.toLocaleDateString(undefined, options);
+      availableDates.push(formattedDate);
+    }
+  }
+  return availableDates;
 };
 const timesAvail = (events, selectedIndex) => {
-  const dateSelected = events[selectedIndex];
-  const dateTime = dateSelected.start;
-  const time = dateTime.split('T')[1];
-  const start = time.split('-')[0];
-  const endTime = time.split('-')[1];
-  const startHour = parseInt(start, 10);
-  const endHour = parseInt(endTime, 10) < 12 ? parseInt(endTime, 10) + 12 : parseInt(endTime, 10);
-  const hours = [];
-  for (let i = startHour; i <= endHour; i++) {
-    hours.push(i);
+  if (!Array.isArray(events) || selectedIndex === undefined || selectedIndex < 0 || selectedIndex >= events.length) {
+    console.error('Invalid input parameters:', events, selectedIndex);
+    return [];
   }
-  return hours.map(hr => {
-    return new Date(0, 0, 0, hr, 0, 0, 0).toLocaleTimeString('en-US', {
-      hour12: true,
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  });
+  const dateSelected = events[selectedIndex];
+  console.log(dateSelected);
+  // const time = dateSelected.split('T')[1];
+
+  // const start = time.split('-')[0];
+  // const endTime = time.split('-')[1];
+
+  // const startHour = start.split(':')[0];
+  // const endHour = endTime.split(':')[0];
+
+  // const hours = [];
+
+  // for (let i = startHour; i <= endHour; i++) {
+  //     hours.push(i);
+  // }
+  // return hours.map((hr) => {
+  //     return new Date(0, 0, 0, hr, 0, 0, 0).toLocaleTimeString('en-US', {
+  //         hour12: true,
+  //         hour: '2-digit',
+  //         minute: '2-digit',
+  //     });
+  // });
+
+  const availableTimes = [];
+  for (const key in events) {
+    if (events.hasOwnProperty(key)) {
+      const value = events[key];
+      console.log(value);
+      // const [year, month, day] = key.split('-');
+
+      // const date = new Date(year, month - 1, day);
+
+      // const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+      // const formattedDate = date.toLocaleDateString(undefined, options);
+
+      // availableDates.push(formattedDate);
+    }
+  }
+
+  // return availableTimes;
 };
 
 /***/ }),
@@ -11710,7 +11749,7 @@ function ScheduleComponent() {
   // Events
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (client_id && stripe_customer_id) {
-      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.fetchCalendarEvents)());
+      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.getAvailableTimes)());
     }
   }, [client_id, stripe_customer_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -11720,7 +11759,7 @@ function ScheduleComponent() {
     }
   }, [messageType, message]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (events && Array.isArray(events)) {
+    if (events) {
       setAvailableDates((0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_9__.datesAvail)(events));
     }
   }, [events]);
@@ -11740,7 +11779,7 @@ function ScheduleComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (selectedDate && dateSelectRef.current && events.length > 0 && Array.isArray(events)) {
       const selectedIndex = dateSelectRef.current.selectedIndex;
-      setAvailableTimes((0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_9__.timesAvail)(events, selectedIndex));
+      // setAvailableTimes(timesAvail(events, selectedIndex));
     }
   }, [selectedDate]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -11755,7 +11794,8 @@ function ScheduleComponent() {
       dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDate)(event.target.value));
       dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDueDate)());
       setMessage('Choose a time');
-      (0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_9__.timesAvail)();
+      const selectedIndex = dateSelectRef.current.selectedIndex;
+      (0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_9__.timesAvail)(events, selectedIndex);
     }
   };
   const handleTimeChange = event => {
@@ -11822,6 +11862,7 @@ function ScheduleComponent() {
     if (descriptionSelectRef.current) {
       setSelectedDescription(event.target.value);
       dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDescription)(event.target.value));
+      console.log(selectedDescription);
     }
   };
   const handleCommunicationPreferenceChange = event => {
@@ -11861,11 +11902,13 @@ function ScheduleComponent() {
     const baseHost = window.location.protocol + '//' + window.location.host;
     window.location.href = `/login/?redirectTo=${baseHost}/schedule/`;
   };
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (event_id) {
-      window.location.href = '/dashboard';
-    }
-  }, [event_id]);
+
+  // useEffect(() => {
+  //   if (event_id) {
+  //     // window.location.href = '/dashboard';
+  //   }
+  // }, [event_id]);
+
   if (scheduleError) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "status-bar card error"
