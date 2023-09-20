@@ -205,6 +205,7 @@ class Schedule
     {
         try {
             $officeHoursTimestamps = $this->getOfficeHoursTimestamps();
+
             $availableTimes = [];
 
             foreach ($officeHoursTimestamps as $officeHour) {
@@ -225,10 +226,10 @@ class Schedule
                                     if (isset($busyTimestamp['day'], $busyTimestamp['start'], $busyTimestamp['end'])) {
 
                                         if ($startTimestamp < $busyTimestamp['start'] && $endTimestamp >= $busyTimestamp['end']) {
-                                            
+
                                             $dailyAvailableTimes[] = [
-                                                'start' => $startTimestamp,
-                                                'end' => $busyTimestamp['start']
+                                                'start' => date("H:i:s", $startTimestamp),
+                                                'end' => date("H:i:s", $busyTimestamp['start'])
                                             ];
 
                                             $startTimestamp = $busyTimestamp['end'];
@@ -240,9 +241,9 @@ class Schedule
 
                         if ($startTimestamp < $endTimestamp) {
                             $dailyAvailableTimes[] = [
-                                'start' => $startTimestamp,
-                                'end' => $endTimestamp
-                            ];
+                                'start' => date("H:i:s", $startTimestamp),
+                                'end' => date("H:i:s", $endTimestamp)
+                            ];            
                         }
 
                         $date = date('Y-m-d', $startTimestamp);

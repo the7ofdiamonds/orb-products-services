@@ -87,7 +87,9 @@ function ScheduleComponent() {
 
   // Client info
   useEffect(() => {
-    dispatch(getClient());
+    if (user_email) {
+      dispatch(getClient());
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -134,14 +136,9 @@ function ScheduleComponent() {
   }, [availableDates]);
 
   useEffect(() => {
-    if (
-      selectedDate &&
-      dateSelectRef.current &&
-      events.length > 0 &&
-      Array.isArray(events)
-    ) {
-      const selectedIndex = dateSelectRef.current.selectedIndex;
-      // setAvailableTimes(timesAvail(events, selectedIndex));
+    if (selectedDate && dateSelectRef.current) {
+      const key = dateSelectRef.current.value;
+      setAvailableTimes(timesAvail(events, key));
     }
   }, [selectedDate]);
 
@@ -156,10 +153,15 @@ function ScheduleComponent() {
     if (dateSelectRef.current) {
       setSelectedDate(event.target.value);
       dispatch(updateDate(event.target.value));
-      dispatch(updateDueDate());
       setMessage('Choose a time');
-      const selectedIndex = dateSelectRef.current.selectedIndex;
-      timesAvail(events, selectedIndex);
+
+      if (dateSelectRef.current.value !== undefined) {
+        const key = dateSelectRef.current.value;
+
+        timesAvail(events, key);
+      } else {
+        console.error('selectedIndex is undefined');
+      }
     }
   };
 
@@ -167,7 +169,7 @@ function ScheduleComponent() {
     if (timeSelectRef.current) {
       setSelectedTime(event.target.value);
       dispatch(updateTime(event.target.value));
-      dispatch(updateDueDate());
+      // dispatch(updateDueDate());
       setMessage('Choose a topic');
     }
   };

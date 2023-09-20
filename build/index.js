@@ -11569,7 +11569,6 @@ const datesAvail = events => {
   const availableDates = [];
   for (const key in events) {
     if (events.hasOwnProperty(key)) {
-      const value = events[key];
       const [year, month, day] = key.split('-');
       const date = new Date(year, month - 1, day);
       const options = {
@@ -11584,51 +11583,48 @@ const datesAvail = events => {
   }
   return availableDates;
 };
-const timesAvail = (events, selectedIndex) => {
-  if (!Array.isArray(events) || selectedIndex === undefined || selectedIndex < 0 || selectedIndex >= events.length) {
-    console.error('Invalid input parameters:', events, selectedIndex);
+function formatDate(inputDate) {
+  const dateObject = new Date(inputDate);
+  const year = dateObject.getFullYear();
+  const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+  const day = String(dateObject.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+function addHoursToTime(dateTime, hoursToAdd) {
+  const parsedTime = new Date(dateTime);
+  parsedTime.setHours(parsedTime.getHours() + hoursToAdd);
+  const resultTime = parsedTime.toLocaleTimeString('en-US', {
+    hour12: true,
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  return resultTime;
+}
+const timesAvail = (events, key) => {
+  const date = formatDate(key);
+  const value = events[date];
+  const hours = [];
+  if (value && value.length > 0) {
+    value.forEach(element => {
+      const startHr = element['start'].split(':')[0];
+      const endHr = element['end'].split(':')[0];
+      const dateTime = `${date}T${element['start']}`;
+      let j = parseInt(endHr, 10) - parseInt(startHr, 10);
+      if (value.length > 1) {
+        for (let i = 0; i < j; ++i) {
+          hours.push(addHoursToTime(`${date}T${element['start']}`, i));
+        }
+      } else {
+        for (let i = 0; i < j; ++i) {
+          hours.push(addHoursToTime(dateTime, i));
+        }
+      }
+    });
+  } else {
+    console.log('No events found for the given date.');
     return [];
   }
-  const dateSelected = events[selectedIndex];
-  console.log(dateSelected);
-  // const time = dateSelected.split('T')[1];
-
-  // const start = time.split('-')[0];
-  // const endTime = time.split('-')[1];
-
-  // const startHour = start.split(':')[0];
-  // const endHour = endTime.split(':')[0];
-
-  // const hours = [];
-
-  // for (let i = startHour; i <= endHour; i++) {
-  //     hours.push(i);
-  // }
-  // return hours.map((hr) => {
-  //     return new Date(0, 0, 0, hr, 0, 0, 0).toLocaleTimeString('en-US', {
-  //         hour12: true,
-  //         hour: '2-digit',
-  //         minute: '2-digit',
-  //     });
-  // });
-
-  const availableTimes = [];
-  for (const key in events) {
-    if (events.hasOwnProperty(key)) {
-      const value = events[key];
-      console.log(value);
-      // const [year, month, day] = key.split('-');
-
-      // const date = new Date(year, month - 1, day);
-
-      // const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-      // const formattedDate = date.toLocaleDateString(undefined, options);
-
-      // availableDates.push(formattedDate);
-    }
-  }
-
-  // return availableTimes;
+  return hours;
 };
 
 /***/ }),
@@ -11737,7 +11733,9 @@ function ScheduleComponent() {
 
   // Client info
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.getClient)());
+    if (user_email) {
+      dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.getClient)());
+    }
   }, [dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (!user_email) {
@@ -11777,9 +11775,9 @@ function ScheduleComponent() {
     }
   }, [availableDates]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (selectedDate && dateSelectRef.current && events.length > 0 && Array.isArray(events)) {
-      const selectedIndex = dateSelectRef.current.selectedIndex;
-      // setAvailableTimes(timesAvail(events, selectedIndex));
+    if (selectedDate && dateSelectRef.current) {
+      const key = dateSelectRef.current.value;
+      setAvailableTimes((0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_9__.timesAvail)(events, key));
     }
   }, [selectedDate]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -11792,17 +11790,20 @@ function ScheduleComponent() {
     if (dateSelectRef.current) {
       setSelectedDate(event.target.value);
       dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDate)(event.target.value));
-      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDueDate)());
       setMessage('Choose a time');
-      const selectedIndex = dateSelectRef.current.selectedIndex;
-      (0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_9__.timesAvail)(events, selectedIndex);
+      if (dateSelectRef.current.value !== undefined) {
+        const key = dateSelectRef.current.value;
+        (0,_utils_Schedule__WEBPACK_IMPORTED_MODULE_9__.timesAvail)(events, key);
+      } else {
+        console.error('selectedIndex is undefined');
+      }
     }
   };
   const handleTimeChange = event => {
     if (timeSelectRef.current) {
       setSelectedTime(event.target.value);
       dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateTime)(event.target.value));
-      dispatch((0,_controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateDueDate)());
+      // dispatch(updateDueDate());
       setMessage('Choose a topic');
     }
   };

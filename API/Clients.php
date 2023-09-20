@@ -180,7 +180,7 @@ class Clients
             $user_email = urldecode($user_email_encoded);
             $user = get_user_by('email', $user_email);
             $user_id = $user->id;
-
+error_log($user_id);
             $client = $this->database_client->getClient($user_id);
 
             return rest_ensure_response($client);
