@@ -1,4 +1,4 @@
-import { applyMiddleware, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { servicesSlice } from '../controllers/servicesSlice.js';
 import { serviceSlice } from '../controllers/serviceSlice.js';
 import { usersSlice } from '../controllers/usersSlice.js';
@@ -23,8 +23,6 @@ const store = configureStore({
     payment: paymentSlice.reducer,
     receipt: receiptSlice.reducer,
   },
-  // Enable the Redux DevTools Extension
-  devTools: process.env.NODE_ENV !== 'production', // Optional: Disable in production
 });
 
 export default store;

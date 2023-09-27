@@ -1,0 +1,1 @@
+Thank you, [YOUR_NAME], we have received your payment of [PAYMENT_AMOUNT]. In order to start the design process for [YOUR_COMPANY_NAME], onboarding must be completed, followed by defining the problem so the best solution can be developed.

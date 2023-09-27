@@ -7,6 +7,7 @@ use ORB_Services\Email\EmailSchedule;
 use ORB_Services\Email\EmailSupport;
 use ORB_Services\Email\EmailQuote;
 use ORB_Services\Email\EmailInvoice;
+use ORB_Services\Email\EmailOnboarding;
 use ORB_Services\Email\EmailReceipt;
 
 use WP_REST_Request;
@@ -16,7 +17,8 @@ class Email
     private $stripeClient;
     private $mailer;
 
-    public function __construct($stripeClient, $mailer) {
+    public function __construct($stripeClient, $mailer)
+    {
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/email/contact', [
                 'methods' => 'POST',
@@ -61,6 +63,14 @@ class Email
             register_rest_route('orb/v1', '/email/receipt/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'POST',
                 'callback' => [$this, 'send_receipt_email'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/email/onboarding/(?P<slug>[a-zA-Z0-9-_]+)', [
+                'methods' => 'POST',
+                'callback' => [$this, 'send_onboarding_email'],
                 'permission_callback' => '__return_true',
             ]);
         });
@@ -264,5 +274,35 @@ class Email
         $receiptEmail = $receipt_email->sendReceiptEmail($stripe_invoice_id);
 
         return rest_ensure_response($receiptEmail);
+    }
+
+    public function send_onboarding_email(WP_REST_Request $request)
+    {
+        $onboarding_email = new EmailOnboarding($this->stripeClient, $this->mailer);
+
+        $stripe_invoice_id = $request->get_param('slug');
+
+        $project_name = $request['project_name'];
+
+        if (empty($stripe_invoice_id)) {
+            $msg = 'Stripe Invoice ID is required';
+        }
+
+        if (empty($project_name)) {
+            $msg = 'Project name is required';
+        }
+
+        if (isset($msg)) {
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(400);
+            return $response;
+        }
+
+        $onboardingEmail = $onboarding_email->sendOnboardingEmail($stripe_invoice_id, $project_name);
+
+        return rest_ensure_response($onboardingEmail);
     }
 }

@@ -37,6 +37,7 @@ use ORB_Services\Email\EmailContact;
 use ORB_Services\Email\EmailInvoice;
 use ORB_Services\Email\EmailQuote;
 use ORB_Services\Email\EmailReceipt;
+use ORB_Services\Email\EmailOnboarding;
 use ORB_Services\Email\EmailSchedule;
 use ORB_Services\Email\EmailSupport;
 use ORB_Services\JS\JS;
@@ -138,14 +139,14 @@ class ORB_Services
             $stripe_payment_methods = new StripePaymentMethods($stripeClient);
             $stripe_products = new StripeProducts($stripeClient);
             $stripe_prices = new StripePrices($stripeClient);
-    
+
             new Payment($stripe_payment_intent, $stripe_payment_methods);
-    
+
             new Service($stripe_products, $stripe_prices);
             new Services($stripe_products, $stripe_prices);
             new Product($stripe_products, $stripe_prices);
             new Products($stripe_products, $stripe_prices);
-    
+
             new Clients($stripeClient);
             new Quote($stripeClient);
             new Invoice($stripeClient);
@@ -155,6 +156,7 @@ class ORB_Services
             new EmailQuote($stripeClient, $mailer);
             new EmailInvoice($stripeClient, $mailer);
             new EmailReceipt($stripeClient, $mailer);
+            new EmailOnboarding($stripeClient, $mailer);
         } else {
             error_log('Stripe Secret Key is required.');
         }

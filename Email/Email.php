@@ -85,7 +85,7 @@ class Email
 
             return $footer;
         } else {
-            throw new \Exception('Unable to locate contact email template.');
+            throw new Exception('Unable to locate contact email template.');
         }
     }
 }

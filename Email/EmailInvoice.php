@@ -28,6 +28,13 @@ class EmailInvoice
 
     public function __construct($stripeClient, $mailer)
     {
+        $this->database_invoice = new DatabaseInvoice();
+        $this->stripe_invoice = new StripeInvoice($stripeClient);
+        $this->email = new Email();
+        $this->billing = new EmailBilling($stripeClient);
+        $this->mailer = $mailer;
+        // $this->pdf = $pdf;
+
         $this->smtp_host = get_option('invoice_smtp_host');
         $this->smtp_port = get_option('invoice_smtp_port');
         $this->smtp_secure = get_option('invoice_smtp_secure');
@@ -37,12 +44,6 @@ class EmailInvoice
         $this->from_email = get_option('invoice_email');
         $this->from_name = get_option('invoice_name');
 
-        $this->database_invoice = new DatabaseInvoice();
-        $this->stripe_invoice = new StripeInvoice($stripeClient);
-        $this->email = new Email();
-        $this->billing = new EmailBilling($stripeClient);
-        $this->mailer = $mailer;
-        // $this->pdf = $pdf;
     }
 
     function invoiceEmailBodyHeader($databaseInvoice, $stripeInvoice)
