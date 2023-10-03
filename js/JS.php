@@ -57,7 +57,6 @@ class JS
             'services/receipt',
         ];
 
-        // Check if the current page/post is one of the specified pages
         if (is_front_page() || is_singular('services') || is_page($pages)) {
             $jsFiles = $this->get_js_files($directory);
 

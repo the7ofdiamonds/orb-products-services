@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { fetchService } from '../controllers/serviceSlice.js';
 
 function ServiceComponent() {
