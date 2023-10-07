@@ -8,14 +8,14 @@
     justify-content: center;
 
     .services-card {
-      min-width: 12.5em;
-      height: 20em;
+      min-width: 15rem;
+      height: 20rem;
       opacity: 0.85;
       gap: 0.375rem;
 
       .services-name,
       .services-icon,
-      .services-description,
+      .services-pricing,
       .services-action {
         display: flex;
         flex-direction: column;
@@ -23,16 +23,27 @@
         justify-content: center;
       }
 
-      .services-icon {
-        i {
-          font-size: 3rem;
-          padding: 0;
+      .services-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 4rem;
+        width: 100%;
+
+        .services-icon {
+          width: 100%;
+          i {
+            font-size: 3rem;
+            padding: 0;
+          }
         }
       }
 
       .services-features {
         overflow: auto;
-        height: 10rem;
+        height: 100%;
+        max-height: 11rem;
 
         ul {
           li {
@@ -42,7 +53,12 @@
         }
       }
 
+      .services-pricing {
+        height: 2rem;
+      }
+
       .services-action {
+        height: 3rem;
 
         .services-btn {
           display: flex;

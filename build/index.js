@@ -11469,11 +11469,8 @@ const store = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_10__.configureStore)(
     schedule: _controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_7__.scheduleSlice.reducer,
     payment: _controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_8__.paymentSlice.reducer,
     receipt: _controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_9__.receiptSlice.reducer
-  },
-  // Enable the Redux DevTools Extension
-  devTools: "development" !== 'production' // Optional: Disable in production
+  }
 });
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
 
 /***/ }),

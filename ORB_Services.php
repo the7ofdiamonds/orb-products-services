@@ -44,7 +44,7 @@ use ORB_Services\JS\JS;
 use ORB_Services\Menus\Menus;
 use ORB_Services\Pages\Pages;
 use ORB_Services\PDF\PDF;
-use ORB_Services\Post_Types\Services as ServicePostType;
+use ORB_Services\Post_Types\PostTypes;
 use ORB_Services\Roles\Roles;
 use ORB_Services\Shortcodes\Shortcodes;
 use ORB_Services\Database\Database;
@@ -130,6 +130,8 @@ class ORB_Services
         if ($stripeSecretKey !== null) {
             StripeAPI::setApiKey($stripeSecretKey);
             $stripeClient = new StripeClient($stripeSecretKey);
+
+            new PostTypes($stripeClient);
             new Email($stripeClient, $mailer);
 
             new Stripe($stripeClient);

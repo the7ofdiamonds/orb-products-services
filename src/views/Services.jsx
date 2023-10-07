@@ -43,10 +43,11 @@ function ServicesComponent() {
           <React.Fragment>
             {services.map((service) => (
               <div className="services-card card" key={service.price_id}>
-                <h3 className="services-name">{service.title}</h3>
-
-                <div className="services-icon">
-                  <i className={service.icon}></i>
+                <div className="services-title">
+                  <div className="services-icon">
+                    <i className={service.icon}></i>
+                  </div>
+                  <h3 className="services-name">{service.title}</h3>
                 </div>
 
                 <div className="services-features">
@@ -59,7 +60,7 @@ function ServicesComponent() {
                   )}
                 </div>
 
-                <div className="services-description">
+                <div className="services-pricing">
                   <h4>
                     Starting at{' '}
                     {new Intl.NumberFormat('us', {
