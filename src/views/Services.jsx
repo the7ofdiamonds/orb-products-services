@@ -47,7 +47,7 @@ function ServicesComponent() {
                   <div className="services-icon">
                     <i className={service.icon}></i>
                   </div>
-                  <h3 className="services-name">{service.title}</h3>
+                  <h3 className="services-name title">{service.title}</h3>
                 </div>
 
                 <div className="services-features">

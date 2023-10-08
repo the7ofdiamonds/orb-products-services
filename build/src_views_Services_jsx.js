@@ -63,7 +63,7 @@ function ServicesComponent() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
     className: service.icon
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
-    className: "services-name"
+    className: "services-name title"
   }, service.title)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "services-features"
   }, Array.isArray(service.features) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", null, service.features.map(feature => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {

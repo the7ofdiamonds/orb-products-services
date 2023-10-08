@@ -6,8 +6,11 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 
     .hero-icons {
+      width: 100%;
+
       i {
         font-size: 3rem;
 
@@ -25,10 +28,10 @@
 }
 
 .hero-animation > div {
-  // text-align: left;
   height: 4rem;
   line-height: 4rem;
   overflow: hidden;
+  width: 100%;
 }
 
 .hero-icons {
@@ -79,7 +82,7 @@ html {
   justify-content: center;
   gap: 0.5em;
   box-shadow: 0 0 1em rgba(255, 255, 255, 0.85);
-  
+
   i {
     padding-right: 0;
   }

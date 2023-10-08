@@ -4,7 +4,7 @@
 
   <div class="hero-card card">
 
-    <h4><?php echo get_option('hero-pitch'); ?></h4>
+    <h5><?php echo get_option('hero-pitch'); ?></h5>
 
     <?php include_once ORB_SERVICES . '/includes/main-hero-animation.php'; ?>
 
