@@ -11641,7 +11641,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/clientSlice */ "./src/controllers/clientSlice.js");
 /* harmony import */ var _controllers_scheduleSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/scheduleSlice.js */ "./src/controllers/scheduleSlice.js");
@@ -11650,6 +11650,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../controllers/invoiceSlice */ "./src/controllers/invoiceSlice.js");
 /* harmony import */ var _controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../controllers/receiptSlice */ "./src/controllers/receiptSlice.js");
 /* harmony import */ var _utils_Schedule__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/Schedule */ "./src/utils/Schedule.js");
+/* harmony import */ var _components_NavigationLogin__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/NavigationLogin */ "./src/views/components/NavigationLogin.jsx");
+
 
 
 
@@ -11664,7 +11666,7 @@ __webpack_require__.r(__webpack_exports__);
 function ScheduleComponent() {
   const {
     id
-  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_10__.useParams)();
+  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_11__.useParams)();
   const {
     user_email,
     client_id,
@@ -11716,7 +11718,7 @@ function ScheduleComponent() {
   const communicationPreferenceSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   const attendeesSelectRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_10__.useNavigate)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_11__.useNavigate)();
 
   // Office Hours
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -12032,11 +12034,48 @@ function ScheduleComponent() {
     className: `status-bar card ${messageType}`
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message)) : '', user_email ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SCHEDULE")) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    onClick: handleLogin
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "LOGIN")));
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SCHEDULE")) : (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_NavigationLogin__WEBPACK_IMPORTED_MODULE_10__["default"], null));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ScheduleComponent);
+
+/***/ }),
+
+/***/ "./src/views/components/NavigationLogin.jsx":
+/*!**************************************************!*\
+  !*** ./src/views/components/NavigationLogin.jsx ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+
+function NavigationLoginComponent() {
+  const baseHost = window.location.protocol + '//' + window.location.host;
+  const handleLogin = () => {
+    window.location.href = `/login/?redirectTo=${baseHost}/schedule/`;
+  };
+  const handleSignUp = () => {
+    window.location.href = `/signup/?redirectTo=${baseHost}/schedule/`;
+  };
+  const handleForgot = () => {
+    window.location.href = `/forgot/?redirectTo=${baseHost}/schedule/`;
+  };
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "options"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: handleLogin
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "LOGIN")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: handleSignUp
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SIGN UP")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: handleForgot
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "FORGOT"))));
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (NavigationLoginComponent);
 
 /***/ }),
 

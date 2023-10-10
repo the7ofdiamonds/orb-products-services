@@ -23,6 +23,7 @@ import { getClientInvoices } from '../controllers/invoiceSlice';
 import { getClientReceipts } from '../controllers/receiptSlice';
 
 import { formatOfficeHours, datesAvail, timesAvail } from '../utils/Schedule';
+import NavigationLoginComponent from './components/NavigationLogin';
 
 function ScheduleComponent() {
   const { id } = useParams();
@@ -528,9 +529,7 @@ function ScheduleComponent() {
           <h3>SCHEDULE</h3>
         </button>
       ) : (
-        <button onClick={handleLogin}>
-          <h3>LOGIN</h3>
-        </button>
+        <NavigationLoginComponent />
       )}
     </>
   );

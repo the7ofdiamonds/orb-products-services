@@ -1,7 +1,7 @@
 <div class="hero-animation">
 
     <div class="hero-icons">
-        <i class="fa-solid fa-lightbulb"></i>
+        <i class="fa-regular fa-lightbulb"></i>
 
         <i class="fa-solid fa-plus"></i>
 
