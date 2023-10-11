@@ -38,7 +38,7 @@
 .hero-animation-services {
   width: fit-content;
   overflow: hidden;
-  animation: var(--animation-duration) slide infinite linear;
+  animation: cycle var(--animation-duration) infinite linear;
   padding-left: 1rem;
 }
 
@@ -54,7 +54,7 @@
   text-transform: uppercase;
 }
 
-@keyframes slide {
+@keyframes cycle {
   100% {
     transform: translateY(-50%);
   }
