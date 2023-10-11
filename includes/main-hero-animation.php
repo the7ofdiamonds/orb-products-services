@@ -10,20 +10,29 @@
         <i class="fa-solid fa-equals"></i>
     </div>
 
-    <div>
-        <div class="hero-animation-services" id="hero-animation-services">
-            <?php $args = array('post_type' => array('services'), 'orderby' => 'menu_order', 'order' => 'ASC');
+    <div class="hero-animation-services" id="hero-animation-services">
+        <?php $args = array('post_type' => array('services'), 'orderby' => 'menu_order', 'order' => 'ASC');
 
-            $services = get_posts($args);
+        $services = get_posts($args);
 
-            if ($services) :
+        if ($services) :
 
-                foreach ($services as $service) : ?>
-                    <span class="hero-animation-service" id="hero-animation-service">
-                        <h3><?php echo get_the_title($service->ID); ?></h3>
-                    </span>
-            <?php endforeach;
-            endif; ?>
-        </div>
+            foreach ($services as $service) : ?>
+                <div class="hero-animation-service" id="hero-animation-service">
+                    <h3><?php echo get_the_title($service->ID); ?></h3>
+                </div>
+        <?php endforeach;
+        endif; ?>
     </div>
 </div>
+
+<script>
+    const services = document.querySelector('.hero-animation-services');
+    const totalServices = services.children.length;
+
+    for (let i = 0; i < totalServices; i++) {
+        services.appendChild(services.children[i].cloneNode(true));
+    }
+
+    document.documentElement.style.setProperty('--total-services', totalServices);
+</script>
