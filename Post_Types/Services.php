@@ -36,7 +36,7 @@ class Services
             'show_in_rest' => true,
             'show_in_nav_menus' => true,
             'public' => true,
-            "has_archive" => false,
+            "has_archive" => true,
             'publicly_queryable' => true,
             'query_var' => true,
             'rewrite' => array(

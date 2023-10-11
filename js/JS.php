@@ -48,16 +48,15 @@ class JS
             'support/success',
             'dashboard',
             'schedule',
-            'services',
-            'services/start',
-            'services/selections',
-            'services/quote',
-            'services/invoice',
-            'services/payment',
-            'services/receipt',
+            'client/start',
+            'client/selections',
+            'billing/quote',
+            'billing/invoice',
+            'billing/payment',
+            'billing/receipt',
         ];
 
-        if (is_front_page() || is_singular('services') || is_page($pages)) {
+        if (is_front_page() || is_post_type_archive('services') || is_singular('services') || is_page($pages)) {
             $jsFiles = $this->get_js_files($directory);
 
             if ($jsFiles) {

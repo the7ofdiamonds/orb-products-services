@@ -91,9 +91,9 @@ function InvoiceComponent() {
   //Event id mast be validated
   const handleClick = async () => {
     if (status === 'paid' && receipt_id) {
-      navigate(`/services/receipt/${receipt_id}`);
+      navigate(`/billing/receipt/${receipt_id}`);
     } else if (status === 'open' && client_secret) {
-      navigate(`/services/payment/${id}`);
+      navigate(`/billing/payment/${id}`);
     } else if (stripe_invoice_id) {
       dispatch(finalizeInvoice());
     }
@@ -101,7 +101,7 @@ function InvoiceComponent() {
 
   useEffect(() => {
     if (status === 'open' && client_secret) {
-      navigate(`/services/payment/${id}`);
+      navigate(`/billing/payment/${id}`);
     }
   }, [status, id, client_secret]);
 

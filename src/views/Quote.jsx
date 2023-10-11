@@ -68,7 +68,7 @@ function QuoteComponent() {
 
   const handleAccepted = () => {
     if (stripe_quote_id && quote_id && status === 'accepted') {
-      navigate(`/services/invoice/${quote_id}`);
+      navigate(`/billing/invoice/${quote_id}`);
     }
   };
 
@@ -80,7 +80,7 @@ function QuoteComponent() {
 
   useEffect(() => {
     if (status === 'accepted' && stripe_invoice_id && invoice_id)
-      navigate(`/services/invoice/${invoice_id}`);
+      navigate(`/billing/invoice/${invoice_id}`);
   }, [status, stripe_invoice_id, invoice_id]);
 
   if (status === 'canceled') {

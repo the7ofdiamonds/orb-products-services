@@ -106,16 +106,16 @@ function InvoiceComponent() {
   //Event id mast be validated
   const handleClick = async () => {
     if (status === 'paid' && receipt_id) {
-      navigate(`/services/receipt/${receipt_id}`);
+      navigate(`/billing/receipt/${receipt_id}`);
     } else if (status === 'open' && client_secret) {
-      navigate(`/services/payment/${id}`);
+      navigate(`/billing/payment/${id}`);
     } else if (stripe_invoice_id) {
       dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.finalizeInvoice)());
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (status === 'open' && client_secret) {
-      navigate(`/services/payment/${id}`);
+      navigate(`/billing/payment/${id}`);
     }
   }, [status, id, client_secret]);
   if (error) {

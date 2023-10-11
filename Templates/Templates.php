@@ -7,7 +7,7 @@ class Templates
 
     public function __construct()
     {
-        add_filter('page_template', [$this, 'get_archive_page_template']);
+        add_filter('archive_template', [$this, 'get_archive_page_template']);
         add_filter('single_template', [$this, 'get_single_page_template']);
         add_filter('template_include', [$this, 'get_custom_start_page_template']);
         add_filter('template_include', [$this, 'get_custom_selections_page_template']);
@@ -22,23 +22,18 @@ class Templates
         add_filter('page_template', [$this, 'get_custom_contact_success_page_template']);
     }
 
-    function get_archive_page_template($single_template)
+    function get_archive_page_template($archive_template)
     {
-        $request_path = $_SERVER['REQUEST_URI'];
-        $path_segments = explode('/', $request_path);
-
-        if ($path_segments[1] === 'services') {
-            $single_template = ORB_SERVICES . 'Pages/archive-services.php';
+        if (is_post_type_archive('services')) {
+            $archive_template = ORB_SERVICES . 'Pages/archive-services.php';
         }
 
-        return $single_template;
+        return $archive_template;
     }
 
     function get_single_page_template($single_template)
     {
-        global $post;
-
-        if ($post->post_type === 'services') {
+        if (is_singular('services')) {
             $single_template = ORB_SERVICES . 'Pages/single-services.php';
         }
 
@@ -47,7 +42,7 @@ class Templates
 
     function get_custom_start_page_template($template)
     {
-        $start_page = get_page_by_path('services/start');
+        $start_page = get_page_by_path('client/start');
 
         if ($start_page && is_page($start_page->ID)) {
             $custom_template = ORB_SERVICES . 'Pages/page-start.php';
@@ -61,7 +56,7 @@ class Templates
 
     function get_custom_selections_page_template($template)
     {
-        $selections_page = get_page_by_path('services/selections');
+        $selections_page = get_page_by_path('client/selections');
 
         if ($selections_page && is_page($selections_page->ID)) {
             $custom_template = ORB_SERVICES . 'Pages/page-selections.php';
@@ -75,7 +70,7 @@ class Templates
 
     function get_custom_quote_page_template($template)
     {
-        $quote_page = get_page_by_path('services/quote');
+        $quote_page = get_page_by_path('billing/quote');
 
         if ($quote_page && is_page($quote_page->ID)) {
             $custom_template = ORB_SERVICES . 'Pages/page-quote.php';
@@ -89,9 +84,9 @@ class Templates
 
     function get_custom_invoice_page_template($template)
     {
-        $services_invoice = get_page_by_path('services/invoice');
+        $invoice_page = get_page_by_path('billing/invoice');
 
-        if ($services_invoice && is_page($services_invoice->ID)) {
+        if ($invoice_page && is_page($invoice_page->ID)) {
             $custom_template = ORB_SERVICES . 'Pages/page-invoice.php';
 
             if (file_exists($custom_template)) {
@@ -103,9 +98,9 @@ class Templates
 
     function get_custom_payment_page_template($template)
     {
-        $services_payment = get_page_by_path('services/payment');
+        $payment_page = get_page_by_path('billing/payment');
 
-        if ($services_payment && is_page($services_payment->ID)) {
+        if ($payment_page && is_page($payment_page->ID)) {
             $custom_template = ORB_SERVICES . 'Pages/page-payment.php';
 
             if (file_exists($custom_template)) {
@@ -117,9 +112,9 @@ class Templates
 
     function get_custom_receipt_page_template($template)
     {
-        $services_receipt = get_page_by_path('services/receipt');
+        $receipt_page = get_page_by_path('billing/receipt');
 
-        if ($services_receipt && is_page($services_receipt->ID)) {
+        if ($receipt_page && is_page($receipt_page->ID)) {
             $custom_template = ORB_SERVICES . 'Pages/page-receipt.php';
 
             if (file_exists($custom_template)) {
@@ -131,9 +126,9 @@ class Templates
 
     function get_custom_schedule_page_template($template)
     {
-        $services_schedule = get_page_by_path('schedule');
+        $schedule_page = get_page_by_path('schedule');
 
-        if ($services_schedule && is_page($services_schedule->ID)) {
+        if ($schedule_page && is_page($schedule_page->ID)) {
             $custom_template = ORB_SERVICES . 'Pages/page-schedule.php';
 
             if (file_exists($custom_template)) {
@@ -183,5 +178,4 @@ class Templates
 
         return $page_template;
     }
-
 }

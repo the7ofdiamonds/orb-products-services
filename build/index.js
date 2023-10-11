@@ -9295,31 +9295,28 @@ function App() {
     path: "services/:service",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServiceComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "services/start",
+    path: "client/start",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(StartComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "services/start/client",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ClientComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "services/selections",
+    path: "client/selections",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(SelectionsComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "services/quote/:id",
+    path: "billing/quote/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(QuoteComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "services/invoice/:id",
+    path: "billing/invoice/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(InvoiceComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "services/payment/:id/*",
+    path: "billing/payment/:id/*",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(PaymentComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "services/payment/:id/card",
+    path: "billing/payment/:id/card",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(CardPaymentComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "services/payment/:id/mobile",
+    path: "billing/payment/:id/mobile",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(MobileComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "services/receipt/:id",
+    path: "billing/receipt/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ReceiptComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/*",

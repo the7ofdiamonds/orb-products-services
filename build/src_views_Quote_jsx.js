@@ -84,7 +84,7 @@ function QuoteComponent() {
   };
   const handleAccepted = () => {
     if (stripe_quote_id && quote_id && status === 'accepted') {
-      navigate(`/services/invoice/${quote_id}`);
+      navigate(`/billing/invoice/${quote_id}`);
     }
   };
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -93,7 +93,7 @@ function QuoteComponent() {
     }
   }, [stripe_invoice_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (status === 'accepted' && stripe_invoice_id && invoice_id) navigate(`/services/invoice/${invoice_id}`);
+    if (status === 'accepted' && stripe_invoice_id && invoice_id) navigate(`/billing/invoice/${invoice_id}`);
   }, [status, stripe_invoice_id, invoice_id]);
   if (status === 'canceled') {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {

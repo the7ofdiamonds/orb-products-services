@@ -38,27 +38,26 @@ function App() {
             <Route path="services" element={<ServicesComponent />} />
             <Route path="dashboard" element={<DashboardComponent />} />
             <Route path="services/:service" element={<ServiceComponent />} />
-            <Route path="services/start" element={<StartComponent />} />
-            <Route path="services/start/client" element={<ClientComponent />} />
+            <Route path="client/start" element={<StartComponent />} />
             <Route
-              path="services/selections"
+              path="client/selections"
               element={<SelectionsComponent />}
             />
-            <Route path="services/quote/:id" element={<QuoteComponent />} />
-            <Route path="services/invoice/:id" element={<InvoiceComponent />} />
+            <Route path="billing/quote/:id" element={<QuoteComponent />} />
+            <Route path="billing/invoice/:id" element={<InvoiceComponent />} />
             <Route
-              path="services/payment/:id/*"
+              path="billing/payment/:id/*"
               element={<PaymentComponent />}
             />
             <Route
-              path="services/payment/:id/card"
+              path="billing/payment/:id/card"
               element={<CardPaymentComponent />}
             />
             <Route
-              path="services/payment/:id/mobile"
+              path="billing/payment/:id/mobile"
               element={<MobileComponent />}
             />
-            <Route path="services/receipt/:id" element={<ReceiptComponent />} />
+            <Route path="billing/receipt/:id" element={<ReceiptComponent />} />
             <Route path="services/*" element={<ErrorComponent />} />
             <Route path="contact" element={<ContactComponent />} />
             <Route
