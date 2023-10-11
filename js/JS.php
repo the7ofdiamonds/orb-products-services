@@ -7,9 +7,9 @@ class JS
 
     public function __construct()
     {
-        add_action('wp_enqueue_scripts', [$this, 'load_js']);
-        add_action('wp_enqueue_scripts', [$this, 'load_hero_js']);
-        add_action('wp_enqueue_scripts', [$this, 'load_react']);
+        // add_action('wp_footer', [$this, 'load_js']);
+        add_action('wp_footer', [$this, 'load_hero_js']);
+        add_action('wp_footer', [$this, 'load_react']);
     }
 
     function get_js_files($directory)
