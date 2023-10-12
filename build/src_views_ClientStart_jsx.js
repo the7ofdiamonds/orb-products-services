@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_Start_jsx"],{
+(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_ClientStart_jsx"],{
 
 /***/ "./src/views/Client.jsx":
 /*!******************************!*\
@@ -225,10 +225,10 @@ function ClientComponent() {
 
 /***/ }),
 
-/***/ "./src/views/Start.jsx":
-/*!*****************************!*\
-  !*** ./src/views/Start.jsx ***!
-  \*****************************/
+/***/ "./src/views/ClientStart.jsx":
+/*!***********************************!*\
+  !*** ./src/views/ClientStart.jsx ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -248,4 +248,4 @@ function Start() {
 /***/ })
 
 }]);
-//# sourceMappingURL=src_views_Start_jsx.js.map
+//# sourceMappingURL=src_views_ClientStart_jsx.js.map

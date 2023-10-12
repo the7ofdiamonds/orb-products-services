@@ -302,11 +302,11 @@ function ScheduleComponent() {
     window.location.href = `/login/?redirectTo=${baseHost}/schedule/`;
   };
 
-  // useEffect(() => {
-  //   if (event_id) {
-  //     // window.location.href = '/dashboard';
-  //   }
-  // }, [event_id]);
+  useEffect(() => {
+    if (event_id) {
+      window.location.href = '/dashboard';
+    }
+  }, [event_id]);
 
   if (scheduleError) {
     return (

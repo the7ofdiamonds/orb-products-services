@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getClient, addClient } from '../../controllers/clientSlice';
+import { getClient, addClient } from '../controllers/clientSlice';
 import {
   updatePhone,
   updateCompanyName,
@@ -16,7 +16,7 @@ import {
   updateZipcode,
   getStripeCustomer,
   updateStripeCustomer,
-} from '../../controllers/customerSlice.js';
+} from '../controllers/customerSlice.js';
 
 function ClientComponent() {
   const dispatch = useDispatch();

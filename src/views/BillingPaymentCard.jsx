@@ -2,22 +2,22 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import PaymentNavigationComponent from './Navigation';
+import PaymentNavigationComponent from './payment/Navigation';
 
-import { getClient } from '../../controllers/clientSlice';
+import { getClient } from '../controllers/clientSlice';
 import {
   getInvoice,
   getStripeInvoice,
   updateInvoiceStatus,
-} from '../../controllers/invoiceSlice';
-import { getPaymentIntent } from '../../controllers/paymentSlice';
+} from '../controllers/invoiceSlice';
+import { getPaymentIntent } from '../controllers/paymentSlice';
 import {
   postReceipt,
   getPaymentMethod,
   updatePaymentMethod,
-} from '../../controllers/receiptSlice';
+} from '../controllers/receiptSlice';
 
-import { displayStatus, displayStatusType } from '../../utils/DisplayStatus';
+import { displayStatus, displayStatusType } from '../utils/DisplayStatus';
 
 // Stripe
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';

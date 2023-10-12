@@ -7,47 +7,42 @@ class JS
 
     public function __construct()
     {
+        add_action('wp_footer', [$this, 'load_front_page_jsx']);
+        add_action('wp_footer', [$this, 'load_about_page_jsx']);
+        add_action('wp_footer', [$this, 'load_pages_jsx']);
+        add_action('wp_footer', [$this, 'load_post_types_jsx']);
         // add_action('wp_footer', [$this, 'load_js']);
-        add_action('wp_footer', [$this, 'load_hero_js']);
-        add_action('wp_footer', [$this, 'load_react']);
     }
 
-    function get_js_files($directory)
-    {
-        $jsFiles = array();
-        $files = scandir($directory);
-
-        foreach ($files as $file) {
-            if (pathinfo($file, PATHINFO_EXTENSION) === 'js') {
-                $jsFiles[] = $file;
-            }
-        }
-        return $jsFiles;
-    }
-
-    function load_js()
-    {
-        wp_enqueue_script('orb_services_js', ORB_SERVICES_URL . 'JS/orb-services.js');
-    }
-
-    function load_hero_js()
+    function load_front_page_jsx()
     {
         if (is_front_page()) {
             wp_enqueue_script('orb_services_hero_js', ORB_SERVICES_URL . 'JS/orb-services-hero.js');
+
+            wp_enqueue_script('orb_services_react_schedule', ORB_SERVICES_URL . 'build/' . 'src_views_Schedule_jsx.js', ['wp-element'], 1.0, true);
+
+            wp_enqueue_script('orb_services_react_index', ORB_SERVICES_URL . 'build/' . 'index.js', ['wp-element'], 1.0, true);
         }
     }
 
-    function load_react()
+    function load_about_page_jsx()
     {
-        $directory = ORB_SERVICES . 'build';
+        if (is_page('about')) {
+            wp_enqueue_script('orb_services_react_schedule', ORB_SERVICES_URL . 'build/' . 'src_views_Schedule_jsx.js', ['wp-element'], 1.0, true);
+
+            wp_enqueue_script('orb_services_react_index', ORB_SERVICES_URL . 'build/' . 'index.js', ['wp-element'], 1.0, true);
+        }
+    }
+
+    function load_pages_jsx()
+    {
         $pages = [
-            'about',
             'contact',
             'contact/success',
+            'schedule',
             'support',
             'support/success',
             'dashboard',
-            'schedule',
             'client/start',
             'client/selections',
             'billing/quote',
@@ -56,15 +51,48 @@ class JS
             'billing/receipt',
         ];
 
-        if (is_front_page() || is_post_type_archive('services') || is_singular('services') || is_page($pages)) {
-            $jsFiles = $this->get_js_files($directory);
+        foreach ($pages as $page) {
+            if (is_page($page)) {
+                $parts = explode('/', $page);
+                $fileName = implode('', array_map('ucwords', $parts));
+                $filePath = ORB_SERVICES_URL . 'build/' . 'src_views_' . $fileName . '_jsx.js';
 
-            if ($jsFiles) {
-                foreach ($jsFiles as $jsFile) {
-                    $handle = 'orb_services_react_' . basename($jsFile);
-                    wp_enqueue_script($handle, ORB_SERVICES_URL . 'build/' . $jsFile, ['wp-element'], 1.0, true);
+                if ($filePath) {
+                    wp_enqueue_script('orb_services_react_' . $fileName, $filePath, ['wp-element'], 1.0, true);
+                } else {
+                    error_log($page . ' page has not been created.');
                 }
+
+                wp_enqueue_script('orb_services_react_index', ORB_SERVICES_URL . 'build/' . 'index.js', ['wp-element'], 1.0, true);
             }
         }
+    }
+
+    function load_post_types_jsx()
+    {
+        $post_types = [
+            'services',
+            'products'
+        ];
+
+        foreach ($post_types as $post_type) {
+            if (is_post_type_archive($post_type) || is_singular($post_type)) {
+                $fileName = ucwords($post_type);
+                $filePath = ORB_SERVICES_URL . 'build/' . 'src_views_' . $fileName . '_jsx.js';
+
+                if ($filePath) {
+                    wp_enqueue_script('orb_services_react_' . $fileName, $filePath, ['wp-element'], 1.0, true);
+                } else {
+                    error_log('Post Type' . $post_type . 'has not been created.');
+                }
+                
+                wp_enqueue_script('orb_services_react_index', ORB_SERVICES_URL . 'build/' . 'index.js', ['wp-element'], 1.0, true);
+            }
+        }
+    }
+
+    function load_js()
+    {
+        wp_enqueue_script('orb_services_js', ORB_SERVICES_URL . 'JS/orb-services.js');
     }
 }

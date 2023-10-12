@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_Payment_jsx"],{
+(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_BillingPayment_jsx"],{
 
 /***/ "./src/utils/DisplayStatus.js":
 /*!************************************!*\
@@ -43,10 +43,10 @@ const displayStatusType = status => {
 
 /***/ }),
 
-/***/ "./src/views/Payment.jsx":
-/*!*******************************!*\
-  !*** ./src/views/Payment.jsx ***!
-  \*******************************/
+/***/ "./src/views/BillingPayment.jsx":
+/*!**************************************!*\
+  !*** ./src/views/BillingPayment.jsx ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -186,4 +186,4 @@ function PaymentNavigationComponent() {
 /***/ })
 
 }]);
-//# sourceMappingURL=src_views_Payment_jsx.js.map
+//# sourceMappingURL=src_views_BillingPayment_jsx.js.map

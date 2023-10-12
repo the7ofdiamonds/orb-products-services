@@ -1,10 +1,10 @@
 "use strict";
-(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_Quote_jsx"],{
+(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_BillingQuote_jsx"],{
 
-/***/ "./src/views/Quote.jsx":
-/*!*****************************!*\
-  !*** ./src/views/Quote.jsx ***!
-  \*****************************/
+/***/ "./src/views/BillingQuote.jsx":
+/*!************************************!*\
+  !*** ./src/views/BillingQuote.jsx ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -151,4 +151,4 @@ function QuoteComponent() {
 /***/ })
 
 }]);
-//# sourceMappingURL=src_views_Quote_jsx.js.map
+//# sourceMappingURL=src_views_BillingQuote_jsx.js.map

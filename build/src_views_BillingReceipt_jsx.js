@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_Receipt_jsx"],{
+(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_BillingReceipt_jsx"],{
 
 /***/ "./src/utils/PhoneNumberFormatter.js":
 /*!*******************************************!*\
@@ -28,10 +28,10 @@ const formatPhoneNumber = phoneNumber => {
 
 /***/ }),
 
-/***/ "./src/views/Receipt.jsx":
-/*!*******************************!*\
-  !*** ./src/views/Receipt.jsx ***!
-  \*******************************/
+/***/ "./src/views/BillingReceipt.jsx":
+/*!**************************************!*\
+  !*** ./src/views/BillingReceipt.jsx ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -289,4 +289,4 @@ function ReceiptComponent() {
 /***/ })
 
 }]);
-//# sourceMappingURL=src_views_Receipt_jsx.js.map
+//# sourceMappingURL=src_views_BillingReceipt_jsx.js.map

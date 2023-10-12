@@ -1,10 +1,10 @@
 "use strict";
-(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_Invoice_jsx"],{
+(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_BillingInvoice_jsx"],{
 
-/***/ "./src/views/Invoice.jsx":
-/*!*******************************!*\
-  !*** ./src/views/Invoice.jsx ***!
-  \*******************************/
+/***/ "./src/views/BillingInvoice.jsx":
+/*!**************************************!*\
+  !*** ./src/views/BillingInvoice.jsx ***!
+  \**************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -232,4 +232,4 @@ function InvoiceComponent() {
 /***/ })
 
 }]);
-//# sourceMappingURL=src_views_Invoice_jsx.js.map
+//# sourceMappingURL=src_views_BillingInvoice_jsx.js.map
