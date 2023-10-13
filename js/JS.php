@@ -17,11 +17,35 @@ class JS
     function load_front_page_jsx()
     {
         if (is_front_page()) {
-            wp_enqueue_script('orb_services_hero_js', ORB_SERVICES_URL . 'JS/orb-services-hero.js');
+            $filePath = ORB_SERVICES . 'JS/orb-services-hero.js';
 
-            wp_enqueue_script('orb_services_react_schedule', ORB_SERVICES_URL . 'build/' . 'src_views_Schedule_jsx.js', ['wp-element'], 1.0, true);
+            if (file_exists($filePath)) {
+                wp_enqueue_script('orb_services_hero_js', ORB_SERVICES_URL . 'JS/orb-services-hero.js');
+            } else {
+                error_log('ORB Hero javascript file does not exists in the build folder.');
+            }
 
-            wp_enqueue_script('orb_services_react_index', ORB_SERVICES_URL . 'build/' . 'index.js', ['wp-element'], 1.0, true);
+            $sections = [
+                'Products',
+                'Services',
+                'Schedule'
+            ];
+
+            foreach ($sections as $section) {
+                $filePath = ORB_SERVICES . 'build/' . 'src_views_' . $section . '_jsx.js';
+
+                if (file_exists($filePath)) {
+                    wp_enqueue_script('orb_services_react' . $section, ORB_SERVICES_URL . 'build/' . 'src_views_' . $section . '_jsx.js');
+                } else {
+                    error_log($section . ' react file does not exists in the build folder.');
+                }
+            }
+
+            if (file_exists(ORB_SERVICES . 'build/' . 'index.js')) {
+                wp_enqueue_script('orb_services_react_index', ORB_SERVICES_URL . 'build/' . 'index.js', ['wp-element'], 1.0, true);
+            } else {
+                error_log('Index react file does not exists in the build folder.');
+            }
         }
     }
 
@@ -37,18 +61,21 @@ class JS
     function load_pages_jsx()
     {
         $pages = [
-            'contact',
-            'contact/success',
-            'schedule',
-            'support',
-            'support/success',
-            'dashboard',
-            'client/start',
-            'client/selections',
+            'billing',
             'billing/quote',
             'billing/invoice',
             'billing/payment',
             'billing/receipt',
+            'client',
+            'client/selections',
+            'client/start',
+            'contact',
+            'contact/success',
+            'dashboard',
+            'faq',
+            'schedule',
+            'support',
+            'support/success',
         ];
 
         foreach ($pages as $page) {
@@ -85,7 +112,7 @@ class JS
                 } else {
                     error_log('Post Type' . $post_type . 'has not been created.');
                 }
-                
+
                 wp_enqueue_script('orb_services_react_index', ORB_SERVICES_URL . 'build/' . 'index.js', ['wp-element'], 1.0, true);
             }
         }

@@ -880,4 +880,12 @@ td {
   padding: 0.5em;
 }
 
+button h3 {
+  text-transform: uppercase;
+}
+
+section main.error {
+  margin-top: -5rem;
+}
+
 /*# sourceMappingURL=orb-services.css.map */

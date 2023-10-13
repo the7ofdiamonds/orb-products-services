@@ -9,15 +9,12 @@ import store from './model/store.js';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
+const LoadingComponent = lazy(() => import('./loading/LoadingComponent.jsx'));
 const ScheduleComponent = lazy(() => import('./views/Schedule.jsx'));
-
+// Add to backend to make changes more easily
 const stripe = loadStripe(
   'pk_test_51NKFzqKNsWPbtVUMWvTJqD8nAWkpG0aaMrJtmkCLurHXMSwinKilB5yacy2OUUsoveCP7SednwlV0bKpXZIhadUI00SvobnJW7'
 );
-
-function LoadingFallback() {
-  return <div>Loading...</div>;
-}
 
 const orbServicesContainer = document.getElementById('orb_services');
 if (orbServicesContainer) {
@@ -25,11 +22,7 @@ if (orbServicesContainer) {
     <React.StrictMode>
       <Provider store={store}>
         <Elements stripe={stripe}>
-          <Router basename="/">
-            <Suspense fallback={<LoadingFallback />}>
-              <App />
-            </Suspense>
-          </Router>
+          <App />
         </Elements>
       </Provider>
     </React.StrictMode>
@@ -42,7 +35,7 @@ if (orbScheduleContainer) {
     <React.StrictMode>
       <Provider store={store}>
         <Router>
-          <Suspense fallback={<LoadingFallback />}>
+          <Suspense fallback={<LoadingComponent />}>
             <Routes>
               <Route path="/" element={<ScheduleComponent />} />
               <Route path="/about" element={<ScheduleComponent />} />

@@ -9,8 +9,10 @@ class Templates
     {
         add_filter('archive_template', [$this, 'get_archive_page_template']);
         add_filter('single_template', [$this, 'get_single_page_template']);
+        add_filter('page_template', [$this, 'get_custom_client_page_template']);
         add_filter('page_template', [$this, 'get_custom_start_page_template']);
         add_filter('page_template', [$this, 'get_custom_selections_page_template']);
+        add_filter('page_template', [$this, 'get_custom_billing_page_template']);
         add_filter('page_template', [$this, 'get_custom_quote_page_template']);
         add_filter('page_template', [$this, 'get_custom_invoice_page_template']);
         add_filter('page_template', [$this, 'get_custom_payment_page_template']);
@@ -52,6 +54,23 @@ class Templates
         return $single_template;
     }
 
+    function get_custom_client_page_template($page_template)
+    {
+        $start_page = get_page_by_path('client');
+
+        if ($start_page && is_page($start_page->ID)) {
+            $page_template = ORB_SERVICES . 'Pages/page-client.php';
+
+            if (file_exists($page_template)) {
+                return $page_template;
+            } else {
+                error_log('Client Page Template does not exist.');
+            }
+        }
+
+        return $page_template;
+    }
+
     function get_custom_start_page_template($page_template)
     {
         $start_page = get_page_by_path('client/start');
@@ -80,6 +99,23 @@ class Templates
                 return $page_template;
             } else {
                 error_log('Selections Page Template does not exist.');
+            }
+        }
+
+        return $page_template;
+    }
+
+    function get_custom_billing_page_template($page_template)
+    {
+        $quote_page = get_page_by_path('billing');
+
+        if ($quote_page && is_page($quote_page->ID)) {
+            $page_template = ORB_SERVICES . 'Pages/page-billing.php';
+
+            if (file_exists($page_template)) {
+                return $page_template;
+            } else {
+                error_log('Billing Page Template does not exist.');
             }
         }
 

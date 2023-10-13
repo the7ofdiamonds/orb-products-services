@@ -7,10 +7,10 @@ class AdminLocation
 
     public function __construct()
     {
-        add_action('admin_menu', [$this, 'register_custom_menu_page']);
+        add_action('admin_menu', [$this, 'register_custom_submenu_page']);
     }
 
-    function register_custom_menu_page()
+    function register_custom_submenu_page()
     {
 
         add_submenu_page('orb_services', 'Add Location', 'Add Location', 'manage_options', 'orb_location', [$this, 'create_section'], 3);

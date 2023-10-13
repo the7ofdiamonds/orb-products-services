@@ -169,28 +169,28 @@ class Quote
             return $response;
         }
 
-        return $this->stripe_quote->createStripeQuote($stripe_customer_id, $selections);
+        return rest_ensure_response($this->stripe_quote->createStripeQuote($stripe_customer_id, $selections));
     }
 
     public function get_quote(WP_REST_Request $request)
     {
         $stripe_quote_id = $request->get_param('slug');
 
-        return $this->database_quote->getQuote($stripe_quote_id);
+        return rest_ensure_response($this->database_quote->getQuote($stripe_quote_id));
     }
 
     public function get_quote_by_id(WP_REST_Request $request)
     {
         $id = $request->get_param('slug');
 
-        return $this->database_quote->getQuoteByID($id);
+        return rest_ensure_response($this->database_quote->getQuoteByID($id));
     }
 
     public function get_stripe_quote(WP_REST_Request $request)
     {
         $stripe_quote_id = $request->get_param('slug');
 
-        return $this->stripe_quote->getStripeQuote($stripe_quote_id);
+        return rest_ensure_response($this->stripe_quote->getStripeQuote($stripe_quote_id));
     }
 
     public function update_quote(WP_REST_Request $request)
@@ -200,7 +200,7 @@ class Quote
 
         $stripe_quote = $this->stripe_quote->updateStripeQuote($stripe_quote_id, $selections);
 
-        return $this->database_quote->updateQuote($stripe_quote, $selections);
+        return rest_ensure_response($this->database_quote->updateQuote($stripe_quote, $selections));
     }
 
     public function update_quote_status(WP_REST_Request $request)
@@ -209,7 +209,7 @@ class Quote
 
         $quote = $this->stripe_quote->getStripeQuote($stripe_quote_id);
 
-        return $this->database_quote->updateQuote($quote);
+        return rest_ensure_response($this->database_quote->updateQuote($quote));
     }
 
     public function update_stripe_quote(WP_REST_Request $request)
@@ -217,7 +217,7 @@ class Quote
         $stripe_quote_id = $request->get_param('slug');
         $selections = $request['selections'];
 
-        return $this->stripe_quote->updateStripeQuote($stripe_quote_id, $selections);
+        return rest_ensure_response($this->stripe_quote->updateStripeQuote($stripe_quote_id, $selections));
     }
 
     public function finalize_quote(WP_REST_Request $request)
@@ -240,7 +240,34 @@ class Quote
 
         $quote = $this->stripe_quote->finalizeQuote($stripe_quote_id);
 
-        return $this->database_quote->saveQuote($quote, $selections);
+        $quote_id = $this->database_quote->saveQuote($quote, $selections);
+
+        if ($quote_id) {
+            $amount_subtotal = intval($quote->amount_subtotal) / 100;
+            $amount_discount = intval($quote->computed->upfront->total_details->amount_discount) / 100;
+            $amount_shipping = intval($quote->computed->upfront->total_details->amount_shipping) / 100;
+            $amount_tax = intval($quote->computed->upfront->total_details->amount_tax) / 100;
+            $amount_total = intval($quote->amount_total) / 100;
+
+            $quote_saved = [
+                'quote_id' => $quote_id,
+                'stripe_customer_id' => $quote->customer,
+                'stripe_quote_id' => $quote->id,
+                'status' => $quote->status,
+                'expires_at' => $quote->expires_at,
+                'selections' => $selections,
+                'amount_subtotal' => $amount_subtotal,
+                'amount_discount' => $amount_discount,
+                'amount_shipping' => $amount_shipping,
+                'amount_tax' => $amount_tax,
+                'amount_total' => $amount_total
+            ];
+
+            return rest_ensure_response($quote_saved);
+        } else {
+
+            return rest_ensure_response($quote_id);
+        }
     }
 
     public function accept_quote(WP_REST_Request $request)
@@ -249,7 +276,7 @@ class Quote
 
         $quote = $this->stripe_quote->acceptQuote($stripe_quote_id);
 
-        return $this->database_quote->updateQuoteStatus($stripe_quote_id, $quote->status);
+        return rest_ensure_response($this->database_quote->updateQuoteStatus($stripe_quote_id, $quote->status));
     }
 
     public function cancel_quote(WP_REST_Request $request)
@@ -258,7 +285,7 @@ class Quote
 
         $quote = $this->stripe_quote->cancelQuote($stripe_quote_id);
 
-        return $this->database_quote->updateQuoteStatus($stripe_quote_id, $quote->status);
+        return rest_ensure_response($this->database_quote->updateQuoteStatus($stripe_quote_id, $quote->status));
     }
 
     public function pdf_quote(WP_REST_Request $request)
@@ -303,19 +330,19 @@ class Quote
     public function get_quotes(WP_REST_Request $request)
     {
 
-        return $this->database_quote->getQuotes();
+        return rest_ensure_response($this->database_quote->getQuotes());
     }
 
     public function get_client_quotes(WP_REST_Request $request)
     {
         $stripe_customer_id = $request->get_param('slug');
 
-        return $this->database_quote->getClientQuotes($stripe_customer_id);
+        return rest_ensure_response($this->database_quote->getClientQuotes($stripe_customer_id));
     }
 
     public function get_stripe_quotes()
     {
-        return $this->stripe_quote->getStripeQuotes();
+        return rest_ensure_response($this->stripe_quote->getStripeQuotes());
     }
 
     public function get_stripe_client_quotes(WP_REST_Request $request)
@@ -330,6 +357,6 @@ class Quote
             return $response;
         }
 
-        return $this->stripe_quote->getStripeClientQuotes($stripe_customer_id);
+        return rest_ensure_response($this->stripe_quote->getStripeClientQuotes($stripe_customer_id));
     }
 }

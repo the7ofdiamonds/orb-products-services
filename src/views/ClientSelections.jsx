@@ -10,16 +10,21 @@ import {
   createQuote,
   finalizeQuote,
   getClientQuotes,
-  getStripeQuote,
-  updateQuoteID,
-  updateQuote,
-  getQuote,
 } from '../controllers/quoteSlice.js';
 
+import LoadingComponent from '../loading/LoadingComponent';
+import StatusBar from '../views/components/StatusBar';
+
 function SelectionsComponent() {
-  const { servicesLoading, servicesError, services } = useSelector(
-    (state) => state.services
+  const dispatch = useDispatch();
+
+  const [messageType, setMessageType] = useState('info');
+  const [message, setMessage] = useState(
+    'Check the boxes next to the services you would like performed.'
   );
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  const { servicesLoading, services } = useSelector((state) => state.services);
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
@@ -34,22 +39,68 @@ function SelectionsComponent() {
     stripe_quote_id,
   } = useSelector((state) => state.quote);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const [checkedItems, setCheckedItems] = useState([]);
-
   useEffect(() => {
     if (user_email) {
-      dispatch(getClient());
+      dispatch(getClient()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
     }
   }, [user_email, dispatch]);
 
   useEffect(() => {
     if (stripe_customer_id) {
-      dispatch(fetchServices());
+      dispatch(getClientQuotes()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
     }
   }, [stripe_customer_id, dispatch]);
+
+  useEffect(() => {
+    if (quotes) {
+      for (let i = 0; i < quotes.length; i++) {
+        const timestampNow = Math.floor(Date.now() / 1000);
+        const timestamp = parseInt(quotes[i].expires_at);
+        const createdAt = quotes[i].createdAt;
+        const expiresAt = new Date(timestamp * 1000);
+
+        if (timestampNow < timestamp) {
+          console.log(`${createdAt} - ${expiresAt} ${quotes[i].id}`);
+          console.log('Time has passed for quote');
+        } else {
+          console.log(`${createdAt} - ${expiresAt} ${quotes[i].id}`);
+          console.log('Time has not passed for quote');
+        }
+      }
+    }
+  }, [quotes]);
+
+  useEffect(() => {
+    if (stripe_customer_id) {
+      dispatch(fetchServices()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
+    }
+  }, [stripe_customer_id, dispatch]);
+
+  useEffect(() => {
+    dispatch(addSelections(checkedItems));
+  }, [dispatch, checkedItems]);
+
+  useEffect(() => {
+    dispatch(calculateSelections(services.cost));
+  }, [dispatch, services.cost, checkedItems]);
 
   const handleCheckboxChange = (event, id, price_id, description, cost) => {
     const isChecked = event.target.checked;
@@ -63,47 +114,41 @@ function SelectionsComponent() {
       }
     });
   };
-console.log(checkedItems)
-  useEffect(() => {
-    dispatch(addSelections(checkedItems));
-  }, [dispatch, checkedItems]);
-
-  useEffect(() => {
-    dispatch(calculateSelections(services.cost));
-  }, [dispatch, services.cost, checkedItems]);
 
   const handleClick = () => {
     if (selections.length > 0 && stripe_customer_id) {
-      dispatch(createQuote(selections));
+      dispatch(createQuote(selections)).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
+    } else {
+      setMessageType('error');
     }
   };
 
   useEffect(() => {
     if (stripe_quote_id) {
-      dispatch(finalizeQuote());
+      dispatch(finalizeQuote()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
     }
   }, [stripe_quote_id, dispatch]);
 
   useEffect(() => {
-    if ((quote_id && status === 'open') || status === 'accepted') {
-      window.location.href = `/services/quote/${quote_id}`;
+    if (quote_id && (status === 'open' || status === 'accepted')) {
+      window.location.href = `/billing/quote/${quote_id}`;
     }
   }, [quote_id, status]);
 
-  if (servicesError) {
-    return (
-      <main className="error">
-        <div className="status-bar card">
-          <span className="error">
-            There was an error loading the available services at this time.
-          </span>
-        </div>
-      </main>
-    );
-  }
-
   if (servicesLoading) {
-    return <div>Loading...</div>;
+    return <LoadingComponent />;
   }
 
   return (
@@ -188,11 +233,7 @@ console.log(checkedItems)
         </table>
       </div>
 
-      {quoteError && (
-        <div className={`status-bar card error`}>
-          <span>{quoteError}</span>
-        </div>
-      )}
+      <StatusBar message={message} messageType={messageType} />
 
       <button onClick={handleClick}>
         <h3>QUOTE</h3>

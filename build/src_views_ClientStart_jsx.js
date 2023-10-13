@@ -1,10 +1,30 @@
 "use strict";
 (self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_ClientStart_jsx"],{
 
-/***/ "./src/views/Client.jsx":
-/*!******************************!*\
-  !*** ./src/views/Client.jsx ***!
-  \******************************/
+/***/ "./src/loading/LoadingComponent.jsx":
+/*!******************************************!*\
+  !*** ./src/loading/LoadingComponent.jsx ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+
+function LoadingComponent() {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoadingComponent);
+
+/***/ }),
+
+/***/ "./src/views/ClientStart.jsx":
+/*!***********************************!*\
+  !*** ./src/views/ClientStart.jsx ***!
+  \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -15,10 +35,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/clientSlice */ "./src/controllers/clientSlice.js");
 /* harmony import */ var _controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/customerSlice.js */ "./src/controllers/customerSlice.js");
+/* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
+/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
+
+
 
 
 
@@ -27,12 +51,12 @@ __webpack_require__.r(__webpack_exports__);
 
 function ClientComponent() {
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useNavigate)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useNavigate)();
   const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
   const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('To receive a quote, please fill out the form above with the required information.');
   const {
     loading,
-    error,
+    client_error,
     user_email,
     first_name,
     last_name,
@@ -40,6 +64,7 @@ function ClientComponent() {
     stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
+    customer_error,
     company_name,
     tax_id,
     address_line_1,
@@ -82,12 +107,24 @@ function ClientComponent() {
   const [isFomCompleted, setIsFormCompleted] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (user_email) {
-      dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.getClient)(user_email));
+      dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.getClient)(user_email)).then(response => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
     }
   }, [user_email, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_customer_id) {
-      dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.getStripeCustomer)());
+      dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.getStripeCustomer)()).then(response => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
     }
   }, [stripe_customer_id, navigate]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -95,7 +132,6 @@ function ClientComponent() {
       setIsFormCompleted(true);
     }
   }, [first_name, last_name, address_line_1, city, state, zipcode]);
-  console.log(isFomCompleted);
   const handleClick = async () => {
     if (first_name === '') {
       setMessage('Please provide a first name.');
@@ -115,25 +151,30 @@ function ClientComponent() {
     } else if (zipcode === '') {
       setMessage('Please provide zipcode.');
       setMessageType('error');
-    } else if (isFomCompleted && stripe_customer_id === undefined) {
-      await dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.addClient)()).then(() => {
-        navigate('/services/selections');
+    } else if (isFomCompleted && stripe_customer_id === '' || stripe_customer_id === undefined) {
+      dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.addClient)()).then(response => {
+        if (response.error === undefined) {
+          navigate('/client/selections');
+        } else {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
       });
     } else if (stripe_customer_id) {
-      await dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateStripeCustomer)()).then(() => {
-        navigate('/services/selections');
+      dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateStripeCustomer)()).then(response => {
+        if (response.error === undefined) {
+          navigate('/client/selections');
+        } else {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
       });
     }
   };
-  if (error) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "status-bar card error"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "\"We encountered an issue while loading this page. Please try again, and if the problem persists, kindly contact the website administrators for assistance.\"")));
-  }
-
-  // Create loading animation
   if (loading) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", null, "Loading...");
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_5__["default"], null);
   }
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
@@ -214,21 +255,22 @@ function ClientComponent() {
     placeholder: "Zipcode",
     onChange: handleZipcodeChange,
     value: zipcode
-  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tfoot", null)))), message && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: `status-bar card ${messageType}`
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    id: "quote_button",
+  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tfoot", null)))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    message: message,
+    messageType: messageType
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    id: "selections_button",
     onClick: handleClick
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "QUOTE")));
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "selections")));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ClientComponent);
 
 /***/ }),
 
-/***/ "./src/views/ClientStart.jsx":
-/*!***********************************!*\
-  !*** ./src/views/ClientStart.jsx ***!
-  \***********************************/
+/***/ "./src/views/components/StatusBar.jsx":
+/*!********************************************!*\
+  !*** ./src/views/components/StatusBar.jsx ***!
+  \********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -237,13 +279,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Client */ "./src/views/Client.jsx");
 
-
-function Start() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_Client__WEBPACK_IMPORTED_MODULE_1__["default"], null));
+function StatusBar(props) {
+  const {
+    message,
+    messageType
+  } = props;
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, message && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `status-bar card ${messageType}`
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message)));
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Start);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (StatusBar);
 
 /***/ })
 

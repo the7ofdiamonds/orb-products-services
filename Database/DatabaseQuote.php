@@ -2,6 +2,8 @@
 
 namespace ORB_Services\Database;
 
+use Exception;
+
 class DatabaseQuote
 {
     private $wpdb;
@@ -16,24 +18,16 @@ class DatabaseQuote
 
     public function saveQuote($quote, $selections)
     {
-
         if (empty($selections)) {
-            $msg = 'Selections are required';
-            $message = array(
-                'message' => $msg,
-            );
-            $response = rest_ensure_response($message);
-            $response->set_status(404);
-
-            return $response;
+            throw new Exception('Selections are required');
         }
 
         $serialized_selections = json_encode($selections);
 
         $amount_subtotal = intval($quote->amount_subtotal) / 100;
-        $amount_discount = intval($quote->computed->upfront->amount_discount) / 100;
-        $amount_shipping = intval($quote->computed->upfront->amount_shipping) / 100;
-        $amount_tax = intval($quote->computed->upfront->amount_tax) / 100;
+        $amount_discount = intval($quote->computed->upfront->total_details->amount_discount) / 100;
+        $amount_shipping = intval($quote->computed->upfront->total_details->amount_shipping) / 100;
+        $amount_tax = intval($quote->computed->upfront->total_details->amount_tax) / 100;
         $amount_total = intval($quote->amount_total) / 100;
 
         $result = $this->wpdb->insert(
@@ -52,18 +46,12 @@ class DatabaseQuote
             ]
         );
 
-        if (!$result) {
+        if ($result) {
+            return $this->wpdb->insert_id;
+        } else {
             $msg = $this->wpdb->last_error;
-            $message = array(
-                'message' => $msg,
-            );
-            $response = rest_ensure_response($message);
-            $response->set_status(404);
-
-            return $response;
+            throw new Exception($msg);
         }
-
-        return $result;
     }
 
     public function getQuote($stripe_quote_id)
@@ -200,9 +188,9 @@ class DatabaseQuote
         $serialized_selections = !empty($selections) ? json_encode($selections) : null;
 
         $amount_subtotal = !empty($stripe_quote->amount_subtotal) ? intval($stripe_quote->amount_subtotal) / 100 : null;
-        $amount_discount = !empty($stripe_quote->computed->upfront->amount_discount) ? intval($stripe_quote->computed->upfront->amount_discount) / 100 : null;
-        $amount_shipping = !empty($stripe_quote->computed->upfront->amount_shipping) ? intval($stripe_quote->computed->upfront->amount_shipping) / 100 : null;
-        $amount_tax = !empty($stripe_quote->computed->upfront->amount_tax) ? intval($stripe_quote->computed->upfront->amount_tax) / 100 : null;
+        $amount_discount = !empty($stripe_quote->computed->upfront->total_details->amount_discount) ? intval($stripe_quote->computed->upfront->total_details->amount_discount) / 100 : null;
+        $amount_shipping = !empty($stripe_quote->computed->upfront->total_details->amount_shipping) ? intval($stripe_quote->computed->upfront->total_details->amount_shipping) / 100 : null;
+        $amount_tax = !empty($stripe_quote->computed->upfront->total_details->amount_tax) ? intval($stripe_quote->computed->upfront->total_details->amount_tax) / 100 : null;
         $amount_total = !empty($stripe_quote->amount_total) ? intval($stripe_quote->amount_total) / 100 : null;
 
         $data = array();
@@ -231,7 +219,7 @@ class DatabaseQuote
 
         if (!empty($data)) {
             $updated = $this->wpdb->update($this->table_name, $data, $where);
-        } 
+        }
 
         if ($updated === false) {
             $error_message = $this->wpdb->last_error ?: 'Quote not found';

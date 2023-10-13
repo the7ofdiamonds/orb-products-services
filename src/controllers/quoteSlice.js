@@ -5,7 +5,7 @@ const initialState = {
   loading: false,
   quoteError: '',
   stripe_customer_id: '',
-  quotes: [],
+  quotes: '',
   quote_id: '',
   stripe_quote_id: '',
   amount_subtotal: '',
@@ -48,7 +48,7 @@ export const createQuote = createAsyncThunk('quote/createQuote', async (_, { get
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 
@@ -73,7 +73,7 @@ export const getQuote = createAsyncThunk('quote/getQuote', async (_, { getState 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 
@@ -90,15 +90,13 @@ export const getQuoteByID = createAsyncThunk('quote/getQuoteByID', async (id, { 
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage)
       throw new Error(errorMessage);
     }
 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 
@@ -116,15 +114,13 @@ export const getStripeQuote = createAsyncThunk('quote/getStripeQuote', async (_,
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage)
       throw new Error(errorMessage);
     }
 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 
@@ -143,15 +139,13 @@ export const updateQuote = createAsyncThunk('quote/updateQuote', async (_, { get
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage)
       throw new Error(errorMessage);
     }
 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 
@@ -170,15 +164,13 @@ export const updateStripeQuote = createAsyncThunk('quote/updateStripeQuote', asy
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage)
       throw new Error(errorMessage);
     }
 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 
@@ -205,7 +197,7 @@ export const finalizeQuote = createAsyncThunk('quote/finalizeQuote', async (_, {
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 
@@ -223,15 +215,13 @@ export const updateQuoteStatus = createAsyncThunk('quote/updateQuoteStatus', asy
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage)
       throw new Error(errorMessage);
     }
 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 
@@ -249,15 +239,13 @@ export const acceptQuote = createAsyncThunk('quote/acceptQuote', async (_, { get
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage)
       throw new Error(errorMessage);
     }
 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 
@@ -275,15 +263,13 @@ export const cancelQuote = createAsyncThunk('quote/cancelQuote', async (_, { get
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage)
       throw new Error(errorMessage);
     }
 
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 
@@ -307,7 +293,7 @@ export const getClientQuotes = createAsyncThunk('quote/getClientQuotes', async (
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 
@@ -331,7 +317,7 @@ export const getStripeClientQuotes = createAsyncThunk('quote/getStripeClientQuot
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 
@@ -365,7 +351,7 @@ export const quoteSlice = createSlice({
     builder
       .addCase(createQuote.pending, (state) => {
         state.loading = true;
-        state.quoteError = null;
+        state.quoteError = '';
       })
       .addCase(createQuote.fulfilled, (state, action) => {
         state.loading = false;
@@ -383,7 +369,7 @@ export const quoteSlice = createSlice({
       })
       .addCase(getQuote.pending, (state) => {
         state.loading = true;
-        state.quoteError = null;
+        state.quoteError = '';
       })
       .addCase(getQuote.fulfilled, (state, action) => {
         state.loading = false;
@@ -401,7 +387,7 @@ export const quoteSlice = createSlice({
       })
       .addCase(getQuoteByID.pending, (state) => {
         state.loading = true;
-        state.quoteError = null;
+        state.quoteError = '';
       })
       .addCase(getQuoteByID.fulfilled, (state, action) => {
         state.loading = false;
@@ -419,7 +405,7 @@ export const quoteSlice = createSlice({
       })
       .addCase(getStripeQuote.pending, (state) => {
         state.loading = true;
-        state.quoteError = null;
+        state.quoteError = '';
       })
       .addCase(getStripeQuote.fulfilled, (state, action) => {
         state.loading = false;
@@ -436,7 +422,7 @@ export const quoteSlice = createSlice({
       })
       .addCase(updateQuote.pending, (state) => {
         state.loading = true;
-        state.quoteError = null;
+        state.quoteError = '';
       })
       .addCase(updateQuote.fulfilled, (state, action) => {
         state.loading = false;
@@ -452,11 +438,12 @@ export const quoteSlice = createSlice({
       })
       .addCase(updateQuoteStatus.pending, (state) => {
         state.loading = true;
-        state.quoteError = null;
+        state.quoteError = '';
       })
       .addCase(updateQuoteStatus.fulfilled, (state, action) => {
-        state.status = action.payload;
+        state.loading = false;
         state.quoteError = null;
+        state.status = action.payload;
         state.stripe_quote_id = action.payload.id;
         state.status = action.payload.status;
         state.amount_subtotal = action.payload.amount_subtotal
@@ -468,7 +455,7 @@ export const quoteSlice = createSlice({
       })
       .addCase(getClientQuotes.pending, (state) => {
         state.loading = true;
-        state.quoteError = null;
+        state.quoteError = '';
       })
       .addCase(getClientQuotes.fulfilled, (state, action) => {
         state.loading = false;
@@ -480,19 +467,20 @@ export const quoteSlice = createSlice({
         state.quoteError = action.error.message;
       })
       .addCase(finalizeQuote.pending, (state) => {
-        state.loading = true;
-        state.quoteError = null;
+        state.loading = false;
+        state.quoteError = '';
       })
       .addCase(finalizeQuote.fulfilled, (state, action) => {
         state.loading = false;
         state.quoteError = null;
-        state.quote_id = action.payload.id;
+        state.quote_id = action.payload.quote_id;
         state.stripe_quote_id = action.payload.stripe_quote_id;
         state.stripe_customer_id = action.payload.customer;
         state.status = action.payload.status;
         state.amount_subtotal = action.payload.amount_subtotal;
+        state.amount_discount = action.payload.amount_discount;
+        state.amount_shipping = action.payload.amount_shipping;
         state.amount_total = action.payload.amount_total;
-        state.total = action.payload.total;
       })
       .addCase(finalizeQuote.rejected, (state, action) => {
         state.loading = false;
@@ -500,7 +488,7 @@ export const quoteSlice = createSlice({
       })
       .addCase(acceptQuote.pending, (state) => {
         state.loading = true;
-        state.quoteError = null;
+        state.quoteError = '';
       })
       .addCase(acceptQuote.fulfilled, (state, action) => {
         state.loading = false;
@@ -513,7 +501,7 @@ export const quoteSlice = createSlice({
       })
       .addCase(cancelQuote.pending, (state) => {
         state.loading = true;
-        state.quoteError = null;
+        state.quoteError = '';
       })
       .addCase(cancelQuote.fulfilled, (state, action) => {
         state.loading = false;

@@ -46,23 +46,29 @@ class Services
 
             while ($services->have_posts()) {
                 $services->the_post();
-                $post_data[] = array(
-                    'id' => get_the_ID(),
-                    'description' => get_post_meta(get_the_ID(), '_service_description', true),
-                    'cost' => get_post_meta(get_the_ID(), '_service_cost', true),
-                    'title' => get_the_title(),
-                    'content' => get_the_content(),
-                    'features' => get_post_meta(get_the_ID(), '_service_features', true),
-                    'icon' => get_post_meta(get_the_ID(), '_service_icon', true),
-                    'action_word' => get_post_meta(get_the_ID(), '_services_button', true),
-                    'slug' => get_post_field('post_name', get_the_ID()),
-                    'price_id' => get_post_meta(get_the_ID(), '_service_price_id', true),
-                );
+
+                $description = get_post_meta(get_the_ID(), '_service_description', true);
+                $cost = get_post_meta(get_the_ID(), '_service_cost', true);
+
+                if (!empty($description) && is_numeric($cost)) {
+                    $post_data[] = array(
+                        'id' => get_the_ID(),
+                        'description' => $description,
+                        'cost' => floatval($cost),
+                        'title' => get_the_title(),
+                        'content' => get_the_content(),
+                        'features' => get_post_meta(get_the_ID(), '_service_features', true),
+                        'icon' => get_post_meta(get_the_ID(), '_service_icon', true),
+                        'action_word' => get_post_meta(get_the_ID(), '_services_button', true),
+                        'slug' => get_post_field('post_name', get_the_ID()),
+                        'price_id' => get_post_meta(get_the_ID(), '_service_price_id', true),
+                    );
+                }
             }
 
             return rest_ensure_response($post_data);
         } else {
-            return rest_ensure_response('No service posts found');
+            return rest_ensure_response('No services were found');
         }
     }
 

@@ -2,18 +2,25 @@
 
 namespace ORB_Services\API\Stripe;
 
+use ORB_SERVICES\Admin\AdminStripe;
+
 use Stripe\Exception\ApiErrorException;
 
 class StripeQuote
 {
     private $stripeClient;
+    private $adminStripe;
+    private $expires_at;
 
     public function __construct($stripeClient)
     {
         $this->stripeClient = $stripeClient;
+
+        $this->adminStripe = new AdminStripe;
+        $this->expires_at = $this->adminStripe->days_until_expires_timestamp();
     }
 
-    public function createStripeQuote($stripe_customer_id, $selections, $quote_id = '', $tax_enabled = false)
+    public function createStripeQuote($stripe_customer_id, $selections, $quote_id = '', $tax_enabled = false, $expires_at = 1697760000, $days_until_due = 7)
     {
         try {
             if (empty($stripe_customer_id)) {
@@ -53,8 +60,9 @@ class StripeQuote
                     'enabled' => $tax_enabled,
                 ],
                 'collection_method' => 'send_invoice',
+                'expires_at' => $this->expires_at ? $this->expires_at : $expires_at,
                 'invoice_settings' => [
-                    'days_until_due' => 7
+                    'days_until_due' => $days_until_due
                 ],
                 'customer' => $stripe_customer_id,
                 'line_items' => $line_items,
@@ -94,7 +102,8 @@ class StripeQuote
 
             $quote = $this->stripeClient->quotes->retrieve(
                 $stripe_quote_id,
-                ['expand' => ['customer', 'invoice.subscription', 'line_items']]            );
+                ['expand' => ['customer', 'invoice.subscription', 'line_items']]
+            );
 
             return $quote;
         } catch (ApiErrorException $e) {

@@ -18,6 +18,7 @@ use ORB_Services\Admin\Admin;
 use ORB_Services\API\Google\Google;
 use ORB_Services\API\Email;
 use ORB_Services\API\Clients;
+use ORB_Services\API\Customers;
 use ORB_Services\API\Product;
 use ORB_Services\API\Products;
 use ORB_Services\API\Service;
@@ -150,6 +151,7 @@ class ORB_Services
             new Products($stripe_products, $stripe_prices);
 
             new Clients($stripeClient);
+            new Customers($stripeClient);
             new Quote($stripeClient);
             new Invoice($stripeClient);
             new Receipt($stripeClient);

@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
     loading: false,
-    error: '',
+    client_error: '',
     client_id: '',
     stripe_customer_id: '',
     user_email: sessionStorage.getItem('user_email'),
@@ -58,8 +58,7 @@ export const addClient = createAsyncThunk('client/addClient', async (_, { getSta
         const responseData = await response.json();
         return responseData;
     } catch (error) {
-        console.log(error)
-        throw error.message;
+        throw error;
     }
 });
 
@@ -84,8 +83,7 @@ export const getClient = createAsyncThunk('client/getClient', async (_, { getSta
         const responseData = await response.json();
         return responseData;
     } catch (error) {
-        console.log(error)
-        throw error.message;
+        throw error;
     }
 });
 
@@ -96,7 +94,7 @@ export const clientSlice = createSlice({
         builder
             .addCase(addClient.pending, (state) => {
                 state.loading = true
-                state.error = null
+                state.client_error = null
             })
             .addCase(addClient.fulfilled, (state, action) => {
                 state.loading = false
@@ -105,15 +103,15 @@ export const clientSlice = createSlice({
             })
             .addCase(addClient.rejected, (state, action) => {
                 state.loading = false
-                state.error = action.error.message
+                state.client_error = action.error.message
             })
             .addCase(getClient.pending, (state) => {
                 state.loading = true
-                state.error = null
+                state.client_error = null
             })
             .addCase(getClient.fulfilled, (state, action) => {
                 state.loading = false;
-                state.error = null;
+                state.client_error = null;
                 state.client_id = action.payload.id
                 state.first_name = action.payload.first_name
                 state.last_name = action.payload.last_name
@@ -121,7 +119,7 @@ export const clientSlice = createSlice({
             })
             .addCase(getClient.rejected, (state, action) => {
                 state.loading = false
-                state.error = action.error.message
+                state.client_error = action.error.message
             })
     }
 })

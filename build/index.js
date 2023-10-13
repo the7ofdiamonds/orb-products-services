@@ -9249,13 +9249,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 
 
 
+const LoadingComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_loading_LoadingComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./loading/LoadingComponent.jsx */ "./src/loading/LoadingComponent.jsx")));
+const ErrorComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_error_ErrorComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx")));
 const ServicesComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Services_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Services.jsx */ "./src/views/Services.jsx")));
 const ServiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Service_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Service.jsx */ "./src/views/Service.jsx")));
+const BillingComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Billing_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Billing.jsx */ "./src/views/Billing.jsx")));
 const QuoteComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingQuote_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingQuote.jsx */ "./src/views/BillingQuote.jsx")));
 const InvoiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingInvoice_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingInvoice.jsx */ "./src/views/BillingInvoice.jsx")));
 const PaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPayment_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPayment.jsx */ "./src/views/BillingPayment.jsx")));
@@ -9265,69 +9268,79 @@ const ReceiptComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __web
 const ClientComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Client_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Client.jsx */ "./src/views/Client.jsx")));
 const StartComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ClientStart_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ClientStart.jsx */ "./src/views/ClientStart.jsx")));
 const SelectionsComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ClientSelections_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ClientSelections.jsx */ "./src/views/ClientSelections.jsx")));
+const DashboardComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Dashboard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Dashboard.jsx */ "./src/views/Dashboard.jsx")));
+const FAQComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_FAQ_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/FAQ.jsx */ "./src/views/FAQ.jsx")));
 const SupportComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Support_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Support.jsx */ "./src/views/Support.jsx")));
 const SupportSuccessComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_SupportSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/SupportSuccess.jsx */ "./src/views/SupportSuccess.jsx")));
 const ContactComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Contact_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Contact.jsx */ "./src/views/Contact.jsx")));
 const ContactSuccessComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ContactSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ContactSuccess.jsx */ "./src/views/ContactSuccess.jsx")));
-const DashboardComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Dashboard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Dashboard.jsx */ "./src/views/Dashboard.jsx")));
-const ErrorComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Error_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Error.jsx */ "./src/views/Error.jsx")));
 function App() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Routes, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.BrowserRouter, {
+    basename: "/"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_1__.Suspense, {
+    fallback: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingComponent, null)
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Routes, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     index: true,
     path: "/",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "dashboard",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(DashboardComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/:service",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServiceComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "client",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ClientComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "client/start",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(StartComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "client/selections",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(SelectionsComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    path: "billing",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(BillingComponent, null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "billing/quote/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(QuoteComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "billing/invoice/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(InvoiceComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "billing/payment/:id/*",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(PaymentComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "billing/payment/:id/card",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(CardPaymentComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "billing/payment/:id/mobile",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(MobileComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "billing/receipt/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ReceiptComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "services/*",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ErrorComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    path: "faq",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(FAQComponent, null)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "contact",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "contact/success",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactSuccessComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "support",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(SupportComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.BrowserRouter, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "support/success",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(SupportSuccessComponent, null)
-  })));
+  })))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
 
@@ -9354,7 +9367,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const initialState = {
   loading: false,
-  error: '',
+  client_error: '',
   client_id: '',
   stripe_customer_id: '',
   user_email: sessionStorage.getItem('user_email'),
@@ -9409,8 +9422,7 @@ const addClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncTh
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.log(error);
-    throw error.message;
+    throw error;
   }
 });
 const getClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('client/getClient', async (_, {
@@ -9435,8 +9447,7 @@ const getClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncTh
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.log(error);
-    throw error.message;
+    throw error;
   }
 });
 const clientSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
@@ -9445,27 +9456,27 @@ const clientSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice
   extraReducers: builder => {
     builder.addCase(addClient.pending, state => {
       state.loading = true;
-      state.error = null;
+      state.client_error = null;
     }).addCase(addClient.fulfilled, (state, action) => {
       state.loading = false;
       state.client_id = action.payload.client_id;
       state.stripe_customer_id = action.payload.stripe_customer_id;
     }).addCase(addClient.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error.message;
+      state.client_error = action.error.message;
     }).addCase(getClient.pending, state => {
       state.loading = true;
-      state.error = null;
+      state.client_error = null;
     }).addCase(getClient.fulfilled, (state, action) => {
       state.loading = false;
-      state.error = null;
+      state.client_error = null;
       state.client_id = action.payload.id;
       state.first_name = action.payload.first_name;
       state.last_name = action.payload.last_name;
       state.stripe_customer_id = action.payload.stripe_customer_id;
     }).addCase(getClient.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error.message;
+      state.client_error = action.error.message;
     });
   }
 });
@@ -9506,7 +9517,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const initialState = {
   loading: false,
-  error: '',
+  customer_error: '',
   company_name: '',
   tax_id: '',
   first_name: '',
@@ -9560,7 +9571,7 @@ const addStripeCustomer = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.creat
     const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/wp-json/orb/v1/stripe/customers', customer_data);
     return response.data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 const getStripeCustomer = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('customer/getStripeCustomer', async (_, {
@@ -9573,7 +9584,7 @@ const getStripeCustomer = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.creat
     const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/stripe/customers/${stripe_customer_id}`);
     return response.data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 const updateStripeCustomer = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('customer/updateStripeCustomer', async (_, {
@@ -9597,27 +9608,37 @@ const updateStripeCustomer = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.cr
     zipcode,
     country
   } = getState().customer;
-  const customer_data = {
-    client_id: client_id,
-    company_name: company_name,
-    tax_id: tax_id,
-    first_name: first_name,
-    last_name: last_name,
-    user_email: user_email,
-    phone: phone,
-    address_line_1: address_line_1,
-    address_line_2: address_line_2,
-    city: city,
-    state: state,
-    zipcode: zipcode,
-    country: country
-  };
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().patch(`/wp-json/orb/v1/stripe/customers/${stripe_customer_id}`, customer_data);
-    console.log(response.data);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/stripe/customers/${stripe_customer_id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        client_id: client_id,
+        company_name: company_name,
+        tax_id: tax_id,
+        first_name: first_name,
+        last_name: last_name,
+        user_email: user_email,
+        phone: phone,
+        address_line_1: address_line_1,
+        address_line_2: address_line_2,
+        city: city,
+        state: state,
+        zipcode: zipcode,
+        country: country
+      })
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 const customerSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
@@ -9661,18 +9682,20 @@ const customerSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
   extraReducers: builder => {
     builder.addCase(addStripeCustomer.pending, state => {
       state.loading = true;
-      state.error = null;
+      state.customer_error = '';
     }).addCase(addStripeCustomer.fulfilled, (state, action) => {
       state.loading = false;
+      state.customer_error = null;
       state.stripe_customer_id = action.payload;
     }).addCase(addStripeCustomer.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error.message;
+      state.customer_error = action.error.message;
     }).addCase(getStripeCustomer.pending, state => {
       state.loading = true;
-      state.error = null;
+      state.customer_error = '';
     }).addCase(getStripeCustomer.fulfilled, (state, action) => {
       state.loading = false;
+      state.customer_error = null;
       state.stripe_customer_id = action.payload.id;
       state.company_name = action.payload.name;
       state.first_name = action.payload.first_name;
@@ -9686,7 +9709,27 @@ const customerSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
       state.phone = action.payload.phone;
     }).addCase(getStripeCustomer.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error.message;
+      state.customer_error = action.error.message;
+    }).addCase(updateStripeCustomer.pending, state => {
+      state.loading = true;
+      state.customer_error = '';
+    }).addCase(updateStripeCustomer.fulfilled, (state, action) => {
+      state.loading = false;
+      state.customer_error = null;
+      state.stripe_customer_id = action.payload.id;
+      state.company_name = action.payload.name;
+      state.first_name = action.payload.first_name;
+      state.last_name = action.payload.last_name;
+      state.address_line_1 = action.payload.address.line1;
+      state.address_line_2 = action.payload.address.line2;
+      state.city = action.payload.address.city;
+      state.state = action.payload.address.state;
+      state.zipcode = action.payload.address.postal_code;
+      state.email = action.payload.email;
+      state.phone = action.payload.phone;
+    }).addCase(updateStripeCustomer.rejected, (state, action) => {
+      state.loading = false;
+      state.customer_error = action.error.message;
     });
   }
 });
@@ -10155,7 +10198,7 @@ const initialState = {
   loading: false,
   quoteError: '',
   stripe_customer_id: '',
-  quotes: [],
+  quotes: '',
   quote_id: '',
   stripe_quote_id: '',
   amount_subtotal: '',
@@ -10199,7 +10242,7 @@ const createQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 const getQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/getQuote', async (_, {
@@ -10223,7 +10266,7 @@ const getQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThu
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 const getQuoteByID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/getQuoteByID', async (id, {
@@ -10239,14 +10282,12 @@ const getQuoteByID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyn
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage);
       throw new Error(errorMessage);
     }
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 const getStripeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/getStripeQuote', async (_, {
@@ -10265,14 +10306,12 @@ const getStripeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAs
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage);
       throw new Error(errorMessage);
     }
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 const updateQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/updateQuote', async (_, {
@@ -10293,14 +10332,12 @@ const updateQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage);
       throw new Error(errorMessage);
     }
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 const updateStripeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/updateStripeQuote', async (_, {
@@ -10321,14 +10358,12 @@ const updateStripeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.creat
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage);
       throw new Error(errorMessage);
     }
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 const finalizeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/finalizeQuote', async (_, {
@@ -10356,7 +10391,7 @@ const finalizeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsy
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 const updateQuoteStatus = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/updateQuoteStatus', async (_, {
@@ -10375,14 +10410,12 @@ const updateQuoteStatus = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.creat
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage);
       throw new Error(errorMessage);
     }
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 const acceptQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/acceptQuote', async (_, {
@@ -10401,14 +10434,12 @@ const acceptQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage);
       throw new Error(errorMessage);
     }
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 const cancelQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/cancelQuote', async (_, {
@@ -10427,14 +10458,12 @@ const cancelQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
-      console.log(errorMessage);
       throw new Error(errorMessage);
     }
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    console.error(error);
-    throw error.message;
+    throw error;
   }
 });
 const getClientQuotes = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/getClientQuotes', async (_, {
@@ -10458,7 +10487,7 @@ const getClientQuotes = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createA
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 const getStripeClientQuotes = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/getStripeClientQuotes', async (_, {
@@ -10482,7 +10511,7 @@ const getStripeClientQuotes = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.c
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
@@ -10511,7 +10540,7 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
   extraReducers: builder => {
     builder.addCase(createQuote.pending, state => {
       state.loading = true;
-      state.quoteError = null;
+      state.quoteError = '';
     }).addCase(createQuote.fulfilled, (state, action) => {
       state.loading = false;
       state.quoteError = null;
@@ -10526,7 +10555,7 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
       state.quoteError = action.error.message;
     }).addCase(getQuote.pending, state => {
       state.loading = true;
-      state.quoteError = null;
+      state.quoteError = '';
     }).addCase(getQuote.fulfilled, (state, action) => {
       state.loading = false;
       state.quoteError = null;
@@ -10541,7 +10570,7 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
       state.quoteError = action.error.message;
     }).addCase(getQuoteByID.pending, state => {
       state.loading = true;
-      state.quoteError = null;
+      state.quoteError = '';
     }).addCase(getQuoteByID.fulfilled, (state, action) => {
       state.loading = false;
       state.quoteError = null;
@@ -10556,7 +10585,7 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
       state.quoteError = action.error.message;
     }).addCase(getStripeQuote.pending, state => {
       state.loading = true;
-      state.quoteError = null;
+      state.quoteError = '';
     }).addCase(getStripeQuote.fulfilled, (state, action) => {
       state.loading = false;
       state.quoteError = null;
@@ -10570,7 +10599,7 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
       state.quoteError = action.error.message;
     }).addCase(updateQuote.pending, state => {
       state.loading = true;
-      state.quoteError = null;
+      state.quoteError = '';
     }).addCase(updateQuote.fulfilled, (state, action) => {
       state.loading = false;
       state.quoteError = null;
@@ -10583,10 +10612,11 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
       state.quoteError = action.error.message;
     }).addCase(updateQuoteStatus.pending, state => {
       state.loading = true;
-      state.quoteError = null;
+      state.quoteError = '';
     }).addCase(updateQuoteStatus.fulfilled, (state, action) => {
-      state.status = action.payload;
+      state.loading = false;
       state.quoteError = null;
+      state.status = action.payload;
       state.stripe_quote_id = action.payload.id;
       state.status = action.payload.status;
       state.amount_subtotal = action.payload.amount_subtotal;
@@ -10596,7 +10626,7 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
       state.quoteError = action.error.message;
     }).addCase(getClientQuotes.pending, state => {
       state.loading = true;
-      state.quoteError = null;
+      state.quoteError = '';
     }).addCase(getClientQuotes.fulfilled, (state, action) => {
       state.loading = false;
       state.quoteError = null;
@@ -10605,24 +10635,25 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
       state.loading = false;
       state.quoteError = action.error.message;
     }).addCase(finalizeQuote.pending, state => {
-      state.loading = true;
-      state.quoteError = null;
+      state.loading = false;
+      state.quoteError = '';
     }).addCase(finalizeQuote.fulfilled, (state, action) => {
       state.loading = false;
       state.quoteError = null;
-      state.quote_id = action.payload.id;
+      state.quote_id = action.payload.quote_id;
       state.stripe_quote_id = action.payload.stripe_quote_id;
       state.stripe_customer_id = action.payload.customer;
       state.status = action.payload.status;
       state.amount_subtotal = action.payload.amount_subtotal;
+      state.amount_discount = action.payload.amount_discount;
+      state.amount_shipping = action.payload.amount_shipping;
       state.amount_total = action.payload.amount_total;
-      state.total = action.payload.total;
     }).addCase(finalizeQuote.rejected, (state, action) => {
       state.loading = false;
       state.quoteError = action.error.message;
     }).addCase(acceptQuote.pending, state => {
       state.loading = true;
-      state.quoteError = null;
+      state.quoteError = '';
     }).addCase(acceptQuote.fulfilled, (state, action) => {
       state.loading = false;
       state.quoteError = null;
@@ -10632,7 +10663,7 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
       state.quoteError = action.error.message;
     }).addCase(cancelQuote.pending, state => {
       state.loading = true;
-      state.quoteError = null;
+      state.quoteError = '';
     }).addCase(cancelQuote.fulfilled, (state, action) => {
       state.loading = false;
       state.quoteError = null;
@@ -18594,29 +18625,24 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const LoadingComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_loading_LoadingComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./loading/LoadingComponent.jsx */ "./src/loading/LoadingComponent.jsx")));
 const ScheduleComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Schedule_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Schedule.jsx */ "./src/views/Schedule.jsx")));
+// Add to backend to make changes more easily
 const stripe = (0,_stripe_stripe_js__WEBPACK_IMPORTED_MODULE_7__.loadStripe)('pk_test_51NKFzqKNsWPbtVUMWvTJqD8nAWkpG0aaMrJtmkCLurHXMSwinKilB5yacy2OUUsoveCP7SednwlV0bKpXZIhadUI00SvobnJW7');
-function LoadingFallback() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
-}
 const orbServicesContainer = document.getElementById('orb_services');
 if (orbServicesContainer) {
   react_dom_client__WEBPACK_IMPORTED_MODULE_2__.createRoot(orbServicesContainer).render((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_1___default().StrictMode), null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_redux__WEBPACK_IMPORTED_MODULE_4__.Provider, {
     store: _model_store_js__WEBPACK_IMPORTED_MODULE_5__["default"]
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__.Elements, {
     stripe: stripe
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.BrowserRouter, {
-    basename: "/"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_1__.Suspense, {
-    fallback: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingFallback, null)
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_App_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null)))))));
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_App_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null)))));
 }
 const orbScheduleContainer = document.getElementById('orb_schedule');
 if (orbScheduleContainer) {
   react_dom_client__WEBPACK_IMPORTED_MODULE_2__.createRoot(orbScheduleContainer).render((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_1___default().StrictMode), null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_redux__WEBPACK_IMPORTED_MODULE_4__.Provider, {
     store: _model_store_js__WEBPACK_IMPORTED_MODULE_5__["default"]
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.BrowserRouter, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_1__.Suspense, {
-    fallback: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingFallback, null)
+    fallback: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingComponent, null)
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Routes, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
     path: "/",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ScheduleComponent, null)
