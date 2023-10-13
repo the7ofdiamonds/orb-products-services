@@ -97,18 +97,31 @@ function SelectionsComponent() {
   }, [stripe_customer_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (quotes) {
-      for (let i = 0; i < quotes.length; i++) {
+      const filteredQuotes = [];
+      quotes.forEach(quote => {
         const timestampNow = Math.floor(Date.now() / 1000);
-        const timestamp = parseInt(quotes[i].expires_at);
-        const createdAt = quotes[i].createdAt;
-        const expiresAt = new Date(timestamp * 1000);
+        const timestamp = parseInt(quote.expires_at);
+        const createdAt = new Date(quote.created_at).getTime();
+        const status = quote.status;
         if (timestampNow < timestamp) {
-          console.log(`${createdAt} - ${expiresAt} ${quotes[i].id}`);
-          console.log('Time has passed for quote');
-        } else {
-          console.log(`${createdAt} - ${expiresAt} ${quotes[i].id}`);
-          console.log('Time has not passed for quote');
+          if (status === 'draft' || status === 'open' || status === 'accepted') {
+            filteredQuotes.push(createdAt);
+          }
         }
+      });
+      if (filteredQuotes.length > 0) {
+        const earliestDate = Math.min(...filteredQuotes);
+        quotes.forEach(quote => {
+          if (new Date(quote.created_at).getTime() === earliestDate) {
+            dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.getStripeQuote)(quote.stripe_quote_id)).then(response => {
+              if (response.error !== undefined) {
+                console.error(response.error.message);
+                setMessageType('error');
+                setMessage(response.error.message);
+              }
+            });
+          }
+        });
       }
     }
   }, [quotes]);

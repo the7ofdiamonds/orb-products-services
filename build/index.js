@@ -10290,14 +10290,14 @@ const getQuoteByID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyn
     throw error;
   }
 });
-const getStripeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/getStripeQuote', async (_, {
+const getStripeQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('quote/getStripeQuote', async (stripeQuoteID, {
   getState
 }) => {
   const {
     stripe_quote_id
   } = getState().quote;
   try {
-    const response = await fetch(`/wp-json/orb/v1/stripe/quotes/${stripe_quote_id}`, {
+    const response = await fetch(`/wp-json/orb/v1/stripe/quotes/${stripeQuoteID ? stripeQuoteID : stripe_quote_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

@@ -81,8 +81,7 @@ class AdminStripe
         $expiration_days = intval($this->quote_expires_at);
         $current_timestamp = current_time('timestamp', true);
         $expiration_timestamp = strtotime("+{$expiration_days} days", $current_timestamp);
-        error_log($expiration_timestamp);
-        // Now, $expiration_timestamp contains the timestamp of the expiration date
+
         return $expiration_timestamp;
     }
 }
