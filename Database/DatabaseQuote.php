@@ -243,19 +243,20 @@ class DatabaseQuote
         );
 
         if (!empty($data)) {
-            $updated = $this->wpdb->update($this->table_name, $data, $where);
+            if (!empty($where)) {
+                $updated = $this->wpdb->update($this->table_name, $data, $where);
+            } else {
+                throw new Exception('A Stripe Quote ID is required.');
+            }
         } else {
-            $updated = 0;
+            throw new Exception('A status is required.');
         }
 
         if ($updated === false) {
             $error_message = $this->wpdb->last_error ?: 'Quote not found';
-            $response = rest_ensure_response($error_message);
-            $response->set_status(404);
-
-            return $response;
+            throw new Exception($error_message);
+        } else {
+            return $updated;
         }
-
-        return $updated;
     }
 }

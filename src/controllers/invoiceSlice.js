@@ -36,13 +36,12 @@ const initialState = {
   invoice_pdf: ''
 };
 
-export const saveInvoice = createAsyncThunk('invoice/saveInvoice', async (_, { getState }) => {
+export const saveInvoice = createAsyncThunk('invoice/saveInvoice', async (stripeInvoiceID, { getState }) => {
   const { quote_id, stripe_invoice_id } = getState().quote;
 
 
   try {
-    const response = await axios.post(`/wp-json/orb/v1/invoice/${stripe_invoice_id}`, { quote_id: quote_id });
-    console.log(response.data)
+    const response = await axios.post(`/wp-json/orb/v1/invoice/${stripeInvoiceID ? stripeInvoiceID : stripe_invoice_id}`, { quote_id: quote_id });
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -55,7 +54,6 @@ export const getInvoice = createAsyncThunk('invoice/getInvoice', async (id, { ge
   try {
     const response = await axios.get(`/wp-json/orb/v1/invoice/${id}`, { params: stripe_customer_id });
 
-    console.log(response)
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -255,7 +253,7 @@ export const invoiceSlice = createSlice({
       })
       .addCase(updateInvoiceStatus.pending, (state) => {
         state.loading = true;
-        state.invoiceError = null;
+        state.invoiceError = '';
       })
       .addCase(updateInvoiceStatus.fulfilled, (state, action) => {
         state.status = action.payload;
@@ -266,11 +264,12 @@ export const invoiceSlice = createSlice({
       })
       .addCase(getStripeInvoice.pending, (state) => {
         state.loading = true;
-        state.invoiceError = null;
+        state.invoiceError = '';
       })
       .addCase(getStripeInvoice.fulfilled, (state, action) => {
         state.loading = false;
         state.invoiceError = null;
+        state.stripe_invoice_id = action.payload.id;
         state.status = action.payload.status;
         state.company_name = action.payload.name;
         state.stripe_customer_id = action.payload.customer;
@@ -301,7 +300,7 @@ export const invoiceSlice = createSlice({
       })
       .addCase(getClientInvoices.pending, (state) => {
         state.loading = true;
-        state.invoiceError = null;
+        state.invoiceError = '';
       })
       .addCase(getClientInvoices.fulfilled, (state, action) => {
         state.loading = false;
@@ -314,7 +313,7 @@ export const invoiceSlice = createSlice({
       })
       .addCase(finalizeInvoice.pending, (state) => {
         state.loading = true;
-        state.invoiceError = null;
+        state.invoiceError = '';
       })
       .addCase(finalizeInvoice.fulfilled, (state, action) => {
         state.loading = false;

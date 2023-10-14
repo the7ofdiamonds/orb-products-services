@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -22,8 +22,17 @@ import { displayStatus, displayStatusType } from '../utils/DisplayStatus';
 // Stripe
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
+import LoadingComponent from '../loading/LoadingComponent';
+import ErrorComponent from '../error/ErrorComponent.jsx';
+import StatusBar from '../views/components/StatusBar';
+
 const CardPaymentComponent = () => {
   const { id } = useParams();
+
+  const [messageType, setMessageType] = useState('info');
+  const [message, setMessage] = useState(
+    'Please enter your card number, expiration date and the code on the back.'
+  );
 
   const { user_email, first_name, last_name, stripe_customer_id } = useSelector(
     (state) => state.client
@@ -35,15 +44,12 @@ const CardPaymentComponent = () => {
     amount_paid,
     remaining_balance,
   } = useSelector((state) => state.invoice);
-  const { loading, error, client_secret } = useSelector(
+  const { loading, paymentError, client_secret } = useSelector(
     (state) => state.payment
   );
   const { receipt_id, payment_method, brand, last4 } = useSelector(
     (state) => state.receipt
   );
-
-  const [messageType, setMessageType] = useState('');
-  const [message, setMessage] = useState('Choose a payment method');
 
   // Setup so card displays input
   const [cardNumber, setCardNumber] = useState('');
@@ -83,24 +89,24 @@ const CardPaymentComponent = () => {
     }
   }, [dispatch, payment_intent_id]);
 
-  useEffect(() => {
-    if (status) {
-      dispatch(updateInvoiceStatus());
-    }
-  }, [dispatch, status]);
+  // useEffect(() => {
+  //   if (status) {
+  //     dispatch(updateInvoiceStatus());
+  //   }
+  // }, [dispatch, status]);
 
-  useEffect(() => {
-    if (status) {
-      setMessage(displayStatus(status));
-      setMessageType(displayStatusType(status));
-    }
-  }, [status]);
+  // useEffect(() => {
+  //   if (status) {
+  //     setMessage(displayStatus(status));
+  //     setMessageType(displayStatusType(status));
+  //   }
+  // }, [status]);
 
-  useEffect(() => {
-    if (receipt_id) {
-      navigate(`/services/receipt/${receipt_id}`);
-    }
-  }, [receipt_id, navigate]);
+  // useEffect(() => {
+  //   if (receipt_id) {
+  //     navigate(`/services/receipt/${receipt_id}`);
+  //   }
+  // }, [receipt_id, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -148,20 +154,21 @@ const CardPaymentComponent = () => {
     }
   }, [dispatch, status]);
 
-  if (error) {
-    return <div>Error: {error}</div>;
+  if (paymentError) {
+    return <ErrorComponent error={paymentError} />;
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingComponent />;
   }
 
   return (
     <>
       <PaymentNavigationComponent />
+
       <div className="debit-credit-card card">
         <div className="front">
-          n{' '}
+          
           <div className="image">
             <img src="" alt="" />
             <img src="" alt="" />
@@ -199,15 +206,15 @@ const CardPaymentComponent = () => {
         <CardElement />
       </form>
 
-      {message && (
-        <div className={`status-bar card ${messageType}`}>
-          <span>{message}</span>
-        </div>
-      )}
+      <StatusBar message={message} messageType={messageType} />
 
-      <button type="submit" disabled={!stripe} onClick={handleSubmit}>
-        <h3>PAY</h3>
-      </button>
+      {client_secret ? (
+        <button type="submit" disabled={!stripe} onClick={handleSubmit}>
+          <h3>PAY</h3>
+        </button>
+      ) : (
+        ''
+      )}
     </>
   );
 };

@@ -21,6 +21,8 @@ class CSS
             'billing/quote',
             'billing/invoice',
             'billing/payment',
+            'billing/payment/card',
+            'billing/payment/mobile',
             'billing/receipt',
             'client/start',
             'client/selections',

@@ -13,6 +13,13 @@ const initialState = {
   payment_method: ''
 };
 
+export const updateClientSecret = (clientSecret) => {
+  return {
+    type: 'payment/updateClientSecret',
+    payload: clientSecret
+  };
+};
+
 export const getPaymentIntent = createAsyncThunk('payment/getPaymentIntent', async (_, { getState }) => {
   const { payment_intent_id } = getState().invoice;
   try {
@@ -28,6 +35,11 @@ export const getPaymentIntent = createAsyncThunk('payment/getPaymentIntent', asy
 export const paymentSlice = createSlice({
   name: 'payment',
   initialState,
+  reducers: {
+    updateClientSecret: (state, action) => {
+      state.client_secret = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getPaymentIntent.pending, (state) => {

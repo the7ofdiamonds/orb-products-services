@@ -16,6 +16,8 @@ class Templates
         add_filter('page_template', [$this, 'get_custom_quote_page_template']);
         add_filter('page_template', [$this, 'get_custom_invoice_page_template']);
         add_filter('page_template', [$this, 'get_custom_payment_page_template']);
+        add_filter('page_template', [$this, 'get_custom_card_page_template']);
+        add_filter('page_template', [$this, 'get_custom_mobile_page_template']);
         add_filter('page_template', [$this, 'get_custom_receipt_page_template']);
         add_filter('page_template', [$this, 'get_custom_schedule_page_template']);
         add_filter('page_template', [$this, 'get_custom_faq_page_template']);
@@ -167,6 +169,40 @@ class Templates
                 return $page_template;
             } else {
                 error_log('Payment Page Template does not exist.');
+            }
+        }
+
+        return $page_template;
+    }
+
+    function get_custom_card_page_template($page_template)
+    {
+        $card_page = get_page_by_path('billing/payment/card');
+
+        if ($card_page && is_page($card_page->ID)) {
+            $page_template = ORB_SERVICES . 'Pages/page-card.php';
+
+            if (file_exists($page_template)) {
+                return $page_template;
+            } else {
+                error_log('Card Page Template does not exist.');
+            }
+        }
+
+        return $page_template;
+    }
+
+    function get_custom_mobile_page_template($page_template)
+    {
+        $mobile_page = get_page_by_path('billing/payment/mobile');
+
+        if ($mobile_page && is_page($mobile_page->ID)) {
+            $page_template = ORB_SERVICES . 'Pages/page-mobile.php';
+
+            if (file_exists($page_template)) {
+                return $page_template;
+            } else {
+                error_log('Mobile Page Template does not exist.');
             }
         }
 

@@ -113,7 +113,7 @@ function SelectionsComponent() {
         const earliestDate = Math.min(...filteredQuotes);
         quotes.forEach(quote => {
           if (new Date(quote.created_at).getTime() === earliestDate) {
-            dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.getStripeQuote)(quote.stripe_quote_id)).then(response => {
+            dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.getQuote)(quote.stripe_quote_id)).then(response => {
               if (response.error !== undefined) {
                 console.error(response.error.message);
                 setMessageType('error');
@@ -125,6 +125,18 @@ function SelectionsComponent() {
       }
     }
   }, [quotes]);
+  console.log(status);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (stripe_quote_id) {
+      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.getQuote)()).then(response => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
+    }
+  }, [stripe_quote_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_customer_id) {
       dispatch((0,_controllers_servicesSlice_js__WEBPACK_IMPORTED_MODULE_3__.fetchServices)()).then(response => {
@@ -159,7 +171,9 @@ function SelectionsComponent() {
     });
   };
   const handleClick = () => {
-    if (selections.length > 0 && stripe_customer_id) {
+    if (selections.length === 0) {
+      setMessageType('error');
+    } else if (stripe_quote_id && status === 'canceled' && selections.length > 0 || stripe_quote_id === '' && status === '' && selections.length > 0 && stripe_customer_id) {
       dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.createQuote)(selections)).then(response => {
         if (response.error !== undefined) {
           console.error(response.error.message);
@@ -167,12 +181,15 @@ function SelectionsComponent() {
           setMessage(response.error.message);
         }
       });
-    } else {
-      setMessageType('error');
-    }
-  };
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (stripe_quote_id) {
+    } else if (stripe_quote_id && status === 'draft' && selections.length > 0) {
+      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.updateStripeQuote)()).then(response => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
+    } else if (stripe_quote_id && status === 'draft') {
       dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.finalizeQuote)()).then(response => {
         if (response.error !== undefined) {
           console.error(response.error.message);
@@ -180,13 +197,10 @@ function SelectionsComponent() {
           setMessage(response.error.message);
         }
       });
-    }
-  }, [stripe_quote_id, dispatch]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (quote_id && (status === 'open' || status === 'accepted')) {
+    } else if (quote_id && (status === 'open' || status === 'accepted')) {
       window.location.href = `/billing/quote/${quote_id}`;
     }
-  }, [quote_id, status]);
+  };
   if (servicesLoading) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_6__["default"], null);
   }
@@ -237,9 +251,9 @@ function SelectionsComponent() {
   }).format(total))))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_7__["default"], {
     message: message,
     messageType: messageType
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }), quote_id && (status === 'open' || status === 'accepted') ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "QUOTE")));
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "QUOTE")) : '');
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SelectionsComponent);
 

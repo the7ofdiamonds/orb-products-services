@@ -53,11 +53,11 @@ export const createQuote = createAsyncThunk('quote/createQuote', async (_, { get
 });
 
 
-export const getQuote = createAsyncThunk('quote/getQuote', async (_, { getState }) => {
+export const getQuote = createAsyncThunk('quote/getQuote', async (stripeQuoteID, { getState }) => {
   const { stripe_quote_id } = getState().quote;
 
   try {
-    const response = await fetch(`/wp-json/orb/v1/quote/${stripe_quote_id}`, {
+    const response = await fetch(`/wp-json/orb/v1/quote/${stripeQuoteID ? stripeQuoteID : stripe_quote_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ export const getStripeQuote = createAsyncThunk('quote/getStripeQuote', async (st
         'Content-Type': 'application/json'
       }
     });
-
+    
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
@@ -414,7 +414,6 @@ export const quoteSlice = createSlice({
         state.status = action.payload.status;
         state.amount_subtotal = action.payload.amount_subtotal
         state.amount_total = action.payload.amount_total;
-        state.stripe_invoice_id = action.payload.invoice;
       })
       .addCase(getStripeQuote.rejected, (state, action) => {
         state.loading = false;
@@ -494,6 +493,7 @@ export const quoteSlice = createSlice({
         state.loading = false;
         state.quoteError = null;
         state.status = action.payload;
+        state.stripe_invoice_id = action.payload.invoice.id;
       })
       .addCase(acceptQuote.rejected, (state, action) => {
         state.loading = false;

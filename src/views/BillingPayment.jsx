@@ -9,19 +9,20 @@ import { getPaymentIntent } from '../controllers/paymentSlice.js';
 import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
 import { displayStatus, displayStatusType } from '../utils/DisplayStatus.js';
 
+import LoadingComponent from '../loading/LoadingComponent';
+import ErrorComponent from '../error/ErrorComponent.jsx';
+import StatusBar from '../views/components/StatusBar';
+
 function PaymentComponent() {
   const { id } = useParams();
 
-  const { stripe_invoice_id } = useSelector(
-    (state) => state.invoice
-  );
-  const { loading, error, status, payment_method_id, payment_intent } = useSelector(
-    (state) => state.payment
-  );
-  const { receipt_id } = useSelector((state) => state.receipt);
-
   const [messageType, setMessageType] = useState('');
   const [message, setMessage] = useState('Choose a payment method');
+
+  const { stripe_invoice_id } = useSelector((state) => state.invoice);
+  const { loading, paymentError, status, payment_method_id, payment_intent } =
+    useSelector((state) => state.payment);
+  const { receipt_id } = useSelector((state) => state.receipt);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,25 +63,22 @@ function PaymentComponent() {
   }, [dispatch, receipt_id]);
 
   if (receipt_id) {
-    navigate(`/services/receipt/${receipt_id}`);
+    window.location.href = `/billing/receipt/${receipt_id}`;
   }
 
-  if (error) {
-    return <main>Error: {error}</main>;
+  if (paymentError) {
+    return <ErrorComponent error={paymentError} />;
   }
 
   if (loading) {
-    return <main>Loading...</main>;
+    return <LoadingComponent />;
   }
 
   return (
     <>
       <PaymentNavigationComponent />
-      {message !== '' && (
-        <div className="status-bar card">
-          <span className={`${messageType}`}>{message}</span>
-        </div>
-      )}
+
+      <StatusBar message={message} messageType={messageType} />
 
       {receipt_id && status == 'succeeded' && (
         <button onClick={handleClick}>

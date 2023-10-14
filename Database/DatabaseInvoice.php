@@ -2,6 +2,8 @@
 
 namespace ORB_Services\Database;
 
+use Exception;
+
 class DatabaseInvoice
 {
     private $wpdb;
@@ -16,6 +18,8 @@ class DatabaseInvoice
 
     public function saveInvoice($stripe_invoice, $quote_id)
     {
+        error_log(print_r($stripe_invoice, true));
+        
         $subtotal = intval($stripe_invoice->subtotal) / 100;
         $tax = intval($stripe_invoice->tax) / 100;
         $amount_due = intval($stripe_invoice->amount_due) / 100;
@@ -36,10 +40,8 @@ class DatabaseInvoice
 
         if (!$result) {
             $error_message = $this->wpdb->last_error;
-            $response = rest_ensure_response($error_message);
-            $response->set_status(404);
 
-            return $response;
+            throw new Exception($error_message);
         }
 
         $invoice_id = $this->wpdb->insert_id;
@@ -91,10 +93,7 @@ class DatabaseInvoice
     {
         if (empty($id)) {
             $msg = 'No Invoice ID was provided.';
-            $response = rest_ensure_response($msg);
-            $response->set_status(404);
-
-            return $response;
+            throw new Exception($msg);
         }
 
         global $wpdb;
@@ -108,10 +107,7 @@ class DatabaseInvoice
 
         if (!$invoice) {
             $msg = 'Invoice not found';
-            $response = rest_ensure_response($msg);
-            $response->set_status(404);
-
-            return $response;
+            throw new Exception($msg);
         }
 
         $data = [
@@ -124,7 +120,6 @@ class DatabaseInvoice
             'payment_intent_id' => $invoice->payment_intent_id,
             'client_secret' => $invoice->client_secret,
             'due_date' => $invoice->due_date,
-            'selections' => json_decode($invoice->selections, true),
             'subtotal' => $invoice->subtotal,
             'tax' => $invoice->tax,
             'amount_due' => $invoice->amount_due,

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { fetchServices } from '../controllers/servicesSlice.js';
 import { getClient } from '../controllers/clientSlice.js';
 import {
   cancelQuote,
@@ -12,10 +11,20 @@ import {
 } from '../controllers/quoteSlice.js';
 import { saveInvoice } from '../controllers/invoiceSlice.js';
 
+import LoadingComponent from '../loading/LoadingComponent';
+import ErrorComponent from '../error/ErrorComponent.jsx';
+import StatusBar from '../views/components/StatusBar';
+
 function QuoteComponent() {
   const { id } = useParams();
 
-  const { services } = useSelector((state) => state.services);
+  const [messageType, setMessageType] = useState('info');
+  const [message, setMessage] = useState(
+    'To receive an invoice for the selected services, you must accept the quote above.'
+  );
+  const [stripeInvoiceID, setStripeInvoiceID] = useState('');
+  const [invoiceID, setInvoiceID] = useState('');
+
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
@@ -27,89 +36,113 @@ function QuoteComponent() {
     status,
     total,
     selections,
-    stripe_invoice_id,
   } = useSelector((state) => state.quote);
-  const { invoice_id } = useSelector((state) => state.invoice);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user_email) {
-      dispatch(getClient());
+      dispatch(getClient()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
     }
   }, [user_email, dispatch]);
 
   useEffect(() => {
-    if (stripe_customer_id) {
-      dispatch(fetchServices());
-    }
-  }, [stripe_customer_id, dispatch]);
-
-  useEffect(() => {
     if (id && stripe_customer_id) {
-      dispatch(getQuoteByID(id));
+      dispatch(getQuoteByID(id)).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
     }
   }, [id, stripe_customer_id, dispatch]);
 
+  useEffect(() => {
+    if (status === 'canceled') {
+      setMessageType('error');
+      setMessage('This quote has been canceled.');
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (stripe_quote_id && status) {
+      dispatch(getStripeQuote()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        } else {
+          setStripeInvoiceID(response.payload.invoice.id);
+        }
+      });
+    }
+  }, [stripe_quote_id, status, dispatch]);
+
+  useEffect(() => {
+    if (stripeInvoiceID !== '') {
+      dispatch(saveInvoice(stripeInvoiceID)).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        } else {
+          setInvoiceID(response.payload);
+        }
+      });
+    }
+  }, [stripeInvoiceID, dispatch]);
+
   const handleCancel = () => {
+    // pop up that gives the option to cancel or add to the selections
     if (stripe_quote_id && status === 'open') {
-      dispatch(cancelQuote());
+      dispatch(cancelQuote()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
     }
   };
 
-  const handleConfirm = async () => {
+  const handleAccept = async () => {
     if (stripe_quote_id && status === 'open') {
-      await dispatch(acceptQuote()).then(() => {
-        return dispatch(getStripeQuote());
+      dispatch(acceptQuote()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
       });
     }
   };
 
   const handleAccepted = () => {
-    if (stripe_quote_id && quote_id && status === 'accepted') {
-      navigate(`/billing/invoice/${quote_id}`);
+    if (invoiceID) {
+      window.location.href = `/billing/invoice/${invoiceID}`;
     }
   };
 
-  useEffect(() => {
-    if (stripe_invoice_id) {
-      dispatch(saveInvoice());
-    }
-  }, [stripe_invoice_id, dispatch]);
-
-  useEffect(() => {
-    if (status === 'accepted' && stripe_invoice_id && invoice_id)
-      navigate(`/billing/invoice/${invoice_id}`);
-  }, [status, stripe_invoice_id, invoice_id]);
-
-  if (status === 'canceled') {
-    return (
-      <main>
-        <div className="status-bar card error">
-          <span className="error">This quote has been canceled.</span>
-        </div>
-      </main>
-    );
+  if (loading) {
+    return <LoadingComponent />;
   }
 
   if (quoteError) {
-    return (
-      <div className="status-bar card error">
-        <span>
-          <h4>{quoteError}</h4>
-        </span>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return <div>Loading...</div>;
+    return <ErrorComponent error={quoteError} />;
   }
 
   return (
     <>
       <h2 className="title">QUOTE</h2>
+
       <div className="quote-card card">
         <table>
           <thead>
@@ -152,6 +185,9 @@ function QuoteComponent() {
           </tbody>
         </table>
       </div>
+
+      <StatusBar message={message} messageType={messageType} />
+
       <div className="actions">
         {status && status === 'open' ? (
           <>
@@ -159,8 +195,8 @@ function QuoteComponent() {
               <h3>CANCEL</h3>
             </button>
 
-            <button onClick={handleConfirm}>
-              <h3>CONFIRM</h3>
+            <button onClick={handleAccept}>
+              <h3>ACCEPT</h3>
             </button>
           </>
         ) : status === 'accepted' ? (

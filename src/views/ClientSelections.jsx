@@ -10,7 +10,9 @@ import {
   createQuote,
   finalizeQuote,
   getClientQuotes,
+  getQuote,
   getStripeQuote,
+  updateStripeQuote,
 } from '../controllers/quoteSlice.js';
 
 import LoadingComponent from '../loading/LoadingComponent';
@@ -90,7 +92,7 @@ function SelectionsComponent() {
 
         quotes.forEach((quote) => {
           if (new Date(quote.created_at).getTime() === earliestDate) {
-            dispatch(getStripeQuote(quote.stripe_quote_id)).then((response) => {
+            dispatch(getQuote(quote.stripe_quote_id)).then((response) => {
               if (response.error !== undefined) {
                 console.error(response.error.message);
                 setMessageType('error');
@@ -102,6 +104,18 @@ function SelectionsComponent() {
       }
     }
   }, [quotes]);
+console.log(status);
+  useEffect(() => {
+    if (stripe_quote_id) {
+      dispatch(getQuote()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
+    }
+  }, [stripe_quote_id, dispatch]);
 
   useEffect(() => {
     if (stripe_customer_id) {
@@ -137,7 +151,15 @@ function SelectionsComponent() {
   };
 
   const handleClick = () => {
-    if (selections.length > 0 && stripe_customer_id) {
+    if (selections.length === 0) {
+      setMessageType('error');
+    } else if (
+      (stripe_quote_id && status === 'canceled' && selections.length > 0) ||
+      (stripe_quote_id === '' &&
+        status === '' &&
+        selections.length > 0 &&
+        stripe_customer_id)
+    ) {
       dispatch(createQuote(selections)).then((response) => {
         if (response.error !== undefined) {
           console.error(response.error.message);
@@ -145,13 +167,15 @@ function SelectionsComponent() {
           setMessage(response.error.message);
         }
       });
-    } else {
-      setMessageType('error');
-    }
-  };
-
-  useEffect(() => {
-    if (stripe_quote_id) {
+    } else if (stripe_quote_id && status === 'draft' && selections.length > 0) {
+      dispatch(updateStripeQuote()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
+    } else if (stripe_quote_id && status === 'draft') {
       dispatch(finalizeQuote()).then((response) => {
         if (response.error !== undefined) {
           console.error(response.error.message);
@@ -159,14 +183,10 @@ function SelectionsComponent() {
           setMessage(response.error.message);
         }
       });
-    }
-  }, [stripe_quote_id, dispatch]);
-
-  useEffect(() => {
-    if (quote_id && (status === 'open' || status === 'accepted')) {
+    } else if (quote_id && (status === 'open' || status === 'accepted')) {
       window.location.href = `/billing/quote/${quote_id}`;
     }
-  }, [quote_id, status]);
+  };
 
   if (servicesLoading) {
     return <LoadingComponent />;
@@ -256,9 +276,13 @@ function SelectionsComponent() {
 
       <StatusBar message={message} messageType={messageType} />
 
-      <button onClick={handleClick}>
-        <h3>QUOTE</h3>
-      </button>
+      {quote_id && (status === 'open' || status === 'accepted') ? (
+        <button onClick={handleClick}>
+          <h3>QUOTE</h3>
+        </button>
+      ) : (
+        ''
+      )}
     </>
   );
 }

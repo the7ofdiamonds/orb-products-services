@@ -274,9 +274,26 @@ class Quote
     {
         $stripe_quote_id = $request->get_param('slug');
 
-        $quote = $this->stripe_quote->acceptQuote($stripe_quote_id);
+        $accept_quote = $this->stripe_quote->acceptQuote($stripe_quote_id);
 
-        return rest_ensure_response($this->database_quote->updateQuoteStatus($stripe_quote_id, $quote->status));
+        if (is_object($accept_quote) && property_exists($accept_quote, 'object')) {
+            $quoteUpdated = $this->database_quote->updateQuoteStatus($stripe_quote_id, $accept_quote->status);
+
+            return rest_ensure_response($quoteUpdated);
+        } else {
+            $error_message = $accept_quote->get_data()['message'];
+            $status_code = $accept_quote->get_data()['status'];
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
+        }
     }
 
     public function cancel_quote(WP_REST_Request $request)

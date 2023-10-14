@@ -18,9 +18,17 @@ class Invoice
         $this->stripe_invoice = new StripeInvoice($stripeClient);
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
+            register_rest_route('orb/v1', '/stripe/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
                 'methods' => 'POST',
                 'callback' => [$this, 'create_stripe_invoice'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/invoice/(?P<slug>[a-zA-Z0-9-_]+)', [
+                'methods' => 'POST',
+                'callback' => [$this, 'save_invoice'],
                 'permission_callback' => '__return_true',
             ]);
         });
@@ -90,6 +98,33 @@ class Invoice
         return $this->stripe_invoice->createStripeInvoice($stripe_customer_id, $selections);
     }
 
+    public function save_invoice(WP_REST_Request $request)
+    {
+        $stripe_invoice_id = $request->get_param('slug');
+        $quote_id = $request['quote_id'];
+
+        $stripe_invoice = $this->stripe_invoice->getStripeInvoice($stripe_invoice_id);
+
+        if (is_object($stripe_invoice) && property_exists($stripe_invoice, 'object')) {
+            $invoice_id = $this->database_invoice->saveInvoice($stripe_invoice, $quote_id);
+
+            return rest_ensure_response($invoice_id);
+        } else {
+            $error_message = $stripe_invoice->get_data()['message'];
+            $status_code = $stripe_invoice->get_data()['status'];
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
+        }
+    }
+
     public function get_invoice_by_id(WP_REST_Request $request)
     {
         $id = $request->get_param('slug');
@@ -134,7 +169,7 @@ class Invoice
         $stripe_customer_id = $request->get_param('slug');
 
         $invoices = $this->database_invoice->getClientInvoices($stripe_customer_id);
-    
+
         return rest_ensure_response($invoices);
     }
 

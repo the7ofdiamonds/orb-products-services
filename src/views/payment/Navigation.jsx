@@ -11,15 +11,15 @@ function PaymentNavigationComponent() {
     <>
       <h2 className="title">PAYMENT</h2>
       <div className="payment-options">
-        <NavLink to={`/services/payment/${id}/mobile`}>
+        <NavLink to={`/billing/payment/${id}/mobile`}>
           <button className="mobile-btn" id="mobile-btn">
-            <h4>MOBILE</h4>
+            <h3>MOBILE</h3>
           </button>
         </NavLink>
 
-        <NavLink to={`/services/payment/${id}/card`}>
+        <NavLink to={`/billing/payment/${id}/card`}>
           <button className="debit-credit-btn" id="debit-credit-btn">
-            <h4>CARD</h4>
+            <h3>CARD</h3>
           </button>
         </NavLink>
       </div>

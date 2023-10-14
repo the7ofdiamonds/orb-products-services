@@ -40,7 +40,8 @@ class Pages
         }
     }
 
-    function add_client_subpages(){
+    function add_client_subpages()
+    {
         global $wpdb;
 
         $page_titles = [
@@ -64,7 +65,6 @@ class Pages
                 wp_insert_post($page_data);
             }
         }
-
     }
 
     function add_billing_subpages()
@@ -81,6 +81,33 @@ class Pages
         foreach ($page_titles as $page_title) {
             $page_exists = $wpdb->get_var($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type = 'page'", $page_title));
             $parent_id = get_page_by_path('billing')->ID;
+
+            if (!$page_exists) {
+                $page_data = array(
+                    'post_title'   => $page_title,
+                    'post_type'    => 'page',
+                    'post_content' => '',
+                    'post_status'  => 'publish',
+                    'post_parent'   => $parent_id,
+                );
+
+                wp_insert_post($page_data);
+            }
+        }
+    }
+
+    function add_payment_subpages()
+    {
+        global $wpdb;
+
+        $page_titles = [
+            'CARD',
+            'MOBILE',
+        ];
+
+        foreach ($page_titles as $page_title) {
+            $page_exists = $wpdb->get_var($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type = 'page'", $page_title));
+            $parent_id = get_page_by_path('billing/payment')->ID;
 
             if (!$page_exists) {
                 $page_data = array(
@@ -180,9 +207,16 @@ class Pages
             add_rewrite_rule('^billing/invoice/([0-9]+)/?$', 'index.php?page_id=' . $invoice_page_id . '&id=$matches[1]', 'top');
 
             add_rewrite_rule('^billing/payment/([0-9]+)/?$', 'index.php?page_id=' . $payment_page_id . '&id=$matches[1]', 'top');
-            add_rewrite_rule('^billing/payment/([0-9]+)/([^/]+)/?$', 'index.php?page_id=' . $payment_page_id . '&custom_route=payment&id=$matches[1]&extra_param=$matches[2]', 'top');
 
             add_rewrite_rule('^billing/receipt/([0-9]+)/?$', 'index.php?page_id=' . $receipt_page_id . '&id=$matches[1]', 'top');
+        }
+
+        $card_page_id = get_page_by_path('billing/payment/card')->ID;
+        $mobile_page_id = get_page_by_path('billing/payment/mobile')->ID;
+
+        if ($card_page_id && $mobile_page_id) {
+            add_rewrite_rule('^billing/payment/card/([0-9]+)/?$', 'index.php?page_id=' . $card_page_id . '&id=$matches[1]', 'top');
+            add_rewrite_rule('^billing/payment/mobile/([0-9]+)/([^/]+)/?$', 'index.php?page_id=' . $mobile_page_id . '&custom_route=payment&id=$matches[1]&extra_param=$matches[2]', 'top');
         }
     }
 
