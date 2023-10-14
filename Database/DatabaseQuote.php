@@ -18,17 +18,22 @@ class DatabaseQuote
 
     public function saveQuote($quote, $selections)
     {
-        if (empty($selections)) {
-            throw new Exception('Selections are required');
+
+        if (is_object($quote) && property_exists($quote, 'object') && $quote->object === 'quote') {
+            $amount_subtotal = intval($quote->amount_subtotal) / 100;
+            $amount_discount = intval($quote->computed->upfront->total_details->amount_discount) / 100;
+            $amount_shipping = intval($quote->computed->upfront->total_details->amount_shipping) / 100;
+            $amount_tax = intval($quote->computed->upfront->total_details->amount_tax) / 100;
+            $amount_total = intval($quote->amount_total) / 100;
+        } else {
+            throw new Exception('A Quote is required to save.');
         }
 
-        $serialized_selections = json_encode($selections);
-
-        $amount_subtotal = intval($quote->amount_subtotal) / 100;
-        $amount_discount = intval($quote->computed->upfront->total_details->amount_discount) / 100;
-        $amount_shipping = intval($quote->computed->upfront->total_details->amount_shipping) / 100;
-        $amount_tax = intval($quote->computed->upfront->total_details->amount_tax) / 100;
-        $amount_total = intval($quote->amount_total) / 100;
+        if (!empty($selections)) {
+            $serialized_selections = json_encode($selections);
+        } else {
+            throw new Exception('Selections are required');
+        }
 
         $result = $this->wpdb->insert(
             $this->table_name,
@@ -57,9 +62,8 @@ class DatabaseQuote
     public function getQuote($stripe_quote_id)
     {
         if (empty($stripe_quote_id)) {
-            $msg = 'No Quote ID was provided.';
-
-            return $msg;
+            $msg = 'A Stripe Quote ID is required.';
+            throw new Exception($msg);
         }
 
         $quote = $this->wpdb->get_row(
@@ -69,28 +73,27 @@ class DatabaseQuote
             )
         );
 
-        if (!$quote) {
+        if ($quote) {
+            $data = [
+                'id' => $quote->id,
+                'created_at' => $quote->created_at,
+                'status' => $quote->status,
+                'stripe_customer_id' => $quote->stripe_customer_id,
+                'stripe_quote_id' => $quote->stripe_quote_id,
+                'expires_at' => $quote->expires_at,
+                'selections' => $quote->selections,
+                'amount_subtotal' => $quote->amount_subtotal,
+                'amount_discount' => $quote->amount_discount,
+                'amount_shipping' => $quote->amount_shipping,
+                'amount_tax' => $quote->amount_tax,
+                'amount_total' => $quote->amount_total
+            ];
+
+            return $data;
+        } else {
             $msg = 'Quote not found';
-
-            return $msg;
+            throw new Exception($msg);
         }
-
-        $data = [
-            'id' => $quote->id,
-            'created_at' => $quote->created_at,
-            'status' => $quote->status,
-            'stripe_customer_id' => $quote->stripe_customer_id,
-            'stripe_quote_id' => $quote->stripe_quote_id,
-            'expires_at' => $quote->expires_at,
-            'selections' => $quote->selections,
-            'amount_subtotal' => $quote->amount_subtotal,
-            'amount_discount' => $quote->amount_discount,
-            'amount_shipping' => $quote->amount_shipping,
-            'amount_tax' => $quote->amount_tax,
-            'amount_total' => $quote->amount_total
-        ];
-
-        return $data;
     }
 
     public function getQuoteByID($id)
@@ -102,29 +105,26 @@ class DatabaseQuote
             )
         );
 
-        if (!$quote) {
-            $msg = 'Quote not found';
-            $response = rest_ensure_response($msg);
-            $response->set_status(404);
+        if ($quote) {
+            $data = [
+                'id' => $quote->id,
+                'created_at' => $quote->created_at,
+                'status' => $quote->status,
+                'stripe_customer_id' => $quote->stripe_customer_id,
+                'stripe_quote_id' => $quote->stripe_quote_id,
+                'selections' => json_decode($quote->selections, true),
+                'amount_subtotal' => $quote->amount_subtotal,
+                'amount_discount' => $quote->amount_discount,
+                'amount_shipping' => $quote->amount_shipping,
+                'amount_tax' => $quote->amount_tax,
+                'amount_total' => $quote->amount_total
+            ];
 
-            return $response;
+            return $data;
+        } else {
+            $msg = 'Quote with the ID' . $id . 'not found';
+            throw new Exception($msg);
         }
-
-        $data = [
-            'id' => $quote->id,
-            'created_at' => $quote->created_at,
-            'status' => $quote->status,
-            'stripe_customer_id' => $quote->stripe_customer_id,
-            'stripe_quote_id' => $quote->stripe_quote_id,
-            'selections' => json_decode($quote->selections, true),
-            'amount_subtotal' => $quote->amount_subtotal,
-            'amount_discount' => $quote->amount_discount,
-            'amount_shipping' => $quote->amount_shipping,
-            'amount_tax' => $quote->amount_tax,
-            'amount_total' => $quote->amount_total
-        ];
-
-        return $data;
     }
 
     public function getQuotes()
@@ -135,31 +135,19 @@ class DatabaseQuote
             )
         );
 
-        if (!$quotes) {
+        if ($quotes) {
+            return $quotes;
+        } else {
             $msg = 'There are no quotes to display.';
-            $message = array(
-                'message' => $msg,
-            );
-            $response = rest_ensure_response($message);
-            $response->set_status(404);
-
-            return $response;
+            throw new Exception($msg);
         }
-
-        return $quotes;
     }
 
     public function getClientQuotes($stripe_customer_id)
     {
         if (empty($stripe_customer_id)) {
-            $msg = 'Invalid Stripe Customer ID';
-            $message = array(
-                'message' => $msg,
-            );
-            $response = rest_ensure_response($message);
-            $response->set_status(404);
-
-            return $response;
+            $msg = 'Invalid Stripe Customer ID is required.';
+            throw new Exception($msg);
         }
 
         $quotes = $this->wpdb->get_results(
@@ -169,94 +157,89 @@ class DatabaseQuote
             )
         );
 
-        if (!$quotes) {
+        if ($quotes) {
+            return $quotes;
+        } else {
             $msg = 'There are no quotes to display.';
-            $message = array(
-                'message' => $msg,
-            );
-            $response = rest_ensure_response($message);
-            $response->set_status(404);
-
-            return $response;
+            throw new Exception($msg);
         }
-
-        return $quotes;
     }
 
-    public function updateQuote($stripe_quote, $selections = '')
+    public function updateQuote($quote, $selections = '')
     {
-        $serialized_selections = !empty($selections) ? json_encode($selections) : null;
-
-        $amount_subtotal = !empty($stripe_quote->amount_subtotal) ? intval($stripe_quote->amount_subtotal) / 100 : null;
-        $amount_discount = !empty($stripe_quote->computed->upfront->total_details->amount_discount) ? intval($stripe_quote->computed->upfront->total_details->amount_discount) / 100 : null;
-        $amount_shipping = !empty($stripe_quote->computed->upfront->total_details->amount_shipping) ? intval($stripe_quote->computed->upfront->total_details->amount_shipping) / 100 : null;
-        $amount_tax = !empty($stripe_quote->computed->upfront->total_details->amount_tax) ? intval($stripe_quote->computed->upfront->total_details->amount_tax) / 100 : null;
-        $amount_total = !empty($stripe_quote->amount_total) ? intval($stripe_quote->amount_total) / 100 : null;
-
         $data = array();
-        if (!empty($serialized_selections)) {
-            $data['selections'] = $serialized_selections;
-        }
-        if (!empty($amount_subtotal)) {
-            $data['amount_subtotal'] = $amount_subtotal;
-        }
-        if (!empty($amount_discount)) {
-            $data['amount_discount'] = $amount_discount;
-        }
-        if (!empty($amount_shipping)) {
-            $data['amount_shipping'] = $amount_shipping;
-        }
-        if (!empty($amount_tax)) {
-            $data['amount_tax'] = $amount_tax;
-        }
-        if (!empty($amount_total)) {
-            $data['amount_total'] = $amount_total;
+
+        if (is_object($quote) && property_exists($quote, 'object') && $quote->object === 'quote') {
+            $amount_subtotal = !empty($quote->amount_subtotal) ? intval($quote->amount_subtotal) / 100 : null;
+            $amount_discount = !empty($quote->computed->upfront->total_details->amount_discount) ? intval($quote->computed->upfront->total_details->amount_discount) / 100 : null;
+            $amount_shipping = !empty($quote->computed->upfront->total_details->amount_shipping) ? intval($quote->computed->upfront->total_details->amount_shipping) / 100 : null;
+            $amount_tax = !empty($quote->computed->upfront->total_details->amount_tax) ? intval($quote->computed->upfront->total_details->amount_tax) / 100 : null;
+            $amount_total = !empty($quote->amount_total) ? intval($quote->amount_total) / 100 : null;
+
+            if (!empty($amount_subtotal)) {
+                $data['amount_subtotal'] = $amount_subtotal;
+            }
+            if (!empty($amount_discount)) {
+                $data['amount_discount'] = $amount_discount;
+            }
+            if (!empty($amount_shipping)) {
+                $data['amount_shipping'] = $amount_shipping;
+            }
+            if (!empty($amount_tax)) {
+                $data['amount_tax'] = $amount_tax;
+            }
+            if (!empty($amount_total)) {
+                $data['amount_total'] = $amount_total;
+            }
+
+            $where = array(
+                'stripe_quote_id' => $quote->id,
+            );
+        } else {
+            throw new Exception('A Quote is required to update.');
         }
 
-        $where = array(
-            'stripe_quote_id' => $stripe_quote->id,
-        );
+        if (!empty($selections)) {
+            $data['selections'] = $selections;
+        }
 
-        if (!empty($data)) {
+        if (!empty($quote->id)) {
             $updated = $this->wpdb->update($this->table_name, $data, $where);
         }
 
-        if ($updated === false) {
+        if ($updated) {
+            return $updated;
+        } else {
             $error_message = $this->wpdb->last_error ?: 'Quote not found';
-            $response = rest_ensure_response($error_message);
-            $response->set_status(404);
-
-            return $response;
+            throw new Exception($error_message);
         }
-
-        return $updated;
     }
 
     public function updateQuoteStatus($stripe_quote_id, $status)
     {
+        if (!empty($stripe_quote_id)) {
+            $where = array(
+                'stripe_quote_id' => $stripe_quote_id,
+            );
+        } else {
+            throw new Exception('A Stripe Quote ID is required.');
+        }
 
-        $data = array(
-            'status' => $status,
-        );
-        $where = array(
-            'stripe_quote_id' => $stripe_quote_id,
-        );
-
-        if (!empty($data)) {
-            if (!empty($where)) {
-                $updated = $this->wpdb->update($this->table_name, $data, $where);
-            } else {
-                throw new Exception('A Stripe Quote ID is required.');
-            }
+        if (!empty($status)) {
+            $data = array(
+                'status' => $status,
+            );
         } else {
             throw new Exception('A status is required.');
         }
 
-        if ($updated === false) {
+        $updated = $this->wpdb->update($this->table_name, $data, $where);
+
+        if ($updated) {
+            return $updated;
+        } else {
             $error_message = $this->wpdb->last_error ?: 'Quote not found';
             throw new Exception($error_message);
-        } else {
-            return $updated;
         }
     }
 }
