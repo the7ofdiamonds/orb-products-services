@@ -203,11 +203,9 @@ class Pages
         $receipt_page_id = get_page_by_path('billing/receipt')->ID;
 
         if ($quote_page_id && $invoice_page_id && $payment_page_id && $receipt_page_id) {
-            add_rewrite_rule('^billing/quote/([0-9]+)?$', 'index.php?page_id=' . $quote_page_id . '&id=$matches[1]', 'top');
+            add_rewrite_rule('^billing/quote/([0-9]+)/?$', 'index.php?page_id=' . $quote_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^billing/invoice/([0-9]+)/?$', 'index.php?page_id=' . $invoice_page_id . '&id=$matches[1]', 'top');
-
             add_rewrite_rule('^billing/payment/([0-9]+)/?$', 'index.php?page_id=' . $payment_page_id . '&id=$matches[1]', 'top');
-
             add_rewrite_rule('^billing/receipt/([0-9]+)/?$', 'index.php?page_id=' . $receipt_page_id . '&id=$matches[1]', 'top');
         }
 

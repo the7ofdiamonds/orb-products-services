@@ -62,7 +62,6 @@ function App() {
               element={<MobileComponent />}
             />
             <Route path="billing/receipt/:id" element={<ReceiptComponent />} />
-            <Route path="services/*" element={<ErrorComponent />} />
             <Route path="faq" element={<FAQComponent />} />
             <Route path="contact" element={<ContactComponent />} />
             <Route
