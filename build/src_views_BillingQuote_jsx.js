@@ -42,7 +42,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 
 function LoadingComponent() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "loading"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Loading......"));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoadingComponent);
 
@@ -86,8 +88,6 @@ function QuoteComponent() {
   } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_9__.useParams)();
   const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
   const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('To receive an invoice for the selected services, you must accept the quote above.');
-  const [stripeInvoiceID, setStripeInvoiceID] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
-  const [invoiceID, setInvoiceID] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const {
     user_email,
     stripe_customer_id
@@ -99,10 +99,13 @@ function QuoteComponent() {
     stripe_quote_id,
     status,
     total,
-    selections
+    selections,
+    stripe_invoice_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.quote);
+  const {
+    invoice_id
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_9__.useNavigate)();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (user_email) {
       dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__.getClient)()).then(response => {
@@ -110,21 +113,26 @@ function QuoteComponent() {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
+        } else {
+          dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_4__.getQuoteByID)(id, response.payload.stripe_customer_id)).then(response => {
+            if (response.error !== undefined) {
+              console.error(response.error.message);
+              setMessageType('error');
+              setMessage(response.error.message);
+            } else {
+              dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_4__.getStripeQuote)(response.payload.stripe_quote_id)).then(response => {
+                if (response.error !== undefined) {
+                  console.error(response.error.message);
+                  setMessageType('error');
+                  setMessage(response.error.message);
+                }
+              });
+            }
+          });
         }
       });
     }
   }, [user_email, dispatch]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (id && stripe_customer_id) {
-      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_4__.getQuoteByID)(id)).then(response => {
-        if (response.error !== undefined) {
-          console.error(response.error.message);
-          setMessageType('error');
-          setMessage(response.error.message);
-        }
-      });
-    }
-  }, [id, stripe_customer_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (status === 'canceled') {
       setMessageType('error');
@@ -132,31 +140,16 @@ function QuoteComponent() {
     }
   }, [status]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (stripe_quote_id && status) {
-      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_4__.getStripeQuote)()).then(response => {
+    if (quote_id && status === 'accepted') {
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.getInvoiceByQuoteID)()).then(response => {
         if (response.error !== undefined) {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
-        } else {
-          setStripeInvoiceID(response.payload.invoice.id);
         }
       });
     }
-  }, [stripe_quote_id, status, dispatch]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (stripeInvoiceID !== '') {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.saveInvoice)(stripeInvoiceID)).then(response => {
-        if (response.error !== undefined) {
-          console.error(response.error.message);
-          setMessageType('error');
-          setMessage(response.error.message);
-        } else {
-          setInvoiceID(response.payload);
-        }
-      });
-    }
-  }, [stripeInvoiceID, dispatch]);
+  }, [quote_id, status, dispatch]);
   const handleCancel = () => {
     // pop up that gives the option to cancel or add to the selections
     if (stripe_quote_id && status === 'open') {
@@ -176,13 +169,24 @@ function QuoteComponent() {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
+        } else {
+          console.log(response.payload.invoice);
+          dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.saveInvoice)(response.payload.invoice)).then(response => {
+            if (response.error !== undefined) {
+              console.error(response.error.message);
+              setMessageType('error');
+              setMessage(response.error.message);
+            } else {
+              window.location.href = `/billing/invoice/${response.payload}`;
+            }
+          });
         }
       });
     }
   };
-  const handleAccepted = () => {
-    if (invoiceID) {
-      window.location.href = `/billing/invoice/${invoiceID}`;
+  const handleInvoice = () => {
+    if (invoice_id && status === 'accepted') {
+      window.location.href = `/billing/invoice/${invoice_id}`;
     }
   };
   if (loading) {
@@ -229,7 +233,7 @@ function QuoteComponent() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "CANCEL")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleAccept
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "ACCEPT"))) : status === 'accepted' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    onClick: handleAccepted
+    onClick: handleInvoice
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "INVOICE")) : null));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuoteComponent);

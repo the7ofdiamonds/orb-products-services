@@ -4,6 +4,8 @@ namespace ORB_Services\Database;
 
 use Exception;
 
+use Stripe\Invoice;
+
 class DatabaseInvoice
 {
     private $wpdb;
@@ -18,51 +20,73 @@ class DatabaseInvoice
 
     public function saveInvoice($stripe_invoice, $quote_id)
     {
-        if (is_object($stripe_invoice) && property_exists($stripe_invoice, 'object') && $stripe_invoice->object === 'invoice') {
-            $subtotal = intval($stripe_invoice->subtotal) / 100;
-            $tax = intval($stripe_invoice->tax) / 100;
-            $amount_due = intval($stripe_invoice->amount_due) / 100;
-        } else {
-            throw new Exception('An Invoice is needed to save.');
-        }
+        try {
+            if (!empty($stripe_invoice)) {
+                $subtotal = intval($stripe_invoice->subtotal) / 100;
+                $tax = intval($stripe_invoice->tax) / 100;
+                $amount_due = intval($stripe_invoice->amount_due) / 100;
+            } else {
+                throw new Exception('An Invoice is needed to save.', 400);
+            }
 
-        if (empty($quote_id)) {
-            throw new Exception('A Quote ID is required.');
-        }
+            if (empty($quote_id)) {
+                throw new Exception('A Quote ID is required.', 400);
+            }
 
-        $result = $this->wpdb->insert(
-            $this->table_name,
-            [
-                'status' => $stripe_invoice->status,
-                'stripe_customer_id' => $stripe_invoice->customer,
-                'quote_id' => $quote_id,
-                'stripe_invoice_id' => $stripe_invoice->id,
-                'due_date' => $stripe_invoice->due_date,
-                'subtotal' => $subtotal,
-                'tax' => $tax,
-                'amount_due' => $amount_due
-            ]
-        );
+            $result = $this->wpdb->insert(
+                $this->table_name,
+                [
+                    'status' => $stripe_invoice->status,
+                    'stripe_customer_id' => $stripe_invoice->customer,
+                    'quote_id' => $quote_id,
+                    'stripe_invoice_id' => $stripe_invoice->id,
+                    'due_date' => $stripe_invoice->due_date,
+                    'subtotal' => $subtotal,
+                    'tax' => $tax,
+                    'amount_due' => $amount_due
+                ]
+            );
 
-        if ($result) {
-            return $this->wpdb->insert_id;
-        } else {
-            $error_message = $this->wpdb->last_error;
-            throw new Exception($error_message);
+            if ($result) {
+                return $this->wpdb->insert_id;
+            } else {
+                $error_message = $this->wpdb->last_error ?: 'Invoice not saved.';
+                throw new Exception($error_message, 500);
+            }
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getCode();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
+
+            return $response;
         }
     }
 
-    public function getInvoice($stripe_invoice_id)
+
+    public function getInvoice($stripe_invoice_id, $stripe_customer_id)
     {
         if (empty($stripe_invoice_id)) {
-            $msg = 'No Invoice ID was provided.';
-            throw new Exception($msg);
+            $msg = 'No Stripe Invoice ID was provided.';
+            throw new Exception($msg, 400);
+        }
+
+        if (empty($stripe_customer_id)) {
+            $msg = 'No Stripe Customer ID was provided.';
+            throw new Exception($msg, 400);
         }
 
         $invoice = $this->wpdb->get_row(
             $this->wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE stripe_invoice_id = %s",
-                $stripe_invoice_id
+                "SELECT * FROM {$this->table_name} WHERE stripe_invoice_id = %s AND stripe_customer_id = %s",
+                $stripe_invoice_id,
+                $stripe_customer_id
             )
         );
 
@@ -86,23 +110,24 @@ class DatabaseInvoice
             return $data;
         } else {
             $msg = 'Invoice not found';
-            throw new Exception($msg);
+            throw new Exception($msg, 404);
         }
     }
 
-    public function getInvoiceByID($id)
+    public function getInvoiceByID($id, $stripe_customer_id)
     {
         if (empty($id)) {
             $msg = 'No Invoice ID was provided.';
-            throw new Exception($msg);
+            throw new Exception($msg, 400);
         }
 
         global $wpdb;
 
         $invoice = $wpdb->get_row(
             $wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE id = %d",
-                $id
+                "SELECT * FROM {$this->table_name} WHERE id = %d AND stripe_customer_id = %s",
+                $id,
+                $stripe_customer_id
             )
         );
 
@@ -126,7 +151,48 @@ class DatabaseInvoice
             return $data;
         } else {
             $msg = 'Invoice not found';
-            throw new Exception($msg);
+            throw new Exception($msg, 404);
+        }
+    }
+
+    public function getInvoiceByQuoteID($quote_id, $stripe_customer_id)
+    {
+        if (empty($quote_id)) {
+            $msg = 'No Invoice ID was provided.';
+            throw new Exception($msg, 400);
+        }
+
+        global $wpdb;
+
+        $invoice = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM {$this->table_name} WHERE quote_id = %d AND stripe_customer_id = %s",
+                $quote_id,
+                $stripe_customer_id
+            )
+        );
+
+        if ($invoice) {
+            $data = [
+                'id' => $invoice->id,
+                'created_at' => $invoice->created_at,
+                'status' => $invoice->status,
+                'stripe_customer_id' => $invoice->stripe_customer_id,
+                'quote_id' => $invoice->quote_id,
+                'stripe_invoice_id' => $invoice->stripe_invoice_id,
+                'payment_intent_id' => $invoice->payment_intent_id,
+                'client_secret' => $invoice->client_secret,
+                'due_date' => $invoice->due_date,
+                'subtotal' => $invoice->subtotal,
+                'tax' => $invoice->tax,
+                'amount_due' => $invoice->amount_due,
+                'amount_remaining' => $invoice->amount_remaining
+            ];
+
+            return $data;
+        } else {
+            $msg = 'Invoice not found';
+            throw new Exception($msg, 404);
         }
     }
 
@@ -140,7 +206,7 @@ class DatabaseInvoice
             return $invoices;
         } {
             $msg = 'invoice_not_found';
-            throw new Exception($msg);
+            throw new Exception($msg, 404);
         }
     }
 
@@ -148,7 +214,7 @@ class DatabaseInvoice
     {
         if (empty($stripe_customer_id)) {
             $msg = 'Stripe Customer ID is required';
-            throw new Exception($msg);
+            throw new Exception($msg, 400);
         }
 
         $invoices = $this->wpdb->get_results(
@@ -162,14 +228,14 @@ class DatabaseInvoice
             return $invoices;
         } else {
             $msg = 'There are no invoices to display.';
-            throw new Exception($msg);
+            throw new Exception($msg, 404);
         }
     }
 
 
     public function updateInvoice($stripe_invoice)
     {
-        if (is_object($stripe_invoice) && property_exists($stripe_invoice, 'object') && $stripe_invoice->object === 'invoice') {
+        if (is_object($stripe_invoice)) {
 
             $payment_intent = $stripe_invoice->payment_intent;
 
@@ -197,7 +263,7 @@ class DatabaseInvoice
                 'stripe_invoice_id' => $stripe_invoice->id,
             );
         } else {
-            throw new Exception('An invoice is required to update.');
+            throw new Exception('An invoice is required to update.', 404);
         }
 
         $updated = $this->wpdb->update($this->table_name, $data, $where);
@@ -206,7 +272,7 @@ class DatabaseInvoice
             return $updated;
         } else {
             $error_message = $this->wpdb->last_error ?: 'Invoice not found';
-            throw new Exception($error_message);
+            throw new Exception($error_message, 404);
         }
     }
 
@@ -217,7 +283,7 @@ class DatabaseInvoice
                 'status' => $status
             );
         } else {
-            throw new Exception('A status is required.');
+            throw new Exception('A status is required.', 400);
         }
 
         if (!empty($stripe_invoice_id)) {
@@ -225,7 +291,7 @@ class DatabaseInvoice
                 'stripe_invoice_id' => $stripe_invoice_id,
             );
         } else {
-            throw new Exception('A Stripe Invoice ID is required.');
+            throw new Exception('A Stripe Invoice ID is required.', 400);
         }
 
         $updated = $this->wpdb->update($this->table_name, $data, $where);
@@ -234,7 +300,7 @@ class DatabaseInvoice
             return $updated;
         } else {
             $error_message = $this->wpdb->last_error ?: 'Invoice not found';
-            throw new Exception($error_message);
+            throw new Exception($error_message, 404);
         }
     }
 }

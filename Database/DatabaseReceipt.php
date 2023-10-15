@@ -2,6 +2,8 @@
 
 namespace ORB_Services\Database;
 
+use Exception;
+
 class DatabaseReceipt
 {
     private $wpdb;
@@ -53,18 +55,23 @@ class DatabaseReceipt
         return $receipt_id;
     }
 
-    public function getReceipt($stripe_invoice_id)
+    public function getReceipt($stripe_invoice_id, $stripe_customer_id)
     {
         if (empty($stripe_invoice_id)) {
-            $msg = 'No Invoice ID was provided.';
+            $msg = 'No Stripe Invoice ID was provided.';
+            throw new Exception($msg);
+        }
 
-            return $msg;
+        if (empty($stripe_customer_id)) {
+            $msg = 'No Stripe Customer ID was provided.';
+            throw new Exception($msg);
         }
 
         $receipt = $this->wpdb->get_row(
             $this->wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE stripe_invoice_id = %s",
-                $stripe_invoice_id
+                "SELECT * FROM {$this->table_name} WHERE stripe_invoice_id = %s AND stripe_customer_id = %s",
+                $stripe_invoice_id,
+                $stripe_customer_id
             )
         );
 
@@ -93,34 +100,35 @@ class DatabaseReceipt
         return $data;
     }
 
-    public function getReceiptByID($id)
+    public function getReceiptByID($id, $stripe_customer_id)
     {
         $receipt = $this->wpdb->get_row(
             $this->wpdb->prepare(
-                "SELECT * FROM {$this->table_name} WHERE id = %d",
-                $id
+                "SELECT * FROM {$this->table_name} WHERE id = %d AND stripe_customer_id = %s",
+                $id,
+                $stripe_customer_id
             )
         );
 
-        if (!$receipt) {
-            return rest_ensure_response('Receipt not found');
+        if ($receipt) {
+            $receipt_data = [
+                'id' => $receipt->id,
+                'created_at' => $receipt->created_at,
+                'stripe_invoice_id' => $receipt->stripe_invoice_id,
+                'stripe_customer_id' => $receipt->stripe_customer_id,
+                'payment_method_id' => $receipt->payment_method_id,
+                'amount_paid' => $receipt->amount_paid,
+                'payment_date' => $receipt->payment_date,
+                'balance' => $receipt->balance,
+                'payment_method' => $receipt->payment_method,
+                'first_name' => $receipt->first_name,
+                'last_name' => $receipt->last_name,
+            ];
+
+            return $receipt_data;
+        } else {
+            throw new Exception('Receipt with the ID ' . $id . 'was not found');
         }
-
-        $receipt_data = [
-            'id' => $receipt->id,
-            'created_at' => $receipt->created_at,
-            'stripe_invoice_id' => $receipt->stripe_invoice_id,
-            'stripe_customer_id' => $receipt->stripe_customer_id,
-            'payment_method_id' => $receipt->payment_method_id,
-            'amount_paid' => $receipt->amount_paid,
-            'payment_date' => $receipt->payment_date,
-            'balance' => $receipt->balance,
-            'payment_method' => $receipt->payment_method,
-            'first_name' => $receipt->first_name,
-            'last_name' => $receipt->last_name,
-        ];
-
-        return $receipt_data;
     }
 
     public function getClientReceipt($id, $stripe_customer_id)

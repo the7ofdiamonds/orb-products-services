@@ -84,7 +84,7 @@ class Payment
     {
         $payment_method_id = $request->get_param('slug');
 
-        $payment_method = $this->stripe_payment_methods->getPaymentMethods($payment_method_id);
+        $payment_method = $this->stripe_payment_methods->getPaymentMethod($payment_method_id);
 
         return rest_ensure_response($payment_method);
     }

@@ -2,10 +2,13 @@
 
 namespace ORB_Services\API;
 
-use ORB_Services\API\Stripe\StripeQuote;
-use ORB_Services\Database\DatabaseQuote;
+use Exception;
+
 use WP_REST_Request;
 use WP_Error;
+
+use ORB_Services\API\Stripe\StripeQuote;
+use ORB_Services\Database\DatabaseQuote;
 
 use Stripe\Exception\ApiErrorException;
 
@@ -272,17 +275,21 @@ class Quote
 
     public function accept_quote(WP_REST_Request $request)
     {
-        $stripe_quote_id = $request->get_param('slug');
+        try {
+            $stripe_quote_id = $request->get_param('slug');
 
-        $accept_quote = $this->stripe_quote->acceptQuote($stripe_quote_id);
+            $accept_quote = $this->stripe_quote->acceptQuote($stripe_quote_id);
+            $quoteUpdated = $this->database_quote->updateQuoteStatus($accept_quote->id, $accept_quote->status);
 
-        if (is_object($accept_quote) && property_exists($accept_quote, 'object')) {
-            $quoteUpdated = $this->database_quote->updateQuoteStatus($stripe_quote_id, $accept_quote->status);
-
-            return rest_ensure_response($quoteUpdated);
+            if($quoteUpdated === 1){
+            return rest_ensure_response($accept_quote);
         } else {
-            $error_message = $accept_quote->get_data()['message'];
-            $status_code = $accept_quote->get_data()['status'];
+            throw new Exception('Quote could not be updated.', 404);
+        }
+    } catch (Exception $e) {
+
+            $error_message = $e->getMessage();
+            $status_code = $e->getCode();
 
             $response_data = [
                 'message' => $error_message,

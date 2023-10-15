@@ -4,6 +4,8 @@ namespace ORB_Services\Database;
 
 use Exception;
 
+use Stripe\Quote;
+
 class DatabaseQuote
 {
     private $wpdb;
@@ -16,10 +18,10 @@ class DatabaseQuote
         $this->table_name = 'orb_quote';
     }
 
-    public function saveQuote($quote, $selections)
+    public function saveQuote(Quote $quote, $selections)
     {
 
-        if (is_object($quote) && property_exists($quote, 'object') && $quote->object === 'quote') {
+        if (is_object($quote)) {
             $amount_subtotal = intval($quote->amount_subtotal) / 100;
             $amount_discount = intval($quote->computed->upfront->total_details->amount_discount) / 100;
             $amount_shipping = intval($quote->computed->upfront->total_details->amount_shipping) / 100;
@@ -91,7 +93,7 @@ class DatabaseQuote
 
             return $data;
         } else {
-            $msg = 'Quote not found';
+            $msg = 'Stripe Quote ID ' . $stripe_quote_id . ' not found';
             throw new Exception($msg);
         }
     }
@@ -165,11 +167,11 @@ class DatabaseQuote
         }
     }
 
-    public function updateQuote($quote, $selections = '')
+    public function updateQuote(Quote $quote, $selections = '')
     {
         $data = array();
 
-        if (is_object($quote) && property_exists($quote, 'object') && $quote->object === 'quote') {
+        if (is_object($quote)) {
             $amount_subtotal = !empty($quote->amount_subtotal) ? intval($quote->amount_subtotal) / 100 : null;
             $amount_discount = !empty($quote->computed->upfront->total_details->amount_discount) ? intval($quote->computed->upfront->total_details->amount_discount) / 100 : null;
             $amount_shipping = !empty($quote->computed->upfront->total_details->amount_shipping) ? intval($quote->computed->upfront->total_details->amount_shipping) / 100 : null;
@@ -222,7 +224,7 @@ class DatabaseQuote
                 'stripe_quote_id' => $stripe_quote_id,
             );
         } else {
-            throw new Exception('A Stripe Quote ID is required.');
+            throw new Exception('A Stripe Quote ID is required.', 400);
         }
 
         if (!empty($status)) {
@@ -230,7 +232,7 @@ class DatabaseQuote
                 'status' => $status,
             );
         } else {
-            throw new Exception('A status is required.');
+            throw new Exception('A status is required.', 400);
         }
 
         $updated = $this->wpdb->update($this->table_name, $data, $where);
@@ -238,8 +240,8 @@ class DatabaseQuote
         if ($updated) {
             return $updated;
         } else {
-            $error_message = $this->wpdb->last_error ?: 'Quote not found';
-            throw new Exception($error_message);
+            $error_message = $this->wpdb->last_error;
+            throw new Exception($error_message, 404);
         }
     }
 }

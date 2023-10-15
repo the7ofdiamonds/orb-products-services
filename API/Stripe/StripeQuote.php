@@ -214,7 +214,7 @@ class StripeQuote
                 []
             );
 
-            return $quote->status;
+            return $quote;
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();

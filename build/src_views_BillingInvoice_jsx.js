@@ -42,7 +42,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 
 function LoadingComponent() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "loading"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", null, "Loading......"));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LoadingComponent);
 
@@ -62,16 +64,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/clientSlice.js */ "./src/controllers/clientSlice.js");
 /* harmony import */ var _controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/customerSlice.js */ "./src/controllers/customerSlice.js");
 /* harmony import */ var _controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../controllers/quoteSlice.js */ "./src/controllers/quoteSlice.js");
 /* harmony import */ var _controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../controllers/invoiceSlice.js */ "./src/controllers/invoiceSlice.js");
 /* harmony import */ var _controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../controllers/paymentSlice.js */ "./src/controllers/paymentSlice.js");
-/* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
-/* harmony import */ var _error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx");
-/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
+/* harmony import */ var _controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../controllers/receiptSlice.js */ "./src/controllers/receiptSlice.js");
+/* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
+/* harmony import */ var _error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx");
+/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
+
 
 
 
@@ -87,7 +91,7 @@ __webpack_require__.r(__webpack_exports__);
 function InvoiceComponent() {
   const {
     id
-  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_11__.useParams)();
+  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_12__.useParams)();
   const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
   const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('To start receiving the services listed above, please use the payment button below.');
   const {
@@ -120,6 +124,9 @@ function InvoiceComponent() {
   const {
     client_secret
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.payment);
+  const {
+    receipt_id
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.receipt);
   const dueDate = new Date(due_date * 1000).toLocaleString();
   const amountDue = amount_due / 100;
   const subTotal = subtotal / 100;
@@ -150,7 +157,7 @@ function InvoiceComponent() {
   }, [stripe_customer_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_customer_id) {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.getInvoice)(id)).then(response => {
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.getInvoiceByID)(id)).then(response => {
         if (response.error !== undefined) {
           console.error(response.error.message);
           setMessageType('error');
@@ -172,7 +179,7 @@ function InvoiceComponent() {
   }, [stripe_invoice_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (quote_id && stripe_customer_id) {
-      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.getQuote)(quote_id)).then(response => {
+      dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.getQuoteByID)(quote_id)).then(response => {
         if (response.error !== undefined) {
           console.error(response.error.message);
           setMessageType('error');
@@ -192,25 +199,46 @@ function InvoiceComponent() {
       });
     }
   }, [payment_intent_id, dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (stripe_invoice_id) {
+      dispatch((0,_controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_8__.getReceipt)()).then(response => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        } else {
+          (0,_controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_8__.updateReceiptID)(response.payload.id);
+        }
+      });
+    }
+  }, [stripe_invoice_id, dispatch]);
   const handleClick = async () => {
     if (status === 'paid' && receipt_id) {
       window.location.href = `/billing/receipt/${receipt_id}`;
     } else if (status === 'open' && client_secret) {
       window.location.href = `/billing/payment/${id}`;
-    } else if (stripe_invoice_id) {
+    } else if (status === 'draft' && stripe_invoice_id) {
       dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__.finalizeInvoice)()).then(response => {
         if (response.error !== undefined) {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
-        } else if (response.payload.status === 'open') {
+        } else {
           dispatch((0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_7__.getPaymentIntent)()).then(response => {
             if (response.error !== undefined) {
               console.error(response.error.message);
               setMessageType('error');
               setMessage(response.error.message);
             } else {
-              (0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_7__.updateClientSecret)(response.payload.client_secret);
+              dispatch((0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_7__.updateClientSecret)(response.payload.client_secret)).then(response => {
+                if (response.error !== undefined) {
+                  console.error(response.error.message);
+                  setMessageType('error');
+                  setMessage(response.error.message);
+                } else {
+                  window.location.href = `/billing/receipt/${receipt_id}`;
+                }
+              });
             }
           });
         }
@@ -218,10 +246,10 @@ function InvoiceComponent() {
     }
   };
   if (loading) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_8__["default"], null);
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_9__["default"], null);
   }
   if (invoiceError) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
       error: invoiceError
     });
   }
@@ -322,12 +350,12 @@ function InvoiceComponent() {
   }, new Intl.NumberFormat('us', {
     style: 'currency',
     currency: 'USD'
-  }).format(grandTotal))))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  }).format(grandTotal))))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_11__["default"], {
     message: message,
     messageType: messageType
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
-  }, status === 'paid' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "RECEIPT") : status === 'open' && client_secret ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "PAYMENT") : ''));
+  }, status === 'paid' && receipt_id ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "RECEIPT") : status === 'open' || status === 'draft' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "PAYMENT") : ''));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (InvoiceComponent);
 

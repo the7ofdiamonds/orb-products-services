@@ -6,14 +6,23 @@ import { getClient } from '../controllers/clientSlice.js';
 import { getStripeCustomer } from '../controllers/customerSlice.js';
 import { getStripeInvoice } from '../controllers/invoiceSlice.js';
 import { getPaymentIntent } from '../controllers/paymentSlice.js';
-import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
+import {
+  getPaymentMethod,
+  getReceiptByID,
+} from '../controllers/receiptSlice.js';
 
 import formatPhoneNumber from '../utils/PhoneNumberFormatter.js';
-import { getEvent } from '../controllers/scheduleSlice.js';
+
+import LoadingComponent from '../loading/LoadingComponent';
+import PaymentMethodComponent from '../views/components/PaymentMethodComponent.jsx';
+import StatusBar from '../views/components/StatusBar';
 
 function ReceiptComponent() {
   const { id } = useParams();
   const dispatch = useDispatch();
+
+  const [messageType, setMessageType] = useState('info');
+  const [message, setMessage] = useState('');
 
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
@@ -28,7 +37,6 @@ function ReceiptComponent() {
     phone,
   } = useSelector((state) => state.customer);
   const {
-    status,
     selections,
     subtotal,
     tax,
@@ -38,20 +46,8 @@ function ReceiptComponent() {
     payment_date,
     payment_intent_id,
   } = useSelector((state) => state.invoice);
-  const { start_date, start_time } = useSelector((state) => state.schedule);
-  const { payment_method_id } = useSelector((state) => state.payment);
-  const {
-    loading,
-    error,
-    invoice_id,
-    stripe_invoice_id,
-    payment_method,
-    first_name,
-    last_name,
-  } = useSelector((state) => state.receipt);
-
-  const [messageType, setMessageType] = useState('');
-  const [message, setMessage] = useState('');
+  const { loading, stripe_invoice_id, payment_method, first_name, last_name } =
+    useSelector((state) => state.receipt);
 
   const timestamp = payment_date * 1000;
   const paymentDate = new Date(timestamp);
@@ -64,72 +60,82 @@ function ReceiptComponent() {
 
   useEffect(() => {
     if (user_email) {
-      dispatch(getClient());
+      dispatch(getClient()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        } else {
+          dispatch(getStripeCustomer(response.payload.stripe_customer_id)).then(
+            (response) => {
+              if (response.error !== undefined) {
+                console.error(response.error.message);
+                setMessageType('error');
+                setMessage(response.error.message);
+              }
+            }
+          );
+        }
+      });
     }
   }, [dispatch, user_email]);
 
   useEffect(() => {
     if (stripe_customer_id) {
-      dispatch(getStripeCustomer());
-    }
-  }, [dispatch, stripe_customer_id]);
-
-  useEffect(() => {
-    if (stripe_customer_id) {
-      dispatch(getReceipt(id));
+      dispatch(getReceiptByID(id)).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        } else {
+          dispatch(getPaymentMethod(response.payload.payment_method_id)).then(
+            (response) => {
+              if (response.error !== undefined) {
+                console.error(response.error.message);
+                setMessageType('error');
+                setMessage(response.error.message);
+              }
+            }
+          );
+        }
+      });
     }
   }, [dispatch, id, stripe_customer_id]);
 
   useEffect(() => {
-    if (!payment_method && payment_method_id) {
-      dispatch(getPaymentMethod(payment_method_id));
-    }
-  }, [dispatch, payment_method_id]);
-
-  useEffect(() => {
-    if (invoice_id) {
-      dispatch(getEvent());
-    }
-  }, [invoice_id, dispatch]);
-
-  useEffect(() => {
-    if (start_date && start_time) {
-      setMessageType('info');
-      setMessage(
-        `Make sure to confirm your appointment for ${start_date} @ ${start_time}.`
-      );
-    }
-  }, [start_date, start_time]);
-
-  useEffect(() => {
     if (stripe_invoice_id) {
-      dispatch(getStripeInvoice(stripe_invoice_id));
+      dispatch(getStripeInvoice(stripe_invoice_id)).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
     }
   }, [dispatch, stripe_invoice_id]);
 
   useEffect(() => {
     if (payment_intent_id) {
-      dispatch(getPaymentIntent(payment_intent_id));
+      dispatch(getPaymentIntent(payment_intent_id)).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
     }
   }, [dispatch, payment_intent_id]);
 
-  const handleClick = () => {
+  const handleClickDashboard = () => {
     window.location = '/dashboard';
   };
 
-  if (error) {
-    return (
-      <div className="status-bar card error">
-        <span>
-          You have either entered the wrong Receipt ID, or you are not the
-          client to whom this receipt belongs.
-        </span>
-      </div>
-    );
-  }
+  const handleClickBilling = () => {
+    window.location = '/billing';
+  };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingComponent />;
   }
 
   return (
@@ -158,9 +164,7 @@ function ReceiptComponent() {
               <h4>PAYMENT TYPE</h4>
             </div>
             <div className="td">
-              <h5 className="payment-method">
-                {payment_method ? payment_method : 'No Payment Method Provided'}
-              </h5>
+              <PaymentMethodComponent payment_method={payment_method} />
             </div>
           </div>
           <div className="tr client-details">
@@ -311,15 +315,16 @@ function ReceiptComponent() {
         </div>
       </div>
 
-      {message && (
-        <div className={`status-bar card ${messageType}`}>
-          <span>{message}</span>
-        </div>
-      )}
+      <StatusBar message={message} messageType={messageType} />
 
-      <button id="quote_button" onClick={handleClick}>
-        <h3>DASHBOARD</h3>
-      </button>
+      <div className="actions">
+        <button onClick={handleClickDashboard}>
+          <h3>DASHBOARD</h3>
+        </button>
+        <button onClick={handleClickBilling}>
+          <h3>BILLING</h3>
+        </button>
+      </div>
     </>
   );
 }

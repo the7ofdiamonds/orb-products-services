@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -53,15 +52,21 @@ export const createQuote = createAsyncThunk('quote/createQuote', async (_, { get
 });
 
 
-export const getQuote = createAsyncThunk('quote/getQuote', async (stripeQuoteID, { getState }) => {
+export const getQuote = createAsyncThunk('quote/getQuote', async (payload, thunkAPI) => {
+  const { stripeQuoteID, stripeCustomerID } = payload;
+  const { getState } = thunkAPI;
   const { stripe_quote_id } = getState().quote;
+  const { stripe_customer_id } = getState().client;
 
   try {
     const response = await fetch(`/wp-json/orb/v1/quote/${stripeQuoteID ? stripeQuoteID : stripe_quote_id}`, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripeCustomerID ? stripeCustomerID : stripe_customer_id,
+      })
     });
 
     if (!response.ok) {
@@ -110,7 +115,7 @@ export const getStripeQuote = createAsyncThunk('quote/getStripeQuote', async (st
         'Content-Type': 'application/json'
       }
     });
-    
+
     if (!response.ok) {
       const errorData = await response.json();
       const errorMessage = errorData.message;
@@ -492,8 +497,15 @@ export const quoteSlice = createSlice({
       .addCase(acceptQuote.fulfilled, (state, action) => {
         state.loading = false;
         state.quoteError = null;
-        state.status = action.payload;
-        state.stripe_invoice_id = action.payload.invoice.id;
+        state.status = action.payload.status;
+        state.stripe_invoice_id = action.payload.invoice;
+        state.stripe_quote_id = action.payload.id;
+        state.stripe_customer_id = action.payload.customer;
+        state.status = action.payload.status;
+        state.amount_subtotal = action.payload.amount_subtotal;
+        state.amount_discount = action.payload.amount_discount;
+        state.amount_shipping = action.payload.amount_shipping;
+        state.amount_total = action.payload.amount_total;
       })
       .addCase(acceptQuote.rejected, (state, action) => {
         state.loading = false;

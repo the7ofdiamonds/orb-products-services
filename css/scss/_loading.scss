@@ -1,0 +1,25 @@
+body > div.loading {
+  position: relative;
+}
+
+section > div.loading {
+  margin: 0;
+  padding: 0;
+}
+
+div.loading {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: black;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  h1 {
+    color: white;
+  }
+}

@@ -20,13 +20,32 @@ const initialState = {
   amount_remaining: '',
 };
 
-export const getPaymentMethod = createAsyncThunk('receipt/getPaymentMethod', async (payment_method_id) => {
+export const updateReceiptID = (receiptID) => {
+  return {
+    type: 'payment/updateReceiptID',
+    payload: receiptID
+  };
+};
 
+export const getPaymentMethod = createAsyncThunk('receipt/getPaymentMethod', async (payment_method_id) => {
   try {
-    const response = await axios.get(`/wp-json/orb/v1/stripe/payment_methods/${payment_method_id}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/stripe/payment_methods/${payment_method_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error.message;
   }
 });
 
@@ -64,17 +83,58 @@ export const postReceipt = createAsyncThunk('receipt/postReceipt', async (_, { g
 }
 );
 
-export const getReceipt = createAsyncThunk('receipt/getReceipt', async (id, { getState }) => {
+export const getReceipt = createAsyncThunk('receipt/getReceipt', async (_, { getState }) => {
   const { stripe_customer_id } = getState().client;
-
-  const response = await axios.get(`/wp-json/orb/v1/receipt/${id}`, {
-    params: { stripe_customer_id },
-  });
+  const { stripe_invoice_id } = getState().invoice;
 
   try {
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/receipt/${stripe_invoice_id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error.message;
+  }
+});
+
+export const getReceiptByID = createAsyncThunk('receipt/getReceiptByID', async (id, { getState }) => {
+  const { stripe_customer_id } = getState().client;
+
+  try {
+    const response = await fetch(`/wp-json/orb/v1/receipt/${id}/id`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw error.message;
   }
 });
 
@@ -106,6 +166,9 @@ export const receiptSlice = createSlice({
   name: 'receipt',
   initialState,
   reducers: {
+    updateReceiptID: (state, action) => {
+      state.receipt_id = action.payload;
+    },
     updatePaymentMethod: (state, action) => {
       state.payment_method = action.payload;
     },
@@ -114,14 +177,12 @@ export const receiptSlice = createSlice({
     builder
       .addCase(getPaymentMethod.pending, (state) => {
         state.loading = true;
-        state.receiptError = null;
+        state.receiptError = '';
       })
       .addCase(getPaymentMethod.fulfilled, (state, action) => {
         state.loading = false;
         state.receiptError = null;
-        state.type = action.payload.type;
-        state.brand = action.payload.card.brand;
-        state.last4 = action.payload.card.last4;
+        state.payment_method = action.payload;
       })
       .addCase(getPaymentMethod.rejected, (state, action) => {
         state.loading = false;
@@ -147,6 +208,7 @@ export const receiptSlice = createSlice({
       .addCase(getReceipt.fulfilled, (state, action) => {
         state.loading = false;
         state.receiptError = null;
+        state.receipt_id = action.payload.id;
         state.created_at = action.payload.created_at;
         state.stripe_invoice_id = action.payload.stripe_invoice_id;
         state.stripe_customer_id = action.payload.stripe_customer_id;
@@ -159,6 +221,29 @@ export const receiptSlice = createSlice({
         state.last_name = action.payload.last_name;
       })
       .addCase(getReceipt.rejected, (state, action) => {
+        state.loading = false;
+        state.receiptError = action.error.message;
+      })
+      .addCase(getReceiptByID.pending, (state) => {
+        state.loading = true;
+        state.receiptError = null;
+      })
+      .addCase(getReceiptByID.fulfilled, (state, action) => {
+        state.loading = false;
+        state.receiptError = null;
+        state.receipt_id = action.payload.id;
+        state.created_at = action.payload.created_at;
+        state.stripe_invoice_id = action.payload.stripe_invoice_id;
+        state.stripe_customer_id = action.payload.stripe_customer_id;
+        state.payment_method_id = action.payload.payment_method_id;
+        state.amount_paid = action.payload.amount_paid;
+        state.payment_date = action.payload.payment_date;
+        state.balance = action.payload.balance;
+        state.payment_method = action.payload.payment_method;
+        state.first_name = action.payload.first_name;
+        state.last_name = action.payload.last_name;
+      })
+      .addCase(getReceiptByID.rejected, (state, action) => {
         state.loading = false;
         state.receiptError = action.error.message;
       })

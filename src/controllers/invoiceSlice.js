@@ -39,24 +39,111 @@ const initialState = {
 export const saveInvoice = createAsyncThunk('invoice/saveInvoice', async (stripeInvoiceID, { getState }) => {
   const { quote_id, stripe_invoice_id } = getState().quote;
 
-
   try {
-    const response = await axios.post(`/wp-json/orb/v1/invoice/${stripeInvoiceID ? stripeInvoiceID : stripe_invoice_id}`, { quote_id: quote_id });
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/invoice/${stripeInvoiceID ? stripeInvoiceID : stripe_invoice_id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        quote_id: quote_id
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 
-export const getInvoice = createAsyncThunk('invoice/getInvoice', async (id, { getState }) => {
+export const getInvoice = createAsyncThunk('invoice/getInvoice', async (stripeInvoiceID, { getState }) => {
+  const { stripe_customer_id } = getState().client;
+  const { stripe_invoice_id } = getState().invoice;
+
+  try {
+    const response = await fetch(`/wp-json/orb/v1/invoice/${stripeInvoiceID ? stripeInvoiceID : stripe_invoice_id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw error;
+  }
+
+});
+
+export const getInvoiceByID = createAsyncThunk('invoice/getInvoiceByID', async (id, { getState }) => {
   const { stripe_customer_id } = getState().client;
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/invoice/${id}`, { params: stripe_customer_id });
+    const response = await fetch(`/wp-json/orb/v1/invoice/${id}/id`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id
+      })
+    });
 
-    return response.data;
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
+  }
+});
+
+export const getInvoiceByQuoteID = createAsyncThunk('invoice/getInvoiceByQuoteID', async (quoteID, { getState }) => {
+  const { stripe_customer_id } = getState().client;
+  const { quote_id } = getState().quote;
+
+  try {
+    const response = await fetch(`/wp-json/orb/v1/invoice/${quoteID ? quoteID : quote_id}/quoteid`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw error;
   }
 });
 
@@ -191,10 +278,26 @@ export const finalizeInvoice = createAsyncThunk('invoice/finalizeInvoice', async
   const { stripe_invoice_id } = getState().invoice;
 
   try {
-    const response = await axios.post(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}/finalize`, { stripe_customer_id: stripe_customer_id });
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}/finalize`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 
@@ -210,7 +313,7 @@ export const invoiceSlice = createSlice({
     builder
       .addCase(saveInvoice.pending, (state) => {
         state.loading = true;
-        state.invoiceError = null;
+        state.invoiceError = '';
       })
       .addCase(saveInvoice.fulfilled, (state, action) => {
         state.loading = false;
@@ -222,10 +325,11 @@ export const invoiceSlice = createSlice({
       })
       .addCase(getInvoice.pending, (state) => {
         state.loading = true;
-        state.invoiceError = null;
+        state.invoiceError = '';
       })
       .addCase(getInvoice.fulfilled, (state, action) => {
         state.loading = false
+        state.invoiceError = null;
         state.invoice_id = action.payload.id
         state.status = action.payload.status;
         state.stripe_customer_id = action.payload.stripe_customer_id;
@@ -240,9 +344,51 @@ export const invoiceSlice = createSlice({
         state.loading = false;
         state.invoiceError = action.error.message;
       })
+      .addCase(getInvoiceByID.pending, (state) => {
+        state.loading = true;
+        state.invoiceError = '';
+      })
+      .addCase(getInvoiceByID.fulfilled, (state, action) => {
+        state.loading = false
+        state.invoiceError = null;
+        state.invoice_id = action.payload.id
+        state.status = action.payload.status;
+        state.stripe_customer_id = action.payload.stripe_customer_id;
+        state.quote_id = action.payload.quote_id;
+        state.stripe_invoice_id = action.payload.stripe_invoice_id;
+        state.payment_intent_id = action.payload.payment_intent_id;
+        state.client_secret = action.payload.client_secret;
+        state.subtotal = action.payload.subtotal;
+        state.invoice_pdf = action.payload.invoice_pdf_URL;
+      })
+      .addCase(getInvoiceByID.rejected, (state, action) => {
+        state.loading = false;
+        state.invoiceError = action.error.message;
+      })
+      .addCase(getInvoiceByQuoteID.pending, (state) => {
+        state.loading = true;
+        state.invoiceError = '';
+      })
+      .addCase(getInvoiceByQuoteID.fulfilled, (state, action) => {
+        state.loading = false
+        state.invoiceError = null;
+        state.invoice_id = action.payload.id
+        state.status = action.payload.status;
+        state.stripe_customer_id = action.payload.stripe_customer_id;
+        state.quote_id = action.payload.quote_id;
+        state.stripe_invoice_id = action.payload.stripe_invoice_id;
+        state.payment_intent_id = action.payload.payment_intent_id;
+        state.client_secret = action.payload.client_secret;
+        state.subtotal = action.payload.subtotal;
+        state.invoice_pdf = action.payload.invoice_pdf_URL;
+      })
+      .addCase(getInvoiceByQuoteID.rejected, (state, action) => {
+        state.loading = false;
+        state.invoiceError = action.error.message;
+      })
       .addCase(updateInvoice.pending, (state) => {
         state.loading = true;
-        state.invoiceError = null;
+        state.invoiceError = '';
       })
       .addCase(updateInvoice.fulfilled, (state, action) => {
         state.loading = false;

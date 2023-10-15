@@ -35,17 +35,17 @@ class Receipt
         });
 
         add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/receipt/(?P<slug>[a-z0-9-]+)', [
-                'methods' => 'GET',
-                'callback' => [$this, 'get_client_receipt'],
-                'args' => [
-                    'stripe_customer_id' => [
-                        'required' => true,
-                        'validate_callback' => function ($param, $request, $key) {
-                            return true;
-                        },
-                    ],
-                ],
+            register_rest_route('orb/v1', '/receipt/(?P<slug>[a-z0-9-_]+)', [
+                'methods' => 'POST',
+                'callback' => [$this, 'get_receipt'],
+                'permission_callback' => '__return_true',
+            ]);
+        });
+
+        add_action('rest_api_init', function () {
+            register_rest_route('orb/v1', '/receipt/(?P<slug>[a-z0-9-_]+)/id', [
+                'methods' => 'POST',
+                'callback' => [$this, 'get_receipt_by_id'],
                 'permission_callback' => '__return_true',
             ]);
         });
@@ -75,7 +75,7 @@ class Receipt
             );
 
             if ($stripe_customer_id !== $stripe_invoice->customer) {
-                $error_message = 'This is not the customer for  this transaction.';
+                $error_message = 'This is not the customer for this transaction.';
                 $status_code = 404;
 
                 $response_data = [
@@ -117,21 +117,45 @@ class Receipt
         }
     }
 
-    function get_client_receipt(WP_REST_Request $request)
+    function get_receipt(WP_REST_Request $request)
     {
-        $id = $request->get_param('slug');
-        $stripe_customer_id = $request->get_param('stripe_customer_id');
-
-        if (empty($id)) {
-            return rest_ensure_response('Invalid Receipt ID');
-        }
+        $stripe_invoice_id = $request->get_param('slug');
+        $stripe_customer_id = $request['stripe_customer_id'];
 
         if (empty($stripe_customer_id)) {
-            return rest_ensure_response('Invalid Stripe Customer ID');
+            $msg = 'Stripe Customer ID is required.';
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(404);
+
+            return $response;
         }
 
-        $receipt = $this->database_receipt->getClientReceipt($id, $stripe_customer_id);
+        $receipt = $this->database_receipt->getReceipt($stripe_invoice_id, $stripe_customer_id);
 
+        return rest_ensure_response($receipt);
+    }
+
+    function get_receipt_by_id(WP_REST_Request $request)
+    {
+        $id = $request->get_param('slug');
+        $stripe_customer_id = $request['stripe_customer_id'];
+
+        if (empty($stripe_customer_id)) {
+            $msg = 'Stripe Customer ID is required.';
+            $message = array(
+                'message' => $msg,
+            );
+            $response = rest_ensure_response($message);
+            $response->set_status(404);
+
+            return $response;
+        }
+
+        $receipt = $this->database_receipt->getReceiptByID($id, $stripe_customer_id);
+        error_log(print_r($receipt, true));
         return rest_ensure_response($receipt);
     }
 

@@ -4,16 +4,17 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { getClient } from '../controllers/clientSlice.js';
 import { getStripeCustomer } from '../controllers/customerSlice.js';
-import { getQuote } from '../controllers/quoteSlice.js';
+import { getQuoteByID } from '../controllers/quoteSlice.js';
 import {
   getStripeInvoice,
-  getInvoice,
+  getInvoiceByID,
   finalizeInvoice,
 } from '../controllers/invoiceSlice.js';
 import {
   getPaymentIntent,
   updateClientSecret,
 } from '../controllers/paymentSlice.js';
+import { updateReceiptID, getReceipt } from '../controllers/receiptSlice.js';
 
 import LoadingComponent from '../loading/LoadingComponent';
 import ErrorComponent from '../error/ErrorComponent.jsx';
@@ -54,6 +55,7 @@ function InvoiceComponent() {
     items,
   } = useSelector((state) => state.invoice);
   const { client_secret } = useSelector((state) => state.payment);
+  const { receipt_id } = useSelector((state) => state.receipt);
 
   const dueDate = new Date(due_date * 1000).toLocaleString();
   const amountDue = amount_due / 100;
@@ -89,7 +91,7 @@ function InvoiceComponent() {
 
   useEffect(() => {
     if (stripe_customer_id) {
-      dispatch(getInvoice(id)).then((response) => {
+      dispatch(getInvoiceByID(id)).then((response) => {
         if (response.error !== undefined) {
           console.error(response.error.message);
           setMessageType('error');
@@ -113,7 +115,7 @@ function InvoiceComponent() {
 
   useEffect(() => {
     if (quote_id && stripe_customer_id) {
-      dispatch(getQuote(quote_id)).then((response) => {
+      dispatch(getQuoteByID(quote_id)).then((response) => {
         if (response.error !== undefined) {
           console.error(response.error.message);
           setMessageType('error');
@@ -135,25 +137,49 @@ function InvoiceComponent() {
     }
   }, [payment_intent_id, dispatch]);
 
+  useEffect(() => {
+    if (stripe_invoice_id) {
+      dispatch(getReceipt()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        } else {
+          updateReceiptID(response.payload.id);
+        }
+      });
+    }
+  }, [stripe_invoice_id, dispatch]);
+
   const handleClick = async () => {
     if (status === 'paid' && receipt_id) {
       window.location.href = `/billing/receipt/${receipt_id}`;
     } else if (status === 'open' && client_secret) {
       window.location.href = `/billing/payment/${id}`;
-    } else if (stripe_invoice_id) {
+    } else if (status === 'draft' && stripe_invoice_id) {
       dispatch(finalizeInvoice()).then((response) => {
         if (response.error !== undefined) {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
-        } else if (response.payload.status === 'open') {
+        } else {
           dispatch(getPaymentIntent()).then((response) => {
             if (response.error !== undefined) {
               console.error(response.error.message);
               setMessageType('error');
               setMessage(response.error.message);
             } else {
-              updateClientSecret(response.payload.client_secret);
+              dispatch(updateClientSecret(response.payload.client_secret)).then(
+                (response) => {
+                  if (response.error !== undefined) {
+                    console.error(response.error.message);
+                    setMessageType('error');
+                    setMessage(response.error.message);
+                  } else {
+                    window.location.href = `/billing/receipt/${receipt_id}`;
+                  }
+                }
+              );
             }
           });
         }
@@ -338,9 +364,9 @@ function InvoiceComponent() {
       <StatusBar message={message} messageType={messageType} />
 
       <button onClick={handleClick}>
-        {status === 'paid' ? (
+        {status === 'paid' && receipt_id ? (
           <h3>RECEIPT</h3>
-        ) : status === 'open' && client_secret ? (
+        ) : status === 'open' || status === 'draft' ? (
           <h3>PAYMENT</h3>
         ) : (
           ''

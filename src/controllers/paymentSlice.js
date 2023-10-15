@@ -44,7 +44,7 @@ export const paymentSlice = createSlice({
     builder
       .addCase(getPaymentIntent.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.error = '';
       })
       .addCase(getPaymentIntent.fulfilled, (state, action) => {
         state.loading = false

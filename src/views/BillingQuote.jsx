@@ -9,7 +9,10 @@ import {
   getStripeQuote,
   getQuoteByID,
 } from '../controllers/quoteSlice.js';
-import { saveInvoice } from '../controllers/invoiceSlice.js';
+import {
+  getInvoiceByQuoteID,
+  saveInvoice,
+} from '../controllers/invoiceSlice.js';
 
 import LoadingComponent from '../loading/LoadingComponent';
 import ErrorComponent from '../error/ErrorComponent.jsx';
@@ -22,8 +25,6 @@ function QuoteComponent() {
   const [message, setMessage] = useState(
     'To receive an invoice for the selected services, you must accept the quote above.'
   );
-  const [stripeInvoiceID, setStripeInvoiceID] = useState('');
-  const [invoiceID, setInvoiceID] = useState('');
 
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
@@ -36,10 +37,11 @@ function QuoteComponent() {
     status,
     total,
     selections,
+    stripe_invoice_id,
   } = useSelector((state) => state.quote);
+  const { invoice_id } = useSelector((state) => state.invoice);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (user_email) {
@@ -48,22 +50,30 @@ function QuoteComponent() {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
+        } else {
+          dispatch(getQuoteByID(id, response.payload.stripe_customer_id)).then(
+            (response) => {
+              if (response.error !== undefined) {
+                console.error(response.error.message);
+                setMessageType('error');
+                setMessage(response.error.message);
+              } else {
+                dispatch(getStripeQuote(response.payload.stripe_quote_id)).then(
+                  (response) => {
+                    if (response.error !== undefined) {
+                      console.error(response.error.message);
+                      setMessageType('error');
+                      setMessage(response.error.message);
+                    } 
+                  }
+                );
+              }
+            }
+          );
         }
       });
     }
   }, [user_email, dispatch]);
-
-  useEffect(() => {
-    if (id && stripe_customer_id) {
-      dispatch(getQuoteByID(id)).then((response) => {
-        if (response.error !== undefined) {
-          console.error(response.error.message);
-          setMessageType('error');
-          setMessage(response.error.message);
-        }
-      });
-    }
-  }, [id, stripe_customer_id, dispatch]);
 
   useEffect(() => {
     if (status === 'canceled') {
@@ -73,32 +83,16 @@ function QuoteComponent() {
   }, [status]);
 
   useEffect(() => {
-    if (stripe_quote_id && status) {
-      dispatch(getStripeQuote()).then((response) => {
+    if (quote_id && status === 'accepted') {
+      dispatch(getInvoiceByQuoteID()).then((response) => {
         if (response.error !== undefined) {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
-        } else {
-          setStripeInvoiceID(response.payload.invoice.id);
         }
       });
     }
-  }, [stripe_quote_id, status, dispatch]);
-
-  useEffect(() => {
-    if (stripeInvoiceID !== '') {
-      dispatch(saveInvoice(stripeInvoiceID)).then((response) => {
-        if (response.error !== undefined) {
-          console.error(response.error.message);
-          setMessageType('error');
-          setMessage(response.error.message);
-        } else {
-          setInvoiceID(response.payload);
-        }
-      });
-    }
-  }, [stripeInvoiceID, dispatch]);
+  }, [quote_id, status, dispatch]);
 
   const handleCancel = () => {
     // pop up that gives the option to cancel or add to the selections
@@ -120,14 +114,25 @@ function QuoteComponent() {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
+        } else {
+          console.log(response.payload.invoice);
+          dispatch(saveInvoice(response.payload.invoice)).then((response) => {
+            if (response.error !== undefined) {
+              console.error(response.error.message);
+              setMessageType('error');
+              setMessage(response.error.message);
+            } else {
+              window.location.href = `/billing/invoice/${response.payload}`;
+            }
+          });
         }
       });
     }
   };
 
-  const handleAccepted = () => {
-    if (invoiceID) {
-      window.location.href = `/billing/invoice/${invoiceID}`;
+  const handleInvoice = () => {
+    if (invoice_id && status === 'accepted') {
+      window.location.href = `/billing/invoice/${invoice_id}`;
     }
   };
 
@@ -200,7 +205,7 @@ function QuoteComponent() {
             </button>
           </>
         ) : status === 'accepted' ? (
-          <button onClick={handleAccepted}>
+          <button onClick={handleInvoice}>
             <h3>INVOICE</h3>
           </button>
         ) : null}
