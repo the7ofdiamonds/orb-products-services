@@ -97,14 +97,16 @@ function SelectionsComponent() {
                 console.error(response.error.message);
                 setMessageType('error');
                 setMessage(response.error.message);
+              } else {
+                console.log(quote.stripe_quote_id);
               }
             });
           }
         });
       }
     }
-  }, [quotes]);
-console.log(status);
+  }, [quotes, dispatch]);
+
   useEffect(() => {
     if (stripe_quote_id) {
       dispatch(getQuote()).then((response) => {

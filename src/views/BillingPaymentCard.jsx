@@ -6,7 +6,7 @@ import PaymentNavigationComponent from './payment/Navigation';
 
 import { getClient } from '../controllers/clientSlice';
 import {
-  getInvoice,
+  getInvoiceByID,
   getStripeInvoice,
   updateInvoiceStatus,
 } from '../controllers/invoiceSlice';
@@ -18,6 +18,7 @@ import {
 } from '../controllers/receiptSlice';
 
 import { displayStatus, displayStatusType } from '../utils/DisplayStatus';
+import { PaymentMethodGenerator } from '../utils/PaymentMethod';
 
 // Stripe
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -73,7 +74,7 @@ const CardPaymentComponent = () => {
 
   useEffect(() => {
     if (stripe_customer_id) {
-      dispatch(getInvoice(id, stripe_customer_id));
+      dispatch(getInvoiceByID(id, stripe_customer_id));
     }
   }, [dispatch, id, stripe_customer_id]);
 
@@ -138,7 +139,7 @@ const CardPaymentComponent = () => {
   useEffect(() => {
     if (brand !== '' && last4 !== '') {
       const paymentMethodCard = `${brand} - ${last4}`;
-      dispatch(updatePaymentMethod(paymentMethodCard));
+      dispatch(updatePaymentMethod(PaymentMethodGenerator(payment_method)));
     }
   }, [dispatch, brand, last4]);
 
@@ -168,7 +169,6 @@ const CardPaymentComponent = () => {
 
       <div className="debit-credit-card card">
         <div className="front">
-          
           <div className="image">
             <img src="" alt="" />
             <img src="" alt="" />

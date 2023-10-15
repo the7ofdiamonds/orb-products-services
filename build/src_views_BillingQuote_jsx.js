@@ -141,7 +141,7 @@ function QuoteComponent() {
   }, [status]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (quote_id && status === 'accepted') {
-      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.getInvoiceByQuoteID)()).then(response => {
+      dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.getInvoiceByQuoteID)(quote_id)).then(response => {
         if (response.error !== undefined) {
           console.error(response.error.message);
           setMessageType('error');

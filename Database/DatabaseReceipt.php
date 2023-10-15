@@ -35,36 +35,26 @@ class DatabaseReceipt
             ]
         );
 
-        if (!$result) {
+        if ($result) {
+            $receipt_id = $this->wpdb->insert_id;
+
+            return $receipt_id;
+        } else {
             $error_message = $this->wpdb->last_error;
-            $status_code = 404;
-
-            $response_data = [
-                'message' => $error_message,
-                'status' => $status_code
-            ];
-
-            $response = rest_ensure_response($response_data);
-            $response->set_status($status_code);
-
-            return $response;
+            throw new Exception($error_message, );
         }
-
-        $receipt_id = $this->wpdb->insert_id;
-
-        return $receipt_id;
     }
 
     public function getReceipt($stripe_invoice_id, $stripe_customer_id)
     {
         if (empty($stripe_invoice_id)) {
             $msg = 'No Stripe Invoice ID was provided.';
-            throw new Exception($msg);
+            throw new Exception($msg, 400);
         }
 
         if (empty($stripe_customer_id)) {
             $msg = 'No Stripe Customer ID was provided.';
-            throw new Exception($msg);
+            throw new Exception($msg, 400);
         }
 
         $receipt = $this->wpdb->get_row(
@@ -75,29 +65,28 @@ class DatabaseReceipt
             )
         );
 
-        if (!$receipt) {
+        if ($receipt) {
+            $data = [
+                'id' => $receipt->id,
+                'created_at' => $receipt->created_at,
+                'stripe_customer_id' => $receipt->stripe_customer_id,
+                'stripe_invoice_id' => $receipt->stripe_invoice_id,
+                'payment_method_id' => $receipt->payment_method_id,
+                'amount_paid' => $receipt->amount_paid,
+                'payment_date' => $receipt->payment_date,
+                'balance' => $receipt->balance,
+                'payment_method' => $receipt->payment_method,
+                'first_name' => $receipt->first_name,
+                'last_name' => $receipt->last_name,
+                'receipt_pdf_url' => $receipt->receipt_pdf_url,
+                'invoice_id' => $receipt->invoice_id
+            ];
+
+            return $data;
+        } else {
             $msg = 'Receipt not found';
-
-            return $msg;
+            throw new Exception($msg, 404);
         }
-
-        $data = [
-            'id' => $receipt->id,
-            'created_at' => $receipt->created_at,
-            'stripe_customer_id' => $receipt->stripe_customer_id,
-            'stripe_invoice_id' => $receipt->stripe_invoice_id,
-            'payment_method_id' => $receipt->payment_method_id,
-            'amount_paid' => $receipt->amount_paid,
-            'payment_date' => $receipt->payment_date,
-            'balance' => $receipt->balance,
-            'payment_method' => $receipt->payment_method,
-            'first_name' => $receipt->first_name,
-            'last_name' => $receipt->last_name,
-            'receipt_pdf_url' => $receipt->receipt_pdf_url,
-            'invoice_id' => $receipt->invoice_id
-        ];
-
-        return $data;
     }
 
     public function getReceiptByID($id, $stripe_customer_id)

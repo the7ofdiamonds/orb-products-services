@@ -52,9 +52,7 @@ export const createQuote = createAsyncThunk('quote/createQuote', async (_, { get
 });
 
 
-export const getQuote = createAsyncThunk('quote/getQuote', async (payload, thunkAPI) => {
-  const { stripeQuoteID, stripeCustomerID } = payload;
-  const { getState } = thunkAPI;
+export const getQuote = createAsyncThunk('quote/getQuote', async (stripeQuoteID, { getState }) => {
   const { stripe_quote_id } = getState().quote;
   const { stripe_customer_id } = getState().client;
 
@@ -65,7 +63,7 @@ export const getQuote = createAsyncThunk('quote/getQuote', async (payload, thunk
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        stripe_customer_id: stripeCustomerID ? stripeCustomerID : stripe_customer_id,
+        stripe_customer_id: stripe_customer_id,
       })
     });
 
@@ -86,7 +84,7 @@ export const getQuoteByID = createAsyncThunk('quote/getQuoteByID', async (id, { 
 
   try {
     const response = await fetch(`/wp-json/orb/v1/quote/${id}/id`, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },

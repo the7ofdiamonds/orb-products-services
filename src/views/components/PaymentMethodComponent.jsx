@@ -2,13 +2,13 @@ import React from 'react';
 
 function PaymentMethodComponent(props) {
   const { payment_method } = props;
-
+console.log(payment_method);
   let paymentMethod = 'No Payment Method Provided';
 
   if (payment_method) {
     const paymentType = payment_method.type;
     const paymentCard = payment_method.card;
-    const paymentFundingType = paymentCard.funding;
+    const paymentFundingType = paymentCard.funding ? '' : paymentCard.funding;
     const paymentBrand = paymentCard.brand;
     const country = paymentCard.country;
     const last4 = paymentCard.last4;

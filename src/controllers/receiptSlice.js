@@ -107,7 +107,7 @@ export const getReceipt = createAsyncThunk('receipt/getReceipt', async (_, { get
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 
@@ -134,7 +134,7 @@ export const getReceiptByID = createAsyncThunk('receipt/getReceiptByID', async (
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 
@@ -182,7 +182,14 @@ export const receiptSlice = createSlice({
       .addCase(getPaymentMethod.fulfilled, (state, action) => {
         state.loading = false;
         state.receiptError = null;
-        state.payment_method = action.payload;
+        state.payment_method_id = action.payload.id;
+        state.billing_details = action.payload.billing_details;
+        state.card = action.payload.card;
+        state.created = action.payload.created;
+        state.customer = action.payload.customer;
+        state.livemode = action.payload.livemode;
+        state.metadata = action.payload.metadata;
+        state.type = action.payload.type;
       })
       .addCase(getPaymentMethod.rejected, (state, action) => {
         state.loading = false;
@@ -190,7 +197,7 @@ export const receiptSlice = createSlice({
       })
       .addCase(postReceipt.pending, (state) => {
         state.loading = true;
-        state.receiptError = null;
+        state.receiptError = '';
       })
       .addCase(postReceipt.fulfilled, (state, action) => {
         state.loading = false;
@@ -203,7 +210,7 @@ export const receiptSlice = createSlice({
       })
       .addCase(getReceipt.pending, (state) => {
         state.loading = true;
-        state.receiptError = null;
+        state.receiptError = '';
       })
       .addCase(getReceipt.fulfilled, (state, action) => {
         state.loading = false;
@@ -226,7 +233,7 @@ export const receiptSlice = createSlice({
       })
       .addCase(getReceiptByID.pending, (state) => {
         state.loading = true;
-        state.receiptError = null;
+        state.receiptError = '';
       })
       .addCase(getReceiptByID.fulfilled, (state, action) => {
         state.loading = false;
@@ -249,7 +256,7 @@ export const receiptSlice = createSlice({
       })
       .addCase(getClientReceipts.pending, (state) => {
         state.loading = true;
-        state.receiptError = null;
+        state.receiptError = '';
       })
       .addCase(getClientReceipts.fulfilled, (state, action) => {
         state.loading = false;

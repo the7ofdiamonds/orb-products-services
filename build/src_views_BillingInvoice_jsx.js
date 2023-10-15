@@ -224,7 +224,7 @@ function InvoiceComponent() {
           setMessageType('error');
           setMessage(response.error.message);
         } else {
-          dispatch((0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_7__.getPaymentIntent)()).then(response => {
+          dispatch((0,_controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_7__.getPaymentIntent)(response.payload.payment_intent_id)).then(response => {
             if (response.error !== undefined) {
               console.error(response.error.message);
               setMessageType('error');

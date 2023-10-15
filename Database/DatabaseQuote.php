@@ -28,13 +28,13 @@ class DatabaseQuote
             $amount_tax = intval($quote->computed->upfront->total_details->amount_tax) / 100;
             $amount_total = intval($quote->amount_total) / 100;
         } else {
-            throw new Exception('A Quote is required to save.');
+            throw new Exception('A Quote is required to save.', 400);
         }
 
         if (!empty($selections)) {
             $serialized_selections = json_encode($selections);
         } else {
-            throw new Exception('Selections are required');
+            throw new Exception('Selections are required', 400);
         }
 
         $result = $this->wpdb->insert(
@@ -57,7 +57,7 @@ class DatabaseQuote
             return $this->wpdb->insert_id;
         } else {
             $msg = $this->wpdb->last_error;
-            throw new Exception($msg);
+            throw new Exception($msg, 404);
         }
     }
 
@@ -65,7 +65,7 @@ class DatabaseQuote
     {
         if (empty($stripe_quote_id)) {
             $msg = 'A Stripe Quote ID is required.';
-            throw new Exception($msg);
+            throw new Exception($msg, 400);
         }
 
         $quote = $this->wpdb->get_row(
@@ -94,7 +94,7 @@ class DatabaseQuote
             return $data;
         } else {
             $msg = 'Stripe Quote ID ' . $stripe_quote_id . ' not found';
-            throw new Exception($msg);
+            throw new Exception($msg, 404);
         }
     }
 

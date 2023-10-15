@@ -64,7 +64,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/clientSlice.js */ "./src/controllers/clientSlice.js");
 /* harmony import */ var _controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/customerSlice.js */ "./src/controllers/customerSlice.js");
@@ -73,9 +73,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../controllers/receiptSlice.js */ "./src/controllers/receiptSlice.js");
 /* harmony import */ var _utils_PhoneNumberFormatter_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/PhoneNumberFormatter.js */ "./src/utils/PhoneNumberFormatter.js");
 /* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
-/* harmony import */ var _views_components_PaymentMethodComponent_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../views/components/PaymentMethodComponent.jsx */ "./src/views/components/PaymentMethodComponent.jsx");
-/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
-
+/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
 
 
 
@@ -91,7 +89,7 @@ __webpack_require__.r(__webpack_exports__);
 function ReceiptComponent() {
   const {
     id
-  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_12__.useParams)();
+  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_11__.useParams)();
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
   const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
   const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
@@ -226,9 +224,7 @@ function ReceiptComponent() {
     className: "th"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, "PAYMENT TYPE")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "td"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_PaymentMethodComponent_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
-    payment_method: payment_method
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", null, payment_method))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "tr client-details"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "th"
@@ -310,7 +306,7 @@ function ReceiptComponent() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", null, new Intl.NumberFormat('us', {
     style: 'currency',
     currency: 'USD'
-  }).format(Balance)))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_11__["default"], {
+  }).format(Balance)))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_10__["default"], {
     message: message,
     messageType: messageType
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -322,59 +318,6 @@ function ReceiptComponent() {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "BILLING"))));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ReceiptComponent);
-
-/***/ }),
-
-/***/ "./src/views/components/PaymentMethodComponent.jsx":
-/*!*********************************************************!*\
-  !*** ./src/views/components/PaymentMethodComponent.jsx ***!
-  \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-
-
-function PaymentMethodComponent(props) {
-  const {
-    payment_method
-  } = props;
-  let paymentMethod = 'No Payment Method Provided';
-  if (payment_method) {
-    const paymentType = payment_method.type;
-    const paymentCard = payment_method.card;
-    const paymentFundingType = paymentCard.funding;
-    const paymentBrand = paymentCard.brand;
-    const country = paymentCard.country;
-    const last4 = paymentCard.last4;
-    const wallet = payment_method.wallet;
-    if (paymentType === 'card') {
-      paymentMethod = `${paymentFundingType !== 'unknown' ? paymentFundingType : ''} ${paymentType} ${country} ${paymentBrand} ${last4}`;
-    } else if (paymentType === 'wallet' && wallet !== null) {
-      paymentMethod = wallet;
-    } else {
-      paymentMethod = paymentType;
-    }
-    if (payment_method.card_present) {
-      const cardPresent = payment_method.card_present;
-      const cardPresentFunding = cardPresent.card_present;
-      const cardPresentBrand = cardPresent.brand;
-      const cardPresentCountry = cardPresent.country;
-      const cardPresentLast4 = cardPresent.last4;
-      paymentMethod = `${cardPresentFunding !== 'unknown' ? cardPresentFunding : ''} ${paymentType} ${cardPresentCountry} ${cardPresentBrand} ${cardPresentLast4}`;
-    }
-  }
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", {
-    className: "payment-method"
-  }, paymentMethod);
-}
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PaymentMethodComponent);
 
 /***/ }),
 

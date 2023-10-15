@@ -163,7 +163,7 @@ function InvoiceComponent() {
           setMessageType('error');
           setMessage(response.error.message);
         } else {
-          dispatch(getPaymentIntent()).then((response) => {
+          dispatch(getPaymentIntent(response.payload.payment_intent_id)).then((response) => {
             if (response.error !== undefined) {
               console.error(response.error.message);
               setMessageType('error');

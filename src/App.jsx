@@ -50,7 +50,7 @@ function App() {
             <Route path="billing/quote/:id" element={<QuoteComponent />} />
             <Route path="billing/invoice/:id" element={<InvoiceComponent />} />
             <Route
-              path="billing/payment/*"
+              path="billing/payment/:id"
               element={<PaymentComponent />}
             />
             <Route

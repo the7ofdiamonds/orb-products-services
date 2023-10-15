@@ -2,6 +2,8 @@
 
 namespace ORB_Services\API;
 
+use Exception;
+
 use WP_REST_Request;
 
 use ORB_Services\API\Stripe\StripeInvoice;
@@ -119,23 +121,39 @@ class Receipt
 
     function get_receipt(WP_REST_Request $request)
     {
-        $stripe_invoice_id = $request->get_param('slug');
-        $stripe_customer_id = $request['stripe_customer_id'];
+        try {
+            $stripe_invoice_id = $request->get_param('slug');
+            $stripe_customer_id = $request['stripe_customer_id'];
 
-        if (empty($stripe_customer_id)) {
-            $msg = 'Stripe Customer ID is required.';
-            $message = array(
-                'message' => $msg,
-            );
-            $response = rest_ensure_response($message);
-            $response->set_status(404);
+            if (empty($stripe_customer_id)) {
+                $msg = 'Stripe Customer ID is required.';
+                $message = array(
+                    'message' => $msg,
+                );
+                $response = rest_ensure_response($message);
+                $response->set_status(404);
+
+                return $response;
+            }
+
+            $receipt = $this->database_receipt->getReceipt($stripe_invoice_id, $stripe_customer_id);
+
+            return rest_ensure_response($receipt);
+        } catch (Exception $e) {
+
+            $error_message = $e->getMessage();
+            $status_code = $e->getCode();
+
+            $response_data = [
+                'message' => $error_message,
+                'status' => $status_code
+            ];
+
+            $response = rest_ensure_response($response_data);
+            $response->set_status($status_code);
 
             return $response;
         }
-
-        $receipt = $this->database_receipt->getReceipt($stripe_invoice_id, $stripe_customer_id);
-
-        return rest_ensure_response($receipt);
     }
 
     function get_receipt_by_id(WP_REST_Request $request)
@@ -155,7 +173,7 @@ class Receipt
         }
 
         $receipt = $this->database_receipt->getReceiptByID($id, $stripe_customer_id);
-        error_log(print_r($receipt, true));
+
         return rest_ensure_response($receipt);
     }
 

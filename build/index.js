@@ -9311,7 +9311,7 @@ function App() {
     path: "billing/invoice/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(InvoiceComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "billing/payment/*",
+    path: "billing/payment/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(PaymentComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "billing/payment/card/:id",
@@ -10250,7 +10250,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const initialState = {
   loading: false,
-  error: '',
+  paymentError: '',
   payment_intent_id: '',
   amount_due: '',
   due_date: '',
@@ -10265,17 +10265,28 @@ const updateClientSecret = clientSecret => {
     payload: clientSecret
   };
 };
-const getPaymentIntent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('payment/getPaymentIntent', async (_, {
+const getPaymentIntent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('payment/getPaymentIntent', async (paymentIntentID, {
   getState
 }) => {
   const {
     payment_intent_id
   } = getState().invoice;
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/stripe/payment_intents/${payment_intent_id}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/stripe/payment_intents/${paymentIntentID ? paymentIntentID : payment_intent_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 const paymentSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
@@ -10289,16 +10300,16 @@ const paymentSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
   extraReducers: builder => {
     builder.addCase(getPaymentIntent.pending, state => {
       state.loading = true;
-      state.error = '';
+      state.paymentError = '';
     }).addCase(getPaymentIntent.fulfilled, (state, action) => {
       state.loading = false;
-      state.error = null;
+      state.paymentError = null;
       state.client_secret = action.payload.client_secret;
       state.status = action.payload.status;
       state.payment_method_id = action.payload.payment_method;
     }).addCase(getPaymentIntent.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.error.message;
+      state.paymentError = action.error.message;
     });
   }
 });
@@ -10385,14 +10396,9 @@ const createQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsync
     throw error;
   }
 });
-const getQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('quote/getQuote', async (payload, thunkAPI) => {
-  const {
-    stripeQuoteID,
-    stripeCustomerID
-  } = payload;
-  const {
-    getState
-  } = thunkAPI;
+const getQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('quote/getQuote', async (stripeQuoteID, {
+  getState
+}) => {
   const {
     stripe_quote_id
   } = getState().quote;
@@ -10406,7 +10412,7 @@ const getQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThu
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        stripe_customer_id: stripeCustomerID ? stripeCustomerID : stripe_customer_id
+        stripe_customer_id: stripe_customer_id
       })
     });
     if (!response.ok) {
@@ -10425,7 +10431,7 @@ const getQuoteByID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyn
 }) => {
   try {
     const response = await fetch(`/wp-json/orb/v1/quote/${id}/id`, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       }
@@ -10977,7 +10983,7 @@ const getReceipt = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncT
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 const getReceiptByID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('receipt/getReceiptByID', async (id, {
@@ -11004,7 +11010,7 @@ const getReceiptByID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAs
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 const getClientReceipts = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('receipt/getClientReceipts', async (_, {
@@ -11049,13 +11055,20 @@ const receiptSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
     }).addCase(getPaymentMethod.fulfilled, (state, action) => {
       state.loading = false;
       state.receiptError = null;
-      state.payment_method = action.payload;
+      state.payment_method_id = action.payload.id;
+      state.billing_details = action.payload.billing_details;
+      state.card = action.payload.card;
+      state.created = action.payload.created;
+      state.customer = action.payload.customer;
+      state.livemode = action.payload.livemode;
+      state.metadata = action.payload.metadata;
+      state.type = action.payload.type;
     }).addCase(getPaymentMethod.rejected, (state, action) => {
       state.loading = false;
       state.receiptError = action.error.message;
     }).addCase(postReceipt.pending, state => {
       state.loading = true;
-      state.receiptError = null;
+      state.receiptError = '';
     }).addCase(postReceipt.fulfilled, (state, action) => {
       state.loading = false;
       state.receiptError = null;
@@ -11065,7 +11078,7 @@ const receiptSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.receiptError = action.error.message;
     }).addCase(getReceipt.pending, state => {
       state.loading = true;
-      state.receiptError = null;
+      state.receiptError = '';
     }).addCase(getReceipt.fulfilled, (state, action) => {
       state.loading = false;
       state.receiptError = null;
@@ -11085,7 +11098,7 @@ const receiptSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.receiptError = action.error.message;
     }).addCase(getReceiptByID.pending, state => {
       state.loading = true;
-      state.receiptError = null;
+      state.receiptError = '';
     }).addCase(getReceiptByID.fulfilled, (state, action) => {
       state.loading = false;
       state.receiptError = null;
@@ -11105,7 +11118,7 @@ const receiptSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.receiptError = action.error.message;
     }).addCase(getClientReceipts.pending, state => {
       state.loading = true;
-      state.receiptError = null;
+      state.receiptError = '';
     }).addCase(getClientReceipts.fulfilled, (state, action) => {
       state.loading = false;
       state.receipts = action.payload;

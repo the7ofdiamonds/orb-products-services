@@ -84,7 +84,7 @@ function QuoteComponent() {
 
   useEffect(() => {
     if (quote_id && status === 'accepted') {
-      dispatch(getInvoiceByQuoteID()).then((response) => {
+      dispatch(getInvoiceByQuoteID(quote_id)).then((response) => {
         if (response.error !== undefined) {
           console.error(response.error.message);
           setMessageType('error');

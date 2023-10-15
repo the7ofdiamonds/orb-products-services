@@ -120,14 +120,15 @@ function SelectionsComponent() {
                 console.error(response.error.message);
                 setMessageType('error');
                 setMessage(response.error.message);
+              } else {
+                console.log(quote.stripe_quote_id);
               }
             });
           }
         });
       }
     }
-  }, [quotes]);
-  console.log(status);
+  }, [quotes, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_quote_id) {
       dispatch((0,_controllers_quoteSlice_js__WEBPACK_IMPORTED_MODULE_5__.getQuote)()).then(response => {

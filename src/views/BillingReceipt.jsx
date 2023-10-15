@@ -14,7 +14,6 @@ import {
 import formatPhoneNumber from '../utils/PhoneNumberFormatter.js';
 
 import LoadingComponent from '../loading/LoadingComponent';
-import PaymentMethodComponent from '../views/components/PaymentMethodComponent.jsx';
 import StatusBar from '../views/components/StatusBar';
 
 function ReceiptComponent() {
@@ -164,7 +163,7 @@ function ReceiptComponent() {
               <h4>PAYMENT TYPE</h4>
             </div>
             <div className="td">
-              <PaymentMethodComponent payment_method={payment_method} />
+              <h5>{payment_method}</h5>
             </div>
           </div>
           <div className="tr client-details">

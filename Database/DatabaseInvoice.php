@@ -21,7 +21,8 @@ class DatabaseInvoice
     public function saveInvoice($stripe_invoice, $quote_id)
     {
         try {
-            if (!empty($stripe_invoice)) {
+            error_log(print_r($stripe_invoice, true));
+            if (is_object($stripe_invoice)) {
                 $subtotal = intval($stripe_invoice->subtotal) / 100;
                 $tax = intval($stripe_invoice->tax) / 100;
                 $amount_due = intval($stripe_invoice->amount_due) / 100;

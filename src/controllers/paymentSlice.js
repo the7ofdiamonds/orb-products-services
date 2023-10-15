@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
   loading: false,
-  error: '',
+  paymentError: '',
   payment_intent_id: '',
   amount_due: '',
   due_date: '',
@@ -20,14 +20,27 @@ export const updateClientSecret = (clientSecret) => {
   };
 };
 
-export const getPaymentIntent = createAsyncThunk('payment/getPaymentIntent', async (_, { getState }) => {
+export const getPaymentIntent = createAsyncThunk('payment/getPaymentIntent', async (paymentIntentID, { getState }) => {
   const { payment_intent_id } = getState().invoice;
-  try {
-    const response = await axios.get(`/wp-json/orb/v1/stripe/payment_intents/${payment_intent_id}`);
-    return response.data;
 
+  try {
+    const response = await fetch(`/wp-json/orb/v1/stripe/payment_intents/${paymentIntentID ? paymentIntentID : payment_intent_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 }
 );
@@ -44,18 +57,18 @@ export const paymentSlice = createSlice({
     builder
       .addCase(getPaymentIntent.pending, (state) => {
         state.loading = true;
-        state.error = '';
+        state.paymentError = '';
       })
       .addCase(getPaymentIntent.fulfilled, (state, action) => {
         state.loading = false
-        state.error = null
+        state.paymentError = null
         state.client_secret = action.payload.client_secret
         state.status = action.payload.status
         state.payment_method_id = action.payload.payment_method
       })
       .addCase(getPaymentIntent.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.paymentError = action.error.message;
       })
   }
 });

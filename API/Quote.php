@@ -32,7 +32,7 @@ class Quote
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/quote/(?P<slug>[a-zA-Z0-9-_]+)', array(
-                'methods' => 'GET',
+                'methods' => 'POST',
                 'callback' => array($this, 'get_quote'),
                 'permission_callback' => '__return_true',
             ));
@@ -40,7 +40,7 @@ class Quote
 
         add_action('rest_api_init', function () {
             register_rest_route('orb/v1', '/quote/(?P<slug>[a-zA-Z0-9-_]+)/id', array(
-                'methods' => 'GET',
+                'methods' => 'POST',
                 'callback' => array($this, 'get_quote_by_id'),
                 'permission_callback' => '__return_true',
             ));

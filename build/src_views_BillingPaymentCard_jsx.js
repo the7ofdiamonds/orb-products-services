@@ -92,6 +92,47 @@ const displayStatusType = status => {
 
 /***/ }),
 
+/***/ "./src/utils/PaymentMethod.js":
+/*!************************************!*\
+  !*** ./src/utils/PaymentMethod.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   PaymentMethodGenerator: () => (/* binding */ PaymentMethodGenerator)
+/* harmony export */ });
+function PaymentMethodGenerator(payment_method) {
+  let paymentMethod = '';
+  if (payment_method) {
+    const paymentType = payment_method.type;
+    const paymentCard = payment_method.card;
+    const paymentFundingType = paymentCard.funding;
+    const paymentBrand = paymentCard.brand;
+    const country = paymentCard.country;
+    const last4 = paymentCard.last4;
+    const wallet = payment_method.wallet;
+    if (paymentType === 'card') {
+      paymentMethod = `${paymentFundingType !== 'unknown' ? paymentFundingType : ''} ${paymentType} ${country} ${paymentBrand} ${last4}`;
+    } else if (paymentType === 'wallet' && wallet !== null) {
+      paymentMethod = wallet;
+    } else {
+      paymentMethod = paymentType;
+    }
+    if (payment_method.card_present) {
+      const cardPresent = payment_method.card_present;
+      const cardPresentFunding = cardPresent.card_present;
+      const cardPresentBrand = cardPresent.brand;
+      const cardPresentCountry = cardPresent.country;
+      const cardPresentLast4 = cardPresent.last4;
+      paymentMethod = `${cardPresentFunding !== 'unknown' ? cardPresentFunding : ''} ${paymentType} ${cardPresentCountry} ${cardPresentBrand} ${cardPresentLast4}`;
+    }
+  }
+  return paymentMethod;
+}
+
+/***/ }),
+
 /***/ "./src/views/BillingPaymentCard.jsx":
 /*!******************************************!*\
   !*** ./src/views/BillingPaymentCard.jsx ***!
@@ -106,7 +147,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _payment_Navigation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./payment/Navigation */ "./src/views/payment/Navigation.jsx");
 /* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/clientSlice */ "./src/controllers/clientSlice.js");
@@ -114,11 +155,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controllers_paymentSlice__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../controllers/paymentSlice */ "./src/controllers/paymentSlice.js");
 /* harmony import */ var _controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../controllers/receiptSlice */ "./src/controllers/receiptSlice.js");
 /* harmony import */ var _utils_DisplayStatus__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/DisplayStatus */ "./src/utils/DisplayStatus.js");
-/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @stripe/react-stripe-js */ "./node_modules/@stripe/react-stripe-js/dist/react-stripe.umd.js");
-/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
-/* harmony import */ var _error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx");
-/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
+/* harmony import */ var _utils_PaymentMethod__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/PaymentMethod */ "./src/utils/PaymentMethod.js");
+/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @stripe/react-stripe-js */ "./node_modules/@stripe/react-stripe-js/dist/react-stripe.umd.js");
+/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
+/* harmony import */ var _error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx");
+/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
+
 
 
 
@@ -138,7 +181,7 @@ __webpack_require__.r(__webpack_exports__);
 const CardPaymentComponent = () => {
   const {
     id
-  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_13__.useParams)();
+  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_14__.useParams)();
   const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
   const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('Please enter your card number, expiration date and the code on the back.');
   const {
@@ -173,9 +216,9 @@ const CardPaymentComponent = () => {
   const [CVC, setCVC] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [paymentMethodID, setPaymentMethodID] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_13__.useNavigate)();
-  const stripe = (0,_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_9__.useStripe)();
-  const elements = (0,_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_9__.useElements)();
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_14__.useNavigate)();
+  const stripe = (0,_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__.useStripe)();
+  const elements = (0,_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__.useElements)();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (user_email) {
       dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_4__.getClient)(user_email));
@@ -183,7 +226,7 @@ const CardPaymentComponent = () => {
   }, [user_email, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_customer_id) {
-      dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_5__.getInvoice)(id, stripe_customer_id));
+      dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_5__.getInvoiceByID)(id, stripe_customer_id));
     }
   }, [dispatch, id, stripe_customer_id]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -223,7 +266,7 @@ const CardPaymentComponent = () => {
     }
     const result = await stripe.confirmCardPayment(client_secret, {
       payment_method: {
-        card: elements.getElement(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_9__.CardElement)
+        card: elements.getElement(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__.CardElement)
       }
     });
     if (result.error) {
@@ -240,7 +283,7 @@ const CardPaymentComponent = () => {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (brand !== '' && last4 !== '') {
       const paymentMethodCard = `${brand} - ${last4}`;
-      dispatch((0,_controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_7__.updatePaymentMethod)(paymentMethodCard));
+      dispatch((0,_controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_7__.updatePaymentMethod)((0,_utils_PaymentMethod__WEBPACK_IMPORTED_MODULE_9__.PaymentMethodGenerator)(payment_method)));
     }
   }, [dispatch, brand, last4]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -254,12 +297,12 @@ const CardPaymentComponent = () => {
     }
   }, [dispatch, status]);
   if (paymentError) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_12__["default"], {
       error: paymentError
     });
   }
   if (loading) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_10__["default"], null);
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_11__["default"], null);
   }
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_payment_Navigation__WEBPACK_IMPORTED_MODULE_3__["default"], null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "debit-credit-card card"
@@ -301,7 +344,7 @@ const CardPaymentComponent = () => {
   })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
     className: "stripe-card card",
     onSubmit: handleSubmit
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_9__.CardElement, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__.CardElement, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_13__["default"], {
     message: message,
     messageType: messageType
   }), client_secret ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
@@ -361,9 +404,7 @@ function PaymentNavigationComponent() {
   const {
     id
   } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useParams)();
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
-    className: "title"
-  }, "PAYMENT"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "payment-options"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.NavLink, {
     to: `/billing/payment/mobile/${id}`

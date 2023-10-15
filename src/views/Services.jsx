@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchServices } from '../controllers/servicesSlice.js';
 
 function ServicesComponent() {
-  const { loading, error, services } = useSelector((state) => state.services);
+  const { loading, servicesError, services } = useSelector((state) => state.services);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ function ServicesComponent() {
     dispatch(fetchServices());
   }, [dispatch]);
 
-  if (error) {
+  if (servicesError) {
     return (
       <main className="error">
         <div className="status-bar card">
@@ -32,12 +32,13 @@ function ServicesComponent() {
   }
 
   const handleServiceClick = (serviceId) => {
-    navigate(`/services/${serviceId}`);
+    window.location.href = `/services/${serviceId}`;
   };
 
   return (
     <>
       <h2 className="title">SERVICES</h2>
+
       <div className="services-list">
         {services && services.length ? (
           <React.Fragment>

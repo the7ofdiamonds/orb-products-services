@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import PaymentNavigationComponent from './payment/Navigation.jsx';
 
-import { getInvoice, getStripeInvoice } from '../controllers/invoiceSlice.js';
+import { getClient } from '../controllers/clientSlice.js';
+import { getStripeCustomer } from '../controllers/customerSlice.js';
+import {
+  getInvoiceByID,
+  getStripeInvoice,
+} from '../controllers/invoiceSlice.js';
 import { getPaymentIntent } from '../controllers/paymentSlice.js';
 import { getPaymentMethod, getReceipt } from '../controllers/receiptSlice.js';
 import { displayStatus, displayStatusType } from '../utils/DisplayStatus.js';
@@ -17,73 +22,121 @@ function PaymentComponent() {
   const { id } = useParams();
 
   const [messageType, setMessageType] = useState('');
-  const [message, setMessage] = useState('Choose a payment method');
+  const [message, setMessage] = useState('');
 
-  const { stripe_invoice_id } = useSelector((state) => state.invoice);
-  const { loading, paymentError, status, payment_method_id, payment_intent } =
-    useSelector((state) => state.payment);
+  const { user_email, stripe_customer_id } = useSelector(
+    (state) => state.client
+  );
+  const { stripe_invoice_id, status, amount_remaining } = useSelector(
+    (state) => state.invoice
+  );
+  const { loading, paymentError, payment_intent } = useSelector(
+    (state) => state.payment
+  );
   const { receipt_id } = useSelector((state) => state.receipt);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getInvoice(id));
-  }, [dispatch, id]);
+    if (user_email) {
+      dispatch(getClient()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        } else {
+          dispatch(getStripeCustomer(response.payload.stripe_customer_id)).then(
+            (response) => {
+              if (response.error !== undefined) {
+                console.error(response.error.message);
+                setMessageType('error');
+                setMessage(response.error.message);
+              } else {
+                dispatch(
+                  getInvoiceByID(id, response.payload.stripe_customer_id)
+                ).then((response) => {
+                  if (response.error !== undefined) {
+                    console.error(response.error.message);
+                    setMessageType('error');
+                    setMessage(response.error.message);
+                  } else {
+                    dispatch(
+                      getStripeInvoice(response.payload.stripe_invoice_id)
+                    ).then((response) => {
+                      if (response.error !== undefined) {
+                        console.error(response.error.message);
+                        setMessageType('error');
+                        setMessage(response.error.message);
+                      } else {
+                        dispatch(
+                          getPaymentIntent(response.payload.payment_intent_id)
+                        ).then((response) => {
+                          if (response.error !== undefined) {
+                            console.error(response.error.message);
+                            setMessageType('error');
+                            setMessage(response.error.message);
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+            }
+          );
+        }
+      });
+    }
+  }, [user_email, dispatch]);
 
   useEffect(() => {
-    if (payment_intent) {
-      dispatch(getPaymentIntent());
+    if (status === 'open') {
+      setMessage('Choose a payment method');
+    } else if (status === 'paid' && amount_remaining === 0) {
+      setMessage('This invoice has been paid in full.');
     }
-  }, [dispatch, payment_intent]);
-
-  useEffect(() => {
-    if (status) {
-      setMessage(displayStatus(status));
-      setMessageType(displayStatusType(status));
-    }
-  }, [status]);
-
-  useEffect(() => {
-    if (payment_method_id) {
-      dispatch(getPaymentMethod());
-    }
-  }, [dispatch, payment_method_id]);
+  }, [status, amount_remaining]);
 
   useEffect(() => {
     if (stripe_invoice_id) {
-      dispatch(getStripeInvoice(stripe_invoice_id));
+      dispatch(getReceipt()).then((response) => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        }
+      });
     }
-  }, [dispatch, stripe_invoice_id]);
+  }, [stripe_invoice_id, dispatch]);
 
-  useEffect(() => {
+  const handleClick = () => {
     if (receipt_id) {
-      dispatch(getReceipt(receipt_id));
+      window.location.href = `/billing/receipt/${receipt_id}`;
     }
-  }, [dispatch, receipt_id]);
-
-  if (receipt_id) {
-    window.location.href = `/billing/receipt/${receipt_id}`;
-  }
+  };
 
   if (paymentError) {
     return <ErrorComponent error={paymentError} />;
   }
-
   if (loading) {
     return <LoadingComponent />;
   }
 
   return (
     <>
-      <PaymentNavigationComponent />
+      <h2 className="title">PAYMENT</h2>
+
+      {status === 'open' ? <PaymentNavigationComponent /> : ''}
 
       <StatusBar message={message} messageType={messageType} />
 
-      {receipt_id && status == 'succeeded' && (
+      {receipt_id && status == 'paid' ? (
         <button onClick={handleClick}>
           <h3>RECEIPT</h3>
         </button>
+      ) : (
+        ''
       )}
     </>
   );

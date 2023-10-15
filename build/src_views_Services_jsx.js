@@ -26,7 +26,7 @@ __webpack_require__.r(__webpack_exports__);
 function ServicesComponent() {
   const {
     loading,
-    error,
+    servicesError,
     services
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.services);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
@@ -34,7 +34,7 @@ function ServicesComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     dispatch((0,_controllers_servicesSlice_js__WEBPACK_IMPORTED_MODULE_3__.fetchServices)());
   }, [dispatch]);
-  if (error) {
+  if (servicesError) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", {
       className: "error"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -47,7 +47,7 @@ function ServicesComponent() {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
   }
   const handleServiceClick = serviceId => {
-    navigate(`/services/${serviceId}`);
+    window.location.href = `/services/${serviceId}`;
   };
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
