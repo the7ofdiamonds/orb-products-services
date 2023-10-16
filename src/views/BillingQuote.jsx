@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getClient } from '../controllers/clientSlice.js';
@@ -26,11 +26,9 @@ function QuoteComponent() {
     'To receive an invoice for the selected services, you must accept the quote above.'
   );
 
-  const { user_email, stripe_customer_id } = useSelector(
-    (state) => state.client
-  );
+  const { user_email } = useSelector((state) => state.client);
   const {
-    loading,
+    quoteLoading,
     quoteError,
     quote_id,
     stripe_quote_id,
@@ -64,7 +62,7 @@ function QuoteComponent() {
                       console.error(response.error.message);
                       setMessageType('error');
                       setMessage(response.error.message);
-                    } 
+                    }
                   }
                 );
               }
@@ -115,7 +113,6 @@ function QuoteComponent() {
           setMessageType('error');
           setMessage(response.error.message);
         } else {
-          console.log(response.payload.invoice);
           dispatch(saveInvoice(response.payload.invoice)).then((response) => {
             if (response.error !== undefined) {
               console.error(response.error.message);
@@ -136,7 +133,13 @@ function QuoteComponent() {
     }
   };
 
-  if (loading) {
+  const handleSelections = () => {
+    if (status === 'canceled') {
+      window.location.href = `/client/selections`;
+    }
+  };
+
+  if (quoteLoading) {
     return <LoadingComponent />;
   }
 
@@ -207,6 +210,10 @@ function QuoteComponent() {
         ) : status === 'accepted' ? (
           <button onClick={handleInvoice}>
             <h3>INVOICE</h3>
+          </button>
+        ) : status === 'canceled' ? (
+          <button onClick={handleSelections}>
+            <h3>SELECTIONS</h3>
           </button>
         ) : null}
       </div>

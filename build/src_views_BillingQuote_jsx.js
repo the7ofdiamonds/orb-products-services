@@ -89,11 +89,10 @@ function QuoteComponent() {
   const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
   const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('To receive an invoice for the selected services, you must accept the quote above.');
   const {
-    user_email,
-    stripe_customer_id
+    user_email
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
-    loading,
+    quoteLoading,
     quoteError,
     quote_id,
     stripe_quote_id,
@@ -170,7 +169,6 @@ function QuoteComponent() {
           setMessageType('error');
           setMessage(response.error.message);
         } else {
-          console.log(response.payload.invoice);
           dispatch((0,_controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_5__.saveInvoice)(response.payload.invoice)).then(response => {
             if (response.error !== undefined) {
               console.error(response.error.message);
@@ -189,7 +187,12 @@ function QuoteComponent() {
       window.location.href = `/billing/invoice/${invoice_id}`;
     }
   };
-  if (loading) {
+  const handleSelections = () => {
+    if (status === 'canceled') {
+      window.location.href = `/client/selections`;
+    }
+  };
+  if (quoteLoading) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_6__["default"], null);
   }
   if (quoteError) {
@@ -234,7 +237,9 @@ function QuoteComponent() {
     onClick: handleAccept
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "ACCEPT"))) : status === 'accepted' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleInvoice
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "INVOICE")) : null));
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "INVOICE")) : status === 'canceled' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    onClick: handleSelections
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SELECTIONS")) : null));
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuoteComponent);
 

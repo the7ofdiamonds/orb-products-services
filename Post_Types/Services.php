@@ -16,7 +16,7 @@ class Services
     public function services_custom_post_type()
     {
         $labels = array(
-            'name' => 'Services',
+            'name' => 'SERVICES',
             'singular_name' => 'Service',
             'add_new' => 'Add Service',
             'all_items' => 'Services',

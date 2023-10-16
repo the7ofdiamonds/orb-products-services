@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
-  servicesloading: false,
+  servicesLoading: false,
   servicesError: '',
   services: [],
   availableServices: []
 }
 
 export const fetchServices = createAsyncThunk('services/fetchServices', async () => {
-
   try {
     const response = await fetch(`/wp-json/orb/v1/services`, {
       method: 'GET',
@@ -59,27 +58,27 @@ export const servicesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchServices.pending, (state) => {
-        state.loading = true
+        state.servicesLoading = true
         state.servicesError = null
       })
       .addCase(fetchServices.fulfilled, (state, action) => {
-        state.loading = false
+        state.servicesLoading = false
         state.services = action.payload
       })
       .addCase(fetchServices.rejected, (state, action) => {
-        state.loading = false
+        state.servicesLoading = false
         state.servicesError = action.error.message
       })
       .addCase(getAvailableServices.pending, (state) => {
-        state.loading = true
+        state.servicesLoading = true
         state.servicesError = null
       })
       .addCase(getAvailableServices.fulfilled, (state, action) => {
-        state.loading = false
+        state.servicesLoading = false
         state.availableServices = action.payload
       })
       .addCase(getAvailableServices.rejected, (state, action) => {
-        state.loading = false
+        state.servicesLoading = false
         state.servicesError = action.error.message
       })
   }

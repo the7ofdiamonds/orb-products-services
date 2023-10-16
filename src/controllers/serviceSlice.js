@@ -2,17 +2,18 @@ import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
-  loading: false,
-  error: '',
+  serviceLoading: false,
+  serviceError: '',
   service: []
 }
+
 
 export const fetchService = createAsyncThunk('service/serviceSlice', async (serviceSlug) => {
   try {
     const response = await axios.get(`/wp-json/orb/v1/service/${serviceSlug}`);
     return response.data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 
@@ -22,16 +23,17 @@ export const serviceSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchService.pending, (state) => {
-        state.loading = true
-        state.error = null
+        state.serviceLoading = true
+        state.serviceError = ''
       })
       .addCase(fetchService.fulfilled, (state, action) => {
-        state.loading = false
+        state.serviceLoading = false
+        state.serviceError = null
         state.service = action.payload
       })
       .addCase(fetchService.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.error.message
+        state.serviceLoading = false
+        state.serviceError = action.error.message
       })
   }
 })

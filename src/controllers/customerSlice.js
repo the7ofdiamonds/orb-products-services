@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-    loading: false,
+    customerLoading: false,
     customer_error: '',
     company_name: '',
     tax_id: '',
@@ -170,24 +170,24 @@ export const customerSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(addStripeCustomer.pending, (state) => {
-                state.loading = true
+                state.customerLoading = true
                 state.customer_error = ''
             })
             .addCase(addStripeCustomer.fulfilled, (state, action) => {
-                state.loading = false
+                state.customerLoading = false
                 state.customer_error = null
                 state.stripe_customer_id = action.payload
             })
             .addCase(addStripeCustomer.rejected, (state, action) => {
-                state.loading = false
+                state.customerLoading = false
                 state.customer_error = action.error.message
             })
             .addCase(getStripeCustomer.pending, (state) => {
-                state.loading = true
+                state.customerLoading = true
                 state.customer_error = ''
             })
             .addCase(getStripeCustomer.fulfilled, (state, action) => {
-                state.loading = false
+                state.customerLoading = false
                 state.customer_error = null;
                 state.stripe_customer_id = action.payload.id;
                 state.company_name = action.payload.name;
@@ -202,15 +202,15 @@ export const customerSlice = createSlice({
                 state.phone = action.payload.phone
             })
             .addCase(getStripeCustomer.rejected, (state, action) => {
-                state.loading = false
+                state.customerLoading = false
                 state.customer_error = action.error.message
             })
             .addCase(updateStripeCustomer.pending, (state) => {
-                state.loading = true
+                state.customerLoading = true
                 state.customer_error = ''
             })
             .addCase(updateStripeCustomer.fulfilled, (state, action) => {
-                state.loading = false
+                state.customerLoading = false
                 state.customer_error = null
                 state.stripe_customer_id = action.payload.id;
                 state.company_name = action.payload.name;
@@ -225,7 +225,7 @@ export const customerSlice = createSlice({
                 state.phone = action.payload.phone
             })
             .addCase(updateStripeCustomer.rejected, (state, action) => {
-                state.loading = false
+                state.customerLoading = false
                 state.customer_error = action.error.message
             })
 

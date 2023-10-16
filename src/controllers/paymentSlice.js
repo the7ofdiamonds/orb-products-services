@@ -1,14 +1,13 @@
-import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-  loading: false,
+  paymentLoading: false,
   paymentError: '',
   payment_intent_id: '',
   amount_due: '',
   due_date: '',
   client_secret: '',
-  status: '',
+  paymentStatus: '',
   payment_method_id: '',
   payment_method: ''
 };
@@ -63,7 +62,7 @@ export const paymentSlice = createSlice({
         state.loading = false
         state.paymentError = null
         state.client_secret = action.payload.client_secret
-        state.status = action.payload.status
+        state.paymentStatus = action.payload.status
         state.payment_method_id = action.payload.payment_method
       })
       .addCase(getPaymentIntent.rejected, (state, action) => {

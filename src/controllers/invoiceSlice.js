@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-  loading: false,
+  invoiceLoading: false,
   invoiceError: '',
   quote_id: '',
   invoices: [],
@@ -312,23 +312,23 @@ export const invoiceSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(saveInvoice.pending, (state) => {
-        state.loading = true;
+        state.invoiceLoading = true;
         state.invoiceError = '';
       })
       .addCase(saveInvoice.fulfilled, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoice_id = action.payload;
       })
       .addCase(saveInvoice.rejected, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoiceError = action.error.message;
       })
       .addCase(getInvoice.pending, (state) => {
-        state.loading = true;
+        state.invoiceLoading = true;
         state.invoiceError = '';
       })
       .addCase(getInvoice.fulfilled, (state, action) => {
-        state.loading = false
+        state.invoiceLoading = false
         state.invoiceError = null;
         state.invoice_id = action.payload.id
         state.status = action.payload.status;
@@ -341,15 +341,15 @@ export const invoiceSlice = createSlice({
         state.invoice_pdf = action.payload.invoice_pdf_URL;
       })
       .addCase(getInvoice.rejected, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoiceError = action.error.message;
       })
       .addCase(getInvoiceByID.pending, (state) => {
-        state.loading = true;
+        state.invoiceLoading = true;
         state.invoiceError = '';
       })
       .addCase(getInvoiceByID.fulfilled, (state, action) => {
-        state.loading = false
+        state.invoiceLoading = false
         state.invoiceError = null;
         state.invoice_id = action.payload.id
         state.status = action.payload.status;
@@ -362,15 +362,15 @@ export const invoiceSlice = createSlice({
         state.invoice_pdf = action.payload.invoice_pdf_URL;
       })
       .addCase(getInvoiceByID.rejected, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoiceError = action.error.message;
       })
       .addCase(getInvoiceByQuoteID.pending, (state) => {
-        state.loading = true;
+        state.invoiceLoading = true;
         state.invoiceError = '';
       })
       .addCase(getInvoiceByQuoteID.fulfilled, (state, action) => {
-        state.loading = false
+        state.invoiceLoading = false
         state.invoiceError = null;
         state.invoice_id = action.payload.id
         state.status = action.payload.status;
@@ -383,37 +383,37 @@ export const invoiceSlice = createSlice({
         state.invoice_pdf = action.payload.invoice_pdf_URL;
       })
       .addCase(getInvoiceByQuoteID.rejected, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoiceError = action.error.message;
       })
       .addCase(updateInvoice.pending, (state) => {
-        state.loading = true;
+        state.invoiceLoading = true;
         state.invoiceError = '';
       })
       .addCase(updateInvoice.fulfilled, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
       })
       .addCase(updateInvoice.rejected, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoiceError = action.error.message;
       })
       .addCase(updateInvoiceStatus.pending, (state) => {
-        state.loading = true;
+        state.invoiceLoading = true;
         state.invoiceError = '';
       })
       .addCase(updateInvoiceStatus.fulfilled, (state, action) => {
         state.status = action.payload;
       })
       .addCase(updateInvoiceStatus.rejected, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoiceError = action.error.message;
       })
       .addCase(getStripeInvoice.pending, (state) => {
-        state.loading = true;
+        state.invoiceLoading = true;
         state.invoiceError = '';
       })
       .addCase(getStripeInvoice.fulfilled, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoiceError = null;
         state.stripe_invoice_id = action.payload.id;
         state.status = action.payload.status;
@@ -441,35 +441,35 @@ export const invoiceSlice = createSlice({
         state.items = action.payload.lines.data;
       })
       .addCase(getStripeInvoice.rejected, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoiceError = action.error.message;
       })
       .addCase(getClientInvoices.pending, (state) => {
-        state.loading = true;
+        state.invoiceLoading = true;
         state.invoiceError = '';
       })
       .addCase(getClientInvoices.fulfilled, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoices = action.payload;
         state.invoiceError = null;
       })
       .addCase(getClientInvoices.rejected, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoiceError = action.error.message;
       })
       .addCase(finalizeInvoice.pending, (state) => {
-        state.loading = true;
+        state.invoiceLoading = true;
         state.invoiceError = '';
       })
       .addCase(finalizeInvoice.fulfilled, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.client_secret = action.payload.client_secret;
         state.payment_intent_id = action.payload.payment_intent_id;
         state.status = action.payload.status;
         state.invoiceError = null;
       })
       .addCase(finalizeInvoice.rejected, (state, action) => {
-        state.loading = false;
+        state.invoiceLoading = false;
         state.invoiceError = action.error.message;
       });
   }

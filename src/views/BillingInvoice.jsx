@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getClient } from '../controllers/clientSlice.js';
 import { getStripeCustomer } from '../controllers/customerSlice.js';
-import { getQuoteByID } from '../controllers/quoteSlice.js';
 import {
   getStripeInvoice,
   getInvoiceByID,
@@ -28,14 +27,11 @@ function InvoiceComponent() {
     'To start receiving the services listed above, please use the payment button below.'
   );
 
-  const { user_email, stripe_customer_id } = useSelector(
-    (state) => state.client
-  );
+  const { user_email } = useSelector((state) => state.client);
   const {
-    loading,
+    invoiceLoading,
     invoiceError,
     status,
-    quote_id,
     customer_name,
     customer_tax_ids,
     address_line_1,
@@ -46,7 +42,6 @@ function InvoiceComponent() {
     customer_phone,
     customer_email,
     stripe_invoice_id,
-    event_id,
     due_date,
     amount_due,
     subtotal,
@@ -54,7 +49,7 @@ function InvoiceComponent() {
     payment_intent_id,
     items,
   } = useSelector((state) => state.invoice);
-  const { client_secret } = useSelector((state) => state.payment);
+  const { paymentStatus, client_secret } = useSelector((state) => state.payment);
   const { receipt_id } = useSelector((state) => state.receipt);
 
   const dueDate = new Date(due_date * 1000).toLocaleString();
@@ -72,58 +67,36 @@ function InvoiceComponent() {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
+        } else {
+          dispatch(getStripeCustomer()).then((response) => {
+            if (response.error !== undefined) {
+              console.error(response.error.message);
+              setMessageType('error');
+              setMessage(response.error.message);
+            } else {
+              dispatch(getInvoiceByID(id)).then((response) => {
+                if (response.error !== undefined) {
+                  console.error(response.error.message);
+                  setMessageType('error');
+                  setMessage(response.error.message);
+                } else {
+                  dispatch(
+                    getStripeInvoice(response.payload.stripe_invoice_id)
+                  ).then((response) => {
+                    if (response.error !== undefined) {
+                      console.error(response.error.message);
+                      setMessageType('error');
+                      setMessage(response.error.message);
+                    }
+                  });
+                }
+              });
+            }
+          });
         }
       });
     }
   }, [user_email, dispatch]);
-
-  useEffect(() => {
-    if (stripe_customer_id) {
-      dispatch(getStripeCustomer()).then((response) => {
-        if (response.error !== undefined) {
-          console.error(response.error.message);
-          setMessageType('error');
-          setMessage(response.error.message);
-        }
-      });
-    }
-  }, [stripe_customer_id, dispatch]);
-
-  useEffect(() => {
-    if (stripe_customer_id) {
-      dispatch(getInvoiceByID(id)).then((response) => {
-        if (response.error !== undefined) {
-          console.error(response.error.message);
-          setMessageType('error');
-          setMessage(response.error.message);
-        }
-      });
-    }
-  }, [id, stripe_customer_id, dispatch]);
-
-  useEffect(() => {
-    if (stripe_invoice_id) {
-      dispatch(getStripeInvoice(stripe_invoice_id)).then((response) => {
-        if (response.error !== undefined) {
-          console.error(response.error.message);
-          setMessageType('error');
-          setMessage(response.error.message);
-        }
-      });
-    }
-  }, [stripe_invoice_id, dispatch]);
-
-  useEffect(() => {
-    if (quote_id && stripe_customer_id) {
-      dispatch(getQuoteByID(quote_id)).then((response) => {
-        if (response.error !== undefined) {
-          console.error(response.error.message);
-          setMessageType('error');
-          setMessage(response.error.message);
-        }
-      });
-    }
-  }, [quote_id, stripe_customer_id, dispatch]);
 
   useEffect(() => {
     if (payment_intent_id) {
@@ -138,18 +111,19 @@ function InvoiceComponent() {
   }, [payment_intent_id, dispatch]);
 
   useEffect(() => {
-    if (stripe_invoice_id) {
+    if (status === 'paid' && stripe_invoice_id) {
       dispatch(getReceipt()).then((response) => {
         if (response.error !== undefined) {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
         } else {
+          console.log(response.payload.id);
           updateReceiptID(response.payload.id);
         }
       });
     }
-  }, [stripe_invoice_id, dispatch]);
+  }, [stripe_invoice_id, status, dispatch]);
 
   const handleClick = async () => {
     if (status === 'paid' && receipt_id) {
@@ -163,14 +137,16 @@ function InvoiceComponent() {
           setMessageType('error');
           setMessage(response.error.message);
         } else {
-          dispatch(getPaymentIntent(response.payload.payment_intent_id)).then((response) => {
-            if (response.error !== undefined) {
-              console.error(response.error.message);
-              setMessageType('error');
-              setMessage(response.error.message);
-            } else {
-              dispatch(updateClientSecret(response.payload.client_secret)).then(
-                (response) => {
+          dispatch(getPaymentIntent(response.payload.payment_intent_id)).then(
+            (response) => {
+              if (response.error !== undefined) {
+                console.error(response.error.message);
+                setMessageType('error');
+                setMessage(response.error.message);
+              } else {
+                dispatch(
+                  updateClientSecret(response.payload.client_secret)
+                ).then((response) => {
                   if (response.error !== undefined) {
                     console.error(response.error.message);
                     setMessageType('error');
@@ -178,16 +154,16 @@ function InvoiceComponent() {
                   } else {
                     window.location.href = `/billing/receipt/${receipt_id}`;
                   }
-                }
-              );
+                });
+              }
             }
-          });
+          );
         }
       });
     }
   };
 
-  if (loading) {
+  if (invoiceLoading) {
     return <LoadingComponent />;
   }
 
@@ -364,9 +340,10 @@ function InvoiceComponent() {
       <StatusBar message={message} messageType={messageType} />
 
       <button onClick={handleClick}>
-        {status === 'paid' && receipt_id ? (
+        {(status === 'paid' && receipt_id) ||
+        (paymentStatus === 'succeeded' && receipt_id) ? (
           <h3>RECEIPT</h3>
-        ) : status === 'open' || status === 'draft' ? (
+        ) : status === 'open' && client_secret ? (
           <h3>PAYMENT</h3>
         ) : (
           ''

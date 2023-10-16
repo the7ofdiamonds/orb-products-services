@@ -1,45 +1,38 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchService } from '../controllers/serviceSlice.js';
+
+import LoadingComponent from '../loading/LoadingComponent';
+import ErrorComponent from '../error/ErrorComponent.jsx';
 
 function ServiceComponent() {
   const location = useLocation();
   const servicePath = location.pathname.split('/')[2];
 
-  const { loading, error } = useSelector((state) => state.service);
+  const { serviceLoading, serviceError } = useSelector(
+    (state) => state.service
+  );
   const { title, description, features, action_word, content, cost, icon } =
     useSelector((state) => state.service.service);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchService(servicePath));
   }, [dispatch, servicePath]);
 
   const handleClick = () => {
-    navigate('/services/start');
+    window.location.href = '/client/start';
   };
 
-  if (error) {
-    return (
-      <main className="error">
-        <div className="status-bar card">
-          <span className="error">
-            "We encountered an issue while loading this page. Please try again,
-            and if the problem persists, kindly contact the website
-            administrators for assistance."
-          </span>
-        </div>
-      </main>
-    );
+  if (serviceLoading) {
+    return <LoadingComponent />;
   }
 
-
-  if (loading) {
-    return <div>Loading...</div>;
+  if (serviceError) {
+    return <ErrorComponent error={serviceError} />;
   }
 
   return (
@@ -71,9 +64,7 @@ function ServiceComponent() {
       </div>
 
       <div className="details-card card">
-        <h4>
-          {description}
-        </h4>
+        <h4>{description}</h4>
         <div className="details">
           <p>{content}</p>
         </div>

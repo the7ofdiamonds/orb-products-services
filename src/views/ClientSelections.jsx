@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchServices } from '../controllers/servicesSlice.js';
@@ -11,7 +10,6 @@ import {
   finalizeQuote,
   getClientQuotes,
   getQuote,
-  getStripeQuote,
   updateStripeQuote,
 } from '../controllers/quoteSlice.js';
 
@@ -97,9 +95,7 @@ function SelectionsComponent() {
                 console.error(response.error.message);
                 setMessageType('error');
                 setMessage(response.error.message);
-              } else {
-                console.log(quote.stripe_quote_id);
-              }
+              } 
             });
           }
         });

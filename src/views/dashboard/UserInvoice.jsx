@@ -5,7 +5,6 @@ import { getClient } from '../../controllers/clientSlice';
 import {
   getClientInvoices,
   deleteInvoice,
-  getStripeInvoice,
 } from '../../controllers/invoiceSlice';
 
 function UserInvoiceComponent() {
@@ -14,7 +13,7 @@ function UserInvoiceComponent() {
   const { user_email, stripe_customer_id } = useSelector(
     (state) => state.client
   );
-  const { loading, invoiceError, invoices, stripe_invoice_id } = useSelector(
+  const { invoiceLoading, invoiceError, invoices } = useSelector(
     (state) => state.invoice
   );
 
@@ -30,6 +29,10 @@ function UserInvoiceComponent() {
     }
   }, [stripe_customer_id, dispatch]);
 
+  if (invoiceLoading) {
+    return <div>Loading...</div>;
+  }
+
   if (invoiceError) {
     return (
       <>
@@ -40,10 +43,6 @@ function UserInvoiceComponent() {
         </div>
       </>
     );
-  }
-
-  if (loading) {
-    return <div>Loading...</div>;
   }
 
   const now = new Date().getTime();

@@ -9363,8 +9363,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const initialState = {
-  loading: false,
-  client_error: '',
+  clientLoading: false,
+  clientError: '',
   client_id: '',
   stripe_customer_id: '',
   user_email: sessionStorage.getItem('user_email'),
@@ -9452,28 +9452,29 @@ const clientSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice
   initialState,
   extraReducers: builder => {
     builder.addCase(addClient.pending, state => {
-      state.loading = true;
-      state.client_error = null;
+      state.clientLoading = true;
+      state.clientError = '';
     }).addCase(addClient.fulfilled, (state, action) => {
-      state.loading = false;
+      state.clientLoading = false;
+      state.clientError = null;
       state.client_id = action.payload.client_id;
       state.stripe_customer_id = action.payload.stripe_customer_id;
     }).addCase(addClient.rejected, (state, action) => {
-      state.loading = false;
-      state.client_error = action.error.message;
+      state.clientLoading = false;
+      state.clientError = action.error.message;
     }).addCase(getClient.pending, state => {
-      state.loading = true;
-      state.client_error = null;
+      state.clientLoading = true;
+      state.clientError = '';
     }).addCase(getClient.fulfilled, (state, action) => {
-      state.loading = false;
-      state.client_error = null;
+      state.clientLoading = false;
+      state.clientError = null;
       state.client_id = action.payload.id;
       state.first_name = action.payload.first_name;
       state.last_name = action.payload.last_name;
       state.stripe_customer_id = action.payload.stripe_customer_id;
     }).addCase(getClient.rejected, (state, action) => {
-      state.loading = false;
-      state.client_error = action.error.message;
+      state.clientLoading = false;
+      state.clientError = action.error.message;
     });
   }
 });
@@ -9513,7 +9514,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const initialState = {
-  loading: false,
+  customerLoading: false,
   customer_error: '',
   company_name: '',
   tax_id: '',
@@ -9678,20 +9679,20 @@ const customerSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
   },
   extraReducers: builder => {
     builder.addCase(addStripeCustomer.pending, state => {
-      state.loading = true;
+      state.customerLoading = true;
       state.customer_error = '';
     }).addCase(addStripeCustomer.fulfilled, (state, action) => {
-      state.loading = false;
+      state.customerLoading = false;
       state.customer_error = null;
       state.stripe_customer_id = action.payload;
     }).addCase(addStripeCustomer.rejected, (state, action) => {
-      state.loading = false;
+      state.customerLoading = false;
       state.customer_error = action.error.message;
     }).addCase(getStripeCustomer.pending, state => {
-      state.loading = true;
+      state.customerLoading = true;
       state.customer_error = '';
     }).addCase(getStripeCustomer.fulfilled, (state, action) => {
-      state.loading = false;
+      state.customerLoading = false;
       state.customer_error = null;
       state.stripe_customer_id = action.payload.id;
       state.company_name = action.payload.name;
@@ -9705,13 +9706,13 @@ const customerSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
       state.email = action.payload.email;
       state.phone = action.payload.phone;
     }).addCase(getStripeCustomer.rejected, (state, action) => {
-      state.loading = false;
+      state.customerLoading = false;
       state.customer_error = action.error.message;
     }).addCase(updateStripeCustomer.pending, state => {
-      state.loading = true;
+      state.customerLoading = true;
       state.customer_error = '';
     }).addCase(updateStripeCustomer.fulfilled, (state, action) => {
-      state.loading = false;
+      state.customerLoading = false;
       state.customer_error = null;
       state.stripe_customer_id = action.payload.id;
       state.company_name = action.payload.name;
@@ -9725,7 +9726,7 @@ const customerSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
       state.email = action.payload.email;
       state.phone = action.payload.phone;
     }).addCase(updateStripeCustomer.rejected, (state, action) => {
-      state.loading = false;
+      state.customerLoading = false;
       state.customer_error = action.error.message;
     });
   }
@@ -9776,7 +9777,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const initialState = {
-  loading: false,
+  invoiceLoading: false,
   invoiceError: '',
   quote_id: '',
   invoices: [],
@@ -10090,19 +10091,19 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
   },
   extraReducers: builder => {
     builder.addCase(saveInvoice.pending, state => {
-      state.loading = true;
+      state.invoiceLoading = true;
       state.invoiceError = '';
     }).addCase(saveInvoice.fulfilled, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoice_id = action.payload;
     }).addCase(saveInvoice.rejected, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = action.error.message;
     }).addCase(getInvoice.pending, state => {
-      state.loading = true;
+      state.invoiceLoading = true;
       state.invoiceError = '';
     }).addCase(getInvoice.fulfilled, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = null;
       state.invoice_id = action.payload.id;
       state.status = action.payload.status;
@@ -10114,13 +10115,13 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.subtotal = action.payload.subtotal;
       state.invoice_pdf = action.payload.invoice_pdf_URL;
     }).addCase(getInvoice.rejected, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = action.error.message;
     }).addCase(getInvoiceByID.pending, state => {
-      state.loading = true;
+      state.invoiceLoading = true;
       state.invoiceError = '';
     }).addCase(getInvoiceByID.fulfilled, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = null;
       state.invoice_id = action.payload.id;
       state.status = action.payload.status;
@@ -10132,13 +10133,13 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.subtotal = action.payload.subtotal;
       state.invoice_pdf = action.payload.invoice_pdf_URL;
     }).addCase(getInvoiceByID.rejected, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = action.error.message;
     }).addCase(getInvoiceByQuoteID.pending, state => {
-      state.loading = true;
+      state.invoiceLoading = true;
       state.invoiceError = '';
     }).addCase(getInvoiceByQuoteID.fulfilled, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = null;
       state.invoice_id = action.payload.id;
       state.status = action.payload.status;
@@ -10150,29 +10151,29 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.subtotal = action.payload.subtotal;
       state.invoice_pdf = action.payload.invoice_pdf_URL;
     }).addCase(getInvoiceByQuoteID.rejected, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = action.error.message;
     }).addCase(updateInvoice.pending, state => {
-      state.loading = true;
+      state.invoiceLoading = true;
       state.invoiceError = '';
     }).addCase(updateInvoice.fulfilled, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
     }).addCase(updateInvoice.rejected, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = action.error.message;
     }).addCase(updateInvoiceStatus.pending, state => {
-      state.loading = true;
+      state.invoiceLoading = true;
       state.invoiceError = '';
     }).addCase(updateInvoiceStatus.fulfilled, (state, action) => {
       state.status = action.payload;
     }).addCase(updateInvoiceStatus.rejected, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = action.error.message;
     }).addCase(getStripeInvoice.pending, state => {
-      state.loading = true;
+      state.invoiceLoading = true;
       state.invoiceError = '';
     }).addCase(getStripeInvoice.fulfilled, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = null;
       state.stripe_invoice_id = action.payload.id;
       state.status = action.payload.status;
@@ -10199,29 +10200,29 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.invoice_pdf = action.payload.invoice_pdf;
       state.items = action.payload.lines.data;
     }).addCase(getStripeInvoice.rejected, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = action.error.message;
     }).addCase(getClientInvoices.pending, state => {
-      state.loading = true;
+      state.invoiceLoading = true;
       state.invoiceError = '';
     }).addCase(getClientInvoices.fulfilled, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoices = action.payload;
       state.invoiceError = null;
     }).addCase(getClientInvoices.rejected, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = action.error.message;
     }).addCase(finalizeInvoice.pending, state => {
-      state.loading = true;
+      state.invoiceLoading = true;
       state.invoiceError = '';
     }).addCase(finalizeInvoice.fulfilled, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.client_secret = action.payload.client_secret;
       state.payment_intent_id = action.payload.payment_intent_id;
       state.status = action.payload.status;
       state.invoiceError = null;
     }).addCase(finalizeInvoice.rejected, (state, action) => {
-      state.loading = false;
+      state.invoiceLoading = false;
       state.invoiceError = action.error.message;
     });
   }
@@ -10243,19 +10244,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   paymentSlice: () => (/* binding */ paymentSlice),
 /* harmony export */   updateClientSecret: () => (/* binding */ updateClientSecret)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
-
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
 const initialState = {
-  loading: false,
+  paymentLoading: false,
   paymentError: '',
   payment_intent_id: '',
   amount_due: '',
   due_date: '',
   client_secret: '',
-  status: '',
+  paymentStatus: '',
   payment_method_id: '',
   payment_method: ''
 };
@@ -10265,7 +10263,7 @@ const updateClientSecret = clientSecret => {
     payload: clientSecret
   };
 };
-const getPaymentIntent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('payment/getPaymentIntent', async (paymentIntentID, {
+const getPaymentIntent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('payment/getPaymentIntent', async (paymentIntentID, {
   getState
 }) => {
   const {
@@ -10289,7 +10287,7 @@ const getPaymentIntent = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.create
     throw error;
   }
 });
-const paymentSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
+const paymentSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
   name: 'payment',
   initialState,
   reducers: {
@@ -10305,7 +10303,7 @@ const paymentSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.loading = false;
       state.paymentError = null;
       state.client_secret = action.payload.client_secret;
-      state.status = action.payload.status;
+      state.paymentStatus = action.payload.status;
       state.payment_method_id = action.payload.payment_method;
     }).addCase(getPaymentIntent.rejected, (state, action) => {
       state.loading = false;
@@ -10346,7 +10344,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
 const initialState = {
-  loading: false,
+  quoteLoading: false,
   quoteError: '',
   stripe_customer_id: '',
   quotes: '',
@@ -10426,15 +10424,24 @@ const getQuote = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThu
     throw error;
   }
 });
-const getQuoteByID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('quote/getQuoteByID', async (id, {
+const getQuoteByID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('quote/getQuoteByID', async (quoteID, {
   getState
 }) => {
+  const {
+    quote_id
+  } = getState().quote;
+  const {
+    stripe_customer_id
+  } = getState().client;
   try {
-    const response = await fetch(`/wp-json/orb/v1/quote/${id}/id`, {
+    const response = await fetch(`/wp-json/orb/v1/quote/${quoteID ? quoteID : quote_id}/id`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id
+      })
     });
     if (!response.ok) {
       const errorData = await response.json();
@@ -10696,10 +10703,10 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
   },
   extraReducers: builder => {
     builder.addCase(createQuote.pending, state => {
-      state.loading = true;
+      state.quoteLoading = true;
       state.quoteError = '';
     }).addCase(createQuote.fulfilled, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = null;
       state.stripe_quote_id = action.payload.id;
       state.stripe_customer_id = action.payload.stripe_customer_id;
@@ -10708,13 +10715,13 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
       state.status = action.payload.status;
       state.total = action.payload.total;
     }).addCase(createQuote.rejected, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = action.error.message;
     }).addCase(getQuote.pending, state => {
-      state.loading = true;
+      state.quoteLoading = true;
       state.quoteError = '';
     }).addCase(getQuote.fulfilled, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = null;
       state.quote_id = action.payload.id;
       state.stripe_quote_id = action.payload.stripe_quote_id;
@@ -10723,13 +10730,13 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
       state.amount_subtotal = action.payload.amount_subtotal;
       state.amount_total = action.payload.amount_total;
     }).addCase(getQuote.rejected, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = action.error.message;
     }).addCase(getQuoteByID.pending, state => {
-      state.loading = true;
+      state.quoteLoading = true;
       state.quoteError = '';
     }).addCase(getQuoteByID.fulfilled, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = null;
       state.quote_id = action.payload.id;
       state.stripe_quote_id = action.payload.stripe_quote_id;
@@ -10738,39 +10745,39 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
       state.amount_subtotal = action.payload.amount_subtotal;
       state.amount_total = action.payload.amount_total;
     }).addCase(getQuoteByID.rejected, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = action.error.message;
     }).addCase(getStripeQuote.pending, state => {
-      state.loading = true;
+      state.quoteLoading = true;
       state.quoteError = '';
     }).addCase(getStripeQuote.fulfilled, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = null;
       state.stripe_quote_id = action.payload.id;
       state.status = action.payload.status;
       state.amount_subtotal = action.payload.amount_subtotal;
       state.amount_total = action.payload.amount_total;
     }).addCase(getStripeQuote.rejected, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = action.error.message;
     }).addCase(updateQuote.pending, state => {
-      state.loading = true;
+      state.quoteLoading = true;
       state.quoteError = '';
     }).addCase(updateQuote.fulfilled, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = null;
       state.stripe_quote_id = action.payload.id;
       state.status = action.payload.status;
       state.amount_subtotal = action.payload.amount_subtotal;
       state.amount_total = action.payload.amount_total;
     }).addCase(updateQuote.rejected, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = action.error.message;
     }).addCase(updateQuoteStatus.pending, state => {
-      state.loading = true;
+      state.quoteLoading = true;
       state.quoteError = '';
     }).addCase(updateQuoteStatus.fulfilled, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = null;
       state.status = action.payload;
       state.stripe_quote_id = action.payload.id;
@@ -10778,23 +10785,23 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
       state.amount_subtotal = action.payload.amount_subtotal;
       state.amount_total = action.payload.amount_total;
     }).addCase(updateQuoteStatus.rejected, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = action.error.message;
     }).addCase(getClientQuotes.pending, state => {
-      state.loading = true;
+      state.quoteLoading = true;
       state.quoteError = '';
     }).addCase(getClientQuotes.fulfilled, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = null;
       state.quotes = action.payload;
     }).addCase(getClientQuotes.rejected, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = action.error.message;
     }).addCase(finalizeQuote.pending, state => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = '';
     }).addCase(finalizeQuote.fulfilled, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = null;
       state.quote_id = action.payload.quote_id;
       state.stripe_quote_id = action.payload.stripe_quote_id;
@@ -10805,13 +10812,13 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
       state.amount_shipping = action.payload.amount_shipping;
       state.amount_total = action.payload.amount_total;
     }).addCase(finalizeQuote.rejected, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = action.error.message;
     }).addCase(acceptQuote.pending, state => {
-      state.loading = true;
+      state.quoteLoading = true;
       state.quoteError = '';
     }).addCase(acceptQuote.fulfilled, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = null;
       state.status = action.payload.status;
       state.stripe_invoice_id = action.payload.invoice;
@@ -10823,17 +10830,17 @@ const quoteSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)
       state.amount_shipping = action.payload.amount_shipping;
       state.amount_total = action.payload.amount_total;
     }).addCase(acceptQuote.rejected, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = action.error.message;
     }).addCase(cancelQuote.pending, state => {
-      state.loading = true;
+      state.quoteLoading = true;
       state.quoteError = '';
     }).addCase(cancelQuote.fulfilled, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = null;
       state.status = action.payload;
     }).addCase(cancelQuote.rejected, (state, action) => {
-      state.loading = false;
+      state.quoteLoading = false;
       state.quoteError = action.error.message;
     });
   }
@@ -11521,8 +11528,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const initialState = {
-  loading: false,
-  error: '',
+  serviceLoading: false,
+  serviceError: '',
   service: []
 };
 const fetchService = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('service/serviceSlice', async serviceSlug => {
@@ -11530,7 +11537,7 @@ const fetchService = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyn
     const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/service/${serviceSlug}`);
     return response.data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 const serviceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
@@ -11538,14 +11545,15 @@ const serviceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
   initialState,
   extraReducers: builder => {
     builder.addCase(fetchService.pending, state => {
-      state.loading = true;
-      state.error = null;
+      state.serviceLoading = true;
+      state.serviceError = '';
     }).addCase(fetchService.fulfilled, (state, action) => {
-      state.loading = false;
+      state.serviceLoading = false;
+      state.serviceError = null;
       state.service = action.payload;
     }).addCase(fetchService.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.message;
+      state.serviceLoading = false;
+      state.serviceError = action.error.message;
     });
   }
 });
@@ -11570,7 +11578,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
 const initialState = {
-  servicesloading: false,
+  servicesLoading: false,
   servicesError: '',
   services: [],
   availableServices: []
@@ -11618,22 +11626,22 @@ const servicesSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSli
   initialState,
   extraReducers: builder => {
     builder.addCase(fetchServices.pending, state => {
-      state.loading = true;
+      state.servicesLoading = true;
       state.servicesError = null;
     }).addCase(fetchServices.fulfilled, (state, action) => {
-      state.loading = false;
+      state.servicesLoading = false;
       state.services = action.payload;
     }).addCase(fetchServices.rejected, (state, action) => {
-      state.loading = false;
+      state.servicesLoading = false;
       state.servicesError = action.error.message;
     }).addCase(getAvailableServices.pending, state => {
-      state.loading = true;
+      state.servicesLoading = true;
       state.servicesError = null;
     }).addCase(getAvailableServices.fulfilled, (state, action) => {
-      state.loading = false;
+      state.servicesLoading = false;
       state.availableServices = action.payload;
     }).addCase(getAvailableServices.rejected, (state, action) => {
-      state.loading = false;
+      state.servicesLoading = false;
       state.servicesError = action.error.message;
     });
   }

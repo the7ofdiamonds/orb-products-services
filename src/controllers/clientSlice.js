@@ -2,8 +2,8 @@ import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-    loading: false,
-    client_error: '',
+    clientLoading: false,
+    clientError: '',
     client_id: '',
     stripe_customer_id: '',
     user_email: sessionStorage.getItem('user_email'),
@@ -93,33 +93,34 @@ export const clientSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(addClient.pending, (state) => {
-                state.loading = true
-                state.client_error = null
+                state.clientLoading = true
+                state.clientError = ''
             })
             .addCase(addClient.fulfilled, (state, action) => {
-                state.loading = false
+                state.clientLoading = false
+                state.clientError = null
                 state.client_id = action.payload.client_id
                 state.stripe_customer_id = action.payload.stripe_customer_id
             })
             .addCase(addClient.rejected, (state, action) => {
-                state.loading = false
-                state.client_error = action.error.message
+                state.clientLoading = false
+                state.clientError = action.error.message
             })
             .addCase(getClient.pending, (state) => {
-                state.loading = true
-                state.client_error = null
+                state.clientLoading = true
+                state.clientError = ''
             })
             .addCase(getClient.fulfilled, (state, action) => {
-                state.loading = false;
-                state.client_error = null;
+                state.clientLoading = false;
+                state.clientError = null;
                 state.client_id = action.payload.id
                 state.first_name = action.payload.first_name
                 state.last_name = action.payload.last_name
                 state.stripe_customer_id = action.payload.stripe_customer_id
             })
             .addCase(getClient.rejected, (state, action) => {
-                state.loading = false
-                state.client_error = action.error.message
+                state.clientLoading = false
+                state.clientError = action.error.message
             })
     }
 })

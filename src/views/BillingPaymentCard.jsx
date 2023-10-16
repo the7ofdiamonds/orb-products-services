@@ -45,7 +45,7 @@ const CardPaymentComponent = () => {
     amount_paid,
     remaining_balance,
   } = useSelector((state) => state.invoice);
-  const { loading, paymentError, client_secret } = useSelector(
+  const { paymentLoading, paymentError, client_secret } = useSelector(
     (state) => state.payment
   );
   const { receipt_id, payment_method, brand, last4 } = useSelector(
@@ -155,12 +155,12 @@ const CardPaymentComponent = () => {
     }
   }, [dispatch, status]);
 
-  if (paymentError) {
-    return <ErrorComponent error={paymentError} />;
+  if (paymentLoading) {
+    return <LoadingComponent />;
   }
 
-  if (loading) {
-    return <LoadingComponent />;
+  if (paymentError) {
+    return <ErrorComponent error={paymentError} />;
   }
 
   return (

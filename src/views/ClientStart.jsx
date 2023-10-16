@@ -31,16 +31,13 @@ function ClientComponent() {
   );
 
   const {
-    loading,
-    client_error,
     user_email,
     first_name,
     last_name,
-    client_id,
     stripe_customer_id,
   } = useSelector((state) => state.client);
   const {
-    customer_error,
+    customerLoading,
     company_name,
     tax_id,
     address_line_1,
@@ -100,22 +97,18 @@ function ClientComponent() {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
+        } else {
+          dispatch(getStripeCustomer()).then((response) => {
+            if (response.error !== undefined) {
+              console.error(response.error.message);
+              setMessageType('error');
+              setMessage(response.error.message);
+            }
+          });
         }
       });
     }
   }, [user_email, dispatch]);
-
-  useEffect(() => {
-    if (stripe_customer_id) {
-      dispatch(getStripeCustomer()).then((response) => {
-        if (response.error !== undefined) {
-          console.error(response.error.message);
-          setMessageType('error');
-          setMessage(response.error.message);
-        }
-      });
-    }
-  }, [stripe_customer_id, navigate]);
 
   useEffect(() => {
     if (address_line_1 && city && state && zipcode) {
@@ -148,7 +141,7 @@ function ClientComponent() {
     ) {
       dispatch(addClient()).then((response) => {
         if (response.error === undefined) {
-          navigate('/client/selections');
+          window.location.href = '/client/selections';
         } else {
           console.error(response.error.message);
           setMessageType('error');
@@ -158,7 +151,7 @@ function ClientComponent() {
     } else if (stripe_customer_id) {
       dispatch(updateStripeCustomer()).then((response) => {
         if (response.error === undefined) {
-          navigate('/client/selections');
+          window.location.href = '/client/selections';
         } else {
           console.error(response.error.message);
           setMessageType('error');
@@ -168,13 +161,14 @@ function ClientComponent() {
     }
   };
 
-  if (loading) {
+  if (customerLoading) {
     return <LoadingComponent />;
   }
 
   return (
     <>
       <h2 className="title">CLIENT DETAILS</h2>
+
       <div className="client-details card" id="client-details">
         <form>
           <table>

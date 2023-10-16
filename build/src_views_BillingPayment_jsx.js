@@ -50,48 +50,6 @@ function LoadingComponent() {
 
 /***/ }),
 
-/***/ "./src/utils/DisplayStatus.js":
-/*!************************************!*\
-  !*** ./src/utils/DisplayStatus.js ***!
-  \************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   displayStatus: () => (/* binding */ displayStatus),
-/* harmony export */   displayStatusType: () => (/* binding */ displayStatusType)
-/* harmony export */ });
-const displayStatus = status => {
-  if (status === "requires_payment_method") {
-    return 'Choose a payment method';
-  }
-  if (status === 'succeeded') {
-    return 'Your transaction was successful. Thank you. ';
-  }
-  if (status === 'processing') {
-    return `This transaction is currently processing you may revisit this page at a later time for an update and a confirmation email will be sent.`;
-  }
-  if (status === 'requires_confirmation' || status === 'requires_action' || status === 'requires_capture') {}
-  if (status === 'canceled') {
-    return 'This transaction has been canceled';
-  }
-  return status;
-};
-const displayStatusType = status => {
-  if (status === 'succeeded') {
-    return 'success';
-  }
-  if (status === 'processing' || status === 'requires_confirmation' || status === 'requires_action' || status === 'requires_capture') {
-    return 'caution';
-  }
-  if (status === 'canceled') {
-    return 'error';
-  }
-  return status;
-};
-
-/***/ }),
-
 /***/ "./src/views/BillingPayment.jsx":
 /*!**************************************!*\
   !*** ./src/views/BillingPayment.jsx ***!
@@ -106,7 +64,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _payment_Navigation_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./payment/Navigation.jsx */ "./src/views/payment/Navigation.jsx");
 /* harmony import */ var _controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/clientSlice.js */ "./src/controllers/clientSlice.js");
@@ -114,11 +72,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controllers_invoiceSlice_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../controllers/invoiceSlice.js */ "./src/controllers/invoiceSlice.js");
 /* harmony import */ var _controllers_paymentSlice_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../controllers/paymentSlice.js */ "./src/controllers/paymentSlice.js");
 /* harmony import */ var _controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../controllers/receiptSlice.js */ "./src/controllers/receiptSlice.js");
-/* harmony import */ var _utils_DisplayStatus_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/DisplayStatus.js */ "./src/utils/DisplayStatus.js");
-/* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
-/* harmony import */ var _error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx");
-/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
-
+/* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
+/* harmony import */ var _error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx");
+/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
 
 
 
@@ -135,12 +91,11 @@ __webpack_require__.r(__webpack_exports__);
 function PaymentComponent() {
   const {
     id
-  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_13__.useParams)();
+  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_12__.useParams)();
   const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const {
-    user_email,
-    stripe_customer_id
+    user_email
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
     stripe_invoice_id,
@@ -148,15 +103,13 @@ function PaymentComponent() {
     amount_remaining
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
   const {
-    loading,
-    paymentError,
-    payment_intent
+    paymentLoading,
+    paymentError
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.payment);
   const {
     receipt_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.receipt);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_13__.useNavigate)();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (user_email) {
       dispatch((0,_controllers_clientSlice_js__WEBPACK_IMPORTED_MODULE_4__.getClient)()).then(response => {
@@ -223,17 +176,17 @@ function PaymentComponent() {
       window.location.href = `/billing/receipt/${receipt_id}`;
     }
   };
+  if (paymentLoading) {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_9__["default"], null);
+  }
   if (paymentError) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_11__["default"], {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
       error: paymentError
     });
   }
-  if (loading) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_10__["default"], null);
-  }
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
-  }, "PAYMENT"), status === 'open' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_payment_Navigation_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null) : '', (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_12__["default"], {
+  }, "PAYMENT"), status === 'open' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_payment_Navigation_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null) : '', (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_11__["default"], {
     message: message,
     messageType: messageType
   }), receipt_id && status == 'paid' ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {

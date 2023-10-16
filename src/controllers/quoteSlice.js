@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-  loading: false,
+  quoteLoading: false,
   quoteError: '',
   stripe_customer_id: '',
   quotes: '',
@@ -80,14 +80,19 @@ export const getQuote = createAsyncThunk('quote/getQuote', async (stripeQuoteID,
   }
 });
 
-export const getQuoteByID = createAsyncThunk('quote/getQuoteByID', async (id, { getState }) => {
+export const getQuoteByID = createAsyncThunk('quote/getQuoteByID', async (quoteID, { getState }) => {
+  const { quote_id } = getState().quote;
+  const { stripe_customer_id } = getState().client;
 
   try {
-    const response = await fetch(`/wp-json/orb/v1/quote/${id}/id`, {
+    const response = await fetch(`/wp-json/orb/v1/quote/${quoteID ? quoteID : quote_id}/id`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id,
+      })
     });
 
     if (!response.ok) {
@@ -353,11 +358,11 @@ export const quoteSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createQuote.pending, (state) => {
-        state.loading = true;
+        state.quoteLoading = true;
         state.quoteError = '';
       })
       .addCase(createQuote.fulfilled, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = null;
         state.stripe_quote_id = action.payload.id;
         state.stripe_customer_id = action.payload.stripe_customer_id;
@@ -367,15 +372,15 @@ export const quoteSlice = createSlice({
         state.total = action.payload.total;
       })
       .addCase(createQuote.rejected, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = action.error.message;
       })
       .addCase(getQuote.pending, (state) => {
-        state.loading = true;
+        state.quoteLoading = true;
         state.quoteError = '';
       })
       .addCase(getQuote.fulfilled, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = null;
         state.quote_id = action.payload.id;
         state.stripe_quote_id = action.payload.stripe_quote_id;
@@ -385,15 +390,15 @@ export const quoteSlice = createSlice({
         state.amount_total = action.payload.amount_total
       })
       .addCase(getQuote.rejected, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = action.error.message;
       })
       .addCase(getQuoteByID.pending, (state) => {
-        state.loading = true;
+        state.quoteLoading = true;
         state.quoteError = '';
       })
       .addCase(getQuoteByID.fulfilled, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = null;
         state.quote_id = action.payload.id;
         state.stripe_quote_id = action.payload.stripe_quote_id;
@@ -403,15 +408,15 @@ export const quoteSlice = createSlice({
         state.amount_total = action.payload.amount_total
       })
       .addCase(getQuoteByID.rejected, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = action.error.message;
       })
       .addCase(getStripeQuote.pending, (state) => {
-        state.loading = true;
+        state.quoteLoading = true;
         state.quoteError = '';
       })
       .addCase(getStripeQuote.fulfilled, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = null;
         state.stripe_quote_id = action.payload.id;
         state.status = action.payload.status;
@@ -419,15 +424,15 @@ export const quoteSlice = createSlice({
         state.amount_total = action.payload.amount_total;
       })
       .addCase(getStripeQuote.rejected, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = action.error.message;
       })
       .addCase(updateQuote.pending, (state) => {
-        state.loading = true;
+        state.quoteLoading = true;
         state.quoteError = '';
       })
       .addCase(updateQuote.fulfilled, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = null;
         state.stripe_quote_id = action.payload.id;
         state.status = action.payload.status;
@@ -435,15 +440,15 @@ export const quoteSlice = createSlice({
         state.amount_total = action.payload.amount_total
       })
       .addCase(updateQuote.rejected, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = action.error.message;
       })
       .addCase(updateQuoteStatus.pending, (state) => {
-        state.loading = true;
+        state.quoteLoading = true;
         state.quoteError = '';
       })
       .addCase(updateQuoteStatus.fulfilled, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = null;
         state.status = action.payload;
         state.stripe_quote_id = action.payload.id;
@@ -452,28 +457,28 @@ export const quoteSlice = createSlice({
         state.amount_total = action.payload.amount_total
       })
       .addCase(updateQuoteStatus.rejected, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = action.error.message;
       })
       .addCase(getClientQuotes.pending, (state) => {
-        state.loading = true;
+        state.quoteLoading = true;
         state.quoteError = '';
       })
       .addCase(getClientQuotes.fulfilled, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = null;
         state.quotes = action.payload;
       })
       .addCase(getClientQuotes.rejected, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = action.error.message;
       })
       .addCase(finalizeQuote.pending, (state) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = '';
       })
       .addCase(finalizeQuote.fulfilled, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = null;
         state.quote_id = action.payload.quote_id;
         state.stripe_quote_id = action.payload.stripe_quote_id;
@@ -485,15 +490,15 @@ export const quoteSlice = createSlice({
         state.amount_total = action.payload.amount_total;
       })
       .addCase(finalizeQuote.rejected, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = action.error.message;
       })
       .addCase(acceptQuote.pending, (state) => {
-        state.loading = true;
+        state.quoteLoading = true;
         state.quoteError = '';
       })
       .addCase(acceptQuote.fulfilled, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = null;
         state.status = action.payload.status;
         state.stripe_invoice_id = action.payload.invoice;
@@ -506,20 +511,20 @@ export const quoteSlice = createSlice({
         state.amount_total = action.payload.amount_total;
       })
       .addCase(acceptQuote.rejected, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = action.error.message;
       })
       .addCase(cancelQuote.pending, (state) => {
-        state.loading = true;
+        state.quoteLoading = true;
         state.quoteError = '';
       })
       .addCase(cancelQuote.fulfilled, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = null;
         state.status = action.payload;
       })
       .addCase(cancelQuote.rejected, (state, action) => {
-        state.loading = false;
+        state.quoteLoading = false;
         state.quoteError = action.error.message;
       });
   }

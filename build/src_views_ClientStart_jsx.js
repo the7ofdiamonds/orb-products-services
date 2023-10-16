@@ -57,16 +57,13 @@ function ClientComponent() {
   const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
   const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('To receive a quote, please fill out the form above with the required information.');
   const {
-    loading,
-    client_error,
     user_email,
     first_name,
     last_name,
-    client_id,
     stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
-    customer_error,
+    customerLoading,
     company_name,
     tax_id,
     address_line_1,
@@ -114,21 +111,18 @@ function ClientComponent() {
           console.error(response.error.message);
           setMessageType('error');
           setMessage(response.error.message);
+        } else {
+          dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.getStripeCustomer)()).then(response => {
+            if (response.error !== undefined) {
+              console.error(response.error.message);
+              setMessageType('error');
+              setMessage(response.error.message);
+            }
+          });
         }
       });
     }
   }, [user_email, dispatch]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (stripe_customer_id) {
-      dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.getStripeCustomer)()).then(response => {
-        if (response.error !== undefined) {
-          console.error(response.error.message);
-          setMessageType('error');
-          setMessage(response.error.message);
-        }
-      });
-    }
-  }, [stripe_customer_id, navigate]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (address_line_1 && city && state && zipcode) {
       setIsFormCompleted(true);
@@ -156,7 +150,7 @@ function ClientComponent() {
     } else if (isFomCompleted && stripe_customer_id === '' || stripe_customer_id === undefined) {
       dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__.addClient)()).then(response => {
         if (response.error === undefined) {
-          navigate('/client/selections');
+          window.location.href = '/client/selections';
         } else {
           console.error(response.error.message);
           setMessageType('error');
@@ -166,7 +160,7 @@ function ClientComponent() {
     } else if (stripe_customer_id) {
       dispatch((0,_controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__.updateStripeCustomer)()).then(response => {
         if (response.error === undefined) {
-          navigate('/client/selections');
+          window.location.href = '/client/selections';
         } else {
           console.error(response.error.message);
           setMessageType('error');
@@ -175,7 +169,7 @@ function ClientComponent() {
       });
     }
   };
-  if (loading) {
+  if (customerLoading) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_5__["default"], null);
   }
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {

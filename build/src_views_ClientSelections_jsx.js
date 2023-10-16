@@ -51,7 +51,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 function SelectionsComponent() {
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
   const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
@@ -120,8 +119,6 @@ function SelectionsComponent() {
                 console.error(response.error.message);
                 setMessageType('error');
                 setMessage(response.error.message);
-              } else {
-                console.log(quote.stripe_quote_id);
               }
             });
           }

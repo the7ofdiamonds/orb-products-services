@@ -61,10 +61,9 @@ function UserInvoiceComponent() {
     stripe_customer_id
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.client);
   const {
-    loading,
+    invoiceLoading,
     invoiceError,
-    invoices,
-    stripe_invoice_id
+    invoices
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (user_email) {
@@ -76,13 +75,13 @@ function UserInvoiceComponent() {
       dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_4__.getClientInvoices)());
     }
   }, [stripe_customer_id, dispatch]);
+  if (invoiceLoading) {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
+  }
   if (invoiceError) {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       className: "status-bar card error"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, invoiceError))));
-  }
-  if (loading) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Loading...");
   }
   const now = new Date().getTime();
   let sortedInvoices = [];

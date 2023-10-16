@@ -1,34 +1,28 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { fetchServices } from '../controllers/servicesSlice.js';
 
+import LoadingComponent from '../loading/LoadingComponent';
+import ErrorComponent from '../error/ErrorComponent.jsx';
+
 function ServicesComponent() {
-  const { loading, servicesError, services } = useSelector((state) => state.services);
+  const { servicesLoading, servicesError, services } = useSelector(
+    (state) => state.services
+  );
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchServices());
   }, [dispatch]);
 
-  if (servicesError) {
-    return (
-      <main className="error">
-        <div className="status-bar card">
-          <span className="error">
-            "We encountered an issue while loading this page. Please try again,
-            and if the problem persists, kindly contact the website
-            administrators for assistance."
-          </span>
-        </div>
-      </main>
-    );
+  if (servicesLoading) {
+    return <LoadingComponent />;
   }
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (servicesError) {
+    return <ErrorComponent error={servicesError} />;
   }
 
   const handleServiceClick = (serviceId) => {
