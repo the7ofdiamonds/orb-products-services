@@ -14,7 +14,7 @@ const PaymentComponent = lazy(() => import('./views/BillingPayment.jsx'));
 const CardPaymentComponent = lazy(() =>
   import('./views/BillingPaymentCard.jsx')
 );
-const MobileComponent = lazy(() => import('./views/BillingPaymentMobile.jsx'));
+const WalletComponent = lazy(() => import('./views/BillingPaymentWallet.jsx'));
 const ReceiptComponent = lazy(() => import('./views/BillingReceipt.jsx'));
 
 const ClientComponent = lazy(() => import('./views/Client.jsx'));
@@ -58,8 +58,8 @@ function App() {
               element={<CardPaymentComponent />}
             />
             <Route
-              path="billing/payment/mobile/:id"
-              element={<MobileComponent />}
+              path="billing/payment/wallet/:id"
+              element={<WalletComponent />}
             />
             <Route path="billing/receipt/:id" element={<ReceiptComponent />} />
             <Route path="faq" element={<FAQComponent />} />

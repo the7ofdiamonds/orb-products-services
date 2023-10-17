@@ -10,9 +10,9 @@ function PaymentNavigationComponent() {
   return (
     <>      
       <div className="payment-options">
-        <NavLink to={`/billing/payment/mobile/${id}`}>
+        <NavLink to={`/billing/payment/wallet/${id}`}>
           <button className="mobile-btn" id="mobile-btn">
-            <h3>MOBILE</h3>
+            <h3>WALLET</h3>
           </button>
         </NavLink>
 

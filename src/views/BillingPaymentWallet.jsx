@@ -6,7 +6,7 @@ import {
 } from '@stripe/react-stripe-js';
 import PaymentNavigationComponent from './payment/Navigation';
 
-const MobileComponent = () => {
+const WalletComponent = () => {
   const stripe = useStripe();
   const elements = useElements();
   const { setPaymentRequest, paymentRequest } = useState();
@@ -43,4 +43,4 @@ const MobileComponent = () => {
   );
 };
 
-export default MobileComponent;
+export default WalletComponent;

@@ -223,6 +223,16 @@ section.invoice {
   box-shadow: none;
 }
 
+.payment-card-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.payment-card-form input {
+  max-width: fit-content;
+}
+
 .debit-credit-card {
   position: relative;
   height: 250px;

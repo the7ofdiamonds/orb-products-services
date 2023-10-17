@@ -92,6 +92,45 @@ const displayStatusType = status => {
 
 /***/ }),
 
+/***/ "./src/utils/FormatCreditNumber.js":
+/*!*****************************************!*\
+  !*** ./src/utils/FormatCreditNumber.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormatCreditNumber: () => (/* binding */ FormatCreditNumber)
+/* harmony export */ });
+const FormatCreditNumber = number => number.split('').reduce((seed, next, index) => {
+  if (index !== 0 && !(index % 4)) seed += ' ';
+  return seed + next;
+}, '');
+
+/***/ }),
+
+/***/ "./src/utils/FormatCurrency.js":
+/*!*************************************!*\
+  !*** ./src/utils/FormatCurrency.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FormatCurrency: () => (/* binding */ FormatCurrency)
+/* harmony export */ });
+const FormatCurrency = (number, locales, currency) => {
+  const Number = number / 100;
+  const Locales = locales ? locales.toLowerCase() : 'us';
+  const Currency = currency || 'USD';
+  return new Intl.NumberFormat(Locales, {
+    style: 'currency',
+    currency: Currency
+  }).format(Number);
+};
+
+/***/ }),
+
 /***/ "./src/utils/PaymentMethod.js":
 /*!************************************!*\
   !*** ./src/utils/PaymentMethod.js ***!
@@ -147,7 +186,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _payment_Navigation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./payment/Navigation */ "./src/views/payment/Navigation.jsx");
 /* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/clientSlice */ "./src/controllers/clientSlice.js");
@@ -156,11 +195,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../controllers/receiptSlice */ "./src/controllers/receiptSlice.js");
 /* harmony import */ var _utils_DisplayStatus__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/DisplayStatus */ "./src/utils/DisplayStatus.js");
 /* harmony import */ var _utils_PaymentMethod__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/PaymentMethod */ "./src/utils/PaymentMethod.js");
-/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @stripe/react-stripe-js */ "./node_modules/@stripe/react-stripe-js/dist/react-stripe.umd.js");
-/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
-/* harmony import */ var _error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx");
-/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
+/* harmony import */ var _utils_FormatCreditNumber__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../utils/FormatCreditNumber */ "./src/utils/FormatCreditNumber.js");
+/* harmony import */ var _utils_FormatCurrency__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../utils/FormatCurrency */ "./src/utils/FormatCurrency.js");
+/* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
+/* harmony import */ var _error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx");
+/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
 
 
 
@@ -173,7 +212,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// Stripe
 
 
 
@@ -181,9 +219,9 @@ __webpack_require__.r(__webpack_exports__);
 const CardPaymentComponent = () => {
   const {
     id
-  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_14__.useParams)();
+  } = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_15__.useParams)();
   const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('info');
-  const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('Please enter your card number, expiration date and the code on the back.');
+  const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('Please enter your card number, expiration date, and the code on the back.');
   const {
     user_email,
     first_name,
@@ -194,6 +232,9 @@ const CardPaymentComponent = () => {
     stripe_invoice_id,
     payment_intent_id,
     status,
+    account_country,
+    currency,
+    amount_due,
     amount_paid,
     remaining_balance
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.invoice);
@@ -204,31 +245,35 @@ const CardPaymentComponent = () => {
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.payment);
   const {
     receipt_id,
-    payment_method,
-    brand,
-    last4
+    payment_method
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(state => state.receipt);
-
-  // Setup so card displays input
   const [cardNumber, setCardNumber] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
-  const [validThruMonth, setValidThruMonth] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
-  const [validThruYear, setValidThruYear] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [expMonth, setExpMonth] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const [expYear, setExpYear] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
   const [CVC, setCVC] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
-  const [paymentMethodID, setPaymentMethodID] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('');
+  const handleCardNumberChange = e => {
+    setCardNumber(e.target.value);
+  };
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_14__.useNavigate)();
-  const stripe = (0,_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__.useStripe)();
-  const elements = (0,_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__.useElements)();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (user_email) {
-      dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_4__.getClient)(user_email));
+      dispatch((0,_controllers_clientSlice__WEBPACK_IMPORTED_MODULE_4__.getClient)(user_email)).then(response => {
+        if (response.error !== undefined) {
+          console.error(response.error.message);
+          setMessageType('error');
+          setMessage(response.error.message);
+        } else {
+          dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_5__.getInvoiceByID)(id)).then(response => {
+            if (response.error !== undefined) {
+              console.error(response.error.message);
+              setMessageType('error');
+              setMessage(response.error.message);
+            }
+          });
+        }
+      });
     }
   }, [user_email, dispatch]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (stripe_customer_id) {
-      dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_5__.getInvoiceByID)(id, stripe_customer_id));
-    }
-  }, [dispatch, id, stripe_customer_id]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (stripe_invoice_id) {
       dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_5__.getStripeInvoice)(stripe_invoice_id));
@@ -238,57 +283,20 @@ const CardPaymentComponent = () => {
     if (payment_intent_id) {
       dispatch((0,_controllers_paymentSlice__WEBPACK_IMPORTED_MODULE_6__.getPaymentIntent)(payment_intent_id));
     }
-  }, [dispatch, payment_intent_id]);
-
-  // useEffect(() => {
-  //   if (status) {
-  //     dispatch(updateInvoiceStatus());
-  //   }
-  // }, [dispatch, status]);
-
-  // useEffect(() => {
-  //   if (status) {
-  //     setMessage(displayStatus(status));
-  //     setMessageType(displayStatusType(status));
-  //   }
-  // }, [status]);
-
-  // useEffect(() => {
-  //   if (receipt_id) {
-  //     navigate(`/services/receipt/${receipt_id}`);
-  //   }
-  // }, [receipt_id, navigate]);
-
-  const handleSubmit = async event => {
-    event.preventDefault();
-    if (!stripe || !elements) {
-      return;
-    }
-    const result = await stripe.confirmCardPayment(client_secret, {
-      payment_method: {
-        card: elements.getElement(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__.CardElement)
-      }
-    });
-    if (result.error) {
-      setMessage(result.error.message);
-      setMessageType('error');
-    }
-    if (result.paymentIntent) {
-      let status = result.paymentIntent.status;
-      setMessage((0,_utils_DisplayStatus__WEBPACK_IMPORTED_MODULE_8__.displayStatus)(status));
-      setMessageType((0,_utils_DisplayStatus__WEBPACK_IMPORTED_MODULE_8__.displayStatusType)(status));
-      dispatch((0,_controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_7__.getPaymentMethod)(result.paymentIntent.payment_method));
-    }
-  };
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    if (brand !== '' && last4 !== '') {
-      const paymentMethodCard = `${brand} - ${last4}`;
-      dispatch((0,_controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_7__.updatePaymentMethod)((0,_utils_PaymentMethod__WEBPACK_IMPORTED_MODULE_9__.PaymentMethodGenerator)(payment_method)));
-    }
-  }, [dispatch, brand, last4]);
+  }, [payment_intent_id, dispatch]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (payment_method && stripe_invoice_id) {
       dispatch((0,_controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_5__.getStripeInvoice)(stripe_invoice_id));
+    }
+  }, [payment_method, dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (payment_method) {
+      dispatch((0,_controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_7__.getPaymentMethod)(payment_method));
+    }
+  }, [payment_method, dispatch]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (payment_method) {
+      dispatch((0,_controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_7__.updatePaymentMethod)((0,_utils_PaymentMethod__WEBPACK_IMPORTED_MODULE_9__.PaymentMethodGenerator)(payment_method)));
     }
   }, [dispatch, payment_method]);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
@@ -296,11 +304,20 @@ const CardPaymentComponent = () => {
       dispatch((0,_controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_7__.postReceipt)());
     }
   }, [dispatch, status]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    const input = document.getElementById('credit-card-input');
+    if (input) {
+      input.addEventListener('input', () => input.value = (0,_utils_FormatCreditNumber__WEBPACK_IMPORTED_MODULE_10__.FormatCreditNumber)(input.value.replaceAll(' ', '')));
+    }
+  }, [cardNumber]);
+  const handleSubmit = () => {
+    console.log(cardNumber);
+  };
   if (paymentLoading) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_11__["default"], null);
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_12__["default"], null);
   }
   if (paymentError) {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_13__["default"], {
       error: paymentError
     });
   }
@@ -330,28 +347,52 @@ const CardPaymentComponent = () => {
     className: "expiration"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "exp-month"
-  }, "Month"), " /", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+  }, "Month"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", null, expMonth), " /", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "exp-year"
-  }, "Year"))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, "Year"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", null, expYear))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "back"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "box"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "cvv"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "cvv-box"
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+  }, CVC), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: "",
     alt: ""
   })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
-    className: "stripe-card card",
-    onSubmit: handleSubmit
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_10__.CardElement, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_13__["default"], {
+    className: "payment-card-form"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    id: "credit-card-input",
+    type: "text",
+    size: 16,
+    maxLength: 19,
+    placeholder: "0000 0000 0000 0000",
+    onChange: handleCardNumberChange,
+    value: cardNumber
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    size: 2,
+    maxLength: 2,
+    placeholder: "Exp Month",
+    onChange: e => setExpMonth(e.target.value),
+    value: expMonth
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    size: 4,
+    maxLength: 4,
+    placeholder: "Exp Year",
+    onChange: e => setExpYear(e.target.value),
+    value: expYear
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    size: 4,
+    maxLength: 4,
+    placeholder: "CVC",
+    onChange: e => setCVC(e.target.value),
+    value: CVC
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_14__["default"], {
     message: message,
     messageType: messageType
-  }), client_secret ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }), amount_due ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Amount: ", (0,_utils_FormatCurrency__WEBPACK_IMPORTED_MODULE_11__.FormatCurrency)(amount_due, account_country, currency)) : '', (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     type: "submit",
-    disabled: !stripe,
     onClick: handleSubmit
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "PAY")) : '');
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "PAY")));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CardPaymentComponent);
 
@@ -407,11 +448,11 @@ function PaymentNavigationComponent() {
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "payment-options"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.NavLink, {
-    to: `/billing/payment/mobile/${id}`
+    to: `/billing/payment/wallet/${id}`
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "mobile-btn",
     id: "mobile-btn"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "MOBILE"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.NavLink, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "WALLET"))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.NavLink, {
     to: `/billing/payment/card/${id}`
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "debit-credit-btn",

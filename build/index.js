@@ -9263,7 +9263,7 @@ const QuoteComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpa
 const InvoiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingInvoice_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingInvoice.jsx */ "./src/views/BillingInvoice.jsx")));
 const PaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPayment_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPayment.jsx */ "./src/views/BillingPayment.jsx")));
 const CardPaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPaymentCard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPaymentCard.jsx */ "./src/views/BillingPaymentCard.jsx")));
-const MobileComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPaymentMobile_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPaymentMobile.jsx */ "./src/views/BillingPaymentMobile.jsx")));
+const WalletComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPaymentWallet_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPaymentWallet.jsx */ "./src/views/BillingPaymentWallet.jsx")));
 const ReceiptComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingReceipt_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingReceipt.jsx */ "./src/views/BillingReceipt.jsx")));
 const ClientComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Client_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Client.jsx */ "./src/views/Client.jsx")));
 const StartComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ClientStart_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ClientStart.jsx */ "./src/views/ClientStart.jsx")));
@@ -9317,8 +9317,8 @@ function App() {
     path: "billing/payment/card/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(CardPaymentComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
-    path: "billing/payment/mobile/:id",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(MobileComponent, null)
+    path: "billing/payment/wallet/:id",
+    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(WalletComponent, null)
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
     path: "billing/receipt/:id",
     element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ReceiptComponent, null)
@@ -9771,10 +9771,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   updateInvoice: () => (/* binding */ updateInvoice),
 /* harmony export */   updateInvoiceStatus: () => (/* binding */ updateInvoiceStatus)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
-
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
 const initialState = {
   invoiceLoading: false,
@@ -9785,6 +9782,8 @@ const initialState = {
   status: '',
   client_id: '',
   stripe_customer_id: '',
+  account_country: '',
+  currency: '',
   customer_name: '',
   customer_tax_ids: '',
   address_line_1: '',
@@ -9810,7 +9809,7 @@ const initialState = {
   payment_date: '',
   invoice_pdf: ''
 };
-const saveInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/saveInvoice', async (stripeInvoiceID, {
+const saveInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('invoice/saveInvoice', async (stripeInvoiceID, {
   getState
 }) => {
   const {
@@ -9838,7 +9837,7 @@ const saveInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsync
     throw error;
   }
 });
-const getInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/getInvoice', async (stripeInvoiceID, {
+const getInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('invoice/getInvoice', async (stripeInvoiceID, {
   getState
 }) => {
   const {
@@ -9868,7 +9867,7 @@ const getInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncT
     throw error;
   }
 });
-const getInvoiceByID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/getInvoiceByID', async (id, {
+const getInvoiceByID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('invoice/getInvoiceByID', async (id, {
   getState
 }) => {
   const {
@@ -9895,7 +9894,7 @@ const getInvoiceByID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAs
     throw error;
   }
 });
-const getInvoiceByQuoteID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/getInvoiceByQuoteID', async (quoteID, {
+const getInvoiceByQuoteID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('invoice/getInvoiceByQuoteID', async (quoteID, {
   getState
 }) => {
   const {
@@ -9925,7 +9924,7 @@ const getInvoiceByQuoteID = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.cre
     throw error;
   }
 });
-const deleteInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/deleteInvoice', async stripe_invoice_id => {
+const deleteInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('invoice/deleteInvoice', async stripe_invoice_id => {
   try {
     const response = await fetch(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}`, {
       method: 'DELETE',
@@ -9946,7 +9945,7 @@ const deleteInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsy
     throw error.message;
   }
 });
-const updateInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/updateInvoice', async (_, {
+const updateInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('invoice/updateInvoice', async (_, {
   getState
 }) => {
   const {
@@ -9956,27 +9955,29 @@ const updateInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsy
     invoice_id,
     stripe_invoice_id
   } = getState().invoice;
-  const update = {
-    stripe_customer_id: stripe_customer_id,
-    stripe_invoice_id: stripe_invoice_id
-  };
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().patch(`/wp-json/orb/v1/invoice/${invoice_id}`, update);
-    if (response.status !== 200) {
-      if (response.status === 400) {
-        throw new Error('Bad request');
-      } else if (response.status === 404) {
-        throw new Error('Invoice not found');
-      } else {
-        throw new Error(`HTTP error! Status: ${response.statusText}`);
-      }
+    const response = await fetch(`/wp-json/orb/v1/invoice/${invoice_id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id,
+        stripe_invoice_id: stripe_invoice_id
+      })
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
     }
-    return response.data;
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
-const updateInvoiceStatus = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/updateInvoiceStatus', async (id, {
+const updateInvoiceStatus = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('invoice/updateInvoiceStatus', async (_, {
   getState
 }) => {
   const {
@@ -9986,48 +9987,72 @@ const updateInvoiceStatus = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.cre
     invoice_id,
     stripe_invoice_id
   } = getState().invoice;
-  const update = {
-    stripe_customer_id: stripe_customer_id,
-    stripe_invoice_id: stripe_invoice_id
-  };
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().patch(`/wp-json/orb/v1/invoice/status/${invoice_id}`, update);
-    if (response.status !== 200) {
-      if (response.status === 400) {
-        throw new Error('Bad request');
-      } else if (response.status === 404) {
-        throw new Error('Invoice not found');
-      } else {
-        throw new Error(`HTTP error! Status: ${response.statusText}`);
-      }
+    const response = await fetch(`/wp-json/orb/v1/invoice/status/${invoice_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id,
+        stripe_invoice_id: stripe_invoice_id
+      })
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
     }
-    return response.data;
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
-const getStripeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/getStripeInvoice', async stripe_invoice_id => {
+const getStripeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('invoice/getStripeInvoice', async stripe_invoice_id => {
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
-const pdfInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/pdfInvoice', async (_, {
+const pdfInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('invoice/pdfInvoice', async (_, {
   getState
 }) => {
   const {
     stripe_invoice_id
   } = getState().invoice;
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/invoice/${stripe_invoice_id}/pdf`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/invoice/${stripe_invoice_id}/pdf`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
-const getClientInvoices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/getClientInvoices', async (_, {
+const getClientInvoices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('invoice/getClientInvoices', async (_, {
   getState
 }) => {
   const {
@@ -10048,10 +10073,10 @@ const getClientInvoices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.creat
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
-const finalizeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('invoice/finalizeInvoice', async (_, {
+const finalizeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('invoice/finalizeInvoice', async (_, {
   getState
 }) => {
   const {
@@ -10081,7 +10106,7 @@ const finalizeInvoice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createA
     throw error;
   }
 });
-const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
+const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
   name: 'invoice',
   initialState,
   reducers: {
@@ -10178,6 +10203,8 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
       state.stripe_invoice_id = action.payload.id;
       state.status = action.payload.status;
       state.company_name = action.payload.name;
+      state.account_country = action.payload.account_country;
+      state.currency = action.payload.currency;
       state.stripe_customer_id = action.payload.customer;
       state.customer_name = action.payload.customer_name;
       state.customer_tax_ids = action.payload.customer_tax_ids;

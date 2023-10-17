@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -10,6 +9,8 @@ const initialState = {
   status: '',
   client_id: '',
   stripe_customer_id: '',
+  account_country: '',
+  currency: '',
   customer_name: '',
   customer_tax_ids: '',
   address_line_1: '',
@@ -176,65 +177,80 @@ export const updateInvoice = createAsyncThunk('invoice/updateInvoice', async (_,
   const { stripe_customer_id } = getState().client;
   const { invoice_id, stripe_invoice_id } = getState().invoice;
 
-  const update = {
-    stripe_customer_id: stripe_customer_id,
-    stripe_invoice_id: stripe_invoice_id
-  };
-
   try {
-    const response = await axios.patch(`/wp-json/orb/v1/invoice/${invoice_id}`, update);
+    const response = await fetch(`/wp-json/orb/v1/invoice/${invoice_id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id,
+        stripe_invoice_id: stripe_invoice_id
+      })
+    });
 
-    if (response.status !== 200) {
-      if (response.status === 400) {
-        throw new Error('Bad request');
-      } else if (response.status === 404) {
-        throw new Error('Invoice not found');
-      } else {
-        throw new Error(`HTTP error! Status: ${response.statusText}`);
-      }
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
     }
 
-    return response.data;
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 
-export const updateInvoiceStatus = createAsyncThunk('invoice/updateInvoiceStatus', async (id, { getState }) => {
+export const updateInvoiceStatus = createAsyncThunk('invoice/updateInvoiceStatus', async (_, { getState }) => {
   const { stripe_customer_id } = getState().client;
   const { invoice_id, stripe_invoice_id } = getState().invoice;
 
-  const update = {
-    stripe_customer_id: stripe_customer_id,
-    stripe_invoice_id: stripe_invoice_id
-  };
-
   try {
-    const response = await axios.patch(`/wp-json/orb/v1/invoice/status/${invoice_id}`, update);
+    const response = await fetch(`/wp-json/orb/v1/invoice/status/${invoice_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        stripe_customer_id: stripe_customer_id,
+        stripe_invoice_id: stripe_invoice_id
+      })
+    });
 
-    if (response.status !== 200) {
-      if (response.status === 400) {
-        throw new Error('Bad request');
-      } else if (response.status === 404) {
-        throw new Error('Invoice not found');
-      } else {
-        throw new Error(`HTTP error! Status: ${response.statusText}`);
-      }
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
     }
 
-    return response.data;
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 
 export const getStripeInvoice = createAsyncThunk('invoice/getStripeInvoice', async (stripe_invoice_id) => {
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/stripe/invoices/${stripe_invoice_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 
@@ -242,10 +258,23 @@ export const pdfInvoice = createAsyncThunk('invoice/pdfInvoice', async (_, { get
   const { stripe_invoice_id } = getState().invoice;
 
   try {
-    const response = await axios.get(`/wp-json/orb/v1/invoice/${stripe_invoice_id}/pdf`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/v1/invoice/${stripe_invoice_id}/pdf`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 });
 
@@ -269,7 +298,7 @@ export const getClientInvoices = createAsyncThunk('invoice/getClientInvoices', a
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 
@@ -418,6 +447,8 @@ export const invoiceSlice = createSlice({
         state.stripe_invoice_id = action.payload.id;
         state.status = action.payload.status;
         state.company_name = action.payload.name;
+        state.account_country = action.payload.account_country;
+        state.currency = action.payload.currency;
         state.stripe_customer_id = action.payload.customer;
         state.customer_name = action.payload.customer_name;
         state.customer_tax_ids = action.payload.customer_tax_ids;
