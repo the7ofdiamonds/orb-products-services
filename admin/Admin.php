@@ -1,19 +1,19 @@
 <?php
 
-namespace ORB_Services\Admin;
+namespace ORB_Products_Services\Admin;
 
-use ORB_Services\Admin\AdminEmail;
-use ORB_Services\Admin\AdminEmailContact;
-use ORB_Services\Admin\AdminEmailSupport;
-use ORB_Services\Admin\AdminEmailSchedule;
-use ORB_Services\Admin\AdminEmailQuote;
-use ORB_Services\Admin\AdminEmailInvoice;
-use ORB_Services\Admin\AdminEmailReceipt;
-use ORB_Services\Admin\AdminHero;
-use ORB_Services\Admin\AdminLocation;
-use ORB_Services\Admin\AdminOfficeHours;
-use ORB_Services\Admin\AdminCommunication;
-use ORB_Services\Admin\AdminStripe;
+use ORB_Products_Services\Admin\AdminEmail;
+use ORB_Products_Services\Admin\AdminEmailContact;
+use ORB_Products_Services\Admin\AdminEmailSupport;
+use ORB_Products_Services\Admin\AdminEmailSchedule;
+use ORB_Products_Services\Admin\AdminEmailQuote;
+use ORB_Products_Services\Admin\AdminEmailInvoice;
+use ORB_Products_Services\Admin\AdminEmailReceipt;
+use ORB_Products_Services\Admin\AdminHero;
+use ORB_Products_Services\Admin\AdminLocation;
+use ORB_Products_Services\Admin\AdminOfficeHours;
+use ORB_Products_Services\Admin\AdminCommunication;
+use ORB_Products_Services\Admin\AdminStripe;
 
 class Admin
 {
@@ -62,7 +62,7 @@ class Admin
 
     function create_section()
     {
-        include ORB_SERVICES . 'Admin/includes/admin.php';
+        include ORB_PRODUCTS_SERVICES . 'Admin/includes/admin.php';
     }
 
     function register_section()
@@ -88,7 +88,7 @@ class Admin
 
     function save_google_service_account($data)
     {
-        $envFilePath = ORB_SERVICES . 'serviceAccount.json';
+        $envFilePath = ORB_PRODUCTS_SERVICES . 'serviceAccount.json';
 
         $file = fopen($envFilePath, 'w');
 
@@ -116,7 +116,7 @@ class Admin
 
     function save_stripe_secret_key($data)
     {
-        $envFilePath = ORB_SERVICES . '.env';
+        $envFilePath = ORB_PRODUCTS_SERVICES . '.env';
 
         $file = fopen($envFilePath, 'w');
 
@@ -133,6 +133,6 @@ class Admin
 
     function enqueue_admin_styles()
     {
-        wp_enqueue_style('orb-admin-styles', ORB_SERVICES_URL . 'Admin/CSS/Admin.css');
+        wp_enqueue_style('orb-admin-styles', ORB_PRODUCTS_SERVICES_URL . 'Admin/CSS/Admin.css');
     }
 }

@@ -1,40 +1,40 @@
 <?php
 
-namespace ORB_Services\API\Stripe;
+namespace ORB_Products_Services\API\Stripe;
 
-use ORB_Services\API\Stripe\StripeQuote;
-use ORB_Services\API\Stripe\StripeInvoice;
-use ORB_Services\API\Stripe\StripePaymentIntents;
-use ORB_Services\API\Stripe\StripeCharges;
-use ORB_Services\API\Stripe\StripePaymentMethods;
-use ORB_Services\API\Stripe\StripeProducts;
-use ORB_Services\API\Stripe\StripePrices;
-use ORB_Services\API\Stripe\StripeCustomers;
+use ORB_Products_Services\API\Stripe\StripeQuote;
+use ORB_Products_Services\API\Stripe\StripeInvoice;
+use ORB_Products_Services\API\Stripe\StripePaymentIntents;
+use ORB_Products_Services\API\Stripe\StripeCharges;
+use ORB_Products_Services\API\Stripe\StripePaymentMethods;
+use ORB_Products_Services\API\Stripe\StripeProducts;
+use ORB_Products_Services\API\Stripe\StripePrices;
+use ORB_Products_Services\API\Stripe\StripeCustomers;
 
-use ORB_Services\Database\DatabaseClient;
-use ORB_Services\Database\DatabaseCustomer;
-use ORB_Services\Database\DatabaseQuote;
-use ORB_Services\Database\DatabaseInvoice;
-use ORB_Services\Database\DatabaseReceipt;
+use ORB_Products_Services\Database\DatabaseClient;
+use ORB_Products_Services\Database\DatabaseCustomer;
+use ORB_Products_Services\Database\DatabaseQuote;
+use ORB_Products_Services\Database\DatabaseInvoice;
+use ORB_Products_Services\Database\DatabaseReceipt;
 
-use ORB_Services\Email\Email;
-use ORB_Services\Email\EmailContact;
-use ORB_Services\Email\EmailSupport;
-use ORB_Services\Email\EmailSchedule;
-use ORB_Services\Email\EmailQuote;
-use ORB_Services\Email\EmailInvoice;
-use ORB_Services\Email\EmailReceipt;
+use ORB_Products_Services\Email\Email;
+use ORB_Products_Services\Email\EmailContact;
+use ORB_Products_Services\Email\EmailSupport;
+use ORB_Products_Services\Email\EmailSchedule;
+use ORB_Products_Services\Email\EmailQuote;
+use ORB_Products_Services\Email\EmailInvoice;
+use ORB_Products_Services\Email\EmailReceipt;
 
-use ORB_Services\API\Service;
-use ORB_Services\API\Services;
-use ORB_Services\API\Product;
-use ORB_Services\API\Products;
-use ORB_Services\API\Clients;
-use ORB_Services\API\Customers;
-use ORB_Services\API\Quote;
-use ORB_Services\API\Invoice;
-use ORB_Services\API\Payment;
-use ORB_Services\API\Receipt;
+use ORB_Products_Services\API\Service;
+use ORB_Products_Services\API\Services;
+use ORB_Products_Services\API\Product;
+use ORB_Products_Services\API\Products;
+use ORB_Products_Services\API\Clients;
+use ORB_Products_Services\API\Customers;
+use ORB_Products_Services\API\Quote;
+use ORB_Products_Services\API\Invoice;
+use ORB_Products_Services\API\Payment;
+use ORB_Products_Services\API\Receipt;
 
 use PHPMailer\PHPMailer\PHPMailer;
 

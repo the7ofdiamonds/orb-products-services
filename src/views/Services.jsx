@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchServices } from '../controllers/servicesSlice.js';
 
-import LoadingComponent from '../loading/LoadingComponent';
+import LoadingComponent from '../loading/LoadingComponent.jsx';
 import ErrorComponent from '../error/ErrorComponent.jsx';
 
 function ServicesComponent() {

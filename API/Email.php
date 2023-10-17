@@ -1,14 +1,14 @@
 <?php
 
-namespace ORB_Services\API;
+namespace ORB_Products_Services\API;
 
-use ORB_Services\Email\EmailContact;
-use ORB_Services\Email\EmailSchedule;
-use ORB_Services\Email\EmailSupport;
-use ORB_Services\Email\EmailQuote;
-use ORB_Services\Email\EmailInvoice;
-use ORB_Services\Email\EmailOnboarding;
-use ORB_Services\Email\EmailReceipt;
+use ORB_Products_Services\Email\EmailContact;
+use ORB_Products_Services\Email\EmailSchedule;
+use ORB_Products_Services\Email\EmailSupport;
+use ORB_Products_Services\Email\EmailQuote;
+use ORB_Products_Services\Email\EmailInvoice;
+use ORB_Products_Services\Email\EmailOnboarding;
+use ORB_Products_Services\Email\EmailReceipt;
 
 use WP_REST_Request;
 

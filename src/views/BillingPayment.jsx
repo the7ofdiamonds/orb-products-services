@@ -13,9 +13,9 @@ import {
 import { getPaymentIntent } from '../controllers/paymentSlice.js';
 import { getReceipt } from '../controllers/receiptSlice.js';
 
-import LoadingComponent from '../loading/LoadingComponent';
+import LoadingComponent from '../loading/LoadingComponent.jsx';
 import ErrorComponent from '../error/ErrorComponent.jsx';
-import StatusBar from '../views/components/StatusBar';
+import StatusBar from './components/StatusBar.jsx';
 
 function PaymentComponent() {
   const { id } = useParams();

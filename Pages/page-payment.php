@@ -12,6 +12,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
 get_header();
 
-include ORB_SERVICES . 'includes/main-payment.php';
+include ORB_PRODUCTS_SERVICES . 'includes/main-payment.php';
 
 get_footer();

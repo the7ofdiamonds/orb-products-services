@@ -12,6 +12,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
 get_header();
 
-include ORB_SERVICES . 'includes/section-start.php';
+include ORB_PRODUCTS_SERVICES . 'includes/section-start.php';
 
 get_footer();

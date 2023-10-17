@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom/client.js';
 import App from './App.jsx';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Import Router components

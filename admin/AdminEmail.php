@@ -1,8 +1,8 @@
 <?php
 
-namespace ORB_Services\Admin;
+namespace ORB_Products_Services\Admin;
 
-use ORB_Services\Email\Email;
+use ORB_Products_Services\Email\Email;
 
 class AdminEmail
 {

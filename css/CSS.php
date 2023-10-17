@@ -1,8 +1,8 @@
 <?php
 
-namespace ORB_Services\CSS;
+namespace ORB_Products_Services\CSS;
 
-use ORB_Services\CSS\Customizer\Customizer;
+use ORB_Products_Services\CSS\Customizer\Customizer;
 
 class CSS
 {
@@ -40,7 +40,7 @@ class CSS
             is_post_type_archive('services') || is_singular('services') ||
             is_page($pages)
         ) {
-            wp_enqueue_style('orb-services',  ORB_SERVICES_URL . 'CSS/orb-services.css', array(), false, 'all', 'orb-services');
+            wp_enqueue_style('orb-services',  ORB_PRODUCTS_SERVICES_URL . 'CSS/orb-services.css', array(), false, 'all', 'orb-services');
         }
     }
 }

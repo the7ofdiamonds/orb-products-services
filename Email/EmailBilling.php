@@ -1,10 +1,10 @@
 <?php
 
-namespace ORB_Services\Email;
+namespace ORB_Products_Services\Email;
 
 use Exception;
 
-use ORB_Services\API\Stripe\StripeCustomers;
+use ORB_Products_Services\API\Stripe\StripeCustomers;
 
 class EmailBilling
 {
@@ -16,9 +16,9 @@ class EmailBilling
     public function __construct($stripeClient)
     {
         $this->stripe_customer = new StripeCustomers($stripeClient);
-        $this->header = ORB_SERVICES . 'Templates/TemplatesEmailBillingHeader.php';
-        $this->body = ORB_SERVICES . 'Templates/TemplatesEmailBillingBody.php';
-        $this->footer = ORB_SERVICES . 'Templates/TemplatesEmailBillingFooter.php';
+        $this->header = ORB_PRODUCTS_SERVICES . 'Templates/TemplatesEmailBillingHeader.php';
+        $this->body = ORB_PRODUCTS_SERVICES . 'Templates/TemplatesEmailBillingBody.php';
+        $this->footer = ORB_PRODUCTS_SERVICES . 'Templates/TemplatesEmailBillingFooter.php';
     }
 
     function billingHeader($billingType, $billingNumber, $billing)

@@ -1,14 +1,14 @@
 <?php
 
-namespace ORB_Services\API;
+namespace ORB_Products_Services\API;
 
 use Exception;
 
 use WP_REST_Request;
 use WP_Error;
 
-use ORB_Services\API\Stripe\StripeQuote;
-use ORB_Services\Database\DatabaseQuote;
+use ORB_Products_Services\API\Stripe\StripeQuote;
+use ORB_Products_Services\Database\DatabaseQuote;
 
 use Stripe\Exception\ApiErrorException;
 

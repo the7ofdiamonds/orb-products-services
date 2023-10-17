@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\Admin;
+namespace ORB_Products_Services\Admin;
 
 class AdminCommunication
 {
@@ -22,7 +22,7 @@ class AdminCommunication
 
     function create_section()
     {
-        include ORB_SERVICES . 'Admin/includes/admin-add-communication-types.php';
+        include ORB_PRODUCTS_SERVICES . 'Admin/includes/admin-add-communication-types.php';
     }
 
     function register_section()

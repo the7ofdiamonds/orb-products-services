@@ -13,8 +13,8 @@ import {
 
 import formatPhoneNumber from '../utils/PhoneNumberFormatter.js';
 
-import LoadingComponent from '../loading/LoadingComponent';
-import StatusBar from '../views/components/StatusBar';
+import LoadingComponent from '../loading/LoadingComponent.jsx';
+import StatusBar from './components/StatusBar.jsx';
 
 function ReceiptComponent() {
   const { id } = useParams();

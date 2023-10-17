@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\Email;
+namespace ORB_Products_Services\Email;
 
 use PHPMailer\PHPMailer\Exception;
 
@@ -34,7 +34,7 @@ class EmailSchedule
 
     public function scheduleEmailBody($first_name, $last_name, $email, $subject, $message)
     {
-        $scheduleEmailBodyTemplate = ORB_SERVICES . 'Templates/TemplatesEmailBodySchedule.php';
+        $scheduleEmailBodyTemplate = ORB_PRODUCTS_SERVICES . 'Templates/TemplatesEmailBodySchedule.php';
 
         $swap_var = array(
             "{EMAIL}" => $email,

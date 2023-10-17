@@ -1,7 +1,7 @@
 <section class="orb-services-admin">
     <h1>Contact</h1>
     <?php
-    require_once ORB_SERVICES . 'Admin/AdminCommunication.php';
+    require_once ORB_PRODUCTS_SERVICES . 'Admin/AdminCommunication.php';
 
     use ORB_Services\Admin\AdminCommunication;
 

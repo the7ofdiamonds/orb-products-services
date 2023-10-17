@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\CSS\Customizer;
+namespace ORB_Products_Services\CSS\Customizer;
 
 class ShadowCustomizer
 {

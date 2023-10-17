@@ -1,5 +1,5 @@
 <?php
-namespace ORB_Services\Shortcodes;
+namespace ORB_Products_Services\Shortcodes;
 
 class Shortcodes
 {
@@ -15,26 +15,26 @@ class Shortcodes
 
     function orb_services_hero_shortcode()
     {
-        include ORB_SERVICES . 'includes/main-hero.php';
+        include ORB_PRODUCTS_SERVICES . 'includes/main-hero.php';
     }
 
     function orb_services_shortcode()
     {
-        include ORB_SERVICES . 'includes/section-services.php';
+        include ORB_PRODUCTS_SERVICES . 'includes/section-services.php';
     }
 
     function orb_services_schedule_shortcode()
     {
-        include ORB_SERVICES . 'includes/part-schedule.php';
+        include ORB_PRODUCTS_SERVICES . 'includes/part-schedule.php';
     }
 
     function orb_services_headquarters_shortcode()
     {
-        include ORB_SERVICES . 'includes/part-headquarters.php';
+        include ORB_PRODUCTS_SERVICES . 'includes/part-headquarters.php';
     }
 
     function orb_services_support_shortcode()
     {
-        include ORB_SERVICES . 'includes/section-support.php';
+        include ORB_PRODUCTS_SERVICES . 'includes/section-support.php';
     }
 }

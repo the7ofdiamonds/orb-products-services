@@ -15,9 +15,9 @@ import {
 } from '../controllers/paymentSlice.js';
 import { updateReceiptID, getReceipt } from '../controllers/receiptSlice.js';
 
-import LoadingComponent from '../loading/LoadingComponent';
+import LoadingComponent from '../loading/LoadingComponent.jsx';
 import ErrorComponent from '../error/ErrorComponent.jsx';
-import StatusBar from '../views/components/StatusBar';
+import StatusBar from './components/StatusBar.jsx';
 
 function InvoiceComponent() {
   const { id } = useParams();

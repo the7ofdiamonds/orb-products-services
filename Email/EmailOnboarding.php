@@ -1,11 +1,11 @@
 <?php
 
-namespace ORB_Services\Email;
+namespace ORB_Products_Services\Email;
 
 use Exception;
 
-use ORB_Services\Database\DatabaseReceipt;
-use ORB_Services\API\Stripe\StripeInvoice;
+use ORB_Products_Services\Database\DatabaseReceipt;
+use ORB_Products_Services\API\Stripe\StripeInvoice;
 
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
@@ -32,9 +32,9 @@ class EmailOnboarding
         $this->database_receipt = new DatabaseReceipt();
         $this->stripe_invoice = new StripeInvoice($stripeClient);
         $this->email = new Email();
-        $this->message = ORB_SERVICES . 'Templates/TemplatesEmailOnboardingMessage.php';
+        $this->message = ORB_PRODUCTS_SERVICES . 'Templates/TemplatesEmailOnboardingMessage.php';
         $this->onboarding_link = esc_url(home_url()) . '/services/service/on-boarding/';
-        $this->body = ORB_SERVICES . 'Templates/TemplatesEmailOnboarding.php';
+        $this->body = ORB_PRODUCTS_SERVICES . 'Templates/TemplatesEmailOnboarding.php';
         $this->mailer = $mailer;
 
         $this->smtp_host = get_option('support_smtp_host');

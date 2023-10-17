@@ -1,8 +1,8 @@
 <?php
 
-namespace ORB_Services\Post_Types;
+namespace ORB_Products_Services\Post_Types;
 
-use ORB_Services\Post_Types\Meta;
+use ORB_Products_Services\Post_Types\Meta;
 
 class Services
 {    

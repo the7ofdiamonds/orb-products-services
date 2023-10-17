@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\API\Stripe;
+namespace ORB_Products_Services\API\Stripe;
 
 use Stripe\Exception\ApiErrorException;
 

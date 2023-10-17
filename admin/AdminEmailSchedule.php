@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\Admin;
+namespace ORB_Products_Services\Admin;
 
 class AdminEmailSchedule
 {

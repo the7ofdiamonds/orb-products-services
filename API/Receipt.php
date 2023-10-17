@@ -1,15 +1,15 @@
 <?php
 
-namespace ORB_Services\API;
+namespace ORB_Products_Services\API;
 
 use Exception;
 
 use WP_REST_Request;
 
-use ORB_Services\API\Stripe\StripeInvoice;
-use ORB_Services\API\Stripe\StripeCharges;
-use ORB_Services\API\Stripe\StripePaymentIntents;
-use ORB_SERVICES\Database\DatabaseReceipt;
+use ORB_Products_Services\API\Stripe\StripeInvoice;
+use ORB_Products_Services\API\Stripe\StripeCharges;
+use ORB_Products_Services\API\Stripe\StripePaymentIntents;
+use ORB_Products_Services\Database\DatabaseReceipt;
 
 use Stripe\Exception\ApiErrorException;
 

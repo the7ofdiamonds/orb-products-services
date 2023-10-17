@@ -1,62 +1,72 @@
 <?php
 
+/**
+ * @package ORB Products & Services
+ */
 /*
- * Plugin Name: ORB Products and Services
+Plugin Name: ORB Products & Services
+Plugin URI: 
+Description: Products & Services
+Version: 1.0.0
+Author: THE7OFDIAMONDS.TECH
+Author URI: http://THE7OFDIAMONDS.TECH
+License: 
+Text Domain: seven-tech
 */
 
-namespace ORB_Services;
+namespace ORB_Products_Services;
 
 require_once 'vendor/autoload.php';
 
 defined('ABSPATH') or die('Hey, what are you doing here? You silly human!');
-define('ORB_SERVICES', WP_PLUGIN_DIR . '/orb-services/');
-define('ORB_SERVICES_URL', WP_PLUGIN_URL . '/orb-services/');
+define('ORB_PRODUCTS_SERVICES', WP_PLUGIN_DIR . '/orb-products-services/');
+define('ORB_PRODUCTS_SERVICES_URL', WP_PLUGIN_URL . '/orb-products-services/');
 
 use Dotenv\Dotenv;
 
-use ORB_Services\Admin\Admin;
-use ORB_Services\API\Google\Google;
-use ORB_Services\API\Email;
-use ORB_Services\API\Clients;
-use ORB_Services\API\Customers;
-use ORB_Services\API\Product;
-use ORB_Services\API\Products;
-use ORB_Services\API\Service;
-use ORB_Services\API\Services;
-use ORB_Services\API\Quote;
-use ORB_Services\API\Invoice;
-use ORB_Services\API\Receipt;
-use ORB_Services\API\Payment;
-use ORB_Services\API\Stripe\Stripe;
-use ORB_Services\API\Stripe\StripeCharges;
-use ORB_Services\API\Stripe\StripeProducts;
-use ORB_Services\API\Stripe\StripePrices;
-use ORB_Services\API\Stripe\StripePaymentMethods;
-use ORB_Services\API\Stripe\StripePaymentIntents;
-use ORB_Services\CSS\CSS;
-use ORB_Services\Email\EmailContact;
-use ORB_Services\Email\EmailInvoice;
-use ORB_Services\Email\EmailQuote;
-use ORB_Services\Email\EmailReceipt;
-use ORB_Services\Email\EmailOnboarding;
-use ORB_Services\Email\EmailSchedule;
-use ORB_Services\Email\EmailSupport;
-use ORB_Services\JS\JS;
-use ORB_Services\Menus\Menus;
-use ORB_Services\Pages\Pages;
-use ORB_Services\PDF\PDF;
-use ORB_Services\Post_Types\PostTypes;
-use ORB_Services\Roles\Roles;
-use ORB_Services\Shortcodes\Shortcodes;
-use ORB_Services\Database\Database;
-use ORB_Services\Templates\Templates;
+use ORB_Products_Services\Admin\Admin;
+use ORB_Products_Services\API\Google\Google;
+use ORB_Products_Services\API\Email;
+use ORB_Products_Services\API\Clients;
+use ORB_Products_Services\API\Customers;
+use ORB_Products_Services\API\Product;
+use ORB_Products_Services\API\Products;
+use ORB_Products_Services\API\Service;
+use ORB_Products_Services\API\Services;
+use ORB_Products_Services\API\Quote;
+use ORB_Products_Services\API\Invoice;
+use ORB_Products_Services\API\Receipt;
+use ORB_Products_Services\API\Payment;
+use ORB_Products_Services\API\Stripe\Stripe;
+use ORB_Products_Services\API\Stripe\StripeCharges;
+use ORB_Products_Services\API\Stripe\StripeProducts;
+use ORB_Products_Services\API\Stripe\StripePrices;
+use ORB_Products_Services\API\Stripe\StripePaymentMethods;
+use ORB_Products_Services\API\Stripe\StripePaymentIntents;
+use ORB_Products_Services\CSS\CSS;
+use ORB_Products_Services\Email\EmailContact;
+use ORB_Products_Services\Email\EmailInvoice;
+use ORB_Products_Services\Email\EmailQuote;
+use ORB_Products_Services\Email\EmailReceipt;
+use ORB_Products_Services\Email\EmailOnboarding;
+use ORB_Products_Services\Email\EmailSchedule;
+use ORB_Products_Services\Email\EmailSupport;
+use ORB_Products_Services\JS\JS;
+use ORB_Products_Services\Menus\Menus;
+use ORB_Products_Services\Pages\Pages;
+use ORB_Products_Services\PDF\PDF;
+use ORB_Products_Services\Post_Types\PostTypes;
+use ORB_Products_Services\Roles\Roles;
+use ORB_Products_Services\Shortcodes\Shortcodes;
+use ORB_Products_Services\Database\Database;
+use ORB_Products_Services\Templates\Templates;
 
 use Stripe\Stripe as StripeAPI;
 use Stripe\StripeClient;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-class ORB_Services
+class ORB_Products_Services
 {
     public $plugin;
 
@@ -74,7 +84,7 @@ class ORB_Services
         new Database;
         new Templates;
 
-        $credentialsPath = ORB_SERVICES . 'serviceAccount.json';
+        $credentialsPath = ORB_PRODUCTS_SERVICES . 'serviceAccount.json';
 
         if (file_exists($credentialsPath)) {
             $jsonFileContents = file_get_contents($credentialsPath);
@@ -90,7 +100,7 @@ class ORB_Services
                         isset($decodedData['private_key']) &&
                         isset($decodedData['client_email'])
                     ) {
-                        $credentialsPath = ORB_SERVICES . 'serviceAccount.json';
+                        $credentialsPath = ORB_PRODUCTS_SERVICES . 'serviceAccount.json';
                     } else {
                         error_log('This is not a valid service account JSON');
                         $credentialsPath = null;
@@ -108,9 +118,9 @@ class ORB_Services
             $credentialsPath = null;
         }
 
-        $dotenv = Dotenv::createImmutable(ORB_SERVICES);
+        $dotenv = Dotenv::createImmutable(ORB_PRODUCTS_SERVICES);
         $dotenv->load(__DIR__);
-        $envFilePath = ORB_SERVICES . '.env';
+        $envFilePath = ORB_PRODUCTS_SERVICES . '.env';
         $envContents = file_get_contents($envFilePath);
         $lines = explode("\n", $envContents);
         $stripeSecretKey = null;
@@ -186,7 +196,7 @@ class ORB_Services
     }
 }
 
-$orb_services = new ORB_Services();
+$orb_services = new ORB_Products_Services();
 register_activation_hook(__FILE__, [$orb_services, 'activate']);
 // register_deactivation_hook( __FILE__, [ $thfw, 'deactivate' ]);
 

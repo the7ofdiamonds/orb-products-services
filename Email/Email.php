@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\Email;
+namespace ORB_Products_Services\Email;
 
 use Exception;
 
@@ -35,8 +35,8 @@ class Email
         $this->year = date("Y");
         $this->company_name = get_theme_mod('footer_company');
 
-        $this->emailTemplateHeader = ORB_SERVICES . 'Templates/TemplatesEmailHeader.php';
-        $this->emailTemplateFooter = ORB_SERVICES . 'Templates/TemplatesEmailFooter.php';
+        $this->emailTemplateHeader = ORB_PRODUCTS_SERVICES . 'Templates/TemplatesEmailHeader.php';
+        $this->emailTemplateFooter = ORB_PRODUCTS_SERVICES . 'Templates/TemplatesEmailFooter.php';
     }
 
     public function emailHeader()

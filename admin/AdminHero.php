@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\Admin;
+namespace ORB_Products_Services\Admin;
 
 class AdminHero
 {
@@ -19,7 +19,7 @@ class AdminHero
     function create_section()
     {
 
-        include ORB_SERVICES . 'Admin/includes/admin-edit-hero.php';
+        include ORB_PRODUCTS_SERVICES . 'Admin/includes/admin-edit-hero.php';
     }
 
     function register_section()

@@ -1,12 +1,12 @@
 <?php
 
-namespace ORB_Services\API;
+namespace ORB_Products_Services\API;
 
 use Exception;
 use WP_REST_Request;
 
-use ORB_Services\API\Google\GoogleCalendar;
-use ORB_Services\Schedule\Schedule;
+use ORB_Products_Services\API\Google\GoogleCalendar;
+use ORB_Products_Services\Schedule\Schedule;
 
 use Google\Service\Calendar\CalendarListEntry;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace ORB_Services\API\Stripe;
+namespace ORB_Products_Services\API\Stripe;
 
-use ORB_SERVICES\Admin\AdminStripe;
+use ORB_Products_Services\Admin\AdminStripe;
 
 use Stripe\Exception\ApiErrorException;
 

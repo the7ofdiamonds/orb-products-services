@@ -19,7 +19,7 @@ import {
 } from '../controllers/customerSlice.js';
 
 import LoadingComponent from '../loading/LoadingComponent';
-import StatusBar from '../views/components/StatusBar';
+import StatusBar from './components/StatusBar';
 
 function ClientComponent() {
   const dispatch = useDispatch();

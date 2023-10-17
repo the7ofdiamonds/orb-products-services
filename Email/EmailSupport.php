@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\Email;
+namespace ORB_Products_Services\Email;
 
 use PHPMailer\PHPMailer\Exception;
 
@@ -34,7 +34,7 @@ class EmailSupport
 
     public function supportEmailBody($first_name, $last_name, $email, $subject, $message)
     {
-        $supportEmailBodyTemplate = ORB_SERVICES . 'Templates/TemplatesEmailBodySupport.php';
+        $supportEmailBodyTemplate = ORB_PRODUCTS_SERVICES . 'Templates/TemplatesEmailBodySupport.php';
 
         $swap_var = array(
             "{EMAIL}" => $email,

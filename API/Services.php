@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\API;
+namespace ORB_Products_Services\API;
 
 use WP_Query;
 

@@ -13,8 +13,8 @@ import {
   updateStripeQuote,
 } from '../controllers/quoteSlice.js';
 
-import LoadingComponent from '../loading/LoadingComponent';
-import StatusBar from '../views/components/StatusBar';
+import LoadingComponent from '../loading/LoadingComponent.jsx';
+import StatusBar from './components/StatusBar.jsx';
 
 function SelectionsComponent() {
   const dispatch = useDispatch();

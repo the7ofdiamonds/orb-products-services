@@ -14,9 +14,9 @@ import {
   saveInvoice,
 } from '../controllers/invoiceSlice.js';
 
-import LoadingComponent from '../loading/LoadingComponent';
+import LoadingComponent from '../loading/LoadingComponent.jsx';
 import ErrorComponent from '../error/ErrorComponent.jsx';
-import StatusBar from '../views/components/StatusBar';
+import StatusBar from './components/StatusBar.jsx';
 
 function QuoteComponent() {
   const { id } = useParams();

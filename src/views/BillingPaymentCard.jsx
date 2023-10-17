@@ -24,7 +24,7 @@ import { FormatCurrency } from '../utils/FormatCurrency';
 
 import LoadingComponent from '../loading/LoadingComponent';
 import ErrorComponent from '../error/ErrorComponent.jsx';
-import StatusBar from '../views/components/StatusBar';
+import StatusBar from './components/StatusBar';
 
 const CardPaymentComponent = () => {
   const { id } = useParams();
@@ -59,6 +59,18 @@ const CardPaymentComponent = () => {
 
   const handleCardNumberChange = (e) => {
     setCardNumber(e.target.value);
+  };
+
+  const handleExpMonthChange = (e) => {
+    setExpMonth(e.target.value);
+  };
+
+  const handleExpYearChange = (e) => {
+    setExpYear(e.target.value);
+  };
+
+  const handleCVCChange = (e) => {
+    setCVC(e.target.value);
   };
 
   const dispatch = useDispatch();
@@ -154,7 +166,7 @@ const CardPaymentComponent = () => {
             <img src="" alt="" />
           </div>
           <div className="card-number-box">
-            {cardNumber ? cardNumber : '#### #### #### ####'}
+            {cardNumber ? cardNumber : '0000 0000 0000 0000'}
           </div>
           <div className="flexbox">
             <div className="box">
@@ -164,11 +176,9 @@ const CardPaymentComponent = () => {
             </div>
 
             <div className="box">
-              <span>VALID THRU</span>
               <div className="expiration">
-                <span className="exp-month">Month</span>
-                <h5>{expMonth}</h5> /<span className="exp-year">Year</span>
-                <h5>{expYear}</h5>
+                <h5>{expMonth ? expMonth : '00'}</h5>/
+                <h5>{expYear ? expYear : '0000'}</h5>
               </div>
             </div>
           </div>
@@ -176,8 +186,8 @@ const CardPaymentComponent = () => {
 
         <div className="back">
           <div className="box">
-            <span>cvv</span>
-            <div className="cvv-box">{CVC}</div>
+            <span>CVC</span>
+            <div className="cvv-box">{CVC ? CVC : '0000'}</div>
             <img src="" alt="" />
           </div>
         </div>
@@ -194,24 +204,27 @@ const CardPaymentComponent = () => {
           value={cardNumber}
         />
         <input
-          size={2}
+          type="text"
+          size={1}
           maxLength={2}
-          placeholder="Exp Month"
-          onChange={(e) => setExpMonth(e.target.value)}
+          placeholder="00"
+          onChange={handleExpMonthChange}
           value={expMonth}
         />
         <input
-          size={4}
+          type="text"
+          size={3}
           maxLength={4}
-          placeholder="Exp Year"
-          onChange={(e) => setExpYear(e.target.value)}
+          placeholder="0000"
+          onChange={handleExpYearChange}
           value={expYear}
         />
         <input
-          size={4}
+          type="text"
+          size={3}
           maxLength={4}
           placeholder="CVC"
-          onChange={(e) => setCVC(e.target.value)}
+          onChange={handleCVCChange}
           value={CVC}
         />
       </form>

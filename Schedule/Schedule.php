@@ -1,11 +1,11 @@
 <?php
 
-namespace ORB_Services\Schedule;
+namespace ORB_Products_Services\Schedule;
 
 use Exception;
 use DateTime;
 
-use ORB_SERVICES\API\Google\GoogleCalendar;
+use ORB_Products_Services\API\Google\GoogleCalendar;
 
 use Google\Service\Calendar;
 

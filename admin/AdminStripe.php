@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\Admin;
+namespace ORB_Products_Services\Admin;
 
 class AdminStripe
 {
@@ -28,7 +28,7 @@ class AdminStripe
     function create_section()
     {
 
-        include ORB_SERVICES . 'Admin/includes/admin-stripe-options.php';
+        include ORB_PRODUCTS_SERVICES . 'Admin/includes/admin-stripe-options.php';
     }
 
     function register_section()

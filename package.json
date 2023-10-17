@@ -1,5 +1,5 @@
 {
-  "name": "orb-services",
+  "name": "orb-products-services",
   "version": "1.0.0",
   "description": "",
   "main": "js/index.js",
@@ -28,10 +28,10 @@
     "test": "jest --watchAll --verbose",
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js",
-    "update-dev": "git push orb-services development",
-    "update-prod": "git push orb-services production",
+    "update-dev": "git push orb-products-services development",
+    "update-prod": "git push orb-products-services production",
     "vite": "vite start",
-    "watch:sass": "sass --watch ./CSS/scss/main.scss ./CSS/orb-services.css"
+    "watch:sass": "sass --watch ./CSS/scss/main.scss ./CSS/orb-products-services.css"
   },
   "author": "THE7OFDIAMONDS.TECH",
   "license": "ISC",

@@ -1,5 +1,5 @@
 {
-    "name": "orb-services/api",
+    "name": "jamelclyons/orb-products-services",
     "description": "API to access services, invoices, receipts and make payments",
     "type": "project",
     "authors": [
@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ORB_Services\\": "",
+            "ORB_Products_Services\\": "",
             "Stripe\\": "lib/",
             "PHPMailer\\PHPMailer\\": "phpmailer"
         }

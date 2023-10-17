@@ -254,6 +254,15 @@ const CardPaymentComponent = () => {
   const handleCardNumberChange = e => {
     setCardNumber(e.target.value);
   };
+  const handleExpMonthChange = e => {
+    setExpMonth(e.target.value);
+  };
+  const handleExpYearChange = e => {
+    setExpYear(e.target.value);
+  };
+  const handleCVCChange = e => {
+    setCVC(e.target.value);
+  };
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (user_email) {
@@ -335,7 +344,7 @@ const CardPaymentComponent = () => {
     alt: ""
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "card-number-box"
-  }, cardNumber ? cardNumber : '#### #### #### ####'), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, cardNumber ? cardNumber : '0000 0000 0000 0000'), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "flexbox"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "box"
@@ -343,19 +352,15 @@ const CardPaymentComponent = () => {
     className: "card-holder-name"
   }, first_name, " ", last_name)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "box"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "VALID THRU"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "expiration"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "exp-month"
-  }, "Month"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", null, expMonth), " /", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-    className: "exp-year"
-  }, "Year"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", null, expYear))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", null, expMonth ? expMonth : '00'), "/", (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", null, expYear ? expYear : '0000'))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "back"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "box"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "cvv"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "CVC"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "cvv-box"
-  }, CVC), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+  }, CVC ? CVC : '0000'), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: "",
     alt: ""
   })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", {
@@ -369,22 +374,25 @@ const CardPaymentComponent = () => {
     onChange: handleCardNumberChange,
     value: cardNumber
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    size: 2,
+    type: "text",
+    size: 1,
     maxLength: 2,
-    placeholder: "Exp Month",
-    onChange: e => setExpMonth(e.target.value),
+    placeholder: "00",
+    onChange: handleExpMonthChange,
     value: expMonth
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    size: 4,
+    type: "text",
+    size: 3,
     maxLength: 4,
-    placeholder: "Exp Year",
-    onChange: e => setExpYear(e.target.value),
+    placeholder: "0000",
+    onChange: handleExpYearChange,
     value: expYear
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
-    size: 4,
+    type: "text",
+    size: 3,
     maxLength: 4,
     placeholder: "CVC",
-    onChange: e => setCVC(e.target.value),
+    onChange: handleCVCChange,
     value: CVC
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_14__["default"], {
     message: message,

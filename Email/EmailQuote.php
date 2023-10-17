@@ -1,11 +1,11 @@
 <?php
 
-namespace ORB_Services\Email;
+namespace ORB_Products_Services\Email;
 
 use Exception;
 
-use ORB_Services\Database\DatabaseQuote;
-use ORB_Services\API\Stripe\StripeQuote;
+use ORB_Products_Services\Database\DatabaseQuote;
+use ORB_Products_Services\API\Stripe\StripeQuote;
 
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
 

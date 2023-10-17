@@ -1,7 +1,7 @@
 <?php
-require_once ORB_SERVICES . 'Admin/Admin.php';
+require_once ORB_PRODUCTS_SERVICES . 'Admin/Admin.php';
 
-use ORB_Services\Admin\Admin;
+use ORB_Products_Services\Admin\Admin;
 
 $admin = new Admin();
 

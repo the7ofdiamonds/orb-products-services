@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\Admin;
+namespace ORB_Products_Services\Admin;
 
 class AdminLocation
 {
@@ -19,7 +19,7 @@ class AdminLocation
 
     function create_section()
     {
-        include ORB_SERVICES . 'Admin/includes/admin-add-location.php';
+        include ORB_PRODUCTS_SERVICES . 'Admin/includes/admin-add-location.php';
     }
 
     function register_section()

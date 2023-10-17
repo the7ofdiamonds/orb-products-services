@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Services\API\Google;
+namespace ORB_Products_Services\API\Google;
 
 use Exception;
 

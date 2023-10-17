@@ -1,11 +1,11 @@
 <?php
 
-namespace ORB_Services\API;
+namespace ORB_Products_Services\API;
 
 use Exception;
 
-use ORB_Services\API\Stripe\StripeInvoice;
-use ORB_Services\Database\DatabaseInvoice;
+use ORB_Products_Services\API\Stripe\StripeInvoice;
+use ORB_Products_Services\Database\DatabaseInvoice;
 
 use WP_REST_Request;
 
