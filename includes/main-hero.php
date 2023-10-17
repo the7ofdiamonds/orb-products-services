@@ -10,7 +10,7 @@
   
   <div class="hero-card card">
 
-    <?php include_once ORB_SERVICES . '/includes/main-hero-animation.php'; ?>
+    <?php include_once ORB_PRODUCTS_SERVICES . '/includes/main-hero-animation.php'; ?>
 
   </div>
 

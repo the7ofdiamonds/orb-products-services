@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_loading_LoadingComponent_jsx"],{
+(self["webpackChunkorb_products_services"] = self["webpackChunkorb_products_services"] || []).push([["src_loading_LoadingComponent_jsx"],{
 
 /***/ "./src/loading/LoadingComponent.jsx":
 /*!******************************************!*\

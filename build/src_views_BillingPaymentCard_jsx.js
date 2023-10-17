@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_BillingPaymentCard_jsx"],{
+(self["webpackChunkorb_products_services"] = self["webpackChunkorb_products_services"] || []).push([["src_views_BillingPaymentCard_jsx"],{
 
 /***/ "./src/error/ErrorComponent.jsx":
 /*!**************************************!*\
@@ -199,7 +199,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_FormatCurrency__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../utils/FormatCurrency */ "./src/utils/FormatCurrency.js");
 /* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
 /* harmony import */ var _error_ErrorComponent_jsx__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx");
-/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
+/* harmony import */ var _components_StatusBar__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/StatusBar */ "./src/views/components/StatusBar.jsx");
 
 
 
@@ -394,7 +394,7 @@ const CardPaymentComponent = () => {
     placeholder: "CVC",
     onChange: handleCVCChange,
     value: CVC
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_14__["default"], {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_StatusBar__WEBPACK_IMPORTED_MODULE_14__["default"], {
     message: message,
     messageType: messageType
   }), amount_due ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Amount: ", (0,_utils_FormatCurrency__WEBPACK_IMPORTED_MODULE_11__.FormatCurrency)(amount_due, account_country, currency)) : '', (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {

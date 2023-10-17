@@ -1,0 +1,926 @@
+@charset "UTF-8";
+:root {
+  --total-services: 3;
+  --service-height: 6rem;
+  --animation-duration: calc(var(--total-services) * 1.5s);
+}
+
+.hero-card {
+  gap: 1.5rem;
+}
+.hero-card .hero-animation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 4rem;
+  overflow: hidden;
+}
+.hero-card .hero-animation .hero-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  gap: 1rem;
+}
+.hero-card .hero-animation .hero-icons i {
+  font-size: 3rem;
+  padding: 0;
+}
+.hero-card .hero-animation .hero-icons i.fa-lightbulb {
+  color: var(--orb-color-caution);
+}
+.hero-card .hero-animation .hero-icons i.fa-plus, .hero-card .hero-animation .hero-icons i.fa-equals {
+  font-size: 1.5rem;
+}
+
+.hero-animation-services {
+  width: fit-content;
+  overflow: hidden;
+  animation: cycle var(--animation-duration) infinite linear;
+  padding-left: 1rem;
+}
+
+.hero-animation-service {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: var(--service-height);
+  width: 100%;
+  text-align: left;
+}
+.hero-animation-service h3 {
+  text-transform: uppercase;
+}
+
+@keyframes cycle {
+  100% {
+    transform: translateY(-50%);
+  }
+}
+.start-btn:hover {
+  box-shadow: unset;
+}
+.start-btn:hover i {
+  color: lime;
+}
+
+.start-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.85);
+}
+.start-btn i {
+  padding-right: 0;
+}
+.start-btn h3 {
+  padding-left: 0;
+}
+
+i {
+  font-size: 1.5rem;
+  padding: 0.25em;
+}
+i.fa-brands.fa-android {
+  color: limegreen;
+}
+i.fa-solid.fa-globe {
+  color: var(--orb-color-info);
+}
+
+.headquarters-card.card {
+  padding: 0;
+  width: 100%;
+  max-width: 750px;
+}
+.headquarters-card.card iframe {
+  width: 100%;
+}
+
+.office-hours-card {
+  padding: 0;
+}
+.office-hours-card table th + th,
+.office-hours-card table td + td {
+  border-left: 0.25em solid var(--orb-color-secondary);
+}
+.office-hours-card table thead th {
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
+}
+
+.orb-service-navigation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  overflow-y: scroll;
+  padding: 1em;
+  width: 100%;
+}
+.orb-service-navigation .step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.orb-service-navigation .step a {
+  text-decoration: none;
+}
+.orb-service-navigation .step a button {
+  background-color: transparent;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.orb-service-navigation .step a button span {
+  width: 3em;
+  height: 3em;
+  padding: 0.5em;
+}
+.orb-service-navigation .step a button span h3 {
+  padding: 0;
+  color: var(--orb-color-primary);
+}
+.orb-service-navigation .step a button h4 {
+  color: var(--orb-color-primary);
+  padding: 0.5em;
+}
+
+.orb-service-navigation .step-number.active {
+  background-color: var(--orb-color-primary);
+  border-radius: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.orb-service-navigation .step-number.active h3 {
+  color: var(--orb-color-secondary);
+}
+
+section.invoice {
+  overflow-y: auto;
+}
+
+.invoice-card.card .bill-to-name,
+.invoice-card.card .bill-to-address,
+.invoice-card.card .bill-to-city,
+.invoice-card.card .bill-to-state,
+.invoice-card.card .bill-to-zipcode,
+.invoice-card.card .bill-to-phone,
+.invoice-card.card .bill-to-email {
+  text-align: left;
+}
+.invoice-card.card .bill-to-tax-id-type {
+  text-transform: uppercase;
+  text-align: right;
+}
+.invoice-card.card .bill-to-tax-id {
+  text-align: left;
+}
+.invoice-card.card tr.bill-to-due th h4 {
+  margin-bottom: 0.1775em;
+}
+.invoice-card.card .number-label,
+.invoice-card.card .description-label,
+.invoice-card.card .grand-total-label {
+  margin: 0 0.1775em 0 0;
+}
+.invoice-card.card .subtotal-label,
+.invoice-card.card .tax-label {
+  margin: 0 0.1775em 0.1775em 0;
+}
+.invoice-card.card .feature-cost,
+.invoice-card.card .subtotal,
+.invoice-card.card .tax,
+.invoice-card.card .grand-total {
+  text-align: right;
+}
+.invoice-card.card .subtotal-label,
+.invoice-card.card .tax-label,
+.invoice-card.card .grand-total-label {
+  text-align: right;
+}
+
+.payment-options {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.payment-options a button {
+  padding: 0.5em;
+}
+.payment-options a.active button {
+  background-color: var(--orb-color-secondary);
+  color: var(--orb-color-primary);
+  box-shadow: none;
+}
+
+.payment-card-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.payment-card-form input {
+  max-width: fit-content;
+}
+
+.debit-credit-card {
+  position: relative;
+  height: 250px;
+  width: 400px;
+}
+.debit-credit-card .front {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background: var(--orb-color-primary);
+  border-radius: 5px;
+  backface-visibility: hidden;
+  padding: 20px;
+  transform: perspective(1000px) rotateY(0deg);
+  transition: transform 0.4s ease-out;
+}
+.debit-credit-card .front .image {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+.debit-credit-card .front .image img {
+  height: 50px;
+}
+.debit-credit-card .front .card-number-box {
+  padding: 30px 0;
+  font-size: 22px;
+  color: var(--orb-color-secondary);
+}
+.debit-credit-card .front .flexbox {
+  display: flex;
+}
+.debit-credit-card .front .flexbox .box:nth-child(1) {
+  margin-right: auto;
+}
+.debit-credit-card .front .flexbox .box {
+  font-size: 15px;
+  color: var(--orb-color-secondary);
+}
+.debit-credit-card .back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(45deg, blueviolet, deeppink);
+  border-radius: 5px;
+  padding: 20px 0;
+  text-align: right;
+  backface-visibility: hidden;
+  box-shadow: var(--orb-box-shadow);
+  transform: perspective(1000px) rotateY(180deg);
+  transition: transform 0.4s ease-out;
+}
+.debit-credit-card .back .stripe {
+  background: #000;
+  width: 100%;
+  margin: 10px 0;
+  height: 50px;
+}
+.debit-credit-card .back .box {
+  padding: 0 20px;
+}
+.debit-credit-card .back .box span {
+  color: var(--orb-color-secondary);
+  font-size: 15px;
+}
+.debit-credit-card .back .box .cvv-box {
+  height: 50px;
+  padding: 10px;
+  margin-top: 5px;
+  color: var(--orb-color-primary);
+  background: var(--orb-color-secondary);
+  border-radius: 5px;
+  width: 100%;
+}
+.debit-credit-card .back .box img {
+  margin-top: 30px;
+  height: 30px;
+}
+
+.debit-credit-form {
+  display: grid;
+  grid-template-areas: "number number number" "holder holder holder" "month year cvv";
+  gap: 1rem;
+  width: 100%;
+  max-width: 15rem;
+}
+.debit-credit-form input {
+  width: 100%;
+}
+.debit-credit-form input.card-number-input {
+  grid-area: number;
+}
+.debit-credit-form input.card-holder-input {
+  grid-area: holder;
+}
+.debit-credit-form input.cvv-input {
+  grid-area: cvv;
+}
+.debit-credit-form select.month-input {
+  grid-area: month;
+}
+.debit-credit-form select.year-input {
+  grid-area: year;
+}
+
+.stripe-card.card {
+  align-items: unset;
+  width: 100%;
+  max-width: 20rem;
+}
+.stripe-card.card button {
+  align-self: center;
+}
+
+.wire-transfer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+.wire-transfer-container .bank-check {
+  padding: 0.25rem;
+  width: 100%;
+  height: auto;
+  max-width: 840px;
+  max-height: 351.936px;
+  aspect-ratio: 8.75/3.666;
+}
+.wire-transfer-container .bank-check table {
+  width: 100%;
+}
+.wire-transfer-container .bank-check .check-logo {
+  text-align: left;
+}
+.wire-transfer-container .bank-check .check-number {
+  text-align: right;
+}
+.wire-transfer-container .bank-check .check-date {
+  text-align: right;
+}
+.wire-transfer-container .bank-check .check-pay-to-border {
+  border-bottom: var(--orb-color-primary) solid;
+}
+.wire-transfer-container .bank-check .check-pay-to-border .check-pay-to {
+  text-align: left;
+}
+.wire-transfer-container .bank-check .check-amount-box {
+  border: var(--orb-color-primary) solid;
+}
+.wire-transfer-container .bank-check .check-amount-box .check-amount {
+  text-align: right;
+}
+.wire-transfer-container .bank-check .amount-words-border {
+  border-bottom: var(--orb-color-primary) solid;
+}
+.wire-transfer-container .bank-check .amount-words-border .amount-words {
+  text-align: left;
+}
+.wire-transfer-container .bank-check .memo-border {
+  display: flex;
+  flex-direction: row;
+}
+.wire-transfer-container .bank-check .memo-border .memo {
+  border-bottom: var(--orb-color-primary) solid;
+  width: 100%;
+  text-align: left;
+  padding-left: 0.5rem;
+}
+.wire-transfer-container .bank-check .signature-border {
+  border-bottom: var(--orb-color-primary) solid;
+}
+.wire-transfer-container .bank-check .bank-numbers {
+  display: flex;
+  flex-direction: row;
+}
+.wire-transfer-container .bank-check .bank-numbers span {
+  padding-left: 0.5rem;
+}
+.wire-transfer-container .bank-check .bank-numbers span.routing-number:before {
+  content: "⑆";
+}
+.wire-transfer-container .bank-check .bank-numbers span.account-number:before {
+  content: "⑈";
+}
+.wire-transfer-container .wire-transfer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  width: 100%;
+  max-width: fit-content;
+}
+
+.crypto-container {
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.quote-card.card .feature-cost,
+.quote-card.card .subtotal {
+  text-align: right;
+}
+.quote-card.card .description-label,
+.quote-card.card .subtotal-label {
+  margin: 0 0.1775em 0 0;
+}
+.quote-card.card .feature-description,
+.quote-card.card .subtotal-label {
+  text-align: right;
+}
+
+.payment-method {
+  text-transform: uppercase;
+}
+
+.schedule {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 1.5rem;
+}
+.schedule .date-select.card,
+.schedule .time-select.card,
+.schedule .summary-select.card,
+.schedule .description-select.card,
+.schedule .communication-select.card,
+.schedule .attendees-select.card,
+.schedule .additional-attendee.card {
+  padding: 0;
+  gap: unset;
+}
+.schedule .date-select.card label,
+.schedule .time-select.card label,
+.schedule .summary-select.card label,
+.schedule .description-select.card label,
+.schedule .communication-select.card label,
+.schedule .attendees-select.card label,
+.schedule .additional-attendee.card label {
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
+  padding: 0.25em;
+  margin: 0;
+  width: 100%;
+}
+.schedule .attendees-select.card .attendee,
+.schedule .additional-attendee.card .attendee {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+}
+.schedule .attendees-select.card .attendee h4,
+.schedule .additional-attendee.card .attendee h4 {
+  padding: 0.5em;
+}
+.schedule .attendees-select.card .attendee button,
+.schedule .additional-attendee.card .attendee button {
+  margin: 0 0.25em 0;
+}
+.schedule .attendees-select.card .attendee button h4,
+.schedule .additional-attendee.card .attendee button h4 {
+  padding: 0.25em;
+}
+.schedule .attendees-select.card .attendee input,
+.schedule .additional-attendee.card .attendee input {
+  margin: 0.5em;
+}
+.schedule .additional-attendee.card {
+  display: none;
+}
+.schedule .additional-attendee.card.view {
+  display: flex;
+}
+
+.schedule-select {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.service-icon i {
+  font-size: 3rem;
+  padding: 0;
+}
+
+.service-features-card.card {
+  padding: 0;
+  gap: 0;
+}
+.service-features-card.card h3 {
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
+  padding: 0.25em;
+  width: 100%;
+  margin: 0;
+}
+.service-features-card.card .service-features {
+  padding: 0.5rem;
+}
+
+.details-card {
+  padding: 0;
+  gap: 0;
+}
+.details-card h4 {
+  width: 100%;
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
+  padding: 0.25em;
+  margin: 0;
+}
+.details-card .details {
+  padding: 0.5em;
+}
+
+.invoice,
+.receipt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.quote-card.card,
+.invoice-card.card,
+.schedule-card.card,
+.receipt-card.card {
+  max-width: fit-content;
+  padding: 0;
+}
+
+.services .services-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.5em;
+  align-items: center;
+  justify-content: center;
+}
+.services .services-list .service {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+.services .services-list .service .services-card {
+  min-width: 15rem;
+  height: 20rem;
+  opacity: 0.85;
+  gap: 0.375rem;
+}
+.services .services-list .service .services-card .services-name,
+.services .services-list .service .services-card .services-icon,
+.services .services-list .service .services-card .services-pricing,
+.services .services-list .service .services-card .services-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.services .services-list .service .services-card .services-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  width: 100%;
+}
+.services .services-list .service .services-card .services-title .services-icon {
+  width: 100%;
+}
+.services .services-list .service .services-card .services-title .services-icon i {
+  font-size: 2rem;
+  padding: 0;
+}
+.services .services-list .service .services-card .services-features {
+  overflow: auto;
+  height: 100%;
+  max-height: 14rem;
+}
+.services .services-list .service .services-card .services-features ul li {
+  list-style: none;
+  padding: 0.25em;
+}
+.services .services-list .service .services-card .services-pricing {
+  height: 2rem;
+}
+.services .services-list .service .services-action {
+  height: 3rem;
+}
+.services .services-list .service .services-action .services-btn {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+  align-items: center;
+  justify-content: center;
+}
+.services .services-list .service .services-action .services-btn i {
+  font-size: 1.75rem;
+  padding-right: 0;
+}
+.services .services-list .service .services-action .services-btn h3 {
+  text-transform: uppercase;
+  padding-left: 0;
+}
+
+.receipt-card.card {
+  display: grid;
+  gap: 0.25em;
+  min-width: 25rem;
+  width: 100%;
+  overflow: hidden;
+}
+.receipt-card.card .th h4,
+.receipt-card.card th h4 {
+  padding: 0.25em 0;
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
+}
+.receipt-card.card .td h5,
+.receipt-card.card td h5 {
+  padding: 0.25em;
+}
+.receipt-card.card .thead,
+.receipt-card.card .tbody,
+.receipt-card.card .tfoot {
+  width: 100%;
+}
+.receipt-card.card .thead .address-line-1,
+.receipt-card.card .thead .address-line-2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.receipt-card.card .thead .tr.payment-method {
+  grid-area: payment-method;
+}
+.receipt-card.card .thead .tr.receipt-number {
+  grid-area: receipt-number;
+}
+.receipt-card.card .thead .tr.client-details {
+  grid-area: client-details;
+}
+.receipt-card.card .thead .tr.payment-date {
+  grid-area: payment-date;
+}
+.receipt-card.card table {
+  display: none;
+}
+.receipt-card.card table th {
+  text-align: center;
+}
+.receipt-card.card table tbody td.selections-cost {
+  text-align: end;
+}
+.receipt-card.card .tfoot .tr.subtotal {
+  grid-area: subtotal;
+}
+.receipt-card.card .tfoot .tr.tax {
+  grid-area: tax;
+}
+.receipt-card.card .tfoot .tr.grand-total {
+  grid-area: grand-total;
+}
+.receipt-card.card .tfoot .tr.amount-paid {
+  grid-area: amount-paid;
+}
+.receipt-card.card .tfoot .tr.balance {
+  grid-area: balance;
+}
+
+@media (min-width: 700px) {
+  .receipt-card.card .tr {
+    width: fit-content;
+  }
+  .receipt-card.card .thead {
+    display: grid;
+    grid-template-areas: "receipt-number receipt-number" "payment-date payment-date" "payment-method payment-method" "client-details client-details";
+    gap: 0.25em;
+  }
+  .receipt-card.card .thead .receipt-number,
+  .receipt-card.card .thead .payment-date,
+  .receipt-card.card .thead .payment-method {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25em;
+  }
+  .receipt-card.card .thead .receipt-number h4,
+  .receipt-card.card .thead .payment-date h4,
+  .receipt-card.card .thead .payment-method h4 {
+    padding: 0.25em;
+  }
+  .receipt-card.card .thead .client-details {
+    width: 100%;
+  }
+  .receipt-card.card .thead .client-details .address-line-1,
+  .receipt-card.card .thead .client-details .address-line-2,
+  .receipt-card.card .thead .client-details .phone,
+  .receipt-card.card .thead .client-details .email {
+    width: 100%;
+  }
+  .receipt-card.card .tfoot {
+    display: grid;
+    grid-template-areas: "subtotal-label subtotal-number" "tax-label tax-number" "grand-total-label grand-total-number" "amount-paid-label amount-paid-number" "balance-label balance-number";
+    justify-content: end;
+    gap: 0.25em;
+  }
+  .receipt-card.card .tfoot .subtotal,
+  .receipt-card.card .tfoot .tax,
+  .receipt-card.card .tfoot .grand-total,
+  .receipt-card.card .tfoot .amount-paid,
+  .receipt-card.card .tfoot .balance {
+    display: contents;
+  }
+  .receipt-card.card .tfoot .th {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+  .receipt-card.card .tfoot .th h4 {
+    padding: 0.25em;
+  }
+  .receipt-card.card .tfoot .th.subtotal-label {
+    grid-area: subtotal-label;
+  }
+  .receipt-card.card .tfoot .th.tax-label {
+    grid-area: tax-label;
+  }
+  .receipt-card.card .tfoot .th.grand-total-label {
+    grid-area: grand-total-label;
+  }
+  .receipt-card.card .tfoot .th.amount-paid-label {
+    grid-area: amount-paid-label;
+  }
+  .receipt-card.card .tfoot .th.balance-label {
+    grid-area: balance-label;
+  }
+  .receipt-card.card .tfoot .td {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+  .receipt-card.card .tfoot .td.subtotal-number {
+    grid-area: subtotal-number;
+  }
+  .receipt-card.card .tfoot .td.tax-number {
+    grid-area: tax-number;
+  }
+  .receipt-card.card .tfoot .td.grand-total-number {
+    grid-area: grand-total-number;
+  }
+  .receipt-card.card .tfoot .td.amount-paid-number {
+    grid-area: amount-paid-number;
+  }
+  .receipt-card.card .tfoot .td.balance-number {
+    grid-area: balance-number;
+  }
+}
+@media (min-width: 900px) {
+  .receipt-card.card .thead {
+    grid-template-areas: "receipt-number receipt-number" "payment-date payment-date" "payment-method payment-method" "client-details";
+    gap: 0.25em;
+  }
+  .receipt-card.card .thead .payment-date {
+    align-items: start;
+  }
+  .receipt-card.card .thead .payment-date td {
+    align-items: center;
+  }
+  .receipt-card.card table {
+    display: quote-table;
+  }
+}
+table {
+  border-spacing: 0.375em;
+  border-collapse: collapse;
+}
+
+thead th h4,
+tfoot th h4 {
+  background-color: var(--orb-color-primary);
+  color: var(--orb-color-secondary);
+  padding: 0.375em;
+}
+
+td {
+  padding: 0.375em;
+  text-transform: capitalize;
+}
+
+.client-details form table tbody td {
+  padding: 0.375em;
+}
+
+.dashboard .orb-services {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+.dashboard .orb-services .card {
+  padding: 0;
+  width: fit-content;
+}
+.dashboard .orb-services .card tr td,
+.dashboard .orb-services .card tr th {
+  border-right: solid 0.25em;
+  border-color: var(--orb-color-secondary);
+}
+.dashboard .orb-services .card tr Í td:last-child,
+.dashboard .orb-services .card tr th:last-child {
+  border-right: none;
+}
+.dashboard .orb-services .card tr td a button h5 {
+  padding: 0.5em;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.status-bar.card {
+  background-color: var(--orb-color-primary);
+}
+.status-bar.card.info {
+  background-color: var(--orb-color-info);
+}
+.status-bar.card.caution {
+  background-color: var(--orb-color-caution);
+}
+.status-bar.card.error {
+  background-color: var(--orb-color-error);
+}
+.status-bar.card.success {
+  background-color: var(--orb-color-success);
+}
+.status-bar.card span {
+  color: var(--orb-color-secondary);
+}
+.status-bar.card span h4 {
+  padding: 0.5em;
+}
+
+button h3 {
+  text-transform: uppercase;
+}
+
+section main.error {
+  margin-top: -5rem;
+}
+
+body > div.loading {
+  position: relative;
+}
+
+section > div.loading {
+  margin: 0;
+  padding: 0;
+}
+
+div.loading {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: black;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+div.loading h1 {
+  color: white;
+}
+
+/*# sourceMappingURL=orb-products-services.css.map */

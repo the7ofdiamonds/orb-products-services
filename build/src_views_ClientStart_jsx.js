@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_ClientStart_jsx"],{
+(self["webpackChunkorb_products_services"] = self["webpackChunkorb_products_services"] || []).push([["src_views_ClientStart_jsx"],{
 
 /***/ "./src/loading/LoadingComponent.jsx":
 /*!******************************************!*\
@@ -42,7 +42,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/clientSlice */ "./src/controllers/clientSlice.js");
 /* harmony import */ var _controllers_customerSlice_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../controllers/customerSlice.js */ "./src/controllers/customerSlice.js");
 /* harmony import */ var _loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../loading/LoadingComponent */ "./src/loading/LoadingComponent.jsx");
-/* harmony import */ var _views_components_StatusBar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../views/components/StatusBar */ "./src/views/components/StatusBar.jsx");
+/* harmony import */ var _components_StatusBar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/StatusBar */ "./src/views/components/StatusBar.jsx");
 
 
 
@@ -251,7 +251,7 @@ function ClientComponent() {
     placeholder: "Zipcode",
     onChange: handleZipcodeChange,
     value: zipcode
-  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tfoot", null)))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_views_components_StatusBar__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("tfoot", null)))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_StatusBar__WEBPACK_IMPORTED_MODULE_6__["default"], {
     message: message,
     messageType: messageType
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {

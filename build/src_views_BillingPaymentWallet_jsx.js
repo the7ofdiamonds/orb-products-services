@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkorb_services"] = self["webpackChunkorb_services"] || []).push([["src_views_BillingPaymentWallet_jsx"],{
+(self["webpackChunkorb_products_services"] = self["webpackChunkorb_products_services"] || []).push([["src_views_BillingPaymentWallet_jsx"],{
 
 /***/ "./src/views/BillingPaymentWallet.jsx":
 /*!********************************************!*\
