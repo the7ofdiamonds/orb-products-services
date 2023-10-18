@@ -1,8 +1,8 @@
 import React from 'react';
 
-import UserReceiptComponent from './dashboard/UserReceipt';
-import UserInvoiceComponent from './dashboard/UserInvoice';
-import UserQuoteComponent from './dashboard/UserQuote';
+import UserReceiptComponent from './billing/UserReceipt';
+import UserInvoiceComponent from './billing/UserInvoice';
+import UserQuoteComponent from './billing/UserQuote';
 
 function Billing() {
   return (

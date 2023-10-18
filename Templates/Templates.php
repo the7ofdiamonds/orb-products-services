@@ -17,9 +17,8 @@ class Templates
         add_filter('page_template', [$this, 'get_custom_invoice_page_template']);
         add_filter('page_template', [$this, 'get_custom_payment_page_template']);
         add_filter('page_template', [$this, 'get_custom_card_page_template']);
-        add_filter('page_template', [$this, 'get_custom_mobile_page_template']);
+        add_filter('page_template', [$this, 'get_custom_wallet_page_template']);
         add_filter('page_template', [$this, 'get_custom_receipt_page_template']);
-        add_filter('page_template', [$this, 'get_custom_schedule_page_template']);
         add_filter('page_template', [$this, 'get_custom_faq_page_template']);
         add_filter('page_template', [$this, 'get_custom_support_page_template']);
         add_filter('page_template', [$this, 'get_custom_contact_page_template']);
@@ -29,7 +28,7 @@ class Templates
     function get_archive_page_template($archive_template)
     {
         if (is_post_type_archive('services')) {
-            $archive_template = ORB_PRODUCTS_SERVICES . 'Pages/archive-services.php';
+            $archive_template = ORB_PRODUCTS_SERVICES . 'Post_Types/Services/archive-services.php';
 
             if (file_exists($archive_template)) {
                 return $archive_template;
@@ -44,7 +43,7 @@ class Templates
     function get_single_page_template($single_template)
     {
         if (is_singular('services')) {
-            $single_template = ORB_PRODUCTS_SERVICES . 'Pages/single-services.php';
+            $single_template = ORB_PRODUCTS_SERVICES . 'Post_Types/Services/single-services.php';
 
             if (file_exists($single_template)) {
                 return $single_template;
@@ -192,17 +191,17 @@ class Templates
         return $page_template;
     }
 
-    function get_custom_mobile_page_template($page_template)
+    function get_custom_wallet_page_template($page_template)
     {
-        $mobile_page = get_page_by_path('billing/payment/mobile');
+        $mobile_page = get_page_by_path('billing/payment/wallet');
 
         if ($mobile_page && is_page($mobile_page->ID)) {
-            $page_template = ORB_PRODUCTS_SERVICES . 'Pages/page-mobile.php';
+            $page_template = ORB_PRODUCTS_SERVICES . 'Pages/page-wallet.php';
 
             if (file_exists($page_template)) {
                 return $page_template;
             } else {
-                error_log('Mobile Page Template does not exist.');
+                error_log('Wallet Page Template does not exist.');
             }
         }
 
@@ -220,23 +219,6 @@ class Templates
                 return $page_template;
             } else {
                 error_log('Receipt Page Template does not exist.');
-            }
-        }
-
-        return $page_template;
-    }
-
-    function get_custom_schedule_page_template($page_template)
-    {
-        $schedule_page = get_page_by_path('schedule');
-
-        if ($schedule_page && is_page($schedule_page->ID)) {
-            $page_template = ORB_PRODUCTS_SERVICES . 'Pages/page-schedule.php';
-
-            if (file_exists($page_template)) {
-                return $page_template;
-            } else {
-                error_log('Schedule Page Template does not exist.');
             }
         }
 

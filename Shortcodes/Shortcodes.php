@@ -8,8 +8,6 @@ class Shortcodes
     {
         add_shortcode('orb-services-hero', [$this, 'orb_services_hero_shortcode']);
         add_shortcode('orb-services', [$this, 'orb_services_shortcode']);
-        add_shortcode('orb-services-schedule', [$this, 'orb_services_schedule_shortcode']);
-        add_shortcode('orb-services-headquarters', [$this, 'orb_services_headquarters_shortcode']);
         add_shortcode('orb-services-support', [$this, 'orb_services_support_shortcode']);
     }
 
@@ -21,16 +19,6 @@ class Shortcodes
     function orb_services_shortcode()
     {
         include ORB_PRODUCTS_SERVICES . 'includes/section-services.php';
-    }
-
-    function orb_services_schedule_shortcode()
-    {
-        include ORB_PRODUCTS_SERVICES . 'includes/part-schedule.php';
-    }
-
-    function orb_services_headquarters_shortcode()
-    {
-        include ORB_PRODUCTS_SERVICES . 'includes/part-headquarters.php';
     }
 
     function orb_services_support_shortcode()

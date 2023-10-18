@@ -12,6 +12,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
 get_header();
 
-include ORB_PRODUCTS_SERVICES . 'includes/section-schedule.php';
+include ORB_PRODUCTS_SERVICES . 'includes/section-wallet.php';
 
 get_footer();

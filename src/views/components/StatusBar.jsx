@@ -1,4 +1,4 @@
-function StatusBar(props) {
+function StatusBarComponent(props) {
   const { message, messageType } = props;
 
   return (
@@ -12,4 +12,4 @@ function StatusBar(props) {
   );
 }
 
-export default StatusBar;
+export default StatusBarComponent;

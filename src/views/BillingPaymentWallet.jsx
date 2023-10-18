@@ -4,7 +4,7 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
-import PaymentNavigationComponent from './payment/Navigation';
+import PaymentNavigationComponent from './components/PaymentNavigation';
 
 const WalletComponent = () => {
   const stripe = useStripe();

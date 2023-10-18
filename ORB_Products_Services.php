@@ -25,7 +25,6 @@ define('ORB_PRODUCTS_SERVICES_URL', WP_PLUGIN_URL . '/orb-products-services/');
 use Dotenv\Dotenv;
 
 use ORB_Products_Services\Admin\Admin;
-use ORB_Products_Services\API\Google\Google;
 use ORB_Products_Services\API\Email;
 use ORB_Products_Services\API\Clients;
 use ORB_Products_Services\API\Customers;
@@ -84,39 +83,39 @@ class ORB_Products_Services
         new Database;
         new Templates;
 
-        $credentialsPath = ORB_PRODUCTS_SERVICES . 'serviceAccount.json';
+        // $credentialsPath = ORB_PRODUCTS_SERVICES . 'serviceAccount.json';
 
-        if (file_exists($credentialsPath)) {
-            $jsonFileContents = file_get_contents($credentialsPath);
+        // if (file_exists($credentialsPath)) {
+        //     $jsonFileContents = file_get_contents($credentialsPath);
 
-            if ($jsonFileContents !== false) {
-                $decodedData = json_decode($jsonFileContents, true);
+        //     if ($jsonFileContents !== false) {
+        //         $decodedData = json_decode($jsonFileContents, true);
 
-                if (json_last_error() === JSON_ERROR_NONE && is_array($decodedData)) {
-                    if (
-                        isset($decodedData['type']) && $decodedData['type'] === 'service_account' &&
-                        isset($decodedData['project_id']) &&
-                        isset($decodedData['private_key_id']) &&
-                        isset($decodedData['private_key']) &&
-                        isset($decodedData['client_email'])
-                    ) {
-                        $credentialsPath = ORB_PRODUCTS_SERVICES . 'serviceAccount.json';
-                    } else {
-                        error_log('This is not a valid service account JSON');
-                        $credentialsPath = null;
-                    }
-                } else {
-                    error_log('Failed to decode JSON');
-                    $credentialsPath = null;
-                }
-            } else {
-                error_log('Failed to read file contents');
-                $credentialsPath = null;
-            }
-        } else {
-            error_log('File does not exist');
-            $credentialsPath = null;
-        }
+        //         if (json_last_error() === JSON_ERROR_NONE && is_array($decodedData)) {
+        //             if (
+        //                 isset($decodedData['type']) && $decodedData['type'] === 'service_account' &&
+        //                 isset($decodedData['project_id']) &&
+        //                 isset($decodedData['private_key_id']) &&
+        //                 isset($decodedData['private_key']) &&
+        //                 isset($decodedData['client_email'])
+        //             ) {
+        //                 $credentialsPath = ORB_PRODUCTS_SERVICES . 'serviceAccount.json';
+        //             } else {
+        //                 error_log('This is not a valid service account JSON');
+        //                 $credentialsPath = null;
+        //             }
+        //         } else {
+        //             error_log('Failed to decode JSON');
+        //             $credentialsPath = null;
+        //         }
+        //     } else {
+        //         error_log('Failed to read file contents');
+        //         $credentialsPath = null;
+        //     }
+        // } else {
+        //     error_log('File does not exist');
+        //     $credentialsPath = null;
+        // }
 
         $dotenv = Dotenv::createImmutable(ORB_PRODUCTS_SERVICES);
         $dotenv->load(__DIR__);
@@ -175,11 +174,11 @@ class ORB_Products_Services
             error_log('Stripe Secret Key is required.');
         }
 
-        if ($credentialsPath !== null) {
-            new Google($credentialsPath);
-        } else {
-            error_log('A path to the Google Service Account file is required.');
-        }
+        // if ($credentialsPath !== null) {
+        //     new Google($credentialsPath);
+        // } else {
+        //     error_log('A path to the Google Service Account file is required.');
+        // }
     }
 
     public function activate()

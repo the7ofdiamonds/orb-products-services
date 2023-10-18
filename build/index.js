@@ -1,65 +1,67 @@
-/******/ (() => { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js":
 /*!*****************************************************************!*\
   !*** ./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js ***!
   \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   EnhancerArray: () => (/* binding */ EnhancerArray),
-/* harmony export */   MiddlewareArray: () => (/* binding */ MiddlewareArray),
-/* harmony export */   SHOULD_AUTOBATCH: () => (/* binding */ SHOULD_AUTOBATCH),
-/* harmony export */   TaskAbortError: () => (/* binding */ TaskAbortError),
-/* harmony export */   __DO_NOT_USE__ActionTypes: () => (/* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.__DO_NOT_USE__ActionTypes),
-/* harmony export */   addListener: () => (/* binding */ addListener),
-/* harmony export */   applyMiddleware: () => (/* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.applyMiddleware),
-/* harmony export */   autoBatchEnhancer: () => (/* binding */ autoBatchEnhancer),
-/* harmony export */   bindActionCreators: () => (/* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.bindActionCreators),
-/* harmony export */   clearAllListeners: () => (/* binding */ clearAllListeners),
-/* harmony export */   combineReducers: () => (/* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.combineReducers),
-/* harmony export */   compose: () => (/* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.compose),
-/* harmony export */   configureStore: () => (/* binding */ configureStore),
-/* harmony export */   createAction: () => (/* binding */ createAction),
-/* harmony export */   createAsyncThunk: () => (/* binding */ createAsyncThunk),
-/* harmony export */   createDraftSafeSelector: () => (/* binding */ createDraftSafeSelector),
-/* harmony export */   createEntityAdapter: () => (/* binding */ createEntityAdapter),
-/* harmony export */   createImmutableStateInvariantMiddleware: () => (/* binding */ createImmutableStateInvariantMiddleware),
-/* harmony export */   createListenerMiddleware: () => (/* binding */ createListenerMiddleware),
-/* harmony export */   createNextState: () => (/* reexport safe */ immer__WEBPACK_IMPORTED_MODULE_2__["default"]),
-/* harmony export */   createReducer: () => (/* binding */ createReducer),
-/* harmony export */   createSelector: () => (/* reexport safe */ reselect__WEBPACK_IMPORTED_MODULE_1__.createSelector),
-/* harmony export */   createSerializableStateInvariantMiddleware: () => (/* binding */ createSerializableStateInvariantMiddleware),
-/* harmony export */   createSlice: () => (/* binding */ createSlice),
-/* harmony export */   createStore: () => (/* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.createStore),
-/* harmony export */   current: () => (/* reexport safe */ immer__WEBPACK_IMPORTED_MODULE_2__.current),
-/* harmony export */   findNonSerializableValue: () => (/* binding */ findNonSerializableValue),
-/* harmony export */   freeze: () => (/* reexport safe */ immer__WEBPACK_IMPORTED_MODULE_2__.freeze),
-/* harmony export */   getDefaultMiddleware: () => (/* binding */ getDefaultMiddleware),
-/* harmony export */   getType: () => (/* binding */ getType),
-/* harmony export */   isAction: () => (/* binding */ isAction),
-/* harmony export */   isAllOf: () => (/* binding */ isAllOf),
-/* harmony export */   isAnyOf: () => (/* binding */ isAnyOf),
-/* harmony export */   isAsyncThunkAction: () => (/* binding */ isAsyncThunkAction),
-/* harmony export */   isDraft: () => (/* reexport safe */ immer__WEBPACK_IMPORTED_MODULE_2__.isDraft),
-/* harmony export */   isFluxStandardAction: () => (/* binding */ isFSA),
-/* harmony export */   isFulfilled: () => (/* binding */ isFulfilled),
-/* harmony export */   isImmutableDefault: () => (/* binding */ isImmutableDefault),
-/* harmony export */   isPending: () => (/* binding */ isPending),
-/* harmony export */   isPlain: () => (/* binding */ isPlain),
-/* harmony export */   isPlainObject: () => (/* binding */ isPlainObject),
-/* harmony export */   isRejected: () => (/* binding */ isRejected),
-/* harmony export */   isRejectedWithValue: () => (/* binding */ isRejectedWithValue),
-/* harmony export */   legacy_createStore: () => (/* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.legacy_createStore),
-/* harmony export */   miniSerializeError: () => (/* binding */ miniSerializeError),
-/* harmony export */   nanoid: () => (/* binding */ nanoid),
-/* harmony export */   original: () => (/* reexport safe */ immer__WEBPACK_IMPORTED_MODULE_2__.original),
-/* harmony export */   prepareAutoBatched: () => (/* binding */ prepareAutoBatched),
-/* harmony export */   removeListener: () => (/* binding */ removeListener),
-/* harmony export */   unwrapResult: () => (/* binding */ unwrapResult)
+/* harmony export */   EnhancerArray: function() { return /* binding */ EnhancerArray; },
+/* harmony export */   MiddlewareArray: function() { return /* binding */ MiddlewareArray; },
+/* harmony export */   SHOULD_AUTOBATCH: function() { return /* binding */ SHOULD_AUTOBATCH; },
+/* harmony export */   TaskAbortError: function() { return /* binding */ TaskAbortError; },
+/* harmony export */   __DO_NOT_USE__ActionTypes: function() { return /* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.__DO_NOT_USE__ActionTypes; },
+/* harmony export */   addListener: function() { return /* binding */ addListener; },
+/* harmony export */   applyMiddleware: function() { return /* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.applyMiddleware; },
+/* harmony export */   autoBatchEnhancer: function() { return /* binding */ autoBatchEnhancer; },
+/* harmony export */   bindActionCreators: function() { return /* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.bindActionCreators; },
+/* harmony export */   clearAllListeners: function() { return /* binding */ clearAllListeners; },
+/* harmony export */   combineReducers: function() { return /* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.combineReducers; },
+/* harmony export */   compose: function() { return /* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.compose; },
+/* harmony export */   configureStore: function() { return /* binding */ configureStore; },
+/* harmony export */   createAction: function() { return /* binding */ createAction; },
+/* harmony export */   createActionCreatorInvariantMiddleware: function() { return /* binding */ createActionCreatorInvariantMiddleware; },
+/* harmony export */   createAsyncThunk: function() { return /* binding */ createAsyncThunk; },
+/* harmony export */   createDraftSafeSelector: function() { return /* binding */ createDraftSafeSelector; },
+/* harmony export */   createEntityAdapter: function() { return /* binding */ createEntityAdapter; },
+/* harmony export */   createImmutableStateInvariantMiddleware: function() { return /* binding */ createImmutableStateInvariantMiddleware; },
+/* harmony export */   createListenerMiddleware: function() { return /* binding */ createListenerMiddleware; },
+/* harmony export */   createNextState: function() { return /* reexport safe */ immer__WEBPACK_IMPORTED_MODULE_2__["default"]; },
+/* harmony export */   createReducer: function() { return /* binding */ createReducer; },
+/* harmony export */   createSelector: function() { return /* reexport safe */ reselect__WEBPACK_IMPORTED_MODULE_1__.createSelector; },
+/* harmony export */   createSerializableStateInvariantMiddleware: function() { return /* binding */ createSerializableStateInvariantMiddleware; },
+/* harmony export */   createSlice: function() { return /* binding */ createSlice; },
+/* harmony export */   createStore: function() { return /* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.createStore; },
+/* harmony export */   current: function() { return /* reexport safe */ immer__WEBPACK_IMPORTED_MODULE_2__.current; },
+/* harmony export */   findNonSerializableValue: function() { return /* binding */ findNonSerializableValue; },
+/* harmony export */   freeze: function() { return /* reexport safe */ immer__WEBPACK_IMPORTED_MODULE_2__.freeze; },
+/* harmony export */   getDefaultMiddleware: function() { return /* binding */ getDefaultMiddleware; },
+/* harmony export */   getType: function() { return /* binding */ getType; },
+/* harmony export */   isAction: function() { return /* binding */ isAction; },
+/* harmony export */   isActionCreator: function() { return /* binding */ isActionCreator; },
+/* harmony export */   isAllOf: function() { return /* binding */ isAllOf; },
+/* harmony export */   isAnyOf: function() { return /* binding */ isAnyOf; },
+/* harmony export */   isAsyncThunkAction: function() { return /* binding */ isAsyncThunkAction; },
+/* harmony export */   isDraft: function() { return /* reexport safe */ immer__WEBPACK_IMPORTED_MODULE_2__.isDraft; },
+/* harmony export */   isFluxStandardAction: function() { return /* binding */ isFSA; },
+/* harmony export */   isFulfilled: function() { return /* binding */ isFulfilled; },
+/* harmony export */   isImmutableDefault: function() { return /* binding */ isImmutableDefault; },
+/* harmony export */   isPending: function() { return /* binding */ isPending; },
+/* harmony export */   isPlain: function() { return /* binding */ isPlain; },
+/* harmony export */   isPlainObject: function() { return /* binding */ isPlainObject; },
+/* harmony export */   isRejected: function() { return /* binding */ isRejected; },
+/* harmony export */   isRejectedWithValue: function() { return /* binding */ isRejectedWithValue; },
+/* harmony export */   legacy_createStore: function() { return /* reexport safe */ redux__WEBPACK_IMPORTED_MODULE_0__.legacy_createStore; },
+/* harmony export */   miniSerializeError: function() { return /* binding */ miniSerializeError; },
+/* harmony export */   nanoid: function() { return /* binding */ nanoid; },
+/* harmony export */   original: function() { return /* reexport safe */ immer__WEBPACK_IMPORTED_MODULE_2__.original; },
+/* harmony export */   prepareAutoBatched: function() { return /* binding */ prepareAutoBatched; },
+/* harmony export */   removeListener: function() { return /* binding */ removeListener; },
+/* harmony export */   unwrapResult: function() { return /* binding */ unwrapResult; }
 /* harmony export */ });
 /* harmony import */ var immer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! immer */ "./node_modules/immer/dist/immer.esm.mjs");
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
@@ -208,6 +210,66 @@ function isPlainObject(value) {
 }
 // src/getDefaultMiddleware.ts
 
+// src/tsHelpers.ts
+var hasMatchFunction = function (v) {
+    return v && typeof v.match === "function";
+};
+// src/createAction.ts
+function createAction(type, prepareAction) {
+    function actionCreator() {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        if (prepareAction) {
+            var prepared = prepareAction.apply(void 0, args);
+            if (!prepared) {
+                throw new Error("prepareAction did not return an object");
+            }
+            return __spreadValues(__spreadValues({
+                type: type,
+                payload: prepared.payload
+            }, "meta" in prepared && { meta: prepared.meta }), "error" in prepared && { error: prepared.error });
+        }
+        return { type: type, payload: args[0] };
+    }
+    actionCreator.toString = function () { return "" + type; };
+    actionCreator.type = type;
+    actionCreator.match = function (action) { return action.type === type; };
+    return actionCreator;
+}
+function isAction(action) {
+    return isPlainObject(action) && "type" in action;
+}
+function isActionCreator(action) {
+    return typeof action === "function" && "type" in action && hasMatchFunction(action);
+}
+function isFSA(action) {
+    return isAction(action) && typeof action.type === "string" && Object.keys(action).every(isValidKey);
+}
+function isValidKey(key) {
+    return ["type", "payload", "error", "meta"].indexOf(key) > -1;
+}
+function getType(actionCreator) {
+    return "" + actionCreator;
+}
+// src/actionCreatorInvariantMiddleware.ts
+function getMessage(type) {
+    var splitType = type ? ("" + type).split("/") : [];
+    var actionName = splitType[splitType.length - 1] || "actionCreator";
+    return "Detected an action creator with type \"" + (type || "unknown") + "\" being dispatched. \nMake sure you're calling the action creator before dispatching, i.e. `dispatch(" + actionName + "())` instead of `dispatch(" + actionName + ")`. This is necessary even if the action has no payload.";
+}
+function createActionCreatorInvariantMiddleware(options) {
+    if (options === void 0) { options = {}; }
+    if (false) {}
+    var _c = options.isActionCreator, isActionCreator2 = _c === void 0 ? isActionCreator : _c;
+    return function () { return function (next) { return function (action) {
+        if (isActionCreator2(action)) {
+            console.warn(getMessage(action.type));
+        }
+        return next(action);
+    }; }; };
+}
 // src/utils.ts
 
 function getTimeMeasureUtils(maxDelay, fnName) {
@@ -355,11 +417,13 @@ function trackForMutations(isImmutable, ignorePaths, obj) {
         }
     };
 }
-function trackProperties(isImmutable, ignorePaths, obj, path) {
+function trackProperties(isImmutable, ignorePaths, obj, path, checkedObjects) {
     if (ignorePaths === void 0) { ignorePaths = []; }
     if (path === void 0) { path = ""; }
+    if (checkedObjects === void 0) { checkedObjects = new Set(); }
     var tracked = { value: obj };
-    if (!isImmutable(obj)) {
+    if (!isImmutable(obj) && !checkedObjects.has(obj)) {
+        checkedObjects.add(obj);
         tracked.children = {};
         for (var key in obj) {
             var childPath = path ? path + "." + key : key;
@@ -560,7 +624,7 @@ function curryGetDefaultMiddleware() {
 }
 function getDefaultMiddleware(options) {
     if (options === void 0) { options = {}; }
-    var _c = options.thunk, thunk = _c === void 0 ? true : _c, _d = options.immutableCheck, immutableCheck = _d === void 0 ? true : _d, _e = options.serializableCheck, serializableCheck = _e === void 0 ? true : _e;
+    var _c = options.thunk, thunk = _c === void 0 ? true : _c, _d = options.immutableCheck, immutableCheck = _d === void 0 ? true : _d, _e = options.serializableCheck, serializableCheck = _e === void 0 ? true : _e, _f = options.actionCreatorCheck, actionCreatorCheck = _f === void 0 ? true : _f;
     var middlewareArray = new MiddlewareArray();
     if (thunk) {
         if (isBoolean(thunk)) {
@@ -584,6 +648,13 @@ function getDefaultMiddleware(options) {
                 serializableOptions = serializableCheck;
             }
             middlewareArray.push(createSerializableStateInvariantMiddleware(serializableOptions));
+        }
+        if (actionCreatorCheck) {
+            var actionCreatorOptions = {};
+            if (!isBoolean(actionCreatorCheck)) {
+                actionCreatorOptions = actionCreatorCheck;
+            }
+            middlewareArray.unshift(createActionCreatorInvariantMiddleware(actionCreatorOptions));
         }
     }
     return middlewareArray;
@@ -631,42 +702,6 @@ function configureStore(options) {
     var composedEnhancer = finalCompose.apply(void 0, storeEnhancers);
     return (0,redux__WEBPACK_IMPORTED_MODULE_0__.createStore)(rootReducer, preloadedState, composedEnhancer);
 }
-// src/createAction.ts
-function createAction(type, prepareAction) {
-    function actionCreator() {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        if (prepareAction) {
-            var prepared = prepareAction.apply(void 0, args);
-            if (!prepared) {
-                throw new Error("prepareAction did not return an object");
-            }
-            return __spreadValues(__spreadValues({
-                type: type,
-                payload: prepared.payload
-            }, "meta" in prepared && { meta: prepared.meta }), "error" in prepared && { error: prepared.error });
-        }
-        return { type: type, payload: args[0] };
-    }
-    actionCreator.toString = function () { return "" + type; };
-    actionCreator.type = type;
-    actionCreator.match = function (action) { return action.type === type; };
-    return actionCreator;
-}
-function isAction(action) {
-    return isPlainObject(action) && "type" in action;
-}
-function isFSA(action) {
-    return isAction(action) && typeof action.type === "string" && Object.keys(action).every(isValidKey);
-}
-function isValidKey(key) {
-    return ["type", "payload", "error", "meta"].indexOf(key) > -1;
-}
-function getType(actionCreator) {
-    return "" + actionCreator;
-}
 // src/createReducer.ts
 
 // src/mapBuilders.ts
@@ -685,8 +720,11 @@ function executeReducerBuilderCallback(builderCallback) {
                 }
             }
             var type = typeof typeOrActionCreator === "string" ? typeOrActionCreator : typeOrActionCreator.type;
+            if (!type) {
+                throw new Error("`builder.addCase` cannot be called with an empty action type");
+            }
             if (type in actionsMap) {
-                throw new Error("addCase cannot be called with two reducers for the same action type");
+                throw new Error("`builder.addCase` cannot be called with two reducers for the same action type");
             }
             actionsMap[type] = reducer;
             return builder;
@@ -1410,10 +1448,6 @@ function unwrapResult(action) {
 function isThenable(value) {
     return value !== null && typeof value === "object" && typeof value.then === "function";
 }
-// src/tsHelpers.ts
-var hasMatchFunction = function (v) {
-    return v && typeof v.match === "function";
-};
 // src/matchers.ts
 var matches = function (matcher, action) {
     if (hasMatchFunction(matcher)) {
@@ -1662,9 +1696,9 @@ var createDelay = function (signal) {
 var assign = Object.assign;
 var INTERNAL_NIL_TOKEN = {};
 var alm = "listenerMiddleware";
-var createFork = function (parentAbortSignal) {
+var createFork = function (parentAbortSignal, parentBlockingPromises) {
     var linkControllers = function (controller) { return addAbortSignalListener(parentAbortSignal, function () { return abortControllerWithReason(controller, parentAbortSignal.reason); }); };
-    return function (taskExecutor) {
+    return function (taskExecutor, opts) {
         assertFunction(taskExecutor, "taskExecutor");
         var childAbortController = new AbortController();
         linkControllers(childAbortController);
@@ -1687,6 +1721,9 @@ var createFork = function (parentAbortSignal) {
                 }
             });
         }); }, function () { return abortControllerWithReason(childAbortController, taskCompleted); });
+        if (opts == null ? void 0 : opts.autoJoin) {
+            parentBlockingPromises.push(result);
+        }
         return {
             result: createPause(parentAbortSignal)(result),
             cancel: function () {
@@ -1857,15 +1894,16 @@ function createListenerMiddleware(middlewareOptions) {
         return !!entry;
     };
     var notifyListener = function (entry, action, api, getOriginalState) { return __async(_this, null, function () {
-        var internalTaskController, take, listenerError_1;
+        var internalTaskController, take, autoJoinPromises, listenerError_1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
                     internalTaskController = new AbortController();
                     take = createTakePattern(startListening, internalTaskController.signal);
+                    autoJoinPromises = [];
                     _c.label = 1;
                 case 1:
-                    _c.trys.push([1, 3, 4, 5]);
+                    _c.trys.push([1, 3, 4, 6]);
                     entry.pending.add(internalTaskController);
                     return [4 /*yield*/, Promise.resolve(entry.effect(action, assign({}, api, {
                             getOriginalState: getOriginalState,
@@ -1875,7 +1913,7 @@ function createListenerMiddleware(middlewareOptions) {
                             pause: createPause(internalTaskController.signal),
                             extra: extra,
                             signal: internalTaskController.signal,
-                            fork: createFork(internalTaskController.signal),
+                            fork: createFork(internalTaskController.signal, autoJoinPromises),
                             unsubscribe: entry.unsubscribe,
                             subscribe: function () {
                                 listenerMap.set(entry.id, entry);
@@ -1891,7 +1929,7 @@ function createListenerMiddleware(middlewareOptions) {
                         })))];
                 case 2:
                     _c.sent();
-                    return [3 /*break*/, 5];
+                    return [3 /*break*/, 6];
                 case 3:
                     listenerError_1 = _c.sent();
                     if (!(listenerError_1 instanceof TaskAbortError)) {
@@ -1899,12 +1937,14 @@ function createListenerMiddleware(middlewareOptions) {
                             raisedBy: "effect"
                         });
                     }
-                    return [3 /*break*/, 5];
-                case 4:
+                    return [3 /*break*/, 6];
+                case 4: return [4 /*yield*/, Promise.allSettled(autoJoinPromises)];
+                case 5:
+                    _c.sent();
                     abortControllerWithReason(internalTaskController, listenerCompleted);
                     entry.pending.delete(internalTaskController);
                     return [7 /*endfinally*/];
-                case 5: return [2 /*return*/];
+                case 6: return [2 /*return*/];
             }
         });
     }); };
@@ -2047,48 +2087,50 @@ var autoBatchEnhancer = function (options) {
 /*!*******************************************************!*\
   !*** ./node_modules/@remix-run/router/dist/router.js ***!
   \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AbortedDeferredError: () => (/* binding */ AbortedDeferredError),
-/* harmony export */   Action: () => (/* binding */ Action),
-/* harmony export */   ErrorResponse: () => (/* binding */ ErrorResponse),
-/* harmony export */   IDLE_BLOCKER: () => (/* binding */ IDLE_BLOCKER),
-/* harmony export */   IDLE_FETCHER: () => (/* binding */ IDLE_FETCHER),
-/* harmony export */   IDLE_NAVIGATION: () => (/* binding */ IDLE_NAVIGATION),
-/* harmony export */   UNSAFE_DEFERRED_SYMBOL: () => (/* binding */ UNSAFE_DEFERRED_SYMBOL),
-/* harmony export */   UNSAFE_DeferredData: () => (/* binding */ DeferredData),
-/* harmony export */   UNSAFE_convertRoutesToDataRoutes: () => (/* binding */ convertRoutesToDataRoutes),
-/* harmony export */   UNSAFE_getPathContributingMatches: () => (/* binding */ getPathContributingMatches),
-/* harmony export */   UNSAFE_invariant: () => (/* binding */ invariant),
-/* harmony export */   UNSAFE_warning: () => (/* binding */ warning),
-/* harmony export */   createBrowserHistory: () => (/* binding */ createBrowserHistory),
-/* harmony export */   createHashHistory: () => (/* binding */ createHashHistory),
-/* harmony export */   createMemoryHistory: () => (/* binding */ createMemoryHistory),
-/* harmony export */   createPath: () => (/* binding */ createPath),
-/* harmony export */   createRouter: () => (/* binding */ createRouter),
-/* harmony export */   createStaticHandler: () => (/* binding */ createStaticHandler),
-/* harmony export */   defer: () => (/* binding */ defer),
-/* harmony export */   generatePath: () => (/* binding */ generatePath),
-/* harmony export */   getStaticContextFromError: () => (/* binding */ getStaticContextFromError),
-/* harmony export */   getToPathname: () => (/* binding */ getToPathname),
-/* harmony export */   isDeferredData: () => (/* binding */ isDeferredData),
-/* harmony export */   isRouteErrorResponse: () => (/* binding */ isRouteErrorResponse),
-/* harmony export */   joinPaths: () => (/* binding */ joinPaths),
-/* harmony export */   json: () => (/* binding */ json),
-/* harmony export */   matchPath: () => (/* binding */ matchPath),
-/* harmony export */   matchRoutes: () => (/* binding */ matchRoutes),
-/* harmony export */   normalizePathname: () => (/* binding */ normalizePathname),
-/* harmony export */   parsePath: () => (/* binding */ parsePath),
-/* harmony export */   redirect: () => (/* binding */ redirect),
-/* harmony export */   resolvePath: () => (/* binding */ resolvePath),
-/* harmony export */   resolveTo: () => (/* binding */ resolveTo),
-/* harmony export */   stripBasename: () => (/* binding */ stripBasename)
+/* harmony export */   AbortedDeferredError: function() { return /* binding */ AbortedDeferredError; },
+/* harmony export */   Action: function() { return /* binding */ Action; },
+/* harmony export */   IDLE_BLOCKER: function() { return /* binding */ IDLE_BLOCKER; },
+/* harmony export */   IDLE_FETCHER: function() { return /* binding */ IDLE_FETCHER; },
+/* harmony export */   IDLE_NAVIGATION: function() { return /* binding */ IDLE_NAVIGATION; },
+/* harmony export */   UNSAFE_DEFERRED_SYMBOL: function() { return /* binding */ UNSAFE_DEFERRED_SYMBOL; },
+/* harmony export */   UNSAFE_DeferredData: function() { return /* binding */ DeferredData; },
+/* harmony export */   UNSAFE_ErrorResponseImpl: function() { return /* binding */ ErrorResponseImpl; },
+/* harmony export */   UNSAFE_convertRouteMatchToUiMatch: function() { return /* binding */ convertRouteMatchToUiMatch; },
+/* harmony export */   UNSAFE_convertRoutesToDataRoutes: function() { return /* binding */ convertRoutesToDataRoutes; },
+/* harmony export */   UNSAFE_getPathContributingMatches: function() { return /* binding */ getPathContributingMatches; },
+/* harmony export */   UNSAFE_invariant: function() { return /* binding */ invariant; },
+/* harmony export */   UNSAFE_warning: function() { return /* binding */ warning; },
+/* harmony export */   createBrowserHistory: function() { return /* binding */ createBrowserHistory; },
+/* harmony export */   createHashHistory: function() { return /* binding */ createHashHistory; },
+/* harmony export */   createMemoryHistory: function() { return /* binding */ createMemoryHistory; },
+/* harmony export */   createPath: function() { return /* binding */ createPath; },
+/* harmony export */   createRouter: function() { return /* binding */ createRouter; },
+/* harmony export */   createStaticHandler: function() { return /* binding */ createStaticHandler; },
+/* harmony export */   defer: function() { return /* binding */ defer; },
+/* harmony export */   generatePath: function() { return /* binding */ generatePath; },
+/* harmony export */   getStaticContextFromError: function() { return /* binding */ getStaticContextFromError; },
+/* harmony export */   getToPathname: function() { return /* binding */ getToPathname; },
+/* harmony export */   isDeferredData: function() { return /* binding */ isDeferredData; },
+/* harmony export */   isRouteErrorResponse: function() { return /* binding */ isRouteErrorResponse; },
+/* harmony export */   joinPaths: function() { return /* binding */ joinPaths; },
+/* harmony export */   json: function() { return /* binding */ json; },
+/* harmony export */   matchPath: function() { return /* binding */ matchPath; },
+/* harmony export */   matchRoutes: function() { return /* binding */ matchRoutes; },
+/* harmony export */   normalizePathname: function() { return /* binding */ normalizePathname; },
+/* harmony export */   parsePath: function() { return /* binding */ parsePath; },
+/* harmony export */   redirect: function() { return /* binding */ redirect; },
+/* harmony export */   redirectDocument: function() { return /* binding */ redirectDocument; },
+/* harmony export */   resolvePath: function() { return /* binding */ resolvePath; },
+/* harmony export */   resolveTo: function() { return /* binding */ resolveTo; },
+/* harmony export */   stripBasename: function() { return /* binding */ stripBasename; }
 /* harmony export */ });
 /**
- * @remix-run/router v1.7.1
+ * @remix-run/router v1.10.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -2293,6 +2335,15 @@ function createHashHistory(options) {
       search = "",
       hash = ""
     } = parsePath(window.location.hash.substr(1));
+    // Hash URL should always have a leading / just like window.location.pathname
+    // does, so if an app ends up at a route like /#something then we add a
+    // leading slash so all of our path-matching behaves the same as if it would
+    // in a browser router.  This is particularly important when there exists a
+    // root splat route (<Route path="*">) since that matches internally against
+    // "/*" and we'd expect /#something to 404 in a hash router app.
+    if (!pathname.startsWith("/") && !pathname.startsWith(".")) {
+      pathname = "/" + pathname;
+    }
     return createLocation("", {
       pathname,
       search,
@@ -2328,7 +2379,7 @@ function warning(cond, message) {
     try {
       // Welcome to debugging history!
       //
-      // This error is thrown as a convenience so you can more easily
+      // This error is thrown as a convenience, so you can more easily
       // find the source for a warning that appears in the console by
       // enabling "pause on exceptions" in your JavaScript debugger.
       throw new Error(message);
@@ -2552,7 +2603,7 @@ const immutableRouteKeys = new Set(["lazy", "caseSensitive", "path", "id", "inde
 function isIndexRoute(route) {
   return route.index === true;
 }
-// Walk the route tree generating unique IDs where necessary so we are working
+// Walk the route tree generating unique IDs where necessary, so we are working
 // solely with AgnosticDataRouteObject's within the Router
 function convertRoutesToDataRoutes(routes, mapRouteProperties, parentPath, manifest) {
   if (parentPath === void 0) {
@@ -2614,6 +2665,20 @@ function matchRoutes(routes, locationArg, basename) {
   }
   return matches;
 }
+function convertRouteMatchToUiMatch(match, loaderData) {
+  let {
+    route,
+    pathname,
+    params
+  } = match;
+  return {
+    id: route.id,
+    pathname,
+    params,
+    data: loaderData[route.id],
+    handle: route.handle
+  };
+}
 function flattenRoutes(routes, branches, parentsMeta, parentPath) {
   if (branches === void 0) {
     branches = [];
@@ -2637,7 +2702,7 @@ function flattenRoutes(routes, branches, parentsMeta, parentPath) {
     }
     let path = joinPaths([parentPath, meta.relativePath]);
     let routesMeta = parentsMeta.concat(meta);
-    // Add the children before adding this route to the array so we traverse the
+    // Add the children before adding this route to the array, so we traverse the
     // route tree depth-first and child routes appear before their parents in
     // the "flattened" version.
     if (route.children && route.children.length > 0) {
@@ -2701,14 +2766,14 @@ function explodeOptionalSegments(path) {
   let restExploded = explodeOptionalSegments(rest.join("/"));
   let result = [];
   // All child paths with the prefix.  Do this for all children before the
-  // optional version for all children so we get consistent ordering where the
+  // optional version for all children, so we get consistent ordering where the
   // parent optional aspect is preferred as required.  Otherwise, we can get
   // child sections interspersed where deeper optional segments are higher than
-  // parent optional segments, where for example, /:two would explodes _earlier_
+  // parent optional segments, where for example, /:two would explode _earlier_
   // then /:one.  By always including the parent as required _for all children_
   // first, we avoid this issue
   result.push(...restExploded.map(subpath => subpath === "" ? required : [required, subpath].join("/")));
-  // Then if this is an optional value, add all child versions without
+  // Then, if this is an optional value, add all child versions without
   if (isOptional) {
     result.push(...restExploded);
   }
@@ -2882,7 +2947,7 @@ function compilePath(path, caseSensitive, end) {
     regexpSource += "\\/*$";
   } else if (path !== "" && path !== "/") {
     // If our path is non-empty and contains anything beyond an initial slash,
-    // then we have _some_ form of path in our regex so we should expect to
+    // then we have _some_ form of path in our regex, so we should expect to
     // match only if we find the end of this path segment.  Look for an optional
     // non-captured trailing slash (to match a portion of the URL) or the end
     // of the path (if we've matched to the end).  We used to do this with a
@@ -3124,7 +3189,7 @@ class DeferredData {
     this.pendingKeysSet.add(key);
     // We store a little wrapper promise that will be extended with
     // _data/_error props upon resolve/reject
-    let promise = Promise.race([value, this.abortPromise]).then(data => this.onSettle(promise, key, null, data), error => this.onSettle(promise, key, error));
+    let promise = Promise.race([value, this.abortPromise]).then(data => this.onSettle(promise, key, undefined, data), error => this.onSettle(promise, key, error));
     // Register rejection listeners to avoid uncaught promise rejections on
     // errors or aborted deferred values
     promise.catch(() => {});
@@ -3146,7 +3211,17 @@ class DeferredData {
       // Nothing left to abort!
       this.unlistenAbortSignal();
     }
-    if (error) {
+    // If the promise was resolved/rejected with undefined, we'll throw an error as you
+    // should always resolve with a value or null
+    if (error === undefined && data === undefined) {
+      let undefinedError = new Error("Deferred data for key \"" + key + "\" resolved/rejected with `undefined`, " + "you must resolve/reject with a value or `null`.");
+      Object.defineProperty(promise, "_error", {
+        get: () => undefinedError
+      });
+      this.emit(false, key);
+      return Promise.reject(undefinedError);
+    }
+    if (data === undefined) {
       Object.defineProperty(promise, "_error", {
         get: () => error
       });
@@ -3247,10 +3322,24 @@ const redirect = function redirect(url, init) {
   }));
 };
 /**
+ * A redirect response that will force a document reload to the new location.
+ * Sets the status code and the `Location` header.
+ * Defaults to "302 Found".
+ */
+const redirectDocument = (url, init) => {
+  let response = redirect(url, init);
+  response.headers.set("X-Remix-Reload-Document", "true");
+  return response;
+};
+/**
  * @private
  * Utility class we use to hold auto-unwrapped 4xx/5xx Response bodies
+ *
+ * We don't export the class for public use since it's an implementation
+ * detail, but we export the interface above so folks can build their own
+ * abstractions around instances via isRouteErrorResponse()
  */
-class ErrorResponse {
+class ErrorResponseImpl {
   constructor(status, statusText, data, internal) {
     if (internal === void 0) {
       internal = false;
@@ -3310,6 +3399,7 @@ const ABSOLUTE_URL_REGEX = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
 const defaultMapRouteProperties = route => ({
   hasErrorBoundary: Boolean(route.hasErrorBoundary)
 });
+const TRANSITIONS_STORAGE_KEY = "remix-router-transitions";
 //#endregion
 ////////////////////////////////////////////////////////////////////////////////
 //#region createRouter
@@ -3410,6 +3500,12 @@ function createRouter(init) {
   let pendingPreventScrollReset = false;
   // AbortController for the active navigation
   let pendingNavigationController;
+  // Should the current navigation enable document.startViewTransition?
+  let pendingViewTransitionEnabled = false;
+  // Store applied view transitions so we can apply them on POP
+  let appliedViewTransitions = new Map();
+  // Cleanup function for persisting applied transitions to sessionStorage
+  let removePageHideEventListener = null;
   // We use this to avoid touching history in completeNavigation if a
   // revalidation is entirely uninterrupted
   let isUninterruptedRevalidation = false;
@@ -3503,6 +3599,14 @@ function createRouter(init) {
       }
       return startNavigation(historyAction, location);
     });
+    if (isBrowser) {
+      // FIXME: This feels gross.  How can we cleanup the lines between
+      // scrollRestoration/appliedTransitions persistance?
+      restoreAppliedTransitions(routerWindow, appliedViewTransitions);
+      let _saveAppliedTransitions = () => persistAppliedTransitions(routerWindow, appliedViewTransitions);
+      routerWindow.addEventListener("pagehide", _saveAppliedTransitions);
+      removePageHideEventListener = () => routerWindow.removeEventListener("pagehide", _saveAppliedTransitions);
+    }
     // Kick off initial data load if needed.  Use Pop to avoid modifying history
     // Note we don't do any handling of lazy here.  For SPA's it'll get handled
     // in the normal navigation flow.  For SSR it's expected that lazy modules are
@@ -3518,6 +3622,9 @@ function createRouter(init) {
     if (unlistenHistory) {
       unlistenHistory();
     }
+    if (removePageHideEventListener) {
+      removePageHideEventListener();
+    }
     subscribers.clear();
     pendingNavigationController && pendingNavigationController.abort();
     state.fetchers.forEach((_, key) => deleteFetcher(key));
@@ -3529,9 +3636,11 @@ function createRouter(init) {
     return () => subscribers.delete(fn);
   }
   // Update our state and notify the calling context of the change
-  function updateState(newState) {
+  function updateState(newState, viewTransitionOpts) {
     state = _extends({}, state, newState);
-    subscribers.forEach(subscriber => subscriber(state));
+    subscribers.forEach(subscriber => subscriber(state, {
+      unstable_viewTransitionOpts: viewTransitionOpts
+    }));
   }
   // Complete a navigation returning the state.navigation back to the IDLE_NAVIGATION
   // and setting state.[historyAction/location/matches] to the new route.
@@ -3582,6 +3691,38 @@ function createRouter(init) {
     } else if (pendingAction === Action.Replace) {
       init.history.replace(location, location.state);
     }
+    let viewTransitionOpts;
+    // On POP, enable transitions if they were enabled on the original navigation
+    if (pendingAction === Action.Pop) {
+      // Forward takes precedence so they behave like the original navigation
+      let priorPaths = appliedViewTransitions.get(state.location.pathname);
+      if (priorPaths && priorPaths.has(location.pathname)) {
+        viewTransitionOpts = {
+          currentLocation: state.location,
+          nextLocation: location
+        };
+      } else if (appliedViewTransitions.has(location.pathname)) {
+        // If we don't have a previous forward nav, assume we're popping back to
+        // the new location and enable if that location previously enabled
+        viewTransitionOpts = {
+          currentLocation: location,
+          nextLocation: state.location
+        };
+      }
+    } else if (pendingViewTransitionEnabled) {
+      // Store the applied transition on PUSH/REPLACE
+      let toPaths = appliedViewTransitions.get(state.location.pathname);
+      if (toPaths) {
+        toPaths.add(location.pathname);
+      } else {
+        toPaths = new Set([location.pathname]);
+        appliedViewTransitions.set(state.location.pathname, toPaths);
+      }
+      viewTransitionOpts = {
+        currentLocation: state.location,
+        nextLocation: location
+      };
+    }
     updateState(_extends({}, newState, {
       actionData,
       loaderData,
@@ -3593,10 +3734,11 @@ function createRouter(init) {
       restoreScrollPosition: getSavedScrollPosition(location, newState.matches || state.matches),
       preventScrollReset,
       blockers
-    }));
+    }), viewTransitionOpts);
     // Reset stateful navigation vars
     pendingAction = Action.Pop;
     pendingPreventScrollReset = false;
+    pendingViewTransitionEnabled = false;
     isUninterruptedRevalidation = false;
     isRevalidationRequired = false;
     cancelledDeferredRoutes = [];
@@ -3671,7 +3813,8 @@ function createRouter(init) {
       // render at the right error boundary after we match routes
       pendingError: error,
       preventScrollReset,
-      replace: opts && opts.replace
+      replace: opts && opts.replace,
+      enableViewTransition: opts && opts.unstable_viewTransition
     });
   }
   // Revalidate all current loaders.  If a navigation is in progress or if this
@@ -3718,6 +3861,7 @@ function createRouter(init) {
     // and track whether we should reset scroll on completion
     saveScrollPosition(state.location, state.matches);
     pendingPreventScrollReset = (opts && opts.preventScrollReset) === true;
+    pendingViewTransitionEnabled = (opts && opts.enableViewTransition) === true;
     let routesToUse = inFlightDataRoutes || dataRoutes;
     let loadingNavigation = opts && opts.overrideNavigation;
     let matches = matchRoutes(routesToUse, location, basename);
@@ -3898,6 +4042,7 @@ function createRouter(init) {
     // about to reload.  Note that if this is an action reload we would have
     // already cancelled all pending deferreds so this would be a no-op
     cancelActiveDeferreds(routeId => !(matches && matches.some(m => m.route.id === routeId)) || matchesToLoad && matchesToLoad.some(m => m.route.id === routeId));
+    pendingNavigationLoadId = ++incrementingLoadId;
     // Short circuit if we have no loaders to run
     if (matchesToLoad.length === 0 && revalidatingFetchers.length === 0) {
       let updatedFetchers = markFetchRedirectsDone();
@@ -3936,7 +4081,6 @@ function createRouter(init) {
         fetchers: new Map(state.fetchers)
       } : {}));
     }
-    pendingNavigationLoadId = ++incrementingLoadId;
     revalidatingFetchers.forEach(rf => {
       if (fetchControllers.has(rf.key)) {
         abortFetcher(rf.key);
@@ -3973,7 +4117,14 @@ function createRouter(init) {
     // If any loaders returned a redirect Response, start a new REPLACE navigation
     let redirect = findRedirect(results);
     if (redirect) {
-      await startRedirectNavigation(state, redirect, {
+      if (redirect.idx >= matchesToLoad.length) {
+        // If this redirect came from a fetcher make sure we mark it in
+        // fetchRedirectIds so it doesn't get revalidated on the next set of
+        // loader executions
+        let fetcherKey = revalidatingFetchers[redirect.idx - matchesToLoad.length].key;
+        fetchRedirectIds.add(fetcherKey);
+      }
+      await startRedirectNavigation(state, redirect.result, {
         replace
       });
       return {
@@ -4072,6 +4223,7 @@ function createRouter(init) {
     let abortController = new AbortController();
     let fetchRequest = createClientSideRequest(init.history, path, abortController.signal, submission);
     fetchControllers.set(key, abortController);
+    let originatingLoadId = incrementingLoadId;
     let actionResult = await callLoaderOrAction("action", fetchRequest, match, requestMatches, manifest, mapRouteProperties, basename);
     if (fetchRequest.signal.aborted) {
       // We can delete this so long as we weren't aborted by ou our own fetcher
@@ -4083,16 +4235,28 @@ function createRouter(init) {
     }
     if (isRedirectResult(actionResult)) {
       fetchControllers.delete(key);
-      fetchRedirectIds.add(key);
-      let loadingFetcher = getLoadingFetcher(submission);
-      state.fetchers.set(key, loadingFetcher);
-      updateState({
-        fetchers: new Map(state.fetchers)
-      });
-      return startRedirectNavigation(state, actionResult, {
-        submission,
-        isFetchActionRedirect: true
-      });
+      if (pendingNavigationLoadId > originatingLoadId) {
+        // A new navigation was kicked off after our action started, so that
+        // should take precedence over this redirect navigation.  We already
+        // set isRevalidationRequired so all loaders for the new route should
+        // fire unless opted out via shouldRevalidate
+        let doneFetcher = getDoneFetcher(undefined);
+        state.fetchers.set(key, doneFetcher);
+        updateState({
+          fetchers: new Map(state.fetchers)
+        });
+        return;
+      } else {
+        fetchRedirectIds.add(key);
+        let loadingFetcher = getLoadingFetcher(submission);
+        state.fetchers.set(key, loadingFetcher);
+        updateState({
+          fetchers: new Map(state.fetchers)
+        });
+        return startRedirectNavigation(state, actionResult, {
+          fetcherSubmission: submission
+        });
+      }
     }
     // Process any non-redirect errors thrown
     if (isErrorResult(actionResult)) {
@@ -4153,7 +4317,14 @@ function createRouter(init) {
     revalidatingFetchers.forEach(r => fetchControllers.delete(r.key));
     let redirect = findRedirect(results);
     if (redirect) {
-      return startRedirectNavigation(state, redirect);
+      if (redirect.idx >= matchesToLoad.length) {
+        // If this redirect came from a fetcher make sure we mark it in
+        // fetchRedirectIds so it doesn't get revalidated on the next set of
+        // loader executions
+        let fetcherKey = revalidatingFetchers[redirect.idx - matchesToLoad.length].key;
+        fetchRedirectIds.add(fetcherKey);
+      }
+      return startRedirectNavigation(state, redirect.result);
     }
     // Process and commit output from loaders
     let {
@@ -4205,6 +4376,7 @@ function createRouter(init) {
     let abortController = new AbortController();
     let fetchRequest = createClientSideRequest(init.history, path, abortController.signal);
     fetchControllers.set(key, abortController);
+    let originatingLoadId = incrementingLoadId;
     let result = await callLoaderOrAction("loader", fetchRequest, match, matches, manifest, mapRouteProperties, basename);
     // Deferred isn't supported for fetcher loads, await everything and treat it
     // as a normal load.  resolveDeferredData will return undefined if this
@@ -4223,9 +4395,20 @@ function createRouter(init) {
     }
     // If the loader threw a redirect Response, start a new REPLACE navigation
     if (isRedirectResult(result)) {
-      fetchRedirectIds.add(key);
-      await startRedirectNavigation(state, result);
-      return;
+      if (pendingNavigationLoadId > originatingLoadId) {
+        // A new navigation was kicked off after our loader started, so that
+        // should take precedence over this redirect navigation
+        let doneFetcher = getDoneFetcher(undefined);
+        state.fetchers.set(key, doneFetcher);
+        updateState({
+          fetchers: new Map(state.fetchers)
+        });
+        return;
+      } else {
+        fetchRedirectIds.add(key);
+        await startRedirectNavigation(state, result);
+        return;
+      }
     }
     // Process any non-redirect errors thrown
     if (isErrorResult(result)) {
@@ -4272,24 +4455,30 @@ function createRouter(init) {
   async function startRedirectNavigation(state, redirect, _temp) {
     let {
       submission,
-      replace,
-      isFetchActionRedirect
+      fetcherSubmission,
+      replace
     } = _temp === void 0 ? {} : _temp;
     if (redirect.revalidate) {
       isRevalidationRequired = true;
     }
-    let redirectLocation = createLocation(state.location, redirect.location, // TODO: This can be removed once we get rid of useTransition in Remix v2
-    _extends({
+    let redirectLocation = createLocation(state.location, redirect.location, {
       _isRedirect: true
-    }, isFetchActionRedirect ? {
-      _isFetchActionRedirect: true
-    } : {}));
+    });
     invariant(redirectLocation, "Expected a location on the redirect navigation");
-    // Check if this an absolute external redirect that goes to a new origin
-    if (ABSOLUTE_URL_REGEX.test(redirect.location) && isBrowser) {
-      let url = init.history.createURL(redirect.location);
-      let isDifferentBasename = stripBasename(url.pathname, basename) == null;
-      if (routerWindow.location.origin !== url.origin || isDifferentBasename) {
+    if (isBrowser) {
+      let isDocumentReload = false;
+      if (redirect.reloadDocument) {
+        // Hard reload if the response contained X-Remix-Reload-Document
+        isDocumentReload = true;
+      } else if (ABSOLUTE_URL_REGEX.test(redirect.location)) {
+        const url = init.history.createURL(redirect.location);
+        isDocumentReload =
+        // Hard reload if it's an absolute URL to a new origin
+        url.origin !== routerWindow.location.origin ||
+        // Hard reload if it's an absolute URL that does not match our basename
+        stripBasename(url.pathname, basename) == null;
+      }
+      if (isDocumentReload) {
         if (replace) {
           routerWindow.location.replace(redirect.location);
         } else {
@@ -4304,10 +4493,18 @@ function createRouter(init) {
     let redirectHistoryAction = replace === true ? Action.Replace : Action.Push;
     // Use the incoming submission if provided, fallback on the active one in
     // state.navigation
-    let activeSubmission = submission || getSubmissionFromNavigation(state.navigation);
+    let {
+      formMethod,
+      formAction,
+      formEncType
+    } = state.navigation;
+    if (!submission && !fetcherSubmission && formMethod && formAction && formEncType) {
+      submission = getSubmissionFromNavigation(state.navigation);
+    }
     // If this was a 307/308 submission we want to preserve the HTTP method and
     // re-submit the GET/POST/PUT/PATCH/DELETE as a submission navigation to the
     // redirected location
+    let activeSubmission = submission || fetcherSubmission;
     if (redirectPreserveMethodStatusCodes.has(redirect.status) && activeSubmission && isMutationMethod(activeSubmission.formMethod)) {
       await startNavigation(redirectHistoryAction, redirectLocation, {
         submission: _extends({}, activeSubmission, {
@@ -4316,20 +4513,14 @@ function createRouter(init) {
         // Preserve this flag across redirects
         preventScrollReset: pendingPreventScrollReset
       });
-    } else if (isFetchActionRedirect) {
-      // For a fetch action redirect, we kick off a new loading navigation
-      // without the fetcher submission, but we send it along for shouldRevalidate
-      await startNavigation(redirectHistoryAction, redirectLocation, {
-        overrideNavigation: getLoadingNavigation(redirectLocation),
-        fetcherSubmission: activeSubmission,
-        // Preserve this flag across redirects
-        preventScrollReset: pendingPreventScrollReset
-      });
     } else {
-      // If we have a submission, we will preserve it through the redirect navigation
-      let overrideNavigation = getLoadingNavigation(redirectLocation, activeSubmission);
+      // If we have a navigation submission, we will preserve it through the
+      // redirect navigation
+      let overrideNavigation = getLoadingNavigation(redirectLocation, submission);
       await startNavigation(redirectHistoryAction, redirectLocation, {
         overrideNavigation,
+        // Send fetcher submissions through for shouldRevalidate
+        fetcherSubmission,
         // Preserve this flag across redirects
         preventScrollReset: pendingPreventScrollReset
       });
@@ -4537,7 +4728,7 @@ function createRouter(init) {
   }
   function getScrollKey(location, matches) {
     if (getScrollRestorationKey) {
-      let key = getScrollRestorationKey(location, matches.map(m => createUseMatchesMatch(m, state.loaderData)));
+      let key = getScrollRestorationKey(location, matches.map(m => convertRouteMatchToUiMatch(m, state.loaderData)));
       return key || location.key;
     }
     return location.key;
@@ -4571,6 +4762,9 @@ function createRouter(init) {
     },
     get routes() {
       return dataRoutes;
+    },
+    get window() {
+      return routerWindow;
     },
     initialize,
     subscribe,
@@ -4796,7 +4990,7 @@ function createStaticHandler(routes, opts) {
       // it to bail out and then return or throw here based on whether the user
       // returned or threw
       if (isQueryRouteResponse(e)) {
-        if (e.type === ResultType.error && !isRedirectResponse(e.response)) {
+        if (e.type === ResultType.error) {
           throw e.response;
         }
         return e.response;
@@ -4832,7 +5026,7 @@ function createStaticHandler(routes, opts) {
       });
       if (request.signal.aborted) {
         let method = isRouteRequest ? "queryRoute" : "query";
-        throw new Error(method + "() call aborted");
+        throw new Error(method + "() call aborted: " + request.method + " " + request.url);
       }
     }
     if (isRedirectResult(result)) {
@@ -4947,7 +5141,7 @@ function createStaticHandler(routes, opts) {
     }))]);
     if (request.signal.aborted) {
       let method = isRouteRequest ? "queryRoute" : "query";
-      throw new Error(method + "() call aborted");
+      throw new Error(method + "() call aborted: " + request.method + " " + request.url);
     }
     // Process and commit output from loaders
     let activeDeferreds = new Map();
@@ -5218,7 +5412,9 @@ function getMatchesToLoad(history, state, matches, submission, location, isReval
     }
     let fetcherMatches = matchRoutes(routesToUse, f.path, basename);
     // If the fetcher path no longer matches, push it in with null matches so
-    // we can trigger a 404 in callLoadersAndMaybeResolveData
+    // we can trigger a 404 in callLoadersAndMaybeResolveData.  Note this is
+    // currently only a use-case for Remix HMR where the route tree can change
+    // at runtime and remove a route previously loaded via a fetcher
     if (!fetcherMatches) {
       revalidatingFetchers.push({
         key,
@@ -5231,30 +5427,35 @@ function getMatchesToLoad(history, state, matches, submission, location, isReval
       return;
     }
     // Revalidating fetchers are decoupled from the route matches since they
-    // load from a static href.  They only set `defaultShouldRevalidate` on
-    // explicit revalidation due to submission, useRevalidator, or X-Remix-Revalidate
-    //
-    // They automatically revalidate without even calling shouldRevalidate if:
-    // - They were cancelled
-    // - They're in the middle of their first load and therefore this is still
-    //   an initial load and not a revalidation
-    //
-    // If neither of those is true, then they _always_ check shouldRevalidate
+    // load from a static href.  They revalidate based on explicit revalidation
+    // (submission, useRevalidator, or X-Remix-Revalidate)
     let fetcher = state.fetchers.get(key);
-    let isPerformingInitialLoad = fetcher && fetcher.state !== "idle" && fetcher.data === undefined &&
-    // If a fetcher.load redirected then it'll be "loading" without any data
-    // so ensure we're not processing the redirect from this fetcher
-    !fetchRedirectIds.has(key);
     let fetcherMatch = getTargetMatch(fetcherMatches, f.path);
-    let shouldRevalidate = cancelledFetcherLoads.includes(key) || isPerformingInitialLoad || shouldRevalidateLoader(fetcherMatch, _extends({
-      currentUrl,
-      currentParams: state.matches[state.matches.length - 1].params,
-      nextUrl,
-      nextParams: matches[matches.length - 1].params
-    }, submission, {
-      actionResult,
-      defaultShouldRevalidate: isRevalidationRequired
-    }));
+    let shouldRevalidate = false;
+    if (fetchRedirectIds.has(key)) {
+      // Never trigger a revalidation of an actively redirecting fetcher
+      shouldRevalidate = false;
+    } else if (cancelledFetcherLoads.includes(key)) {
+      // Always revalidate if the fetcher was cancelled
+      shouldRevalidate = true;
+    } else if (fetcher && fetcher.state !== "idle" && fetcher.data === undefined) {
+      // If the fetcher hasn't ever completed loading yet, then this isn't a
+      // revalidation, it would just be a brand new load if an explicit
+      // revalidation is required
+      shouldRevalidate = isRevalidationRequired;
+    } else {
+      // Otherwise fall back on any user-defined shouldRevalidate, defaulting
+      // to explicit revalidations only
+      shouldRevalidate = shouldRevalidateLoader(fetcherMatch, _extends({
+        currentUrl,
+        currentParams: state.matches[state.matches.length - 1].params,
+        nextUrl,
+        nextParams: matches[matches.length - 1].params
+      }, submission, {
+        actionResult,
+        defaultShouldRevalidate: isRevalidationRequired
+      }));
+    }
     if (shouldRevalidate) {
       revalidatingFetchers.push({
         key,
@@ -5371,7 +5572,17 @@ async function callLoaderOrAction(type, request, match, matches, manifest, mapRo
     if (match.route.lazy) {
       if (handler) {
         // Run statically defined handler in parallel with lazy()
-        let values = await Promise.all([runHandler(handler), loadLazyRouteModule(match.route, mapRouteProperties, manifest)]);
+        let handlerError;
+        let values = await Promise.all([
+        // If the handler throws, don't let it immediately bubble out,
+        // since we need to let the lazy() execution finish so we know if this
+        // route has a boundary that can handle the error
+        runHandler(handler).catch(e => {
+          handlerError = e;
+        }), loadLazyRouteModule(match.route, mapRouteProperties, manifest)]);
+        if (handlerError) {
+          throw handlerError;
+        }
         result = values[0];
       } else {
         // Load lazy route module, then run any returned handler
@@ -5449,18 +5660,19 @@ async function callLoaderOrAction(type, request, match, matches, manifest, mapRo
         type: ResultType.redirect,
         status,
         location,
-        revalidate: result.headers.get("X-Remix-Revalidate") !== null
+        revalidate: result.headers.get("X-Remix-Revalidate") !== null,
+        reloadDocument: result.headers.get("X-Remix-Reload-Document") !== null
       };
     }
     // For SSR single-route requests, we want to hand Responses back directly
     // without unwrapping.  We do this with the QueryRouteResponse wrapper
     // interface so we can know whether it was returned or thrown
     if (opts.isRouteRequest) {
-      // eslint-disable-next-line no-throw-literal
-      throw {
-        type: resultType || ResultType.data,
+      let queryRouteResponse = {
+        type: resultType === ResultType.error ? ResultType.error : ResultType.data,
         response: result
       };
+      throw queryRouteResponse;
     }
     let data;
     let contentType = result.headers.get("Content-Type");
@@ -5474,7 +5686,7 @@ async function callLoaderOrAction(type, request, match, matches, manifest, mapRo
     if (resultType === ResultType.error) {
       return {
         type: resultType,
-        error: new ErrorResponse(status, result.statusText, data),
+        error: new ErrorResponseImpl(status, result.statusText, data),
         headers: result.headers
       };
     }
@@ -5698,7 +5910,7 @@ function findNearestBoundary(matches, routeId) {
 }
 function getShortCircuitMatches(routes) {
   // Prefer a root layout route if present, otherwise shim in a route object
-  let route = routes.find(r => r.index || !r.path || r.path === "/") || {
+  let route = routes.length === 1 ? routes[0] : routes.find(r => r.index || !r.path || r.path === "/") || {
     id: "__shim-error-route__"
   };
   return {
@@ -5743,14 +5955,17 @@ function getInternalRouterError(status, _temp4) {
       errorMessage = "Invalid request method \"" + method.toUpperCase() + "\"";
     }
   }
-  return new ErrorResponse(status || 500, statusText, new Error(errorMessage), true);
+  return new ErrorResponseImpl(status || 500, statusText, new Error(errorMessage), true);
 }
 // Find any returned redirect errors, starting from the lowest match
 function findRedirect(results) {
   for (let i = results.length - 1; i >= 0; i--) {
     let result = results[i];
     if (isRedirectResult(result)) {
-      return result;
+      return {
+        result,
+        idx: i
+      };
     }
   }
 }
@@ -5803,7 +6018,7 @@ function isRedirectResponse(result) {
   return status >= 300 && status <= 399 && location != null;
 }
 function isQueryRouteResponse(obj) {
-  return obj && isResponse(obj.response) && (obj.type === ResultType.data || ResultType.error);
+  return obj && isResponse(obj.response) && (obj.type === ResultType.data || obj.type === ResultType.error);
 }
 function isValidMethod(method) {
   return validRequestMethods.has(method.toLowerCase());
@@ -5866,22 +6081,6 @@ async function resolveDeferredData(result, signal, unwrap) {
 }
 function hasNakedIndexQuery(search) {
   return new URLSearchParams(search).getAll("index").some(v => v === "");
-}
-// Note: This should match the format exported by useMatches, so if you change
-// this please also change that :)  Eventually we'll DRY this up
-function createUseMatchesMatch(match, loaderData) {
-  let {
-    route,
-    pathname,
-    params
-  } = match;
-  return {
-    id: route.id,
-    pathname,
-    params,
-    data: loaderData[route.id],
-    handle: route.handle
-  };
 }
 function getTargetMatch(matches, location) {
   let search = typeof location === "string" ? parsePath(location).search : location.search;
@@ -5985,8 +6184,7 @@ function getLoadingFetcher(submission, data) {
       formData: submission.formData,
       json: submission.json,
       text: submission.text,
-      data,
-      " _hasFetcherDoneAnything ": true
+      data
     };
     return fetcher;
   } else {
@@ -5998,8 +6196,7 @@ function getLoadingFetcher(submission, data) {
       formData: undefined,
       json: undefined,
       text: undefined,
-      data,
-      " _hasFetcherDoneAnything ": true
+      data
     };
     return fetcher;
   }
@@ -6013,8 +6210,7 @@ function getSubmittingFetcher(submission, existingFetcher) {
     formData: submission.formData,
     json: submission.json,
     text: submission.text,
-    data: existingFetcher ? existingFetcher.data : undefined,
-    " _hasFetcherDoneAnything ": true
+    data: existingFetcher ? existingFetcher.data : undefined
   };
   return fetcher;
 }
@@ -6027,10 +6223,37 @@ function getDoneFetcher(data) {
     formData: undefined,
     json: undefined,
     text: undefined,
-    data,
-    " _hasFetcherDoneAnything ": true
+    data
   };
   return fetcher;
+}
+function restoreAppliedTransitions(_window, transitions) {
+  try {
+    let sessionPositions = _window.sessionStorage.getItem(TRANSITIONS_STORAGE_KEY);
+    if (sessionPositions) {
+      let json = JSON.parse(sessionPositions);
+      for (let [k, v] of Object.entries(json || {})) {
+        if (v && Array.isArray(v)) {
+          transitions.set(k, new Set(v || []));
+        }
+      }
+    }
+  } catch (e) {
+    // no-op, use default empty object
+  }
+}
+function persistAppliedTransitions(_window, transitions) {
+  if (transitions.size > 0) {
+    let json = {};
+    for (let [k, v] of transitions) {
+      json[k] = [...v];
+    }
+    try {
+      _window.sessionStorage.setItem(TRANSITIONS_STORAGE_KEY, JSON.stringify(json));
+    } catch (error) {
+      warning(false, "Failed to save applied view transitions in sessionStorage (" + error + ").");
+    }
+  }
 }
 //#endregion
 
@@ -6120,6 +6343,42 @@ function getDoneFetcher(data) {
     }
 
     return obj;
+  }
+
+  function _objectWithoutPropertiesLoose(source, excluded) {
+    if (source == null) return {};
+    var target = {};
+    var sourceKeys = Object.keys(source);
+    var key, i;
+
+    for (i = 0; i < sourceKeys.length; i++) {
+      key = sourceKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      target[key] = source[key];
+    }
+
+    return target;
+  }
+
+  function _objectWithoutProperties(source, excluded) {
+    if (source == null) return {};
+
+    var target = _objectWithoutPropertiesLoose(source, excluded);
+
+    var key, i;
+
+    if (Object.getOwnPropertySymbols) {
+      var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+      for (i = 0; i < sourceSymbolKeys.length; i++) {
+        key = sourceSymbolKeys[i];
+        if (excluded.indexOf(key) >= 0) continue;
+        if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+        target[key] = source[key];
+      }
+    }
+
+    return target;
   }
 
   function _slicedToArray(arr, i) {
@@ -6353,22 +6612,28 @@ function getDoneFetcher(data) {
   // validation to prevent type errors.
 
   var validateStripe = function validateStripe(maybeStripe) {
+    var errorMsg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : INVALID_STRIPE_ERROR;
+
     if (maybeStripe === null || isStripe(maybeStripe)) {
       return maybeStripe;
     }
 
-    throw new Error(INVALID_STRIPE_ERROR);
+    throw new Error(errorMsg);
   };
 
   var parseStripeProp = function parseStripeProp(raw) {
+    var errorMsg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : INVALID_STRIPE_ERROR;
+
     if (isPromise(raw)) {
       return {
         tag: 'async',
-        stripePromise: Promise.resolve(raw).then(validateStripe)
+        stripePromise: Promise.resolve(raw).then(function (result) {
+          return validateStripe(result, errorMsg);
+        })
       };
     }
 
-    var stripe = validateStripe(raw);
+    var stripe = validateStripe(raw, errorMsg);
 
     if (stripe === null) {
       return {
@@ -6380,6 +6645,203 @@ function getDoneFetcher(data) {
       tag: 'sync',
       stripe: stripe
     };
+  };
+
+  var registerWithStripeJs = function registerWithStripeJs(stripe) {
+    if (!stripe || !stripe._registerWrapper || !stripe.registerAppInfo) {
+      return;
+    }
+
+    stripe._registerWrapper({
+      name: 'react-stripe-js',
+      version: "2.3.1"
+    });
+
+    stripe.registerAppInfo({
+      name: 'react-stripe-js',
+      version: "2.3.1",
+      url: 'https://stripe.com/docs/stripe-js/react'
+    });
+  };
+
+  var _excluded = ["on", "session"];
+  var CustomCheckoutSdkContext = /*#__PURE__*/React.createContext(null);
+  CustomCheckoutSdkContext.displayName = 'CustomCheckoutSdkContext';
+  var parseCustomCheckoutSdkContext = function parseCustomCheckoutSdkContext(ctx, useCase) {
+    if (!ctx) {
+      throw new Error("Could not find CustomCheckoutProvider context; You need to wrap the part of your app that ".concat(useCase, " in an <CustomCheckoutProvider> provider."));
+    }
+
+    return ctx;
+  };
+  var CustomCheckoutContext = /*#__PURE__*/React.createContext(null);
+  CustomCheckoutContext.displayName = 'CustomCheckoutContext';
+  var extractCustomCheckoutContextValue = function extractCustomCheckoutContextValue(customCheckoutSdk, sessionState) {
+    if (!customCheckoutSdk) {
+      return null;
+    }
+
+    var _on = customCheckoutSdk.on,
+        _session = customCheckoutSdk.session,
+        actions = _objectWithoutProperties(customCheckoutSdk, _excluded);
+
+    if (!sessionState) {
+      return _objectSpread2(_objectSpread2({}, actions), customCheckoutSdk.session());
+    }
+
+    return _objectSpread2(_objectSpread2({}, actions), sessionState);
+  };
+  var INVALID_STRIPE_ERROR$1 = 'Invalid prop `stripe` supplied to `CustomCheckoutProvider`. We recommend using the `loadStripe` utility from `@stripe/stripe-js`. See https://stripe.com/docs/stripe-js/react#elements-props-stripe for details.';
+  var CustomCheckoutProvider = function CustomCheckoutProvider(_ref) {
+    var rawStripeProp = _ref.stripe,
+        options = _ref.options,
+        children = _ref.children;
+    var parsed = React.useMemo(function () {
+      return parseStripeProp(rawStripeProp, INVALID_STRIPE_ERROR$1);
+    }, [rawStripeProp]); // State used to trigger a re-render when sdk.session is updated
+
+    var _React$useState = React.useState(null),
+        _React$useState2 = _slicedToArray(_React$useState, 2),
+        session = _React$useState2[0],
+        setSession = _React$useState2[1];
+
+    var _React$useState3 = React.useState(function () {
+      return {
+        stripe: parsed.tag === 'sync' ? parsed.stripe : null,
+        customCheckoutSdk: null
+      };
+    }),
+        _React$useState4 = _slicedToArray(_React$useState3, 2),
+        ctx = _React$useState4[0],
+        setContext = _React$useState4[1];
+
+    var safeSetContext = function safeSetContext(stripe, customCheckoutSdk) {
+      setContext(function (ctx) {
+        if (ctx.stripe && ctx.customCheckoutSdk) {
+          return ctx;
+        }
+
+        return {
+          stripe: stripe,
+          customCheckoutSdk: customCheckoutSdk
+        };
+      });
+    }; // Ref used to avoid calling initCustomCheckout multiple times when options changes
+
+
+    var initCustomCheckoutCalledRef = React.useRef(false);
+    React.useEffect(function () {
+      var isMounted = true;
+
+      if (parsed.tag === 'async' && !ctx.stripe) {
+        parsed.stripePromise.then(function (stripe) {
+          if (stripe && isMounted && !initCustomCheckoutCalledRef.current) {
+            // Only update context if the component is still mounted
+            // and stripe is not null. We allow stripe to be null to make
+            // handling SSR easier.
+            initCustomCheckoutCalledRef.current = true;
+            stripe.initCustomCheckout(options).then(function (customCheckoutSdk) {
+              if (customCheckoutSdk) {
+                safeSetContext(stripe, customCheckoutSdk);
+                customCheckoutSdk.on('change', setSession);
+              }
+            });
+          }
+        });
+      } else if (parsed.tag === 'sync' && parsed.stripe && !initCustomCheckoutCalledRef.current) {
+        initCustomCheckoutCalledRef.current = true;
+        parsed.stripe.initCustomCheckout(options).then(function (customCheckoutSdk) {
+          if (customCheckoutSdk) {
+            safeSetContext(parsed.stripe, customCheckoutSdk);
+            customCheckoutSdk.on('change', setSession);
+          }
+        });
+      }
+
+      return function () {
+        isMounted = false;
+      };
+    }, [parsed, ctx, options, setSession]); // Warn on changes to stripe prop
+
+    var prevStripe = usePrevious(rawStripeProp);
+    React.useEffect(function () {
+      if (prevStripe !== null && prevStripe !== rawStripeProp) {
+        console.warn('Unsupported prop change on CustomCheckoutProvider: You cannot change the `stripe` prop after setting it.');
+      }
+    }, [prevStripe, rawStripeProp]); // Apply updates to elements when options prop has relevant changes
+
+    var prevOptions = usePrevious(options);
+    React.useEffect(function () {
+      var _prevOptions$elements, _options$elementsOpti;
+
+      if (!ctx.customCheckoutSdk) {
+        return;
+      }
+
+      if (options.clientSecret && !isUnknownObject(prevOptions) && !isEqual(options.clientSecret, prevOptions.clientSecret)) {
+        console.warn('Unsupported prop change: options.client_secret is not a mutable property.');
+      }
+
+      var previousAppearance = prevOptions === null || prevOptions === void 0 ? void 0 : (_prevOptions$elements = prevOptions.elementsOptions) === null || _prevOptions$elements === void 0 ? void 0 : _prevOptions$elements.appearance;
+      var currentAppearance = options === null || options === void 0 ? void 0 : (_options$elementsOpti = options.elementsOptions) === null || _options$elementsOpti === void 0 ? void 0 : _options$elementsOpti.appearance;
+
+      if (currentAppearance && !isEqual(currentAppearance, previousAppearance)) {
+        ctx.customCheckoutSdk.changeAppearance(currentAppearance);
+      }
+    }, [options, prevOptions, ctx.customCheckoutSdk]); // Attach react-stripe-js version to stripe.js instance
+
+    React.useEffect(function () {
+      registerWithStripeJs(ctx.stripe);
+    }, [ctx.stripe]);
+    var customCheckoutContextValue = React.useMemo(function () {
+      return extractCustomCheckoutContextValue(ctx.customCheckoutSdk, session);
+    }, [ctx.customCheckoutSdk, session]);
+
+    if (!ctx.customCheckoutSdk) {
+      return null;
+    }
+
+    return /*#__PURE__*/React.createElement(CustomCheckoutSdkContext.Provider, {
+      value: ctx
+    }, /*#__PURE__*/React.createElement(CustomCheckoutContext.Provider, {
+      value: customCheckoutContextValue
+    }, children));
+  };
+  CustomCheckoutProvider.propTypes = {
+    stripe: propTypes.any,
+    options: propTypes.shape({
+      clientSecret: propTypes.string.isRequired,
+      elementsOptions: propTypes.object
+    }).isRequired
+  };
+  var useCustomCheckoutSdkContextWithUseCase = function useCustomCheckoutSdkContextWithUseCase(useCaseString) {
+    var ctx = React.useContext(CustomCheckoutSdkContext);
+    return parseCustomCheckoutSdkContext(ctx, useCaseString);
+  };
+  var useElementsOrCustomCheckoutSdkContextWithUseCase = function useElementsOrCustomCheckoutSdkContextWithUseCase(useCaseString) {
+    var customCheckoutSdkContext = React.useContext(CustomCheckoutSdkContext);
+    var elementsContext = React.useContext(ElementsContext);
+
+    if (customCheckoutSdkContext && elementsContext) {
+      throw new Error("You cannot wrap the part of your app that ".concat(useCaseString, " in both <CustomCheckoutProvider> and <Elements> providers."));
+    }
+
+    if (customCheckoutSdkContext) {
+      return parseCustomCheckoutSdkContext(customCheckoutSdkContext, useCaseString);
+    }
+
+    return parseElementsContext(elementsContext, useCaseString);
+  };
+  var useCustomCheckout = function useCustomCheckout() {
+    // ensure it's in CustomCheckoutProvider
+    useCustomCheckoutSdkContextWithUseCase('calls useCustomCheckout()');
+    var ctx = React.useContext(CustomCheckoutContext);
+
+    if (!ctx) {
+      throw new Error('Could not find CustomCheckout Context; You need to wrap the part of your app that calls useCustomCheckout() in an <CustomCheckoutProvider> provider.');
+    }
+
+    return ctx;
   };
 
   var ElementsContext = /*#__PURE__*/React.createContext(null);
@@ -6495,22 +6957,7 @@ function getDoneFetcher(data) {
     }, [options, prevOptions, ctx.elements]); // Attach react-stripe-js version to stripe.js instance
 
     React.useEffect(function () {
-      var anyStripe = ctx.stripe;
-
-      if (!anyStripe || !anyStripe._registerWrapper || !anyStripe.registerAppInfo) {
-        return;
-      }
-
-      anyStripe._registerWrapper({
-        name: 'react-stripe-js',
-        version: "2.1.1"
-      });
-
-      anyStripe.registerAppInfo({
-        name: 'react-stripe-js',
-        version: "2.1.1",
-        url: 'https://stripe.com/docs/stripe-js/react'
-      });
+      registerWithStripeJs(ctx.stripe);
     }, [ctx.stripe]);
     return /*#__PURE__*/React.createElement(ElementsContext.Provider, {
       value: ctx
@@ -6531,8 +6978,20 @@ function getDoneFetcher(data) {
     var ctx = React.useContext(ElementsContext);
     return parseElementsContext(ctx, useCaseMessage);
   };
+  var DUMMY_CART_ELEMENT_CONTEXT = {
+    cart: null,
+    cartState: null,
+    setCart: function setCart() {},
+    setCartState: function setCartState() {}
+  };
   var useCartElementContextWithUseCase = function useCartElementContextWithUseCase(useCaseMessage) {
+    var isInCustomCheckout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     var ctx = React.useContext(CartElementContext);
+
+    if (isInCustomCheckout) {
+      return DUMMY_CART_ELEMENT_CONTEXT;
+    }
+
     return parseCartElementContext(ctx, useCaseMessage);
   };
   /**
@@ -6550,8 +7009,8 @@ function getDoneFetcher(data) {
    */
 
   var useStripe = function useStripe() {
-    var _useElementsContextWi2 = useElementsContextWithUseCase('calls useStripe()'),
-        stripe = _useElementsContextWi2.stripe;
+    var _useElementsOrCustomC = useElementsOrCustomCheckoutSdkContextWithUseCase('calls useStripe()'),
+        stripe = _useElementsOrCustomC.stripe;
 
     return stripe;
   };
@@ -6642,9 +7101,9 @@ function getDoneFetcher(data) {
           onCancel = _ref.onCancel,
           onShippingAddressChange = _ref.onShippingAddressChange,
           onShippingRateChange = _ref.onShippingRateChange;
-
-      var _useElementsContextWi = useElementsContextWithUseCase("mounts <".concat(displayName, ">")),
-          elements = _useElementsContextWi.elements;
+      var ctx = useElementsOrCustomCheckoutSdkContextWithUseCase("mounts <".concat(displayName, ">"));
+      var elements = 'elements' in ctx ? ctx.elements : null;
+      var customCheckoutSdk = 'customCheckoutSdk' in ctx ? ctx.customCheckoutSdk : null;
 
       var _React$useState = React.useState(null),
           _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -6654,7 +7113,7 @@ function getDoneFetcher(data) {
       var elementRef = React.useRef(null);
       var domNode = React.useRef(null);
 
-      var _useCartElementContex = useCartElementContextWithUseCase("mounts <".concat(displayName, ">")),
+      var _useCartElementContex = useCartElementContextWithUseCase("mounts <".concat(displayName, ">"), 'customCheckoutSdk' in ctx),
           setCart = _useCartElementContex.setCart,
           setCartState = _useCartElementContex.setCartState; // For every event where the merchant provides a callback, call element.on
       // with that callback. If the merchant ever changes the callback, removes
@@ -6704,8 +7163,14 @@ function getDoneFetcher(data) {
       } : onCheckout;
       useAttachEvent(element, 'checkout', checkoutCallback);
       React.useLayoutEffect(function () {
-        if (elementRef.current === null && elements && domNode.current !== null) {
-          var newElement = elements.create(type, options);
+        if (elementRef.current === null && domNode.current !== null && (elements || customCheckoutSdk)) {
+          var newElement = null;
+
+          if (customCheckoutSdk) {
+            newElement = customCheckoutSdk.createElement(type, options);
+          } else if (elements) {
+            newElement = elements.create(type, options);
+          }
 
           if (type === 'cart' && setCart) {
             // we know that elements.create return value must be of type StripeCartElement if type is 'cart',
@@ -6717,9 +7182,12 @@ function getDoneFetcher(data) {
           elementRef.current = newElement; // Store element in state to facilitate event listener attachment
 
           setElement(newElement);
-          newElement.mount(domNode.current);
+
+          if (newElement) {
+            newElement.mount(domNode.current);
+          }
         }
-      }, [elements, options, setCart]);
+      }, [elements, customCheckoutSdk, options, setCart]);
       var prevOptions = usePrevious(options);
       React.useEffect(function () {
         if (!elementRef.current) {
@@ -6753,8 +7221,8 @@ function getDoneFetcher(data) {
 
     var ServerElement = function ServerElement(props) {
       // Validate that we are in the right context by calling useElementsContextWithUseCase.
-      useElementsContextWithUseCase("mounts <".concat(displayName, ">"));
-      useCartElementContextWithUseCase("mounts <".concat(displayName, ">"));
+      var ctx = useElementsOrCustomCheckoutSdkContextWithUseCase("mounts <".concat(displayName, ">"));
+      useCartElementContextWithUseCase("mounts <".concat(displayName, ">"), 'customCheckoutSdk' in ctx);
       var id = props.id,
           className = props.className;
       return /*#__PURE__*/React.createElement("div", {
@@ -6790,6 +7258,175 @@ function getDoneFetcher(data) {
   };
 
   var isServer = typeof window === 'undefined';
+
+  var EmbeddedCheckoutContext = /*#__PURE__*/React.createContext(null);
+  EmbeddedCheckoutContext.displayName = 'EmbeddedCheckoutProviderContext';
+  var useEmbeddedCheckoutContext = function useEmbeddedCheckoutContext() {
+    var ctx = React.useContext(EmbeddedCheckoutContext);
+
+    if (!ctx) {
+      throw new Error('<EmbeddedCheckout> must be used within <EmbeddedCheckoutProvider>');
+    }
+
+    return ctx;
+  };
+  var INVALID_STRIPE_ERROR$2 = 'Invalid prop `stripe` supplied to `EmbeddedCheckoutProvider`. We recommend using the `loadStripe` utility from `@stripe/stripe-js`. See https://stripe.com/docs/stripe-js/react#elements-props-stripe for details.';
+  var EmbeddedCheckoutProvider = function EmbeddedCheckoutProvider(_ref) {
+    var rawStripeProp = _ref.stripe,
+        options = _ref.options,
+        children = _ref.children;
+    var parsed = React.useMemo(function () {
+      return parseStripeProp(rawStripeProp, INVALID_STRIPE_ERROR$2);
+    }, [rawStripeProp]);
+    var embeddedCheckoutPromise = React.useRef(null);
+    var loadedStripe = React.useRef(null);
+
+    var _React$useState = React.useState({
+      embeddedCheckout: null
+    }),
+        _React$useState2 = _slicedToArray(_React$useState, 2),
+        ctx = _React$useState2[0],
+        setContext = _React$useState2[1];
+
+    React.useEffect(function () {
+      // Don't support any ctx updates once embeddedCheckout or stripe is set.
+      if (loadedStripe.current || embeddedCheckoutPromise.current) {
+        return;
+      }
+
+      var setStripeAndInitEmbeddedCheckout = function setStripeAndInitEmbeddedCheckout(stripe) {
+        if (loadedStripe.current || embeddedCheckoutPromise.current) return;
+        loadedStripe.current = stripe;
+        embeddedCheckoutPromise.current = loadedStripe.current.initEmbeddedCheckout(options).then(function (embeddedCheckout) {
+          setContext({
+            embeddedCheckout: embeddedCheckout
+          });
+        });
+      }; // For an async stripePromise, store it once resolved
+
+
+      if (parsed.tag === 'async' && !loadedStripe.current && options.clientSecret) {
+        parsed.stripePromise.then(function (stripe) {
+          if (stripe) {
+            setStripeAndInitEmbeddedCheckout(stripe);
+          }
+        });
+      } else if (parsed.tag === 'sync' && !loadedStripe.current && options.clientSecret) {
+        // Or, handle a sync stripe instance going from null -> populated
+        setStripeAndInitEmbeddedCheckout(parsed.stripe);
+      }
+    }, [parsed, options, ctx, loadedStripe]);
+    React.useEffect(function () {
+      // cleanup on unmount
+      return function () {
+        // If embedded checkout is fully initialized, destroy it.
+        if (ctx.embeddedCheckout) {
+          embeddedCheckoutPromise.current = null;
+          ctx.embeddedCheckout.destroy();
+        } else if (embeddedCheckoutPromise.current) {
+          // If embedded checkout is still initializing, destroy it once
+          // it's done. This could be caused by unmounting very quickly
+          // after mounting.
+          embeddedCheckoutPromise.current.then(function () {
+            embeddedCheckoutPromise.current = null;
+
+            if (ctx.embeddedCheckout) {
+              ctx.embeddedCheckout.destroy();
+            }
+          });
+        }
+      };
+    }, [ctx.embeddedCheckout]); // Attach react-stripe-js version to stripe.js instance
+
+    React.useEffect(function () {
+      registerWithStripeJs(loadedStripe);
+    }, [loadedStripe]); // Warn on changes to stripe prop.
+    // The stripe prop value can only go from null to non-null once and
+    // can't be changed after that.
+
+    var prevStripe = usePrevious(rawStripeProp);
+    React.useEffect(function () {
+      if (prevStripe !== null && prevStripe !== rawStripeProp) {
+        console.warn('Unsupported prop change on EmbeddedCheckoutProvider: You cannot change the `stripe` prop after setting it.');
+      }
+    }, [prevStripe, rawStripeProp]); // Warn on changes to options.
+
+    var prevOptions = usePrevious(options);
+    React.useEffect(function () {
+      if (prevOptions == null) {
+        return;
+      }
+
+      if (options == null) {
+        console.warn('Unsupported prop change on EmbeddedCheckoutProvider: You cannot unset options after setting them.');
+        return;
+      }
+
+      if (prevOptions.clientSecret != null && options.clientSecret !== prevOptions.clientSecret) {
+        console.warn('Unsupported prop change on EmbeddedCheckoutProvider: You cannot change the client secret after setting it. Unmount and create a new instance of EmbeddedCheckoutProvider instead.');
+      }
+
+      if (prevOptions.onComplete != null && options.onComplete !== prevOptions.onComplete) {
+        console.warn('Unsupported prop change on EmbeddedCheckoutProvider: You cannot change the onComplete option after setting it.');
+      }
+    }, [prevOptions, options]);
+    return /*#__PURE__*/React.createElement(EmbeddedCheckoutContext.Provider, {
+      value: ctx
+    }, children);
+  };
+
+  var EmbeddedCheckoutClientElement = function EmbeddedCheckoutClientElement(_ref) {
+    var id = _ref.id,
+        className = _ref.className;
+
+    var _useEmbeddedCheckoutC = useEmbeddedCheckoutContext(),
+        embeddedCheckout = _useEmbeddedCheckoutC.embeddedCheckout;
+
+    var isMounted = React.useRef(false);
+    var domNode = React.useRef(null);
+    React.useLayoutEffect(function () {
+      if (!isMounted.current && embeddedCheckout && domNode.current !== null) {
+        embeddedCheckout.mount(domNode.current);
+        isMounted.current = true;
+      } // Clean up on unmount
+
+
+      return function () {
+        if (isMounted.current && embeddedCheckout) {
+          try {
+            embeddedCheckout.unmount();
+            isMounted.current = false;
+          } catch (e) {// Do nothing.
+            // Parent effects are destroyed before child effects, so
+            // in cases where both the EmbeddedCheckoutProvider and
+            // the EmbeddedCheckout component are removed at the same
+            // time, the embeddedCheckout instance will be destroyed,
+            // which causes an error when calling unmount.
+          }
+        }
+      };
+    }, [embeddedCheckout]);
+    return /*#__PURE__*/React.createElement("div", {
+      ref: domNode,
+      id: id,
+      className: className
+    });
+  }; // Only render the wrapper in a server environment.
+
+
+  var EmbeddedCheckoutServerElement = function EmbeddedCheckoutServerElement(_ref2) {
+    var id = _ref2.id,
+        className = _ref2.className;
+    // Validate that we are in the right context by calling useEmbeddedCheckoutContext.
+    useEmbeddedCheckoutContext();
+    return /*#__PURE__*/React.createElement("div", {
+      id: id,
+      className: className
+    });
+  };
+
+  var EmbeddedCheckout = isServer ? EmbeddedCheckoutServerElement : EmbeddedCheckoutClientElement;
+
   /**
    * Requires beta access:
    * Contact [Stripe support](https://support.stripe.com/) for more information.
@@ -6845,9 +7482,6 @@ function getDoneFetcher(data) {
   var EpsBankElement = createElementComponent('epsBank', isServer);
   var PaymentElement = createElementComponent('payment', isServer);
   /**
-   * Requires beta access:
-   * Contact [Stripe support](https://support.stripe.com/) for more information.
-   *
    * @docs https://stripe.com/docs/stripe-js/react#element-components
    */
 
@@ -6858,9 +7492,6 @@ function getDoneFetcher(data) {
 
   var PaymentRequestButtonElement = createElementComponent('paymentRequestButton', isServer);
   /**
-   * Requires beta access:
-   * Contact [Stripe support](https://support.stripe.com/) for more information.
-   *
    * @docs https://stripe.com/docs/stripe-js/react#element-components
    */
 
@@ -6911,8 +7542,11 @@ function getDoneFetcher(data) {
   exports.CardExpiryElement = CardExpiryElement;
   exports.CardNumberElement = CardNumberElement;
   exports.CartElement = CartElement;
+  exports.CustomCheckoutProvider = CustomCheckoutProvider;
   exports.Elements = Elements;
   exports.ElementsConsumer = ElementsConsumer;
+  exports.EmbeddedCheckout = EmbeddedCheckout;
+  exports.EmbeddedCheckoutProvider = EmbeddedCheckoutProvider;
   exports.EpsBankElement = EpsBankElement;
   exports.ExpressCheckoutElement = ExpressCheckoutElement;
   exports.FpxBankElement = FpxBankElement;
@@ -6926,6 +7560,7 @@ function getDoneFetcher(data) {
   exports.ShippingAddressElement = ShippingAddressElement;
   exports.useCartElement = useCartElement;
   exports.useCartElementState = useCartElementState;
+  exports.useCustomCheckout = useCustomCheckout;
   exports.useElements = useElements;
   exports.useStripe = useStripe;
 
@@ -6940,12 +7575,12 @@ function getDoneFetcher(data) {
 /*!***********************************************************!*\
   !*** ./node_modules/@stripe/stripe-js/dist/stripe.esm.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   loadStripe: () => (/* binding */ loadStripe)
+/* harmony export */   loadStripe: function() { return /* binding */ loadStripe; }
 /* harmony export */ });
 var V3_URL = 'https://js.stripe.com/v3';
 var V3_URL_REGEX = /^https:\/\/js\.stripe\.com\/v3\/?(\?.*)?$/;
@@ -6987,7 +7622,7 @@ var registerWrapper = function registerWrapper(stripe, startTime) {
 
   stripe._registerWrapper({
     name: 'stripe-js',
-    version: "1.54.1",
+    version: "1.54.2",
     startTime: startTime
   });
 };
@@ -7084,7 +7719,7 @@ var loadStripe = function loadStripe() {
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
   \*************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/lib/axios.js");
 
@@ -7094,7 +7729,7 @@ module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/li
 /*!************************************************!*\
   !*** ./node_modules/axios/lib/adapters/xhr.js ***!
   \************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -7317,7 +7952,7 @@ module.exports = function xhrAdapter(config) {
 /*!*****************************************!*\
   !*** ./node_modules/axios/lib/axios.js ***!
   \*****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -7385,7 +8020,7 @@ module.exports["default"] = axios;
 /*!*************************************************!*\
   !*** ./node_modules/axios/lib/cancel/Cancel.js ***!
   \*************************************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 
@@ -7415,7 +8050,7 @@ module.exports = Cancel;
 /*!******************************************************!*\
   !*** ./node_modules/axios/lib/cancel/CancelToken.js ***!
   \******************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -7545,7 +8180,7 @@ module.exports = CancelToken;
 /*!***************************************************!*\
   !*** ./node_modules/axios/lib/cancel/isCancel.js ***!
   \***************************************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 
@@ -7561,7 +8196,7 @@ module.exports = function isCancel(value) {
 /*!**********************************************!*\
   !*** ./node_modules/axios/lib/core/Axios.js ***!
   \**********************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -7727,7 +8362,7 @@ module.exports = Axios;
 /*!***********************************************************!*\
   !*** ./node_modules/axios/lib/core/InterceptorManager.js ***!
   \***********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -7792,7 +8427,7 @@ module.exports = InterceptorManager;
 /*!******************************************************!*\
   !*** ./node_modules/axios/lib/core/buildFullPath.js ***!
   \******************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -7823,7 +8458,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
 /*!****************************************************!*\
   !*** ./node_modules/axios/lib/core/createError.js ***!
   \****************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -7852,7 +8487,7 @@ module.exports = function createError(message, config, code, request, response) 
 /*!********************************************************!*\
   !*** ./node_modules/axios/lib/core/dispatchRequest.js ***!
   \********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -7950,7 +8585,7 @@ module.exports = function dispatchRequest(config) {
 /*!*****************************************************!*\
   !*** ./node_modules/axios/lib/core/enhanceError.js ***!
   \*****************************************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 
@@ -8004,7 +8639,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 /*!****************************************************!*\
   !*** ./node_modules/axios/lib/core/mergeConfig.js ***!
   \****************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -8114,7 +8749,7 @@ module.exports = function mergeConfig(config1, config2) {
 /*!***********************************************!*\
   !*** ./node_modules/axios/lib/core/settle.js ***!
   \***********************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -8150,7 +8785,7 @@ module.exports = function settle(resolve, reject, response) {
 /*!******************************************************!*\
   !*** ./node_modules/axios/lib/core/transformData.js ***!
   \******************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -8183,7 +8818,7 @@ module.exports = function transformData(data, headers, fns) {
 /*!********************************************!*\
   !*** ./node_modules/axios/lib/defaults.js ***!
   \********************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -8328,7 +8963,7 @@ module.exports = defaults;
 /*!********************************************!*\
   !*** ./node_modules/axios/lib/env/data.js ***!
   \********************************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 module.exports = {
   "version": "0.25.0"
@@ -8340,7 +8975,7 @@ module.exports = {
 /*!************************************************!*\
   !*** ./node_modules/axios/lib/helpers/bind.js ***!
   \************************************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 
@@ -8362,7 +8997,7 @@ module.exports = function bind(fn, thisArg) {
 /*!****************************************************!*\
   !*** ./node_modules/axios/lib/helpers/buildURL.js ***!
   \****************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -8443,7 +9078,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 /*!*******************************************************!*\
   !*** ./node_modules/axios/lib/helpers/combineURLs.js ***!
   \*******************************************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 
@@ -8468,7 +9103,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 /*!***************************************************!*\
   !*** ./node_modules/axios/lib/helpers/cookies.js ***!
   \***************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -8532,7 +9167,7 @@ module.exports = (
 /*!*********************************************************!*\
   !*** ./node_modules/axios/lib/helpers/isAbsoluteURL.js ***!
   \*********************************************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 
@@ -8557,7 +9192,7 @@ module.exports = function isAbsoluteURL(url) {
 /*!********************************************************!*\
   !*** ./node_modules/axios/lib/helpers/isAxiosError.js ***!
   \********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -8581,7 +9216,7 @@ module.exports = function isAxiosError(payload) {
 /*!***********************************************************!*\
   !*** ./node_modules/axios/lib/helpers/isURLSameOrigin.js ***!
   \***********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -8660,7 +9295,7 @@ module.exports = (
 /*!***************************************************************!*\
   !*** ./node_modules/axios/lib/helpers/normalizeHeaderName.js ***!
   \***************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -8683,7 +9318,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 /*!********************************************************!*\
   !*** ./node_modules/axios/lib/helpers/parseHeaders.js ***!
   \********************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -8747,7 +9382,7 @@ module.exports = function parseHeaders(headers) {
 /*!**************************************************!*\
   !*** ./node_modules/axios/lib/helpers/spread.js ***!
   \**************************************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 
@@ -8785,7 +9420,7 @@ module.exports = function spread(callback) {
 /*!*****************************************************!*\
   !*** ./node_modules/axios/lib/helpers/validator.js ***!
   \*****************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -8878,7 +9513,7 @@ module.exports = {
 /*!*****************************************!*\
   !*** ./node_modules/axios/lib/utils.js ***!
   \*****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -9238,108 +9873,103 @@ module.exports = {
 /*!*********************!*\
   !*** ./src/App.jsx ***!
   \*********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 
 
 
-const LoadingComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_loading_LoadingComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./loading/LoadingComponent.jsx */ "./src/loading/LoadingComponent.jsx")));
-const ErrorComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_error_ErrorComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx")));
-const ServicesComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Services_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Services.jsx */ "./src/views/Services.jsx")));
-const ServiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Service_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Service.jsx */ "./src/views/Service.jsx")));
-const BillingComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Billing_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Billing.jsx */ "./src/views/Billing.jsx")));
-const QuoteComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingQuote_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingQuote.jsx */ "./src/views/BillingQuote.jsx")));
-const InvoiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingInvoice_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingInvoice.jsx */ "./src/views/BillingInvoice.jsx")));
-const PaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPayment_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPayment.jsx */ "./src/views/BillingPayment.jsx")));
-const CardPaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPaymentCard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPaymentCard.jsx */ "./src/views/BillingPaymentCard.jsx")));
-const WalletComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPaymentWallet_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPaymentWallet.jsx */ "./src/views/BillingPaymentWallet.jsx")));
-const ReceiptComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingReceipt_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingReceipt.jsx */ "./src/views/BillingReceipt.jsx")));
-const ClientComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Client_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Client.jsx */ "./src/views/Client.jsx")));
-const StartComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ClientStart_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ClientStart.jsx */ "./src/views/ClientStart.jsx")));
-const SelectionsComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ClientSelections_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ClientSelections.jsx */ "./src/views/ClientSelections.jsx")));
-const DashboardComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Dashboard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Dashboard.jsx */ "./src/views/Dashboard.jsx")));
-const FAQComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_FAQ_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/FAQ.jsx */ "./src/views/FAQ.jsx")));
-const SupportComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Support_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Support.jsx */ "./src/views/Support.jsx")));
-const SupportSuccessComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_SupportSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/SupportSuccess.jsx */ "./src/views/SupportSuccess.jsx")));
-const ContactComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Contact_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Contact.jsx */ "./src/views/Contact.jsx")));
-const ContactSuccessComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ContactSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ContactSuccess.jsx */ "./src/views/ContactSuccess.jsx")));
+const LoadingComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_loading_LoadingComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./loading/LoadingComponent.jsx */ "./src/loading/LoadingComponent.jsx")));
+const ErrorComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_error_ErrorComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx")));
+const ServicesComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Services_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Services.jsx */ "./src/views/Services.jsx")));
+const ServiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Service_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Service.jsx */ "./src/views/Service.jsx")));
+const BillingComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Billing_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Billing.jsx */ "./src/views/Billing.jsx")));
+const QuoteComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingQuote_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingQuote.jsx */ "./src/views/BillingQuote.jsx")));
+const InvoiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingInvoice_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingInvoice.jsx */ "./src/views/BillingInvoice.jsx")));
+const PaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPayment_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPayment.jsx */ "./src/views/BillingPayment.jsx")));
+const CardPaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPaymentCard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPaymentCard.jsx */ "./src/views/BillingPaymentCard.jsx")));
+const WalletComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPaymentWallet_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPaymentWallet.jsx */ "./src/views/BillingPaymentWallet.jsx")));
+const ReceiptComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingReceipt_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingReceipt.jsx */ "./src/views/BillingReceipt.jsx")));
+const ClientComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Client_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Client.jsx */ "./src/views/Client.jsx")));
+const StartComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ClientStart_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ClientStart.jsx */ "./src/views/ClientStart.jsx")));
+const SelectionsComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ClientSelections_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ClientSelections.jsx */ "./src/views/ClientSelections.jsx")));
+const DashboardComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Dashboard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Dashboard.jsx */ "./src/views/Dashboard.jsx")));
+const FAQComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_FAQ_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/FAQ.jsx */ "./src/views/FAQ.jsx")));
+const SupportComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Support_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Support.jsx */ "./src/views/Support.jsx")));
+const SupportSuccessComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_SupportSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/SupportSuccess.jsx */ "./src/views/SupportSuccess.jsx")));
+const ContactComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Contact_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Contact.jsx */ "./src/views/Contact.jsx")));
+const ContactSuccessComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ContactSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ContactSuccess.jsx */ "./src/views/ContactSuccess.jsx")));
 function App() {
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.BrowserRouter, {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.BrowserRouter, {
     basename: "/"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_1__.Suspense, {
-    fallback: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingComponent, null)
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Routes, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Suspense, {
+    fallback: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingComponent, null)
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Routes, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     index: true,
     path: "/",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "services",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "dashboard",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(DashboardComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(DashboardComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "services/:service",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServiceComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServiceComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "client",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ClientComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ClientComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "client/start",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(StartComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(StartComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "client/selections",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(SelectionsComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(SelectionsComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "billing",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(BillingComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(BillingComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "billing/quote/:id",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(QuoteComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(QuoteComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "billing/invoice/:id",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(InvoiceComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InvoiceComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "billing/payment/:id",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(PaymentComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PaymentComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "billing/payment/card/:id",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(CardPaymentComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CardPaymentComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "billing/payment/wallet/:id",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(WalletComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(WalletComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "billing/receipt/:id",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ReceiptComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ReceiptComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "faq",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(FAQComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(FAQComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "contact",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "contact/success",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactSuccessComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactSuccessComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "support",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(SupportComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Route, {
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(SupportComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "support/success",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(SupportSuccessComponent, null)
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(SupportSuccessComponent, null)
   })))));
 }
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
+/* harmony default export */ __webpack_exports__["default"] = (App);
 
 /***/ }),
 
@@ -9347,15 +9977,14 @@ function App() {
 /*!****************************************!*\
   !*** ./src/controllers/clientSlice.js ***!
   \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addClient: () => (/* binding */ addClient),
-/* harmony export */   clientSlice: () => (/* binding */ clientSlice),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   getClient: () => (/* binding */ getClient)
+/* harmony export */   addClient: function() { return /* binding */ addClient; },
+/* harmony export */   clientSlice: function() { return /* binding */ clientSlice; },
+/* harmony export */   getClient: function() { return /* binding */ getClient; }
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
@@ -9478,7 +10107,7 @@ const clientSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice
     });
   }
 });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (clientSlice);
+/* harmony default export */ __webpack_exports__["default"] = (clientSlice);
 
 /***/ }),
 
@@ -9486,27 +10115,26 @@ const clientSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice
 /*!******************************************!*\
   !*** ./src/controllers/customerSlice.js ***!
   \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addStripeCustomer: () => (/* binding */ addStripeCustomer),
-/* harmony export */   customerSlice: () => (/* binding */ customerSlice),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   getStripeCustomer: () => (/* binding */ getStripeCustomer),
-/* harmony export */   updateAddress: () => (/* binding */ updateAddress),
-/* harmony export */   updateAddress2: () => (/* binding */ updateAddress2),
-/* harmony export */   updateCity: () => (/* binding */ updateCity),
-/* harmony export */   updateCompanyName: () => (/* binding */ updateCompanyName),
-/* harmony export */   updateEmail: () => (/* binding */ updateEmail),
-/* harmony export */   updateFirstName: () => (/* binding */ updateFirstName),
-/* harmony export */   updateLastName: () => (/* binding */ updateLastName),
-/* harmony export */   updatePhone: () => (/* binding */ updatePhone),
-/* harmony export */   updateState: () => (/* binding */ updateState),
-/* harmony export */   updateStripeCustomer: () => (/* binding */ updateStripeCustomer),
-/* harmony export */   updateTaxID: () => (/* binding */ updateTaxID),
-/* harmony export */   updateZipcode: () => (/* binding */ updateZipcode)
+/* harmony export */   addStripeCustomer: function() { return /* binding */ addStripeCustomer; },
+/* harmony export */   customerSlice: function() { return /* binding */ customerSlice; },
+/* harmony export */   getStripeCustomer: function() { return /* binding */ getStripeCustomer; },
+/* harmony export */   updateAddress: function() { return /* binding */ updateAddress; },
+/* harmony export */   updateAddress2: function() { return /* binding */ updateAddress2; },
+/* harmony export */   updateCity: function() { return /* binding */ updateCity; },
+/* harmony export */   updateCompanyName: function() { return /* binding */ updateCompanyName; },
+/* harmony export */   updateEmail: function() { return /* binding */ updateEmail; },
+/* harmony export */   updateFirstName: function() { return /* binding */ updateFirstName; },
+/* harmony export */   updateLastName: function() { return /* binding */ updateLastName; },
+/* harmony export */   updatePhone: function() { return /* binding */ updatePhone; },
+/* harmony export */   updateState: function() { return /* binding */ updateState; },
+/* harmony export */   updateStripeCustomer: function() { return /* binding */ updateStripeCustomer; },
+/* harmony export */   updateTaxID: function() { return /* binding */ updateTaxID; },
+/* harmony export */   updateZipcode: function() { return /* binding */ updateZipcode; }
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
@@ -9744,7 +10372,7 @@ const {
   updateState,
   updateZipcode
 } = customerSlice.actions;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (customerSlice);
+/* harmony default export */ __webpack_exports__["default"] = (customerSlice);
 
 /***/ }),
 
@@ -9752,24 +10380,23 @@ const {
 /*!*****************************************!*\
   !*** ./src/controllers/invoiceSlice.js ***!
   \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   deleteInvoice: () => (/* binding */ deleteInvoice),
-/* harmony export */   finalizeInvoice: () => (/* binding */ finalizeInvoice),
-/* harmony export */   getClientInvoices: () => (/* binding */ getClientInvoices),
-/* harmony export */   getInvoice: () => (/* binding */ getInvoice),
-/* harmony export */   getInvoiceByID: () => (/* binding */ getInvoiceByID),
-/* harmony export */   getInvoiceByQuoteID: () => (/* binding */ getInvoiceByQuoteID),
-/* harmony export */   getStripeInvoice: () => (/* binding */ getStripeInvoice),
-/* harmony export */   invoiceSlice: () => (/* binding */ invoiceSlice),
-/* harmony export */   pdfInvoice: () => (/* binding */ pdfInvoice),
-/* harmony export */   saveInvoice: () => (/* binding */ saveInvoice),
-/* harmony export */   updateInvoice: () => (/* binding */ updateInvoice),
-/* harmony export */   updateInvoiceStatus: () => (/* binding */ updateInvoiceStatus)
+/* harmony export */   deleteInvoice: function() { return /* binding */ deleteInvoice; },
+/* harmony export */   finalizeInvoice: function() { return /* binding */ finalizeInvoice; },
+/* harmony export */   getClientInvoices: function() { return /* binding */ getClientInvoices; },
+/* harmony export */   getInvoice: function() { return /* binding */ getInvoice; },
+/* harmony export */   getInvoiceByID: function() { return /* binding */ getInvoiceByID; },
+/* harmony export */   getInvoiceByQuoteID: function() { return /* binding */ getInvoiceByQuoteID; },
+/* harmony export */   getStripeInvoice: function() { return /* binding */ getStripeInvoice; },
+/* harmony export */   invoiceSlice: function() { return /* binding */ invoiceSlice; },
+/* harmony export */   pdfInvoice: function() { return /* binding */ pdfInvoice; },
+/* harmony export */   saveInvoice: function() { return /* binding */ saveInvoice; },
+/* harmony export */   updateInvoice: function() { return /* binding */ updateInvoice; },
+/* harmony export */   updateInvoiceStatus: function() { return /* binding */ updateInvoiceStatus; }
 /* harmony export */ });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
@@ -10254,7 +10881,7 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlic
     });
   }
 });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (invoiceSlice);
+/* harmony default export */ __webpack_exports__["default"] = (invoiceSlice);
 
 /***/ }),
 
@@ -10262,14 +10889,14 @@ const invoiceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlic
 /*!*****************************************!*\
   !*** ./src/controllers/paymentSlice.js ***!
   \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getPaymentIntent: () => (/* binding */ getPaymentIntent),
-/* harmony export */   paymentSlice: () => (/* binding */ paymentSlice),
-/* harmony export */   updateClientSecret: () => (/* binding */ updateClientSecret)
+/* harmony export */   getPaymentIntent: function() { return /* binding */ getPaymentIntent; },
+/* harmony export */   paymentSlice: function() { return /* binding */ paymentSlice; },
+/* harmony export */   updateClientSecret: function() { return /* binding */ updateClientSecret; }
 /* harmony export */ });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
@@ -10345,28 +10972,27 @@ const paymentSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlic
 /*!***************************************!*\
   !*** ./src/controllers/quoteSlice.js ***!
   \***************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   acceptQuote: () => (/* binding */ acceptQuote),
-/* harmony export */   addSelections: () => (/* binding */ addSelections),
-/* harmony export */   calculateSelections: () => (/* binding */ calculateSelections),
-/* harmony export */   cancelQuote: () => (/* binding */ cancelQuote),
-/* harmony export */   createQuote: () => (/* binding */ createQuote),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   finalizeQuote: () => (/* binding */ finalizeQuote),
-/* harmony export */   getClientQuotes: () => (/* binding */ getClientQuotes),
-/* harmony export */   getQuote: () => (/* binding */ getQuote),
-/* harmony export */   getQuoteByID: () => (/* binding */ getQuoteByID),
-/* harmony export */   getStripeClientQuotes: () => (/* binding */ getStripeClientQuotes),
-/* harmony export */   getStripeQuote: () => (/* binding */ getStripeQuote),
-/* harmony export */   quoteSlice: () => (/* binding */ quoteSlice),
-/* harmony export */   updateQuote: () => (/* binding */ updateQuote),
-/* harmony export */   updateQuoteID: () => (/* binding */ updateQuoteID),
-/* harmony export */   updateQuoteStatus: () => (/* binding */ updateQuoteStatus),
-/* harmony export */   updateStripeQuote: () => (/* binding */ updateStripeQuote)
+/* harmony export */   acceptQuote: function() { return /* binding */ acceptQuote; },
+/* harmony export */   addSelections: function() { return /* binding */ addSelections; },
+/* harmony export */   calculateSelections: function() { return /* binding */ calculateSelections; },
+/* harmony export */   cancelQuote: function() { return /* binding */ cancelQuote; },
+/* harmony export */   createQuote: function() { return /* binding */ createQuote; },
+/* harmony export */   finalizeQuote: function() { return /* binding */ finalizeQuote; },
+/* harmony export */   getClientQuotes: function() { return /* binding */ getClientQuotes; },
+/* harmony export */   getQuote: function() { return /* binding */ getQuote; },
+/* harmony export */   getQuoteByID: function() { return /* binding */ getQuoteByID; },
+/* harmony export */   getStripeClientQuotes: function() { return /* binding */ getStripeClientQuotes; },
+/* harmony export */   getStripeQuote: function() { return /* binding */ getStripeQuote; },
+/* harmony export */   quoteSlice: function() { return /* binding */ quoteSlice; },
+/* harmony export */   updateQuote: function() { return /* binding */ updateQuote; },
+/* harmony export */   updateQuoteID: function() { return /* binding */ updateQuoteID; },
+/* harmony export */   updateQuoteStatus: function() { return /* binding */ updateQuoteStatus; },
+/* harmony export */   updateStripeQuote: function() { return /* binding */ updateStripeQuote; }
 /* harmony export */ });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
@@ -10876,7 +11502,7 @@ const {
   addSelections,
   calculateSelections
 } = quoteSlice.actions;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (quoteSlice);
+/* harmony default export */ __webpack_exports__["default"] = (quoteSlice);
 
 /***/ }),
 
@@ -10884,19 +11510,19 @@ const {
 /*!*****************************************!*\
   !*** ./src/controllers/receiptSlice.js ***!
   \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getClientReceipts: () => (/* binding */ getClientReceipts),
-/* harmony export */   getPaymentMethod: () => (/* binding */ getPaymentMethod),
-/* harmony export */   getReceipt: () => (/* binding */ getReceipt),
-/* harmony export */   getReceiptByID: () => (/* binding */ getReceiptByID),
-/* harmony export */   postReceipt: () => (/* binding */ postReceipt),
-/* harmony export */   receiptSlice: () => (/* binding */ receiptSlice),
-/* harmony export */   updatePaymentMethod: () => (/* binding */ updatePaymentMethod),
-/* harmony export */   updateReceiptID: () => (/* binding */ updateReceiptID)
+/* harmony export */   getClientReceipts: function() { return /* binding */ getClientReceipts; },
+/* harmony export */   getPaymentMethod: function() { return /* binding */ getPaymentMethod; },
+/* harmony export */   getReceipt: function() { return /* binding */ getReceipt; },
+/* harmony export */   getReceiptByID: function() { return /* binding */ getReceiptByID; },
+/* harmony export */   postReceipt: function() { return /* binding */ postReceipt; },
+/* harmony export */   receiptSlice: function() { return /* binding */ receiptSlice; },
+/* harmony export */   updatePaymentMethod: function() { return /* binding */ updatePaymentMethod; },
+/* harmony export */   updateReceiptID: function() { return /* binding */ updateReceiptID; }
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
@@ -11170,28 +11796,27 @@ const receiptSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
 /*!******************************************!*\
   !*** ./src/controllers/scheduleSlice.js ***!
   \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   getAvailableTimes: () => (/* binding */ getAvailableTimes),
-/* harmony export */   getClientEvents: () => (/* binding */ getClientEvents),
-/* harmony export */   getCommunicationPreferences: () => (/* binding */ getCommunicationPreferences),
-/* harmony export */   getEvent: () => (/* binding */ getEvent),
-/* harmony export */   getOfficeHours: () => (/* binding */ getOfficeHours),
-/* harmony export */   saveEvent: () => (/* binding */ saveEvent),
-/* harmony export */   scheduleSlice: () => (/* binding */ scheduleSlice),
-/* harmony export */   sendInvites: () => (/* binding */ sendInvites),
-/* harmony export */   updateAttendees: () => (/* binding */ updateAttendees),
-/* harmony export */   updateCommunicationPreference: () => (/* binding */ updateCommunicationPreference),
-/* harmony export */   updateDate: () => (/* binding */ updateDate),
-/* harmony export */   updateDescription: () => (/* binding */ updateDescription),
-/* harmony export */   updateDueDate: () => (/* binding */ updateDueDate),
-/* harmony export */   updateEvent: () => (/* binding */ updateEvent),
-/* harmony export */   updateSummary: () => (/* binding */ updateSummary),
-/* harmony export */   updateTime: () => (/* binding */ updateTime)
+/* harmony export */   getAvailableTimes: function() { return /* binding */ getAvailableTimes; },
+/* harmony export */   getClientEvents: function() { return /* binding */ getClientEvents; },
+/* harmony export */   getCommunicationPreferences: function() { return /* binding */ getCommunicationPreferences; },
+/* harmony export */   getEvent: function() { return /* binding */ getEvent; },
+/* harmony export */   getOfficeHours: function() { return /* binding */ getOfficeHours; },
+/* harmony export */   saveEvent: function() { return /* binding */ saveEvent; },
+/* harmony export */   scheduleSlice: function() { return /* binding */ scheduleSlice; },
+/* harmony export */   sendInvites: function() { return /* binding */ sendInvites; },
+/* harmony export */   updateAttendees: function() { return /* binding */ updateAttendees; },
+/* harmony export */   updateCommunicationPreference: function() { return /* binding */ updateCommunicationPreference; },
+/* harmony export */   updateDate: function() { return /* binding */ updateDate; },
+/* harmony export */   updateDescription: function() { return /* binding */ updateDescription; },
+/* harmony export */   updateDueDate: function() { return /* binding */ updateDueDate; },
+/* harmony export */   updateEvent: function() { return /* binding */ updateEvent; },
+/* harmony export */   updateSummary: function() { return /* binding */ updateSummary; },
+/* harmony export */   updateTime: function() { return /* binding */ updateTime; }
 /* harmony export */ });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 /* harmony import */ var _utils_Schedule__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/Schedule */ "./src/utils/Schedule.js");
@@ -11532,7 +12157,7 @@ const {
   updateAttendees,
   updateEvent
 } = scheduleSlice.actions;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (scheduleSlice.reducer);
+/* harmony default export */ __webpack_exports__["default"] = (scheduleSlice.reducer);
 
 /***/ }),
 
@@ -11540,14 +12165,13 @@ const {
 /*!*****************************************!*\
   !*** ./src/controllers/serviceSlice.js ***!
   \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   fetchService: () => (/* binding */ fetchService),
-/* harmony export */   serviceSlice: () => (/* binding */ serviceSlice)
+/* harmony export */   fetchService: function() { return /* binding */ fetchService; },
+/* harmony export */   serviceSlice: function() { return /* binding */ serviceSlice; }
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
@@ -11584,7 +12208,7 @@ const serviceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
     });
   }
 });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (serviceSlice);
+/* harmony default export */ __webpack_exports__["default"] = (serviceSlice);
 
 /***/ }),
 
@@ -11592,15 +12216,14 @@ const serviceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
 /*!******************************************!*\
   !*** ./src/controllers/servicesSlice.js ***!
   \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   fetchServices: () => (/* binding */ fetchServices),
-/* harmony export */   getAvailableServices: () => (/* binding */ getAvailableServices),
-/* harmony export */   servicesSlice: () => (/* binding */ servicesSlice)
+/* harmony export */   fetchServices: function() { return /* binding */ fetchServices; },
+/* harmony export */   getAvailableServices: function() { return /* binding */ getAvailableServices; },
+/* harmony export */   servicesSlice: function() { return /* binding */ servicesSlice; }
 /* harmony export */ });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
@@ -11673,7 +12296,7 @@ const servicesSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSli
     });
   }
 });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (servicesSlice);
+/* harmony default export */ __webpack_exports__["default"] = (servicesSlice);
 
 /***/ }),
 
@@ -11681,14 +12304,13 @@ const servicesSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSli
 /*!***************************************!*\
   !*** ./src/controllers/usersSlice.js ***!
   \***************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   addClient: () => (/* binding */ addClient),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   usersSlice: () => (/* binding */ usersSlice)
+/* harmony export */   addClient: function() { return /* binding */ addClient; },
+/* harmony export */   usersSlice: function() { return /* binding */ usersSlice; }
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
@@ -11729,7 +12351,7 @@ const usersSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
     });
   }
 });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (usersSlice);
+/* harmony default export */ __webpack_exports__["default"] = (usersSlice);
 
 /***/ }),
 
@@ -11737,13 +12359,10 @@ const usersSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)
 /*!****************************!*\
   !*** ./src/model/store.js ***!
   \****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 /* harmony import */ var _controllers_servicesSlice_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../controllers/servicesSlice.js */ "./src/controllers/servicesSlice.js");
 /* harmony import */ var _controllers_serviceSlice_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../controllers/serviceSlice.js */ "./src/controllers/serviceSlice.js");
@@ -11780,7 +12399,7 @@ const store = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_10__.configureStore)(
     receipt: _controllers_receiptSlice_js__WEBPACK_IMPORTED_MODULE_9__.receiptSlice.reducer
   }
 });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
+/* harmony default export */ __webpack_exports__["default"] = (store);
 
 /***/ }),
 
@@ -11788,19 +12407,19 @@ const store = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_10__.configureStore)(
 /*!*******************************!*\
   !*** ./src/utils/Schedule.js ***!
   \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   combineDateTime: () => (/* binding */ combineDateTime),
-/* harmony export */   combineDateTimeToTimestamp: () => (/* binding */ combineDateTimeToTimestamp),
-/* harmony export */   datesAvail: () => (/* binding */ datesAvail),
-/* harmony export */   formatOfficeHours: () => (/* binding */ formatOfficeHours),
-/* harmony export */   formatTime: () => (/* binding */ formatTime),
-/* harmony export */   formattedDate: () => (/* binding */ formattedDate),
-/* harmony export */   formattedTime: () => (/* binding */ formattedTime),
-/* harmony export */   timesAvail: () => (/* binding */ timesAvail)
+/* harmony export */   combineDateTime: function() { return /* binding */ combineDateTime; },
+/* harmony export */   combineDateTimeToTimestamp: function() { return /* binding */ combineDateTimeToTimestamp; },
+/* harmony export */   datesAvail: function() { return /* binding */ datesAvail; },
+/* harmony export */   formatOfficeHours: function() { return /* binding */ formatOfficeHours; },
+/* harmony export */   formatTime: function() { return /* binding */ formatTime; },
+/* harmony export */   formattedDate: function() { return /* binding */ formattedDate; },
+/* harmony export */   formattedTime: function() { return /* binding */ formattedTime; },
+/* harmony export */   timesAvail: function() { return /* binding */ timesAvail; }
 /* harmony export */ });
 const combineDateTimeToTimestamp = (dateString, timeString) => {
   try {
@@ -11939,7 +12558,7 @@ const timesAvail = (events, key) => {
 /*!**********************************************************************************!*\
   !*** ./node_modules/hoist-non-react-statics/dist/hoist-non-react-statics.cjs.js ***!
   \**********************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -12053,7 +12672,7 @@ module.exports = hoistNonReactStatics;
 /*!************************************************************************************************!*\
   !*** ./node_modules/hoist-non-react-statics/node_modules/react-is/cjs/react-is.development.js ***!
   \************************************************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
 /** @license React v16.13.1
@@ -12245,7 +12864,7 @@ exports.typeOf = typeOf;
 /*!*****************************************************************************!*\
   !*** ./node_modules/hoist-non-react-statics/node_modules/react-is/index.js ***!
   \*****************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -12257,265 +12876,16 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./node_modules/react-is/cjs/react-is.development.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/react-is/cjs/react-is.development.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-/**
- * @license React
- * react-is.development.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-if (true) {
-  (function() {
-'use strict';
-
-// ATTENTION
-// When adding new symbols to this file,
-// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
-// The Symbol used to tag the ReactElement-like types.
-var REACT_ELEMENT_TYPE = Symbol.for('react.element');
-var REACT_PORTAL_TYPE = Symbol.for('react.portal');
-var REACT_FRAGMENT_TYPE = Symbol.for('react.fragment');
-var REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode');
-var REACT_PROFILER_TYPE = Symbol.for('react.profiler');
-var REACT_PROVIDER_TYPE = Symbol.for('react.provider');
-var REACT_CONTEXT_TYPE = Symbol.for('react.context');
-var REACT_SERVER_CONTEXT_TYPE = Symbol.for('react.server_context');
-var REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref');
-var REACT_SUSPENSE_TYPE = Symbol.for('react.suspense');
-var REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list');
-var REACT_MEMO_TYPE = Symbol.for('react.memo');
-var REACT_LAZY_TYPE = Symbol.for('react.lazy');
-var REACT_OFFSCREEN_TYPE = Symbol.for('react.offscreen');
-
-// -----------------------------------------------------------------------------
-
-var enableScopeAPI = false; // Experimental Create Event Handle API.
-var enableCacheElement = false;
-var enableTransitionTracing = false; // No known bugs, but needs performance testing
-
-var enableLegacyHidden = false; // Enables unstable_avoidThisFallback feature in Fiber
-// stuff. Intended to enable React core members to more easily debug scheduling
-// issues in DEV builds.
-
-var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
-
-var REACT_MODULE_REFERENCE;
-
-{
-  REACT_MODULE_REFERENCE = Symbol.for('react.module.reference');
-}
-
-function isValidElementType(type) {
-  if (typeof type === 'string' || typeof type === 'function') {
-    return true;
-  } // Note: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
-
-
-  if (type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || enableDebugTracing  || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || enableLegacyHidden  || type === REACT_OFFSCREEN_TYPE || enableScopeAPI  || enableCacheElement  || enableTransitionTracing ) {
-    return true;
-  }
-
-  if (typeof type === 'object' && type !== null) {
-    if (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || // This needs to include all possible module reference object
-    // types supported by any Flight configuration anywhere since
-    // we don't know which Flight build this will end up being used
-    // with.
-    type.$$typeof === REACT_MODULE_REFERENCE || type.getModuleId !== undefined) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function typeOf(object) {
-  if (typeof object === 'object' && object !== null) {
-    var $$typeof = object.$$typeof;
-
-    switch ($$typeof) {
-      case REACT_ELEMENT_TYPE:
-        var type = object.type;
-
-        switch (type) {
-          case REACT_FRAGMENT_TYPE:
-          case REACT_PROFILER_TYPE:
-          case REACT_STRICT_MODE_TYPE:
-          case REACT_SUSPENSE_TYPE:
-          case REACT_SUSPENSE_LIST_TYPE:
-            return type;
-
-          default:
-            var $$typeofType = type && type.$$typeof;
-
-            switch ($$typeofType) {
-              case REACT_SERVER_CONTEXT_TYPE:
-              case REACT_CONTEXT_TYPE:
-              case REACT_FORWARD_REF_TYPE:
-              case REACT_LAZY_TYPE:
-              case REACT_MEMO_TYPE:
-              case REACT_PROVIDER_TYPE:
-                return $$typeofType;
-
-              default:
-                return $$typeof;
-            }
-
-        }
-
-      case REACT_PORTAL_TYPE:
-        return $$typeof;
-    }
-  }
-
-  return undefined;
-}
-var ContextConsumer = REACT_CONTEXT_TYPE;
-var ContextProvider = REACT_PROVIDER_TYPE;
-var Element = REACT_ELEMENT_TYPE;
-var ForwardRef = REACT_FORWARD_REF_TYPE;
-var Fragment = REACT_FRAGMENT_TYPE;
-var Lazy = REACT_LAZY_TYPE;
-var Memo = REACT_MEMO_TYPE;
-var Portal = REACT_PORTAL_TYPE;
-var Profiler = REACT_PROFILER_TYPE;
-var StrictMode = REACT_STRICT_MODE_TYPE;
-var Suspense = REACT_SUSPENSE_TYPE;
-var SuspenseList = REACT_SUSPENSE_LIST_TYPE;
-var hasWarnedAboutDeprecatedIsAsyncMode = false;
-var hasWarnedAboutDeprecatedIsConcurrentMode = false; // AsyncMode should be deprecated
-
-function isAsyncMode(object) {
-  {
-    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
-      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
-
-      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
-    }
-  }
-
-  return false;
-}
-function isConcurrentMode(object) {
-  {
-    if (!hasWarnedAboutDeprecatedIsConcurrentMode) {
-      hasWarnedAboutDeprecatedIsConcurrentMode = true; // Using console['warn'] to evade Babel and ESLint
-
-      console['warn']('The ReactIs.isConcurrentMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
-    }
-  }
-
-  return false;
-}
-function isContextConsumer(object) {
-  return typeOf(object) === REACT_CONTEXT_TYPE;
-}
-function isContextProvider(object) {
-  return typeOf(object) === REACT_PROVIDER_TYPE;
-}
-function isElement(object) {
-  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
-}
-function isForwardRef(object) {
-  return typeOf(object) === REACT_FORWARD_REF_TYPE;
-}
-function isFragment(object) {
-  return typeOf(object) === REACT_FRAGMENT_TYPE;
-}
-function isLazy(object) {
-  return typeOf(object) === REACT_LAZY_TYPE;
-}
-function isMemo(object) {
-  return typeOf(object) === REACT_MEMO_TYPE;
-}
-function isPortal(object) {
-  return typeOf(object) === REACT_PORTAL_TYPE;
-}
-function isProfiler(object) {
-  return typeOf(object) === REACT_PROFILER_TYPE;
-}
-function isStrictMode(object) {
-  return typeOf(object) === REACT_STRICT_MODE_TYPE;
-}
-function isSuspense(object) {
-  return typeOf(object) === REACT_SUSPENSE_TYPE;
-}
-function isSuspenseList(object) {
-  return typeOf(object) === REACT_SUSPENSE_LIST_TYPE;
-}
-
-exports.ContextConsumer = ContextConsumer;
-exports.ContextProvider = ContextProvider;
-exports.Element = Element;
-exports.ForwardRef = ForwardRef;
-exports.Fragment = Fragment;
-exports.Lazy = Lazy;
-exports.Memo = Memo;
-exports.Portal = Portal;
-exports.Profiler = Profiler;
-exports.StrictMode = StrictMode;
-exports.Suspense = Suspense;
-exports.SuspenseList = SuspenseList;
-exports.isAsyncMode = isAsyncMode;
-exports.isConcurrentMode = isConcurrentMode;
-exports.isContextConsumer = isContextConsumer;
-exports.isContextProvider = isContextProvider;
-exports.isElement = isElement;
-exports.isForwardRef = isForwardRef;
-exports.isFragment = isFragment;
-exports.isLazy = isLazy;
-exports.isMemo = isMemo;
-exports.isPortal = isPortal;
-exports.isProfiler = isProfiler;
-exports.isStrictMode = isStrictMode;
-exports.isSuspense = isSuspense;
-exports.isSuspenseList = isSuspenseList;
-exports.isValidElementType = isValidElementType;
-exports.typeOf = typeOf;
-  })();
-}
-
-
-/***/ }),
-
-/***/ "./node_modules/react-is/index.js":
-/*!****************************************!*\
-  !*** ./node_modules/react-is/index.js ***!
-  \****************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-if (false) {} else {
-  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-is/cjs/react-is.development.js");
-}
-
-
-/***/ }),
-
 /***/ "./node_modules/react-redux/es/components/Context.js":
 /*!***********************************************************!*\
   !*** ./node_modules/react-redux/es/components/Context.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ReactReduxContext: () => (/* binding */ ReactReduxContext),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   ReactReduxContext: function() { return /* binding */ ReactReduxContext; }
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -12546,7 +12916,7 @@ function getContext() {
 }
 
 const ReactReduxContext = /*#__PURE__*/getContext();
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ReactReduxContext);
+/* harmony default export */ __webpack_exports__["default"] = (ReactReduxContext);
 
 /***/ }),
 
@@ -12554,13 +12924,10 @@ const ReactReduxContext = /*#__PURE__*/getContext();
 /*!************************************************************!*\
   !*** ./node_modules/react-redux/es/components/Provider.js ***!
   \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Context__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Context */ "./node_modules/react-redux/es/components/Context.js");
@@ -12613,7 +12980,7 @@ function Provider({
   }, children);
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Provider);
+/* harmony default export */ __webpack_exports__["default"] = (Provider);
 
 /***/ }),
 
@@ -12621,13 +12988,12 @@ function Provider({
 /*!***********************************************************!*\
   !*** ./node_modules/react-redux/es/components/connect.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   initializeConnect: () => (/* binding */ initializeConnect)
+/* harmony export */   initializeConnect: function() { return /* binding */ initializeConnect; }
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
 /* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
@@ -12635,7 +13001,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(hoist_non_react_statics__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_is__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-is */ "./node_modules/react-is/index.js");
+/* harmony import */ var react_is__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-is */ "./node_modules/react-redux/node_modules/react-is/index.js");
 /* harmony import */ var _connect_selectorFactory__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../connect/selectorFactory */ "./node_modules/react-redux/es/connect/selectorFactory.js");
 /* harmony import */ var _connect_mapDispatchToProps__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../connect/mapDispatchToProps */ "./node_modules/react-redux/es/connect/mapDispatchToProps.js");
 /* harmony import */ var _connect_mapStateToProps__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../connect/mapStateToProps */ "./node_modules/react-redux/es/connect/mapStateToProps.js");
@@ -13055,7 +13421,7 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
   return wrapWithConnect;
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (connect);
+/* harmony default export */ __webpack_exports__["default"] = (connect);
 
 /***/ }),
 
@@ -13063,12 +13429,12 @@ function connect(mapStateToProps, mapDispatchToProps, mergeProps, {
 /*!******************************************************************!*\
   !*** ./node_modules/react-redux/es/connect/invalidArgFactory.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createInvalidArgFactory: () => (/* binding */ createInvalidArgFactory)
+/* harmony export */   createInvalidArgFactory: function() { return /* binding */ createInvalidArgFactory; }
 /* harmony export */ });
 function createInvalidArgFactory(arg, name) {
   return (dispatch, options) => {
@@ -13082,12 +13448,12 @@ function createInvalidArgFactory(arg, name) {
 /*!*******************************************************************!*\
   !*** ./node_modules/react-redux/es/connect/mapDispatchToProps.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   mapDispatchToPropsFactory: () => (/* binding */ mapDispatchToPropsFactory)
+/* harmony export */   mapDispatchToPropsFactory: function() { return /* binding */ mapDispatchToPropsFactory; }
 /* harmony export */ });
 /* harmony import */ var _utils_bindActionCreators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/bindActionCreators */ "./node_modules/react-redux/es/utils/bindActionCreators.js");
 /* harmony import */ var _wrapMapToProps__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./wrapMapToProps */ "./node_modules/react-redux/es/connect/wrapMapToProps.js");
@@ -13109,12 +13475,12 @@ function mapDispatchToPropsFactory(mapDispatchToProps) {
 /*!****************************************************************!*\
   !*** ./node_modules/react-redux/es/connect/mapStateToProps.js ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   mapStateToPropsFactory: () => (/* binding */ mapStateToPropsFactory)
+/* harmony export */   mapStateToPropsFactory: function() { return /* binding */ mapStateToPropsFactory; }
 /* harmony export */ });
 /* harmony import */ var _wrapMapToProps__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./wrapMapToProps */ "./node_modules/react-redux/es/connect/wrapMapToProps.js");
 /* harmony import */ var _invalidArgFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./invalidArgFactory */ "./node_modules/react-redux/es/connect/invalidArgFactory.js");
@@ -13131,14 +13497,14 @@ function mapStateToPropsFactory(mapStateToProps) {
 /*!***********************************************************!*\
   !*** ./node_modules/react-redux/es/connect/mergeProps.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   defaultMergeProps: () => (/* binding */ defaultMergeProps),
-/* harmony export */   mergePropsFactory: () => (/* binding */ mergePropsFactory),
-/* harmony export */   wrapMergePropsFunc: () => (/* binding */ wrapMergePropsFunc)
+/* harmony export */   defaultMergeProps: function() { return /* binding */ defaultMergeProps; },
+/* harmony export */   mergePropsFactory: function() { return /* binding */ mergePropsFactory; },
+/* harmony export */   wrapMergePropsFunc: function() { return /* binding */ wrapMergePropsFunc; }
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
 /* harmony import */ var _utils_verifyPlainObject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/verifyPlainObject */ "./node_modules/react-redux/es/utils/verifyPlainObject.js");
@@ -13182,13 +13548,13 @@ function mergePropsFactory(mergeProps) {
 /*!****************************************************************!*\
   !*** ./node_modules/react-redux/es/connect/selectorFactory.js ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ finalPropsSelectorFactory),
-/* harmony export */   pureFinalPropsSelectorFactory: () => (/* binding */ pureFinalPropsSelectorFactory)
+/* harmony export */   "default": function() { return /* binding */ finalPropsSelectorFactory; },
+/* harmony export */   pureFinalPropsSelectorFactory: function() { return /* binding */ pureFinalPropsSelectorFactory; }
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_helpers_esm_objectWithoutPropertiesLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutPropertiesLoose */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js");
 /* harmony import */ var _verifySubselectors__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./verifySubselectors */ "./node_modules/react-redux/es/connect/verifySubselectors.js");
@@ -13283,12 +13649,12 @@ function finalPropsSelectorFactory(dispatch, _ref) {
 /*!*******************************************************************!*\
   !*** ./node_modules/react-redux/es/connect/verifySubselectors.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ verifySubselectors)
+/* harmony export */   "default": function() { return /* binding */ verifySubselectors; }
 /* harmony export */ });
 /* harmony import */ var _utils_warning__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/warning */ "./node_modules/react-redux/es/utils/warning.js");
 
@@ -13315,14 +13681,14 @@ function verifySubselectors(mapStateToProps, mapDispatchToProps, mergeProps) {
 /*!***************************************************************!*\
   !*** ./node_modules/react-redux/es/connect/wrapMapToProps.js ***!
   \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getDependsOnOwnProps: () => (/* binding */ getDependsOnOwnProps),
-/* harmony export */   wrapMapToPropsConstant: () => (/* binding */ wrapMapToPropsConstant),
-/* harmony export */   wrapMapToPropsFunc: () => (/* binding */ wrapMapToPropsFunc)
+/* harmony export */   getDependsOnOwnProps: function() { return /* binding */ getDependsOnOwnProps; },
+/* harmony export */   wrapMapToPropsConstant: function() { return /* binding */ wrapMapToPropsConstant; },
+/* harmony export */   wrapMapToPropsFunc: function() { return /* binding */ wrapMapToPropsFunc; }
 /* harmony export */ });
 /* harmony import */ var _utils_verifyPlainObject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/verifyPlainObject */ "./node_modules/react-redux/es/utils/verifyPlainObject.js");
 
@@ -13402,21 +13768,21 @@ function wrapMapToPropsFunc(mapToProps, methodName) {
 /*!************************************************!*\
   !*** ./node_modules/react-redux/es/exports.js ***!
   \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Provider: () => (/* reexport safe */ _components_Provider__WEBPACK_IMPORTED_MODULE_0__["default"]),
-/* harmony export */   ReactReduxContext: () => (/* reexport safe */ _components_Context__WEBPACK_IMPORTED_MODULE_2__.ReactReduxContext),
-/* harmony export */   connect: () => (/* reexport safe */ _components_connect__WEBPACK_IMPORTED_MODULE_1__["default"]),
-/* harmony export */   createDispatchHook: () => (/* reexport safe */ _hooks_useDispatch__WEBPACK_IMPORTED_MODULE_3__.createDispatchHook),
-/* harmony export */   createSelectorHook: () => (/* reexport safe */ _hooks_useSelector__WEBPACK_IMPORTED_MODULE_4__.createSelectorHook),
-/* harmony export */   createStoreHook: () => (/* reexport safe */ _hooks_useStore__WEBPACK_IMPORTED_MODULE_5__.createStoreHook),
-/* harmony export */   shallowEqual: () => (/* reexport safe */ _utils_shallowEqual__WEBPACK_IMPORTED_MODULE_6__["default"]),
-/* harmony export */   useDispatch: () => (/* reexport safe */ _hooks_useDispatch__WEBPACK_IMPORTED_MODULE_3__.useDispatch),
-/* harmony export */   useSelector: () => (/* reexport safe */ _hooks_useSelector__WEBPACK_IMPORTED_MODULE_4__.useSelector),
-/* harmony export */   useStore: () => (/* reexport safe */ _hooks_useStore__WEBPACK_IMPORTED_MODULE_5__.useStore)
+/* harmony export */   Provider: function() { return /* reexport safe */ _components_Provider__WEBPACK_IMPORTED_MODULE_0__["default"]; },
+/* harmony export */   ReactReduxContext: function() { return /* reexport safe */ _components_Context__WEBPACK_IMPORTED_MODULE_2__.ReactReduxContext; },
+/* harmony export */   connect: function() { return /* reexport safe */ _components_connect__WEBPACK_IMPORTED_MODULE_1__["default"]; },
+/* harmony export */   createDispatchHook: function() { return /* reexport safe */ _hooks_useDispatch__WEBPACK_IMPORTED_MODULE_3__.createDispatchHook; },
+/* harmony export */   createSelectorHook: function() { return /* reexport safe */ _hooks_useSelector__WEBPACK_IMPORTED_MODULE_4__.createSelectorHook; },
+/* harmony export */   createStoreHook: function() { return /* reexport safe */ _hooks_useStore__WEBPACK_IMPORTED_MODULE_5__.createStoreHook; },
+/* harmony export */   shallowEqual: function() { return /* reexport safe */ _utils_shallowEqual__WEBPACK_IMPORTED_MODULE_6__["default"]; },
+/* harmony export */   useDispatch: function() { return /* reexport safe */ _hooks_useDispatch__WEBPACK_IMPORTED_MODULE_3__.useDispatch; },
+/* harmony export */   useSelector: function() { return /* reexport safe */ _hooks_useSelector__WEBPACK_IMPORTED_MODULE_4__.useSelector; },
+/* harmony export */   useStore: function() { return /* reexport safe */ _hooks_useStore__WEBPACK_IMPORTED_MODULE_5__.useStore; }
 /* harmony export */ });
 /* harmony import */ var _components_Provider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Provider */ "./node_modules/react-redux/es/components/Provider.js");
 /* harmony import */ var _components_connect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/connect */ "./node_modules/react-redux/es/components/connect.js");
@@ -13442,13 +13808,13 @@ __webpack_require__.r(__webpack_exports__);
 /*!**********************************************************!*\
   !*** ./node_modules/react-redux/es/hooks/useDispatch.js ***!
   \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createDispatchHook: () => (/* binding */ createDispatchHook),
-/* harmony export */   useDispatch: () => (/* binding */ useDispatch)
+/* harmony export */   createDispatchHook: function() { return /* binding */ createDispatchHook; },
+/* harmony export */   useDispatch: function() { return /* binding */ useDispatch; }
 /* harmony export */ });
 /* harmony import */ var _components_Context__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Context */ "./node_modules/react-redux/es/components/Context.js");
 /* harmony import */ var _useStore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./useStore */ "./node_modules/react-redux/es/hooks/useStore.js");
@@ -13500,13 +13866,13 @@ const useDispatch = /*#__PURE__*/createDispatchHook();
 /*!**************************************************************!*\
   !*** ./node_modules/react-redux/es/hooks/useReduxContext.js ***!
   \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createReduxContextHook: () => (/* binding */ createReduxContextHook),
-/* harmony export */   useReduxContext: () => (/* binding */ useReduxContext)
+/* harmony export */   createReduxContextHook: function() { return /* binding */ createReduxContextHook; },
+/* harmony export */   useReduxContext: function() { return /* binding */ useReduxContext; }
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -13557,14 +13923,14 @@ const useReduxContext = /*#__PURE__*/createReduxContextHook();
 /*!**********************************************************!*\
   !*** ./node_modules/react-redux/es/hooks/useSelector.js ***!
   \**********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createSelectorHook: () => (/* binding */ createSelectorHook),
-/* harmony export */   initializeUseSelector: () => (/* binding */ initializeUseSelector),
-/* harmony export */   useSelector: () => (/* binding */ useSelector)
+/* harmony export */   createSelectorHook: function() { return /* binding */ createSelectorHook; },
+/* harmony export */   initializeUseSelector: function() { return /* binding */ initializeUseSelector; },
+/* harmony export */   useSelector: function() { return /* binding */ useSelector; }
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -13633,10 +13999,22 @@ function createSelectorHook(context = _components_Context__WEBPACK_IMPORTED_MODU
             const toCompare = selector(state);
 
             if (!equalityFn(selected, toCompare)) {
+              let stack = undefined;
+
+              try {
+                throw new Error();
+              } catch (e) {
+                ;
+                ({
+                  stack
+                } = e);
+              }
+
               console.warn('Selector ' + (selector.name || 'unknown') + ' returned a different result when called with the same parameters. This can lead to unnecessary rerenders.' + '\nSelectors that return a new reference (such as an object or an array) should be memoized: https://redux.js.org/usage/deriving-data-selectors#optimizing-selectors-with-memoization', {
                 state,
                 selected,
-                selected2: toCompare
+                selected2: toCompare,
+                stack
               });
             }
           }
@@ -13646,7 +14024,20 @@ function createSelectorHook(context = _components_Context__WEBPACK_IMPORTED_MODU
           if (finalNoopCheck === 'always' || finalNoopCheck === 'once' && firstRun.current) {
             // @ts-ignore
             if (selected === state) {
-              console.warn('Selector ' + (selector.name || 'unknown') + ' returned the root state when called. This can lead to unnecessary rerenders.' + '\nSelectors that return the entire state are almost certainly a mistake, as they will cause a rerender whenever *anything* in state changes.');
+              let stack = undefined;
+
+              try {
+                throw new Error();
+              } catch (e) {
+                ;
+                ({
+                  stack
+                } = e);
+              }
+
+              console.warn('Selector ' + (selector.name || 'unknown') + ' returned the root state when called. This can lead to unnecessary rerenders.' + '\nSelectors that return the entire state are almost certainly a mistake, as they will cause a rerender whenever *anything* in state changes.', {
+                stack
+              });
             }
           }
 
@@ -13694,13 +14085,13 @@ const useSelector = /*#__PURE__*/createSelectorHook();
 /*!*******************************************************!*\
   !*** ./node_modules/react-redux/es/hooks/useStore.js ***!
   \*******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createStoreHook: () => (/* binding */ createStoreHook),
-/* harmony export */   useStore: () => (/* binding */ useStore)
+/* harmony export */   createStoreHook: function() { return /* binding */ createStoreHook; },
+/* harmony export */   useStore: function() { return /* binding */ useStore; }
 /* harmony export */ });
 /* harmony import */ var _components_Context__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Context */ "./node_modules/react-redux/es/components/Context.js");
 /* harmony import */ var _useReduxContext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./useReduxContext */ "./node_modules/react-redux/es/hooks/useReduxContext.js");
@@ -13749,22 +14140,22 @@ const useStore = /*#__PURE__*/createStoreHook();
 /*!**********************************************!*\
   !*** ./node_modules/react-redux/es/index.js ***!
   \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Provider: () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.Provider),
-/* harmony export */   ReactReduxContext: () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.ReactReduxContext),
-/* harmony export */   batch: () => (/* reexport safe */ _utils_reactBatchedUpdates__WEBPACK_IMPORTED_MODULE_2__.unstable_batchedUpdates),
-/* harmony export */   connect: () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.connect),
-/* harmony export */   createDispatchHook: () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.createDispatchHook),
-/* harmony export */   createSelectorHook: () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.createSelectorHook),
-/* harmony export */   createStoreHook: () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.createStoreHook),
-/* harmony export */   shallowEqual: () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.shallowEqual),
-/* harmony export */   useDispatch: () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.useDispatch),
-/* harmony export */   useSelector: () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.useSelector),
-/* harmony export */   useStore: () => (/* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.useStore)
+/* harmony export */   Provider: function() { return /* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.Provider; },
+/* harmony export */   ReactReduxContext: function() { return /* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.ReactReduxContext; },
+/* harmony export */   batch: function() { return /* reexport safe */ _utils_reactBatchedUpdates__WEBPACK_IMPORTED_MODULE_2__.unstable_batchedUpdates; },
+/* harmony export */   connect: function() { return /* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.connect; },
+/* harmony export */   createDispatchHook: function() { return /* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.createDispatchHook; },
+/* harmony export */   createSelectorHook: function() { return /* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.createSelectorHook; },
+/* harmony export */   createStoreHook: function() { return /* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.createStoreHook; },
+/* harmony export */   shallowEqual: function() { return /* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.shallowEqual; },
+/* harmony export */   useDispatch: function() { return /* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.useDispatch; },
+/* harmony export */   useSelector: function() { return /* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.useSelector; },
+/* harmony export */   useStore: function() { return /* reexport safe */ _exports__WEBPACK_IMPORTED_MODULE_6__.useStore; }
 /* harmony export */ });
 /* harmony import */ var use_sync_external_store_shim__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! use-sync-external-store/shim */ "./node_modules/use-sync-external-store/shim/index.js");
 /* harmony import */ var use_sync_external_store_shim_with_selector__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! use-sync-external-store/shim/with-selector */ "./node_modules/use-sync-external-store/shim/with-selector.js");
@@ -13796,7 +14187,7 @@ __webpack_require__.r(__webpack_exports__);
 /*!**********************************************!*\
   !*** ./node_modules/react-redux/es/types.js ***!
   \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -13808,12 +14199,12 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************************************!*\
   !*** ./node_modules/react-redux/es/utils/Subscription.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createSubscription: () => (/* binding */ createSubscription)
+/* harmony export */   createSubscription: function() { return /* binding */ createSubscription; }
 /* harmony export */ });
 /* harmony import */ var _batch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./batch */ "./node_modules/react-redux/es/utils/batch.js");
  // encapsulates the subscription logic for connecting a component to the redux store, as
@@ -13895,11 +14286,24 @@ const nullListeners = {
 };
 function createSubscription(store, parentSub) {
   let unsubscribe;
-  let listeners = nullListeners;
+  let listeners = nullListeners; // Reasons to keep the subscription active
+
+  let subscriptionsAmount = 0; // Is this specific subscription subscribed (or only nested ones?)
+
+  let selfSubscribed = false;
 
   function addNestedSub(listener) {
     trySubscribe();
-    return listeners.subscribe(listener);
+    const cleanupListener = listeners.subscribe(listener); // cleanup nested sub
+
+    let removed = false;
+    return () => {
+      if (!removed) {
+        removed = true;
+        cleanupListener();
+        tryUnsubscribe();
+      }
+    };
   }
 
   function notifyNestedSubs() {
@@ -13913,10 +14317,12 @@ function createSubscription(store, parentSub) {
   }
 
   function isSubscribed() {
-    return Boolean(unsubscribe);
+    return selfSubscribed;
   }
 
   function trySubscribe() {
+    subscriptionsAmount++;
+
     if (!unsubscribe) {
       unsubscribe = parentSub ? parentSub.addNestedSub(handleChangeWrapper) : store.subscribe(handleChangeWrapper);
       listeners = createListenerCollection();
@@ -13924,11 +14330,27 @@ function createSubscription(store, parentSub) {
   }
 
   function tryUnsubscribe() {
-    if (unsubscribe) {
+    subscriptionsAmount--;
+
+    if (unsubscribe && subscriptionsAmount === 0) {
       unsubscribe();
       unsubscribe = undefined;
       listeners.clear();
       listeners = nullListeners;
+    }
+  }
+
+  function trySubscribeSelf() {
+    if (!selfSubscribed) {
+      selfSubscribed = true;
+      trySubscribe();
+    }
+  }
+
+  function tryUnsubscribeSelf() {
+    if (selfSubscribed) {
+      selfSubscribed = false;
+      tryUnsubscribe();
     }
   }
 
@@ -13937,8 +14359,8 @@ function createSubscription(store, parentSub) {
     notifyNestedSubs,
     handleChangeWrapper,
     isSubscribed,
-    trySubscribe,
-    tryUnsubscribe,
+    trySubscribe: trySubscribeSelf,
+    tryUnsubscribe: tryUnsubscribeSelf,
     getListeners: () => listeners
   };
   return subscription;
@@ -13950,13 +14372,13 @@ function createSubscription(store, parentSub) {
 /*!****************************************************!*\
   !*** ./node_modules/react-redux/es/utils/batch.js ***!
   \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getBatch: () => (/* binding */ getBatch),
-/* harmony export */   setBatch: () => (/* binding */ setBatch)
+/* harmony export */   getBatch: function() { return /* binding */ getBatch; },
+/* harmony export */   setBatch: function() { return /* binding */ setBatch; }
 /* harmony export */ });
 // Default to a dummy "batch" implementation that just runs the callback
 function defaultNoopBatch(callback) {
@@ -13975,12 +14397,12 @@ const getBatch = () => batch;
 /*!*****************************************************************!*\
   !*** ./node_modules/react-redux/es/utils/bindActionCreators.js ***!
   \*****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ bindActionCreators)
+/* harmony export */   "default": function() { return /* binding */ bindActionCreators; }
 /* harmony export */ });
 function bindActionCreators(actionCreators, dispatch) {
   const boundActionCreators = {};
@@ -14002,12 +14424,12 @@ function bindActionCreators(actionCreators, dispatch) {
 /*!************************************************************!*\
   !*** ./node_modules/react-redux/es/utils/isPlainObject.js ***!
   \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ isPlainObject)
+/* harmony export */   "default": function() { return /* binding */ isPlainObject; }
 /* harmony export */ });
 /**
  * @param {any} obj The object to inspect.
@@ -14032,12 +14454,12 @@ function isPlainObject(obj) {
 /*!******************************************************************!*\
   !*** ./node_modules/react-redux/es/utils/reactBatchedUpdates.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   unstable_batchedUpdates: () => (/* reexport safe */ react_dom__WEBPACK_IMPORTED_MODULE_0__.unstable_batchedUpdates)
+/* harmony export */   unstable_batchedUpdates: function() { return /* reexport safe */ react_dom__WEBPACK_IMPORTED_MODULE_0__.unstable_batchedUpdates; }
 /* harmony export */ });
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-dom */ "react-dom");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_0__);
@@ -14049,12 +14471,12 @@ __webpack_require__.r(__webpack_exports__);
 /*!***********************************************************!*\
   !*** ./node_modules/react-redux/es/utils/shallowEqual.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ shallowEqual)
+/* harmony export */   "default": function() { return /* binding */ shallowEqual; }
 /* harmony export */ });
 function is(x, y) {
   if (x === y) {
@@ -14090,13 +14512,13 @@ function shallowEqual(objA, objB) {
 /*!************************************************************************!*\
   !*** ./node_modules/react-redux/es/utils/useIsomorphicLayoutEffect.js ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   canUseDOM: () => (/* binding */ canUseDOM),
-/* harmony export */   useIsomorphicLayoutEffect: () => (/* binding */ useIsomorphicLayoutEffect)
+/* harmony export */   canUseDOM: function() { return /* binding */ canUseDOM; },
+/* harmony export */   useIsomorphicLayoutEffect: function() { return /* binding */ useIsomorphicLayoutEffect; }
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -14119,12 +14541,12 @@ const useIsomorphicLayoutEffect = canUseDOM ? react__WEBPACK_IMPORTED_MODULE_0__
 /*!*******************************************************************!*\
   !*** ./node_modules/react-redux/es/utils/useSyncExternalStore.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   notInitialized: () => (/* binding */ notInitialized)
+/* harmony export */   notInitialized: function() { return /* binding */ notInitialized; }
 /* harmony export */ });
 const notInitialized = () => {
   throw new Error('uSES not initialized!');
@@ -14136,12 +14558,12 @@ const notInitialized = () => {
 /*!****************************************************************!*\
   !*** ./node_modules/react-redux/es/utils/verifyPlainObject.js ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ verifyPlainObject)
+/* harmony export */   "default": function() { return /* binding */ verifyPlainObject; }
 /* harmony export */ });
 /* harmony import */ var _isPlainObject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./isPlainObject */ "./node_modules/react-redux/es/utils/isPlainObject.js");
 /* harmony import */ var _warning__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./warning */ "./node_modules/react-redux/es/utils/warning.js");
@@ -14159,12 +14581,12 @@ function verifyPlainObject(value, displayName, methodName) {
 /*!******************************************************!*\
   !*** ./node_modules/react-redux/es/utils/warning.js ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ warning)
+/* harmony export */   "default": function() { return /* binding */ warning; }
 /* harmony export */ });
 /**
  * Prints a warning in the console if it exists.
@@ -14193,92 +14615,343 @@ function warning(message) {
 
 /***/ }),
 
+/***/ "./node_modules/react-redux/node_modules/react-is/cjs/react-is.development.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/react-redux/node_modules/react-is/cjs/react-is.development.js ***!
+  \************************************************************************************/
+/***/ (function(__unused_webpack_module, exports) {
+
+"use strict";
+/**
+ * @license React
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+if (true) {
+  (function() {
+'use strict';
+
+// ATTENTION
+// When adding new symbols to this file,
+// Please consider also adding to 'react-devtools-shared/src/backend/ReactSymbols'
+// The Symbol used to tag the ReactElement-like types.
+var REACT_ELEMENT_TYPE = Symbol.for('react.element');
+var REACT_PORTAL_TYPE = Symbol.for('react.portal');
+var REACT_FRAGMENT_TYPE = Symbol.for('react.fragment');
+var REACT_STRICT_MODE_TYPE = Symbol.for('react.strict_mode');
+var REACT_PROFILER_TYPE = Symbol.for('react.profiler');
+var REACT_PROVIDER_TYPE = Symbol.for('react.provider');
+var REACT_CONTEXT_TYPE = Symbol.for('react.context');
+var REACT_SERVER_CONTEXT_TYPE = Symbol.for('react.server_context');
+var REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref');
+var REACT_SUSPENSE_TYPE = Symbol.for('react.suspense');
+var REACT_SUSPENSE_LIST_TYPE = Symbol.for('react.suspense_list');
+var REACT_MEMO_TYPE = Symbol.for('react.memo');
+var REACT_LAZY_TYPE = Symbol.for('react.lazy');
+var REACT_OFFSCREEN_TYPE = Symbol.for('react.offscreen');
+
+// -----------------------------------------------------------------------------
+
+var enableScopeAPI = false; // Experimental Create Event Handle API.
+var enableCacheElement = false;
+var enableTransitionTracing = false; // No known bugs, but needs performance testing
+
+var enableLegacyHidden = false; // Enables unstable_avoidThisFallback feature in Fiber
+// stuff. Intended to enable React core members to more easily debug scheduling
+// issues in DEV builds.
+
+var enableDebugTracing = false; // Track which Fiber(s) schedule render work.
+
+var REACT_MODULE_REFERENCE;
+
+{
+  REACT_MODULE_REFERENCE = Symbol.for('react.module.reference');
+}
+
+function isValidElementType(type) {
+  if (typeof type === 'string' || typeof type === 'function') {
+    return true;
+  } // Note: typeof might be other than 'symbol' or 'number' (e.g. if it's a polyfill).
+
+
+  if (type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || enableDebugTracing  || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || enableLegacyHidden  || type === REACT_OFFSCREEN_TYPE || enableScopeAPI  || enableCacheElement  || enableTransitionTracing ) {
+    return true;
+  }
+
+  if (typeof type === 'object' && type !== null) {
+    if (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || // This needs to include all possible module reference object
+    // types supported by any Flight configuration anywhere since
+    // we don't know which Flight build this will end up being used
+    // with.
+    type.$$typeof === REACT_MODULE_REFERENCE || type.getModuleId !== undefined) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+          case REACT_SUSPENSE_LIST_TYPE:
+            return type;
+
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_SERVER_CONTEXT_TYPE:
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_LAZY_TYPE:
+              case REACT_MEMO_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+
+              default:
+                return $$typeof;
+            }
+
+        }
+
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+
+  return undefined;
+}
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+var SuspenseList = REACT_SUSPENSE_LIST_TYPE;
+var hasWarnedAboutDeprecatedIsAsyncMode = false;
+var hasWarnedAboutDeprecatedIsConcurrentMode = false; // AsyncMode should be deprecated
+
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
+    }
+  }
+
+  return false;
+}
+function isConcurrentMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsConcurrentMode) {
+      hasWarnedAboutDeprecatedIsConcurrentMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isConcurrentMode() alias has been deprecated, ' + 'and will be removed in React 18+.');
+    }
+  }
+
+  return false;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+function isSuspenseList(object) {
+  return typeOf(object) === REACT_SUSPENSE_LIST_TYPE;
+}
+
+exports.ContextConsumer = ContextConsumer;
+exports.ContextProvider = ContextProvider;
+exports.Element = Element;
+exports.ForwardRef = ForwardRef;
+exports.Fragment = Fragment;
+exports.Lazy = Lazy;
+exports.Memo = Memo;
+exports.Portal = Portal;
+exports.Profiler = Profiler;
+exports.StrictMode = StrictMode;
+exports.Suspense = Suspense;
+exports.SuspenseList = SuspenseList;
+exports.isAsyncMode = isAsyncMode;
+exports.isConcurrentMode = isConcurrentMode;
+exports.isContextConsumer = isContextConsumer;
+exports.isContextProvider = isContextProvider;
+exports.isElement = isElement;
+exports.isForwardRef = isForwardRef;
+exports.isFragment = isFragment;
+exports.isLazy = isLazy;
+exports.isMemo = isMemo;
+exports.isPortal = isPortal;
+exports.isProfiler = isProfiler;
+exports.isStrictMode = isStrictMode;
+exports.isSuspense = isSuspense;
+exports.isSuspenseList = isSuspenseList;
+exports.isValidElementType = isValidElementType;
+exports.typeOf = typeOf;
+  })();
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/react-redux/node_modules/react-is/index.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/react-redux/node_modules/react-is/index.js ***!
+  \*****************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+
+
+if (false) {} else {
+  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-redux/node_modules/react-is/cjs/react-is.development.js");
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/react-router-dom/dist/index.js":
 /*!*****************************************************!*\
   !*** ./node_modules/react-router-dom/dist/index.js ***!
   \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AbortedDeferredError: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.AbortedDeferredError),
-/* harmony export */   Await: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Await),
-/* harmony export */   BrowserRouter: () => (/* binding */ BrowserRouter),
-/* harmony export */   Form: () => (/* binding */ Form),
-/* harmony export */   HashRouter: () => (/* binding */ HashRouter),
-/* harmony export */   Link: () => (/* binding */ Link),
-/* harmony export */   MemoryRouter: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.MemoryRouter),
-/* harmony export */   NavLink: () => (/* binding */ NavLink),
-/* harmony export */   Navigate: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Navigate),
-/* harmony export */   NavigationType: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.Action),
-/* harmony export */   Outlet: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Outlet),
-/* harmony export */   Route: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Route),
-/* harmony export */   Router: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Router),
-/* harmony export */   RouterProvider: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.RouterProvider),
-/* harmony export */   Routes: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Routes),
-/* harmony export */   ScrollRestoration: () => (/* binding */ ScrollRestoration),
-/* harmony export */   UNSAFE_DataRouterContext: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_DataRouterContext),
-/* harmony export */   UNSAFE_DataRouterStateContext: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_DataRouterStateContext),
-/* harmony export */   UNSAFE_LocationContext: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_LocationContext),
-/* harmony export */   UNSAFE_NavigationContext: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_NavigationContext),
-/* harmony export */   UNSAFE_RouteContext: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_RouteContext),
-/* harmony export */   UNSAFE_useRouteId: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_useRouteId),
-/* harmony export */   UNSAFE_useScrollRestoration: () => (/* binding */ useScrollRestoration),
-/* harmony export */   createBrowserRouter: () => (/* binding */ createBrowserRouter),
-/* harmony export */   createHashRouter: () => (/* binding */ createHashRouter),
-/* harmony export */   createMemoryRouter: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.createMemoryRouter),
-/* harmony export */   createPath: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.createPath),
-/* harmony export */   createRoutesFromChildren: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.createRoutesFromChildren),
-/* harmony export */   createRoutesFromElements: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.createRoutesFromElements),
-/* harmony export */   createSearchParams: () => (/* binding */ createSearchParams),
-/* harmony export */   defer: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.defer),
-/* harmony export */   generatePath: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.generatePath),
-/* harmony export */   isRouteErrorResponse: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.isRouteErrorResponse),
-/* harmony export */   json: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.json),
-/* harmony export */   matchPath: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.matchPath),
-/* harmony export */   matchRoutes: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.matchRoutes),
-/* harmony export */   parsePath: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.parsePath),
-/* harmony export */   redirect: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.redirect),
-/* harmony export */   renderMatches: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.renderMatches),
-/* harmony export */   resolvePath: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.resolvePath),
-/* harmony export */   unstable_HistoryRouter: () => (/* binding */ HistoryRouter),
-/* harmony export */   unstable_useBlocker: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.unstable_useBlocker),
-/* harmony export */   unstable_usePrompt: () => (/* binding */ usePrompt),
-/* harmony export */   useActionData: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useActionData),
-/* harmony export */   useAsyncError: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useAsyncError),
-/* harmony export */   useAsyncValue: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useAsyncValue),
-/* harmony export */   useBeforeUnload: () => (/* binding */ useBeforeUnload),
-/* harmony export */   useFetcher: () => (/* binding */ useFetcher),
-/* harmony export */   useFetchers: () => (/* binding */ useFetchers),
-/* harmony export */   useFormAction: () => (/* binding */ useFormAction),
-/* harmony export */   useHref: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useHref),
-/* harmony export */   useInRouterContext: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useInRouterContext),
-/* harmony export */   useLinkClickHandler: () => (/* binding */ useLinkClickHandler),
-/* harmony export */   useLoaderData: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useLoaderData),
-/* harmony export */   useLocation: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useLocation),
-/* harmony export */   useMatch: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useMatch),
-/* harmony export */   useMatches: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useMatches),
-/* harmony export */   useNavigate: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useNavigate),
-/* harmony export */   useNavigation: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useNavigation),
-/* harmony export */   useNavigationType: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useNavigationType),
-/* harmony export */   useOutlet: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useOutlet),
-/* harmony export */   useOutletContext: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useOutletContext),
-/* harmony export */   useParams: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useParams),
-/* harmony export */   useResolvedPath: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useResolvedPath),
-/* harmony export */   useRevalidator: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useRevalidator),
-/* harmony export */   useRouteError: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useRouteError),
-/* harmony export */   useRouteLoaderData: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useRouteLoaderData),
-/* harmony export */   useRoutes: () => (/* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useRoutes),
-/* harmony export */   useSearchParams: () => (/* binding */ useSearchParams),
-/* harmony export */   useSubmit: () => (/* binding */ useSubmit)
+/* harmony export */   AbortedDeferredError: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.AbortedDeferredError; },
+/* harmony export */   Await: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Await; },
+/* harmony export */   BrowserRouter: function() { return /* binding */ BrowserRouter; },
+/* harmony export */   Form: function() { return /* binding */ Form; },
+/* harmony export */   HashRouter: function() { return /* binding */ HashRouter; },
+/* harmony export */   Link: function() { return /* binding */ Link; },
+/* harmony export */   MemoryRouter: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.MemoryRouter; },
+/* harmony export */   NavLink: function() { return /* binding */ NavLink; },
+/* harmony export */   Navigate: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Navigate; },
+/* harmony export */   NavigationType: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.Action; },
+/* harmony export */   Outlet: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Outlet; },
+/* harmony export */   Route: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Route; },
+/* harmony export */   Router: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Router; },
+/* harmony export */   RouterProvider: function() { return /* binding */ RouterProvider; },
+/* harmony export */   Routes: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.Routes; },
+/* harmony export */   ScrollRestoration: function() { return /* binding */ ScrollRestoration; },
+/* harmony export */   UNSAFE_DataRouterContext: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_DataRouterContext; },
+/* harmony export */   UNSAFE_DataRouterStateContext: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_DataRouterStateContext; },
+/* harmony export */   UNSAFE_LocationContext: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_LocationContext; },
+/* harmony export */   UNSAFE_NavigationContext: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_NavigationContext; },
+/* harmony export */   UNSAFE_RouteContext: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_RouteContext; },
+/* harmony export */   UNSAFE_ViewTransitionContext: function() { return /* binding */ ViewTransitionContext; },
+/* harmony export */   UNSAFE_useRouteId: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_useRouteId; },
+/* harmony export */   UNSAFE_useScrollRestoration: function() { return /* binding */ useScrollRestoration; },
+/* harmony export */   createBrowserRouter: function() { return /* binding */ createBrowserRouter; },
+/* harmony export */   createHashRouter: function() { return /* binding */ createHashRouter; },
+/* harmony export */   createMemoryRouter: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.createMemoryRouter; },
+/* harmony export */   createPath: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.createPath; },
+/* harmony export */   createRoutesFromChildren: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.createRoutesFromChildren; },
+/* harmony export */   createRoutesFromElements: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.createRoutesFromElements; },
+/* harmony export */   createSearchParams: function() { return /* binding */ createSearchParams; },
+/* harmony export */   defer: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.defer; },
+/* harmony export */   generatePath: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.generatePath; },
+/* harmony export */   isRouteErrorResponse: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.isRouteErrorResponse; },
+/* harmony export */   json: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.json; },
+/* harmony export */   matchPath: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.matchPath; },
+/* harmony export */   matchRoutes: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.matchRoutes; },
+/* harmony export */   parsePath: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.parsePath; },
+/* harmony export */   redirect: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.redirect; },
+/* harmony export */   redirectDocument: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.redirectDocument; },
+/* harmony export */   renderMatches: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.renderMatches; },
+/* harmony export */   resolvePath: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_1__.resolvePath; },
+/* harmony export */   unstable_HistoryRouter: function() { return /* binding */ HistoryRouter; },
+/* harmony export */   unstable_useBlocker: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.unstable_useBlocker; },
+/* harmony export */   unstable_usePrompt: function() { return /* binding */ usePrompt; },
+/* harmony export */   unstable_useViewTransitionState: function() { return /* binding */ useViewTransitionState; },
+/* harmony export */   useActionData: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useActionData; },
+/* harmony export */   useAsyncError: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useAsyncError; },
+/* harmony export */   useAsyncValue: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useAsyncValue; },
+/* harmony export */   useBeforeUnload: function() { return /* binding */ useBeforeUnload; },
+/* harmony export */   useFetcher: function() { return /* binding */ useFetcher; },
+/* harmony export */   useFetchers: function() { return /* binding */ useFetchers; },
+/* harmony export */   useFormAction: function() { return /* binding */ useFormAction; },
+/* harmony export */   useHref: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useHref; },
+/* harmony export */   useInRouterContext: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useInRouterContext; },
+/* harmony export */   useLinkClickHandler: function() { return /* binding */ useLinkClickHandler; },
+/* harmony export */   useLoaderData: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useLoaderData; },
+/* harmony export */   useLocation: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useLocation; },
+/* harmony export */   useMatch: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useMatch; },
+/* harmony export */   useMatches: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useMatches; },
+/* harmony export */   useNavigate: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useNavigate; },
+/* harmony export */   useNavigation: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useNavigation; },
+/* harmony export */   useNavigationType: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useNavigationType; },
+/* harmony export */   useOutlet: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useOutlet; },
+/* harmony export */   useOutletContext: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useOutletContext; },
+/* harmony export */   useParams: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useParams; },
+/* harmony export */   useResolvedPath: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useResolvedPath; },
+/* harmony export */   useRevalidator: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useRevalidator; },
+/* harmony export */   useRouteError: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useRouteError; },
+/* harmony export */   useRouteLoaderData: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useRouteLoaderData; },
+/* harmony export */   useRoutes: function() { return /* reexport safe */ react_router__WEBPACK_IMPORTED_MODULE_2__.useRoutes; },
+/* harmony export */   useSearchParams: function() { return /* binding */ useSearchParams; },
+/* harmony export */   useSubmit: function() { return /* binding */ useSubmit; }
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @remix-run/router */ "./node_modules/@remix-run/router/dist/router.js");
 /**
- * React Router DOM v6.14.1
+ * React Router DOM v6.17.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -14377,13 +15050,18 @@ function createSearchParams(init) {
 function getSearchParamsForLocation(locationSearch, defaultSearchParams) {
   let searchParams = createSearchParams(locationSearch);
   if (defaultSearchParams) {
-    for (let key of defaultSearchParams.keys()) {
+    // Use `defaultSearchParams.forEach(...)` here instead of iterating of
+    // `defaultSearchParams.keys()` to work-around a bug in Firefox related to
+    // web extensions. Relevant Bugzilla tickets:
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1414602
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1023984
+    defaultSearchParams.forEach((_, key) => {
       if (!searchParams.has(key)) {
         defaultSearchParams.getAll(key).forEach(value => {
           searchParams.append(key, value);
         });
       }
-    }
+    });
   }
   return searchParams;
 }
@@ -14480,9 +15158,9 @@ function getFormSubmissionInfo(target, basename) {
   };
 }
 
-const _excluded = ["onClick", "relative", "reloadDocument", "replace", "state", "target", "to", "preventScrollReset"],
-  _excluded2 = ["aria-current", "caseSensitive", "className", "end", "style", "to", "children"],
-  _excluded3 = ["reloadDocument", "replace", "method", "action", "onSubmit", "submit", "relative", "preventScrollReset"];
+const _excluded = ["onClick", "relative", "reloadDocument", "replace", "state", "target", "to", "preventScrollReset", "unstable_viewTransition"],
+  _excluded2 = ["aria-current", "caseSensitive", "className", "end", "style", "to", "unstable_viewTransition", "children"],
+  _excluded3 = ["reloadDocument", "replace", "state", "method", "action", "onSubmit", "submit", "relative", "preventScrollReset", "unstable_viewTransition"];
 function createBrowserRouter(routes, opts) {
   return (0,react_router__WEBPACK_IMPORTED_MODULE_1__.createRouter)({
     basename: opts == null ? void 0 : opts.basename,
@@ -14494,7 +15172,8 @@ function createBrowserRouter(routes, opts) {
     }),
     hydrationData: (opts == null ? void 0 : opts.hydrationData) || parseHydrationData(),
     routes,
-    mapRouteProperties: react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_mapRouteProperties
+    mapRouteProperties: react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_mapRouteProperties,
+    window: opts == null ? void 0 : opts.window
   }).initialize();
 }
 function createHashRouter(routes, opts) {
@@ -14508,7 +15187,8 @@ function createHashRouter(routes, opts) {
     }),
     hydrationData: (opts == null ? void 0 : opts.hydrationData) || parseHydrationData(),
     routes,
-    mapRouteProperties: react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_mapRouteProperties
+    mapRouteProperties: react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_mapRouteProperties,
+    window: opts == null ? void 0 : opts.window
   }).initialize();
 }
 function parseHydrationData() {
@@ -14529,18 +15209,42 @@ function deserializeErrors(errors) {
     // Hey you!  If you change this, please change the corresponding logic in
     // serializeErrors in react-router-dom/server.tsx :)
     if (val && val.__type === "RouteErrorResponse") {
-      serialized[key] = new react_router__WEBPACK_IMPORTED_MODULE_1__.ErrorResponse(val.status, val.statusText, val.data, val.internal === true);
+      serialized[key] = new react_router__WEBPACK_IMPORTED_MODULE_1__.UNSAFE_ErrorResponseImpl(val.status, val.statusText, val.data, val.internal === true);
     } else if (val && val.__type === "Error") {
-      let error = new Error(val.message);
-      // Wipe away the client-side stack trace.  Nothing to fill it in with
-      // because we don't serialize SSR stack traces for security reasons
-      error.stack = "";
-      serialized[key] = error;
+      // Attempt to reconstruct the right type of Error (i.e., ReferenceError)
+      if (val.__subType) {
+        let ErrorConstructor = window[val.__subType];
+        if (typeof ErrorConstructor === "function") {
+          try {
+            // @ts-expect-error
+            let error = new ErrorConstructor(val.message);
+            // Wipe away the client-side stack trace.  Nothing to fill it in with
+            // because we don't serialize SSR stack traces for security reasons
+            error.stack = "";
+            serialized[key] = error;
+          } catch (e) {
+            // no-op - fall through and create a normal Error
+          }
+        }
+      }
+      if (serialized[key] == null) {
+        let error = new Error(val.message);
+        // Wipe away the client-side stack trace.  Nothing to fill it in with
+        // because we don't serialize SSR stack traces for security reasons
+        error.stack = "";
+        serialized[key] = error;
+      }
     } else {
       serialized[key] = val;
     }
   }
   return serialized;
+}
+const ViewTransitionContext = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createContext({
+  isTransitioning: false
+});
+if (true) {
+  ViewTransitionContext.displayName = "ViewTransition";
 }
 //#endregion
 ////////////////////////////////////////////////////////////////////////////////
@@ -14569,16 +15273,200 @@ function deserializeErrors(errors) {
 */
 const START_TRANSITION = "startTransition";
 const startTransitionImpl = react__WEBPACK_IMPORTED_MODULE_0__[START_TRANSITION];
+function startTransitionSafe(cb) {
+  if (startTransitionImpl) {
+    startTransitionImpl(cb);
+  } else {
+    cb();
+  }
+}
+class Deferred {
+  constructor() {
+    this.status = "pending";
+    this.promise = new Promise((resolve, reject) => {
+      this.resolve = value => {
+        if (this.status === "pending") {
+          this.status = "resolved";
+          resolve(value);
+        }
+      };
+      this.reject = reason => {
+        if (this.status === "pending") {
+          this.status = "rejected";
+          reject(reason);
+        }
+      };
+    });
+  }
+}
+/**
+ * Given a Remix Router instance, render the appropriate UI
+ */
+function RouterProvider(_ref) {
+  let {
+    fallbackElement,
+    router,
+    future
+  } = _ref;
+  let [state, setStateImpl] = react__WEBPACK_IMPORTED_MODULE_0__.useState(router.state);
+  let [pendingState, setPendingState] = react__WEBPACK_IMPORTED_MODULE_0__.useState();
+  let [vtContext, setVtContext] = react__WEBPACK_IMPORTED_MODULE_0__.useState({
+    isTransitioning: false
+  });
+  let [renderDfd, setRenderDfd] = react__WEBPACK_IMPORTED_MODULE_0__.useState();
+  let [transition, setTransition] = react__WEBPACK_IMPORTED_MODULE_0__.useState();
+  let [interruption, setInterruption] = react__WEBPACK_IMPORTED_MODULE_0__.useState();
+  let {
+    v7_startTransition
+  } = future || {};
+  let optInStartTransition = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(cb => {
+    if (v7_startTransition) {
+      startTransitionSafe(cb);
+    } else {
+      cb();
+    }
+  }, [v7_startTransition]);
+  let setState = react__WEBPACK_IMPORTED_MODULE_0__.useCallback((newState, _ref2) => {
+    let {
+      unstable_viewTransitionOpts: viewTransitionOpts
+    } = _ref2;
+    if (!viewTransitionOpts || router.window == null || typeof router.window.document.startViewTransition !== "function") {
+      // Mid-navigation state update, or startViewTransition isn't available
+      optInStartTransition(() => setStateImpl(newState));
+    } else if (transition && renderDfd) {
+      // Interrupting an in-progress transition, cancel and let everything flush
+      // out, and then kick off a new transition from the interruption state
+      renderDfd.resolve();
+      transition.skipTransition();
+      setInterruption({
+        state: newState,
+        currentLocation: viewTransitionOpts.currentLocation,
+        nextLocation: viewTransitionOpts.nextLocation
+      });
+    } else {
+      // Completed navigation update with opted-in view transitions, let 'er rip
+      setPendingState(newState);
+      setVtContext({
+        isTransitioning: true,
+        currentLocation: viewTransitionOpts.currentLocation,
+        nextLocation: viewTransitionOpts.nextLocation
+      });
+    }
+  }, [optInStartTransition, transition, renderDfd, router.window]);
+  // Need to use a layout effect here so we are subscribed early enough to
+  // pick up on any render-driven redirects/navigations (useEffect/<Navigate>)
+  react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect(() => router.subscribe(setState), [router, setState]);
+  // When we start a view transition, create a Deferred we can use for the
+  // eventual "completed" render
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (vtContext.isTransitioning) {
+      setRenderDfd(new Deferred());
+    }
+  }, [vtContext.isTransitioning]);
+  // Once the deferred is created, kick off startViewTransition() to update the
+  // DOM and then wait on the Deferred to resolve (indicating the DOM update has
+  // happened)
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (renderDfd && pendingState && router.window) {
+      let newState = pendingState;
+      let renderPromise = renderDfd.promise;
+      let transition = router.window.document.startViewTransition(async () => {
+        optInStartTransition(() => setStateImpl(newState));
+        await renderPromise;
+      });
+      transition.finished.finally(() => {
+        setRenderDfd(undefined);
+        setTransition(undefined);
+        setPendingState(undefined);
+        setVtContext({
+          isTransitioning: false
+        });
+      });
+      setTransition(transition);
+    }
+  }, [optInStartTransition, pendingState, renderDfd, router.window]);
+  // When the new location finally renders and is committed to the DOM, this
+  // effect will run to resolve the transition
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (renderDfd && pendingState && state.location.key === pendingState.location.key) {
+      renderDfd.resolve();
+    }
+  }, [renderDfd, transition, state.location, pendingState]);
+  // If we get interrupted with a new navigation during a transition, we skip
+  // the active transition, let it cleanup, then kick it off again here
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (!vtContext.isTransitioning && interruption) {
+      setPendingState(interruption.state);
+      setVtContext({
+        isTransitioning: true,
+        currentLocation: interruption.currentLocation,
+        nextLocation: interruption.nextLocation
+      });
+      setInterruption(undefined);
+    }
+  }, [vtContext.isTransitioning, interruption]);
+  let navigator = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
+    return {
+      createHref: router.createHref,
+      encodeLocation: router.encodeLocation,
+      go: n => router.navigate(n),
+      push: (to, state, opts) => router.navigate(to, {
+        state,
+        preventScrollReset: opts == null ? void 0 : opts.preventScrollReset
+      }),
+      replace: (to, state, opts) => router.navigate(to, {
+        replace: true,
+        state,
+        preventScrollReset: opts == null ? void 0 : opts.preventScrollReset
+      })
+    };
+  }, [router]);
+  let basename = router.basename || "/";
+  let dataRouterContext = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
+    router,
+    navigator,
+    static: false,
+    basename
+  }), [router, navigator, basename]);
+  // The fragment and {null} here are important!  We need them to keep React 18's
+  // useId happy when we are server-rendering since we may have a <script> here
+  // containing the hydrated server-side staticContext (from StaticRouterProvider).
+  // useId relies on the component tree structure to generate deterministic id's
+  // so we need to ensure it remains the same on the client even though
+  // we don't need the <script> tag
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_DataRouterContext.Provider, {
+    value: dataRouterContext
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_DataRouterStateContext.Provider, {
+    value: state
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ViewTransitionContext.Provider, {
+    value: vtContext
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router__WEBPACK_IMPORTED_MODULE_2__.Router, {
+    basename: basename,
+    location: state.location,
+    navigationType: state.historyAction,
+    navigator: navigator
+  }, state.initialized ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(DataRoutes, {
+    routes: router.routes,
+    state: state
+  }) : fallbackElement)))), null);
+}
+function DataRoutes(_ref3) {
+  let {
+    routes,
+    state
+  } = _ref3;
+  return (0,react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_useRoutesImpl)(routes, undefined, state);
+}
 /**
  * A `<Router>` for use in web browsers. Provides the cleanest URLs.
  */
-function BrowserRouter(_ref) {
+function BrowserRouter(_ref4) {
   let {
     basename,
     children,
     future,
     window
-  } = _ref;
+  } = _ref4;
   let historyRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
   if (historyRef.current == null) {
     historyRef.current = (0,react_router__WEBPACK_IMPORTED_MODULE_1__.createBrowserHistory)({
@@ -14610,13 +15498,13 @@ function BrowserRouter(_ref) {
  * A `<Router>` for use in web browsers. Stores the location in the hash
  * portion of the URL so it is not sent to the server.
  */
-function HashRouter(_ref2) {
+function HashRouter(_ref5) {
   let {
     basename,
     children,
     future,
     window
-  } = _ref2;
+  } = _ref5;
   let historyRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef();
   if (historyRef.current == null) {
     historyRef.current = (0,react_router__WEBPACK_IMPORTED_MODULE_1__.createHashHistory)({
@@ -14650,13 +15538,13 @@ function HashRouter(_ref2) {
  * two versions of the history library to your bundles unless you use the same
  * version of the history library that React Router uses internally.
  */
-function HistoryRouter(_ref3) {
+function HistoryRouter(_ref6) {
   let {
     basename,
     children,
     future,
     history
-  } = _ref3;
+  } = _ref6;
   let [state, setStateImpl] = react__WEBPACK_IMPORTED_MODULE_0__.useState({
     action: history.action,
     location: history.location
@@ -14682,9 +15570,9 @@ if (true) {
 const isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined" && typeof window.document.createElement !== "undefined";
 const ABSOLUTE_URL_REGEX = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
 /**
- * The public API for rendering a history-aware <a>.
+ * The public API for rendering a history-aware `<a>`.
  */
-const Link = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function LinkWithRef(_ref4, ref) {
+const Link = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function LinkWithRef(_ref7, ref) {
   let {
       onClick,
       relative,
@@ -14693,9 +15581,10 @@ const Link = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function
       state,
       target,
       to,
-      preventScrollReset
-    } = _ref4,
-    rest = _objectWithoutPropertiesLoose(_ref4, _excluded);
+      preventScrollReset,
+      unstable_viewTransition
+    } = _ref7,
+    rest = _objectWithoutPropertiesLoose(_ref7, _excluded);
   let {
     basename
   } = react__WEBPACK_IMPORTED_MODULE_0__.useContext(react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_NavigationContext);
@@ -14732,7 +15621,8 @@ const Link = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function
     state,
     target,
     preventScrollReset,
-    relative
+    relative,
+    unstable_viewTransition
   });
   function handleClick(event) {
     if (onClick) onClick(event);
@@ -14755,9 +15645,9 @@ if (true) {
   Link.displayName = "Link";
 }
 /**
- * A <Link> wrapper that knows if it's "active" or not.
+ * A `<Link>` wrapper that knows if it's "active" or not.
  */
-const NavLink = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function NavLinkWithRef(_ref5, ref) {
+const NavLink = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(function NavLinkWithRef(_ref8, ref) {
   let {
       "aria-current": ariaCurrentProp = "page",
       caseSensitive = false,
@@ -14765,9 +15655,10 @@ const NavLink = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(funct
       end = false,
       style: styleProp,
       to,
+      unstable_viewTransition,
       children
-    } = _ref5,
-    rest = _objectWithoutPropertiesLoose(_ref5, _excluded2);
+    } = _ref8,
+    rest = _objectWithoutPropertiesLoose(_ref8, _excluded2);
   let path = (0,react_router__WEBPACK_IMPORTED_MODULE_2__.useResolvedPath)(to, {
     relative: rest.relative
   });
@@ -14776,6 +15667,10 @@ const NavLink = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(funct
   let {
     navigator
   } = react__WEBPACK_IMPORTED_MODULE_0__.useContext(react_router__WEBPACK_IMPORTED_MODULE_2__.UNSAFE_NavigationContext);
+  let isTransitioning = routerState != null &&
+  // Conditional usage is OK here because the usage of a data router is static
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useViewTransitionState(path) && unstable_viewTransition === true;
   let toPathname = navigator.encodeLocation ? navigator.encodeLocation(path).pathname : path.pathname;
   let locationPathname = location.pathname;
   let nextLocationPathname = routerState && routerState.navigation && routerState.navigation.location ? routerState.navigation.location.pathname : null;
@@ -14786,35 +15681,32 @@ const NavLink = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef(funct
   }
   let isActive = locationPathname === toPathname || !end && locationPathname.startsWith(toPathname) && locationPathname.charAt(toPathname.length) === "/";
   let isPending = nextLocationPathname != null && (nextLocationPathname === toPathname || !end && nextLocationPathname.startsWith(toPathname) && nextLocationPathname.charAt(toPathname.length) === "/");
+  let renderProps = {
+    isActive,
+    isPending,
+    isTransitioning
+  };
   let ariaCurrent = isActive ? ariaCurrentProp : undefined;
   let className;
   if (typeof classNameProp === "function") {
-    className = classNameProp({
-      isActive,
-      isPending
-    });
+    className = classNameProp(renderProps);
   } else {
     // If the className prop is not a function, we use a default `active`
     // class for <NavLink />s that are active. In v5 `active` was the default
     // value for `activeClassName`, but we are removing that API and can still
     // use the old default behavior for a cleaner upgrade path and keep the
     // simple styling rules working as they currently do.
-    className = [classNameProp, isActive ? "active" : null, isPending ? "pending" : null].filter(Boolean).join(" ");
+    className = [classNameProp, isActive ? "active" : null, isPending ? "pending" : null, isTransitioning ? "transitioning" : null].filter(Boolean).join(" ");
   }
-  let style = typeof styleProp === "function" ? styleProp({
-    isActive,
-    isPending
-  }) : styleProp;
+  let style = typeof styleProp === "function" ? styleProp(renderProps) : styleProp;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(Link, _extends({}, rest, {
     "aria-current": ariaCurrent,
     className: className,
     ref: ref,
     style: style,
-    to: to
-  }), typeof children === "function" ? children({
-    isActive,
-    isPending
-  }) : children);
+    to: to,
+    unstable_viewTransition: unstable_viewTransition
+  }), typeof children === "function" ? children(renderProps) : children);
 });
 if (true) {
   NavLink.displayName = "NavLink";
@@ -14835,18 +15727,20 @@ const Form = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef((props, 
 if (true) {
   Form.displayName = "Form";
 }
-const FormImpl = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef((_ref6, forwardedRef) => {
+const FormImpl = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef((_ref9, forwardedRef) => {
   let {
       reloadDocument,
       replace,
+      state,
       method = defaultMethod,
       action,
       onSubmit,
       submit,
       relative,
-      preventScrollReset
-    } = _ref6,
-    props = _objectWithoutPropertiesLoose(_ref6, _excluded3);
+      preventScrollReset,
+      unstable_viewTransition
+    } = _ref9,
+    props = _objectWithoutPropertiesLoose(_ref9, _excluded3);
   let formMethod = method.toLowerCase() === "get" ? "get" : "post";
   let formAction = useFormAction(action, {
     relative
@@ -14860,8 +15754,10 @@ const FormImpl = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.forwardRef((_re
     submit(submitter || event.currentTarget, {
       method: submitMethod,
       replace,
+      state,
       relative,
-      preventScrollReset
+      preventScrollReset,
+      unstable_viewTransition
     });
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", _extends({
@@ -14878,11 +15774,11 @@ if (true) {
  * This component will emulate the browser's scroll restoration on location
  * changes.
  */
-function ScrollRestoration(_ref7) {
+function ScrollRestoration(_ref10) {
   let {
     getKey,
     storageKey
-  } = _ref7;
+  } = _ref10;
   useScrollRestoration({
     getKey,
     storageKey
@@ -14902,6 +15798,7 @@ var DataRouterHook;
   DataRouterHook["UseSubmit"] = "useSubmit";
   DataRouterHook["UseSubmitFetcher"] = "useSubmitFetcher";
   DataRouterHook["UseFetcher"] = "useFetcher";
+  DataRouterHook["useViewTransitionState"] = "useViewTransitionState";
 })(DataRouterHook || (DataRouterHook = {}));
 var DataRouterStateHook;
 (function (DataRouterStateHook) {
@@ -14932,7 +15829,8 @@ function useLinkClickHandler(to, _temp) {
     replace: replaceProp,
     state,
     preventScrollReset,
-    relative
+    relative,
+    unstable_viewTransition
   } = _temp === void 0 ? {} : _temp;
   let navigate = (0,react_router__WEBPACK_IMPORTED_MODULE_2__.useNavigate)();
   let location = (0,react_router__WEBPACK_IMPORTED_MODULE_2__.useLocation)();
@@ -14949,10 +15847,11 @@ function useLinkClickHandler(to, _temp) {
         replace,
         state,
         preventScrollReset,
-        relative
+        relative,
+        unstable_viewTransition
       });
     }
-  }, [location, navigate, path, replaceProp, state, target, to, preventScrollReset, relative]);
+  }, [location, navigate, path, replaceProp, state, target, to, preventScrollReset, relative, unstable_viewTransition]);
 }
 /**
  * A convenient wrapper for reading and writing search parameters via the
@@ -15012,7 +15911,9 @@ function useSubmit() {
       formMethod: options.method || method,
       formEncType: options.encType || encType,
       replace: options.replace,
-      fromRouteId: currentRouteId
+      state: options.state,
+      fromRouteId: currentRouteId,
+      unstable_viewTransition: options.unstable_viewTransition
     });
   }, [router, basename, currentRouteId]);
 }
@@ -15066,17 +15967,15 @@ function useFormAction(action, _temp2) {
     relative
   }));
   // Previously we set the default action to ".". The problem with this is that
-  // `useResolvedPath(".")` excludes search params and the hash of the resolved
-  // URL. This is the intended behavior of when "." is specifically provided as
+  // `useResolvedPath(".")` excludes search params of the resolved URL. This is
+  // the intended behavior of when "." is specifically provided as
   // the form action, but inconsistent w/ browsers when the action is omitted.
   // https://github.com/remix-run/remix/issues/927
   let location = (0,react_router__WEBPACK_IMPORTED_MODULE_2__.useLocation)();
   if (action == null) {
-    // Safe to write to these directly here since if action was undefined, we
+    // Safe to write to this directly here since if action was undefined, we
     // would have called useResolvedPath(".") which will never include a search
-    // or hash
     path.search = location.search;
-    path.hash = location.hash;
     // When grabbing search params from the URL, remove the automatically
     // inserted ?index param so we match the useResolvedPath search behavior
     // which would not include ?index
@@ -15112,6 +16011,7 @@ function createFetcherForm(fetcherKey, routeId) {
   return FetcherForm;
 }
 let fetcherId = 0;
+// TODO: (v7) Change the useFetcher generic default from `any` to `unknown`
 /**
  * Interacts with route loaders and actions without causing a navigation. Great
  * for any interaction that stays on the same page.
@@ -15200,7 +16100,11 @@ function useScrollRestoration(_temp3) {
       let key = (getKey ? getKey(location, matches) : null) || location.key;
       savedScrollPositions[key] = window.scrollY;
     }
-    sessionStorage.setItem(storageKey || SCROLL_RESTORATION_STORAGE_KEY, JSON.stringify(savedScrollPositions));
+    try {
+      sessionStorage.setItem(storageKey || SCROLL_RESTORATION_STORAGE_KEY, JSON.stringify(savedScrollPositions));
+    } catch (error) {
+       true ? (0,react_router__WEBPACK_IMPORTED_MODULE_1__.UNSAFE_warning)(false, "Failed to save scroll positions in sessionStorage, <ScrollRestoration /> will not work properly (" + error + ").") : 0;
+    }
     window.history.scrollRestoration = "auto";
   }, [storageKey, getKey, navigation.state, location, matches]));
   // Read in any saved scroll locations
@@ -15240,7 +16144,7 @@ function useScrollRestoration(_temp3) {
       }
       // try to scroll to the hash
       if (location.hash) {
-        let el = document.getElementById(location.hash.slice(1));
+        let el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
         if (el) {
           el.scrollIntoView();
           return;
@@ -15307,27 +16211,70 @@ function usePageHide(callback, options) {
  * very incorrectly in some cases) across browsers if user click addition
  * back/forward navigations while the confirm is open.  Use at your own risk.
  */
-function usePrompt(_ref8) {
+function usePrompt(_ref11) {
   let {
     when,
     message
-  } = _ref8;
+  } = _ref11;
   let blocker = (0,react_router__WEBPACK_IMPORTED_MODULE_2__.unstable_useBlocker)(when);
-  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
-    if (blocker.state === "blocked" && !when) {
-      blocker.reset();
-    }
-  }, [blocker, when]);
   react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
     if (blocker.state === "blocked") {
       let proceed = window.confirm(message);
       if (proceed) {
+        // This timeout is needed to avoid a weird "race" on POP navigations
+        // between the `window.history` revert navigation and the result of
+        // `window.confirm`
         setTimeout(blocker.proceed, 0);
       } else {
         blocker.reset();
       }
     }
   }, [blocker, message]);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (blocker.state === "blocked" && !when) {
+      blocker.reset();
+    }
+  }, [blocker, when]);
+}
+/**
+ * Return a boolean indicating if there is an active view transition to the
+ * given href.  You can use this value to render CSS classes or viewTransitionName
+ * styles onto your elements
+ *
+ * @param href The destination href
+ * @param [opts.relative] Relative routing type ("route" | "path")
+ */
+function useViewTransitionState(to, opts) {
+  if (opts === void 0) {
+    opts = {};
+  }
+  let vtContext = react__WEBPACK_IMPORTED_MODULE_0__.useContext(ViewTransitionContext);
+  !(vtContext != null) ?  true ? (0,react_router__WEBPACK_IMPORTED_MODULE_1__.UNSAFE_invariant)(false, "`unstable_useViewTransitionState` must be used within `react-router-dom`'s `RouterProvider`.  " + "Did you accidentally import `RouterProvider` from `react-router`?") : 0 : void 0;
+  let {
+    basename
+  } = useDataRouterContext(DataRouterHook.useViewTransitionState);
+  let path = (0,react_router__WEBPACK_IMPORTED_MODULE_2__.useResolvedPath)(to, {
+    relative: opts.relative
+  });
+  if (!vtContext.isTransitioning) {
+    return false;
+  }
+  let currentPath = (0,react_router__WEBPACK_IMPORTED_MODULE_1__.stripBasename)(vtContext.currentLocation.pathname, basename) || vtContext.currentLocation.pathname;
+  let nextPath = (0,react_router__WEBPACK_IMPORTED_MODULE_1__.stripBasename)(vtContext.nextLocation.pathname, basename) || vtContext.nextLocation.pathname;
+  // Transition is active if we're going to or coming from the indicated
+  // destination.  This ensures that other PUSH navigations that reverse
+  // an indicated transition apply.  I.e., on the list view you have:
+  //
+  //   <NavLink to="/details/1" unstable_viewTransition>
+  //
+  // If you click the breadcrumb back to the list view:
+  //
+  //   <NavLink to="/list" unstable_viewTransition>
+  //
+  // We should apply the transition because it's indicated as active going
+  // from /list -> /details/1 and therefore should be active on the reverse
+  // (even though this isn't strictly a POP reverse)
+  return (0,react_router__WEBPACK_IMPORTED_MODULE_1__.matchPath)(path.pathname, nextPath) != null || (0,react_router__WEBPACK_IMPORTED_MODULE_1__.matchPath)(path.pathname, currentPath) != null;
 }
 //#endregion
 
@@ -15341,70 +16288,71 @@ function usePrompt(_ref8) {
 /*!*************************************************!*\
   !*** ./node_modules/react-router/dist/index.js ***!
   \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AbortedDeferredError: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.AbortedDeferredError),
-/* harmony export */   Await: () => (/* binding */ Await),
-/* harmony export */   MemoryRouter: () => (/* binding */ MemoryRouter),
-/* harmony export */   Navigate: () => (/* binding */ Navigate),
-/* harmony export */   NavigationType: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.Action),
-/* harmony export */   Outlet: () => (/* binding */ Outlet),
-/* harmony export */   Route: () => (/* binding */ Route),
-/* harmony export */   Router: () => (/* binding */ Router),
-/* harmony export */   RouterProvider: () => (/* binding */ RouterProvider),
-/* harmony export */   Routes: () => (/* binding */ Routes),
-/* harmony export */   UNSAFE_DataRouterContext: () => (/* binding */ DataRouterContext),
-/* harmony export */   UNSAFE_DataRouterStateContext: () => (/* binding */ DataRouterStateContext),
-/* harmony export */   UNSAFE_LocationContext: () => (/* binding */ LocationContext),
-/* harmony export */   UNSAFE_NavigationContext: () => (/* binding */ NavigationContext),
-/* harmony export */   UNSAFE_RouteContext: () => (/* binding */ RouteContext),
-/* harmony export */   UNSAFE_mapRouteProperties: () => (/* binding */ mapRouteProperties),
-/* harmony export */   UNSAFE_useRouteId: () => (/* binding */ useRouteId),
-/* harmony export */   UNSAFE_useRoutesImpl: () => (/* binding */ useRoutesImpl),
-/* harmony export */   createMemoryRouter: () => (/* binding */ createMemoryRouter),
-/* harmony export */   createPath: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.createPath),
-/* harmony export */   createRoutesFromChildren: () => (/* binding */ createRoutesFromChildren),
-/* harmony export */   createRoutesFromElements: () => (/* binding */ createRoutesFromChildren),
-/* harmony export */   defer: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.defer),
-/* harmony export */   generatePath: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.generatePath),
-/* harmony export */   isRouteErrorResponse: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.isRouteErrorResponse),
-/* harmony export */   json: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.json),
-/* harmony export */   matchPath: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.matchPath),
-/* harmony export */   matchRoutes: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.matchRoutes),
-/* harmony export */   parsePath: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.parsePath),
-/* harmony export */   redirect: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.redirect),
-/* harmony export */   renderMatches: () => (/* binding */ renderMatches),
-/* harmony export */   resolvePath: () => (/* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.resolvePath),
-/* harmony export */   unstable_useBlocker: () => (/* binding */ useBlocker),
-/* harmony export */   useActionData: () => (/* binding */ useActionData),
-/* harmony export */   useAsyncError: () => (/* binding */ useAsyncError),
-/* harmony export */   useAsyncValue: () => (/* binding */ useAsyncValue),
-/* harmony export */   useHref: () => (/* binding */ useHref),
-/* harmony export */   useInRouterContext: () => (/* binding */ useInRouterContext),
-/* harmony export */   useLoaderData: () => (/* binding */ useLoaderData),
-/* harmony export */   useLocation: () => (/* binding */ useLocation),
-/* harmony export */   useMatch: () => (/* binding */ useMatch),
-/* harmony export */   useMatches: () => (/* binding */ useMatches),
-/* harmony export */   useNavigate: () => (/* binding */ useNavigate),
-/* harmony export */   useNavigation: () => (/* binding */ useNavigation),
-/* harmony export */   useNavigationType: () => (/* binding */ useNavigationType),
-/* harmony export */   useOutlet: () => (/* binding */ useOutlet),
-/* harmony export */   useOutletContext: () => (/* binding */ useOutletContext),
-/* harmony export */   useParams: () => (/* binding */ useParams),
-/* harmony export */   useResolvedPath: () => (/* binding */ useResolvedPath),
-/* harmony export */   useRevalidator: () => (/* binding */ useRevalidator),
-/* harmony export */   useRouteError: () => (/* binding */ useRouteError),
-/* harmony export */   useRouteLoaderData: () => (/* binding */ useRouteLoaderData),
-/* harmony export */   useRoutes: () => (/* binding */ useRoutes)
+/* harmony export */   AbortedDeferredError: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.AbortedDeferredError; },
+/* harmony export */   Await: function() { return /* binding */ Await; },
+/* harmony export */   MemoryRouter: function() { return /* binding */ MemoryRouter; },
+/* harmony export */   Navigate: function() { return /* binding */ Navigate; },
+/* harmony export */   NavigationType: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.Action; },
+/* harmony export */   Outlet: function() { return /* binding */ Outlet; },
+/* harmony export */   Route: function() { return /* binding */ Route; },
+/* harmony export */   Router: function() { return /* binding */ Router; },
+/* harmony export */   RouterProvider: function() { return /* binding */ RouterProvider; },
+/* harmony export */   Routes: function() { return /* binding */ Routes; },
+/* harmony export */   UNSAFE_DataRouterContext: function() { return /* binding */ DataRouterContext; },
+/* harmony export */   UNSAFE_DataRouterStateContext: function() { return /* binding */ DataRouterStateContext; },
+/* harmony export */   UNSAFE_LocationContext: function() { return /* binding */ LocationContext; },
+/* harmony export */   UNSAFE_NavigationContext: function() { return /* binding */ NavigationContext; },
+/* harmony export */   UNSAFE_RouteContext: function() { return /* binding */ RouteContext; },
+/* harmony export */   UNSAFE_mapRouteProperties: function() { return /* binding */ mapRouteProperties; },
+/* harmony export */   UNSAFE_useRouteId: function() { return /* binding */ useRouteId; },
+/* harmony export */   UNSAFE_useRoutesImpl: function() { return /* binding */ useRoutesImpl; },
+/* harmony export */   createMemoryRouter: function() { return /* binding */ createMemoryRouter; },
+/* harmony export */   createPath: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.createPath; },
+/* harmony export */   createRoutesFromChildren: function() { return /* binding */ createRoutesFromChildren; },
+/* harmony export */   createRoutesFromElements: function() { return /* binding */ createRoutesFromChildren; },
+/* harmony export */   defer: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.defer; },
+/* harmony export */   generatePath: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.generatePath; },
+/* harmony export */   isRouteErrorResponse: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.isRouteErrorResponse; },
+/* harmony export */   json: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.json; },
+/* harmony export */   matchPath: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.matchPath; },
+/* harmony export */   matchRoutes: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.matchRoutes; },
+/* harmony export */   parsePath: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.parsePath; },
+/* harmony export */   redirect: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.redirect; },
+/* harmony export */   redirectDocument: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.redirectDocument; },
+/* harmony export */   renderMatches: function() { return /* binding */ renderMatches; },
+/* harmony export */   resolvePath: function() { return /* reexport safe */ _remix_run_router__WEBPACK_IMPORTED_MODULE_1__.resolvePath; },
+/* harmony export */   unstable_useBlocker: function() { return /* binding */ useBlocker; },
+/* harmony export */   useActionData: function() { return /* binding */ useActionData; },
+/* harmony export */   useAsyncError: function() { return /* binding */ useAsyncError; },
+/* harmony export */   useAsyncValue: function() { return /* binding */ useAsyncValue; },
+/* harmony export */   useHref: function() { return /* binding */ useHref; },
+/* harmony export */   useInRouterContext: function() { return /* binding */ useInRouterContext; },
+/* harmony export */   useLoaderData: function() { return /* binding */ useLoaderData; },
+/* harmony export */   useLocation: function() { return /* binding */ useLocation; },
+/* harmony export */   useMatch: function() { return /* binding */ useMatch; },
+/* harmony export */   useMatches: function() { return /* binding */ useMatches; },
+/* harmony export */   useNavigate: function() { return /* binding */ useNavigate; },
+/* harmony export */   useNavigation: function() { return /* binding */ useNavigation; },
+/* harmony export */   useNavigationType: function() { return /* binding */ useNavigationType; },
+/* harmony export */   useOutlet: function() { return /* binding */ useOutlet; },
+/* harmony export */   useOutletContext: function() { return /* binding */ useOutletContext; },
+/* harmony export */   useParams: function() { return /* binding */ useParams; },
+/* harmony export */   useResolvedPath: function() { return /* binding */ useResolvedPath; },
+/* harmony export */   useRevalidator: function() { return /* binding */ useRevalidator; },
+/* harmony export */   useRouteError: function() { return /* binding */ useRouteError; },
+/* harmony export */   useRouteLoaderData: function() { return /* binding */ useRouteLoaderData; },
+/* harmony export */   useRoutes: function() { return /* binding */ useRoutes; }
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _remix_run_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @remix-run/router */ "./node_modules/@remix-run/router/dist/router.js");
 /**
- * React Router v6.14.1
+ * React Router v6.17.0
  *
  * Copyright (c) Remix Software Inc.
  *
@@ -15451,7 +16399,7 @@ if (true) {
  * A Navigator is a "location changer"; it's how you get to different locations.
  *
  * Every history instance conforms to the Navigator interface, but the
- * distinction is useful primarily when it comes to the low-level <Router> API
+ * distinction is useful primarily when it comes to the low-level `<Router>` API
  * where both the location and a navigator must be provided separately in order
  * to avoid "tearing" that may occur in a suspense-enabled app if the action
  * and/or location were to be read directly from the history instance.
@@ -15519,7 +16467,7 @@ function useHref(to, _temp) {
 }
 
 /**
- * Returns true if this component is a descendant of a <Router>.
+ * Returns true if this component is a descendant of a `<Router>`.
  *
  * @see https://reactrouter.com/hooks/use-in-router-context
  */
@@ -15557,7 +16505,7 @@ function useNavigationType() {
 /**
  * Returns a PathMatch object if the given pattern matches the current URL.
  * This is useful for components that need to know "active" state, e.g.
- * <NavLink>.
+ * `<NavLink>`.
  *
  * @see https://reactrouter.com/hooks/use-match
  */
@@ -15589,7 +16537,7 @@ function useIsomorphicLayoutEffect(cb) {
 }
 
 /**
- * Returns an imperative method for changing the location. Used by <Link>s, but
+ * Returns an imperative method for changing the location. Used by `<Link>`s, but
  * may also be used by other elements to change the location.
  *
  * @see https://reactrouter.com/hooks/use-navigate
@@ -15663,7 +16611,7 @@ function useOutletContext() {
 
 /**
  * Returns the element for the child route at this level of the route
- * hierarchy. Used internally by <Outlet> to render child routes.
+ * hierarchy. Used internally by `<Outlet>` to render child routes.
  *
  * @see https://reactrouter.com/hooks/use-outlet
  */
@@ -15713,7 +16661,7 @@ function useResolvedPath(to, _temp2) {
 /**
  * Returns the element of the route that matched the current location, prepared
  * with the correct context to render the remainder of the route tree. Route
- * elements in the tree must render an <Outlet> to render their child route's
+ * elements in the tree must render an `<Outlet>` to render their child route's
  * element.
  *
  * @see https://reactrouter.com/hooks/use-routes
@@ -15990,14 +16938,13 @@ function _renderMatches(matches, parentMatches, dataRouterState) {
     }) : getChildren();
   }, null);
 }
-var DataRouterHook;
-(function (DataRouterHook) {
+var DataRouterHook = /*#__PURE__*/function (DataRouterHook) {
   DataRouterHook["UseBlocker"] = "useBlocker";
   DataRouterHook["UseRevalidator"] = "useRevalidator";
   DataRouterHook["UseNavigateStable"] = "useNavigate";
-})(DataRouterHook || (DataRouterHook = {}));
-var DataRouterStateHook;
-(function (DataRouterStateHook) {
+  return DataRouterHook;
+}(DataRouterHook || {});
+var DataRouterStateHook = /*#__PURE__*/function (DataRouterStateHook) {
   DataRouterStateHook["UseBlocker"] = "useBlocker";
   DataRouterStateHook["UseLoaderData"] = "useLoaderData";
   DataRouterStateHook["UseActionData"] = "useActionData";
@@ -16008,7 +16955,8 @@ var DataRouterStateHook;
   DataRouterStateHook["UseRevalidator"] = "useRevalidator";
   DataRouterStateHook["UseNavigateStable"] = "useNavigate";
   DataRouterStateHook["UseRouteId"] = "useRouteId";
-})(DataRouterStateHook || (DataRouterStateHook = {}));
+  return DataRouterStateHook;
+}(DataRouterStateHook || {});
 function getDataRouterConsoleError(hookName) {
   return hookName + " must be used within a data router.  See https://reactrouter.com/routers/picking-a-router.";
 }
@@ -16059,10 +17007,10 @@ function useNavigation() {
 function useRevalidator() {
   let dataRouterContext = useDataRouterContext(DataRouterHook.UseRevalidator);
   let state = useDataRouterState(DataRouterStateHook.UseRevalidator);
-  return {
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => ({
     revalidate: dataRouterContext.router.revalidate,
     state: state.revalidation
-  };
+  }), [dataRouterContext.router.revalidate, state.revalidation]);
 }
 
 /**
@@ -16074,22 +17022,7 @@ function useMatches() {
     matches,
     loaderData
   } = useDataRouterState(DataRouterStateHook.UseMatches);
-  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => matches.map(match => {
-    let {
-      pathname,
-      params
-    } = match;
-    // Note: This structure matches that created by createUseMatchesMatch
-    // in the @remix-run/router , so if you change this please also change
-    // that :)  Eventually we'll DRY this up
-    return {
-      id: match.route.id,
-      pathname,
-      params,
-      data: loaderData[match.route.id],
-      handle: match.route.handle
-    };
-  }), [matches, loaderData]);
+  return react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => matches.map(m => (0,_remix_run_router__WEBPACK_IMPORTED_MODULE_1__.UNSAFE_convertRouteMatchToUiMatch)(m, loaderData)), [matches, loaderData]);
 }
 
 /**
@@ -16145,7 +17078,7 @@ function useRouteError() {
 }
 
 /**
- * Returns the happy-path data from the nearest ancestor <Await /> value
+ * Returns the happy-path data from the nearest ancestor `<Await />` value
  */
 function useAsyncValue() {
   let value = react__WEBPACK_IMPORTED_MODULE_0__.useContext(AwaitContext);
@@ -16153,7 +17086,7 @@ function useAsyncValue() {
 }
 
 /**
- * Returns the error from the nearest ancestor <Await /> value
+ * Returns the error from the nearest ancestor `<Await />` value
  */
 function useAsyncError() {
   let value = react__WEBPACK_IMPORTED_MODULE_0__.useContext(AwaitContext);
@@ -16297,15 +17230,20 @@ function RouterProvider(_ref) {
     router,
     future
   } = _ref;
-  // Need to use a layout effect here so we are subscribed early enough to
-  // pick up on any render-driven redirects/navigations (useEffect/<Navigate>)
   let [state, setStateImpl] = react__WEBPACK_IMPORTED_MODULE_0__.useState(router.state);
   let {
     v7_startTransition
   } = future || {};
   let setState = react__WEBPACK_IMPORTED_MODULE_0__.useCallback(newState => {
-    v7_startTransition && startTransitionImpl ? startTransitionImpl(() => setStateImpl(newState)) : setStateImpl(newState);
+    if (v7_startTransition && startTransitionImpl) {
+      startTransitionImpl(() => setStateImpl(newState));
+    } else {
+      setStateImpl(newState);
+    }
   }, [setStateImpl, v7_startTransition]);
+
+  // Need to use a layout effect here so we are subscribed early enough to
+  // pick up on any render-driven redirects/navigations (useEffect/<Navigate>)
   react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect(() => router.subscribe(setState), [router, setState]);
   let navigator = react__WEBPACK_IMPORTED_MODULE_0__.useMemo(() => {
     return {
@@ -16359,7 +17297,7 @@ function DataRoutes(_ref2) {
   return useRoutesImpl(routes, undefined, state);
 }
 /**
- * A <Router> that stores all entries in memory.
+ * A `<Router>` that stores all entries in memory.
  *
  * @see https://reactrouter.com/router-components/memory-router
  */
@@ -16457,9 +17395,9 @@ function Route(_props) {
 /**
  * Provides location context for the rest of the app.
  *
- * Note: You usually won't render a <Router> directly. Instead, you'll render a
- * router that is more specific to your environment such as a <BrowserRouter>
- * in web browsers or a <StaticRouter> for server rendering.
+ * Note: You usually won't render a `<Router>` directly. Instead, you'll render a
+ * router that is more specific to your environment such as a `<BrowserRouter>`
+ * in web browsers or a `<StaticRouter>` for server rendering.
  *
  * @see https://reactrouter.com/router-components/router
  */
@@ -16520,7 +17458,7 @@ function Router(_ref5) {
   }));
 }
 /**
- * A container for a nested tree of <Route> elements that renders the branch
+ * A container for a nested tree of `<Route>` elements that renders the branch
  * that best matches the current location.
  *
  * @see https://reactrouter.com/components/routes
@@ -16547,12 +17485,12 @@ function Await(_ref7) {
     errorElement: errorElement
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ResolveAwait, null, children));
 }
-var AwaitRenderStatus;
-(function (AwaitRenderStatus) {
+var AwaitRenderStatus = /*#__PURE__*/function (AwaitRenderStatus) {
   AwaitRenderStatus[AwaitRenderStatus["pending"] = 0] = "pending";
   AwaitRenderStatus[AwaitRenderStatus["success"] = 1] = "success";
   AwaitRenderStatus[AwaitRenderStatus["error"] = 2] = "error";
-})(AwaitRenderStatus || (AwaitRenderStatus = {}));
+  return AwaitRenderStatus;
+}(AwaitRenderStatus || {});
 const neverSettledPromise = new Promise(() => {});
 class AwaitErrorBoundary extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   constructor(props) {
@@ -16644,7 +17582,7 @@ class AwaitErrorBoundary extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
 
 /**
  * @private
- * Indirection to leverage useAsyncValue for a render-prop API on <Await>
+ * Indirection to leverage useAsyncValue for a render-prop API on `<Await>`
  */
 function ResolveAwait(_ref8) {
   let {
@@ -16772,13 +17710,10 @@ function createMemoryRouter(routes, opts) {
 /*!**********************************************!*\
   !*** ./node_modules/redux-thunk/es/index.js ***!
   \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
 /** A function that accepts a potential "extra argument" value to be injected later,
  * and returns an instance of the thunk middleware that uses that value
  */
@@ -16810,7 +17745,7 @@ var thunk = createThunkMiddleware(); // Attach the factory function so users can
 // with whatever "extra arg" they want to inject into their thunks
 
 thunk.withExtraArgument = createThunkMiddleware;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (thunk);
+/* harmony default export */ __webpack_exports__["default"] = (thunk);
 
 /***/ }),
 
@@ -16818,18 +17753,18 @@ thunk.withExtraArgument = createThunkMiddleware;
 /*!****************************************!*\
   !*** ./node_modules/redux/es/redux.js ***!
   \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   __DO_NOT_USE__ActionTypes: () => (/* binding */ ActionTypes),
-/* harmony export */   applyMiddleware: () => (/* binding */ applyMiddleware),
-/* harmony export */   bindActionCreators: () => (/* binding */ bindActionCreators),
-/* harmony export */   combineReducers: () => (/* binding */ combineReducers),
-/* harmony export */   compose: () => (/* binding */ compose),
-/* harmony export */   createStore: () => (/* binding */ createStore),
-/* harmony export */   legacy_createStore: () => (/* binding */ legacy_createStore)
+/* harmony export */   __DO_NOT_USE__ActionTypes: function() { return /* binding */ ActionTypes; },
+/* harmony export */   applyMiddleware: function() { return /* binding */ applyMiddleware; },
+/* harmony export */   bindActionCreators: function() { return /* binding */ bindActionCreators; },
+/* harmony export */   combineReducers: function() { return /* binding */ combineReducers; },
+/* harmony export */   compose: function() { return /* binding */ compose; },
+/* harmony export */   createStore: function() { return /* binding */ createStore; },
+/* harmony export */   legacy_createStore: function() { return /* binding */ legacy_createStore; }
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_helpers_esm_objectSpread2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectSpread2 */ "./node_modules/@babel/runtime/helpers/esm/objectSpread2.js");
 
@@ -17545,14 +18480,14 @@ function applyMiddleware() {
 /*!****************************************************!*\
   !*** ./node_modules/reselect/es/defaultMemoize.js ***!
   \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createCacheKeyComparator: () => (/* binding */ createCacheKeyComparator),
-/* harmony export */   defaultEqualityCheck: () => (/* binding */ defaultEqualityCheck),
-/* harmony export */   defaultMemoize: () => (/* binding */ defaultMemoize)
+/* harmony export */   createCacheKeyComparator: function() { return /* binding */ createCacheKeyComparator; },
+/* harmony export */   defaultEqualityCheck: function() { return /* binding */ defaultEqualityCheck; },
+/* harmony export */   defaultMemoize: function() { return /* binding */ defaultMemoize; }
 /* harmony export */ });
 // Cache implementation based on Erik Rasmussen's `lru-memoize`:
 // https://github.com/erikras/lru-memoize
@@ -17708,16 +18643,16 @@ function defaultMemoize(func, equalityCheckOrOptions) {
 /*!*******************************************!*\
   !*** ./node_modules/reselect/es/index.js ***!
   \*******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   createSelector: () => (/* binding */ createSelector),
-/* harmony export */   createSelectorCreator: () => (/* binding */ createSelectorCreator),
-/* harmony export */   createStructuredSelector: () => (/* binding */ createStructuredSelector),
-/* harmony export */   defaultEqualityCheck: () => (/* reexport safe */ _defaultMemoize__WEBPACK_IMPORTED_MODULE_0__.defaultEqualityCheck),
-/* harmony export */   defaultMemoize: () => (/* reexport safe */ _defaultMemoize__WEBPACK_IMPORTED_MODULE_0__.defaultMemoize)
+/* harmony export */   createSelector: function() { return /* binding */ createSelector; },
+/* harmony export */   createSelectorCreator: function() { return /* binding */ createSelectorCreator; },
+/* harmony export */   createStructuredSelector: function() { return /* binding */ createStructuredSelector; },
+/* harmony export */   defaultEqualityCheck: function() { return /* reexport safe */ _defaultMemoize__WEBPACK_IMPORTED_MODULE_0__.defaultEqualityCheck; },
+/* harmony export */   defaultMemoize: function() { return /* reexport safe */ _defaultMemoize__WEBPACK_IMPORTED_MODULE_0__.defaultMemoize; }
 /* harmony export */ });
 /* harmony import */ var _defaultMemoize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./defaultMemoize */ "./node_modules/reselect/es/defaultMemoize.js");
 
@@ -17857,7 +18792,7 @@ var createStructuredSelector = function createStructuredSelector(selectors, sele
 /*!**********************************************************************************************!*\
   !*** ./node_modules/use-sync-external-store/cjs/use-sync-external-store-shim.development.js ***!
   \**********************************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 /**
@@ -18107,7 +19042,7 @@ if (
 /*!************************************************************************************************************!*\
   !*** ./node_modules/use-sync-external-store/cjs/use-sync-external-store-shim/with-selector.development.js ***!
   \************************************************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 /**
@@ -18283,7 +19218,7 @@ if (
 /*!************************************************************!*\
   !*** ./node_modules/use-sync-external-store/shim/index.js ***!
   \************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -18299,7 +19234,7 @@ if (false) {} else {
 /*!********************************************************************!*\
   !*** ./node_modules/use-sync-external-store/shim/with-selector.js ***!
   \********************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -18315,7 +19250,7 @@ if (false) {} else {
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 module.exports = window["React"];
@@ -18326,21 +19261,10 @@ module.exports = window["React"];
 /*!***************************!*\
   !*** external "ReactDOM" ***!
   \***************************/
-/***/ ((module) => {
+/***/ (function(module) {
 
 "use strict";
 module.exports = window["ReactDOM"];
-
-/***/ }),
-
-/***/ "@wordpress/element":
-/*!*********************************!*\
-  !*** external ["wp","element"] ***!
-  \*********************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = window["wp"]["element"];
 
 /***/ }),
 
@@ -18348,12 +19272,12 @@ module.exports = window["wp"]["element"];
 /*!*******************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/defineProperty.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _defineProperty)
+/* harmony export */   "default": function() { return /* binding */ _defineProperty; }
 /* harmony export */ });
 /* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js");
 
@@ -18378,12 +19302,12 @@ function _defineProperty(obj, key, value) {
 /*!************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/extends.js ***!
   \************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _extends)
+/* harmony export */   "default": function() { return /* binding */ _extends; }
 /* harmony export */ });
 function _extends() {
   _extends = Object.assign ? Object.assign.bind() : function (target) {
@@ -18406,35 +19330,35 @@ function _extends() {
 /*!******************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _objectSpread2)
+/* harmony export */   "default": function() { return /* binding */ _objectSpread2; }
 /* harmony export */ });
 /* harmony import */ var _defineProperty_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./defineProperty.js */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
 
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
+function ownKeys(e, r) {
+  var t = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    enumerableOnly && (symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    })), keys.push.apply(keys, symbols);
+    var o = Object.getOwnPropertySymbols(e);
+    r && (o = o.filter(function (r) {
+      return Object.getOwnPropertyDescriptor(e, r).enumerable;
+    })), t.push.apply(t, o);
   }
-  return keys;
+  return t;
 }
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = null != arguments[i] ? arguments[i] : {};
-    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
-      (0,_defineProperty_js__WEBPACK_IMPORTED_MODULE_0__["default"])(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+function _objectSpread2(e) {
+  for (var r = 1; r < arguments.length; r++) {
+    var t = null != arguments[r] ? arguments[r] : {};
+    r % 2 ? ownKeys(Object(t), !0).forEach(function (r) {
+      (0,_defineProperty_js__WEBPACK_IMPORTED_MODULE_0__["default"])(e, r, t[r]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) {
+      Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
     });
   }
-  return target;
+  return e;
 }
 
 /***/ }),
@@ -18443,12 +19367,12 @@ function _objectSpread2(target) {
 /*!*********************************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js ***!
   \*********************************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _objectWithoutPropertiesLoose)
+/* harmony export */   "default": function() { return /* binding */ _objectWithoutPropertiesLoose; }
 /* harmony export */ });
 function _objectWithoutPropertiesLoose(source, excluded) {
   if (source == null) return {};
@@ -18469,12 +19393,12 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 /*!****************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/toPrimitive.js ***!
   \****************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _toPrimitive)
+/* harmony export */   "default": function() { return /* binding */ _toPrimitive; }
 /* harmony export */ });
 /* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
 
@@ -18495,12 +19419,12 @@ function _toPrimitive(input, hint) {
 /*!******************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _toPropertyKey)
+/* harmony export */   "default": function() { return /* binding */ _toPropertyKey; }
 /* harmony export */ });
 /* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
 /* harmony import */ var _toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./toPrimitive.js */ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js");
@@ -18517,21 +19441,21 @@ function _toPropertyKey(arg) {
 /*!***********************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/typeof.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ _typeof)
+/* harmony export */   "default": function() { return /* binding */ _typeof; }
 /* harmony export */ });
-function _typeof(obj) {
+function _typeof(o) {
   "@babel/helpers - typeof";
 
-  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  }, _typeof(obj);
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return typeof o;
+  } : function (o) {
+    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  }, _typeof(o);
 }
 
 /***/ }),
@@ -18540,35 +19464,34 @@ function _typeof(obj) {
 /*!***********************************************!*\
   !*** ./node_modules/immer/dist/immer.esm.mjs ***!
   \***********************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Immer: () => (/* binding */ un),
-/* harmony export */   applyPatches: () => (/* binding */ pn),
-/* harmony export */   castDraft: () => (/* binding */ K),
-/* harmony export */   castImmutable: () => (/* binding */ $),
-/* harmony export */   createDraft: () => (/* binding */ ln),
-/* harmony export */   current: () => (/* binding */ R),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   enableAllPlugins: () => (/* binding */ J),
-/* harmony export */   enableES5: () => (/* binding */ F),
-/* harmony export */   enableMapSet: () => (/* binding */ C),
-/* harmony export */   enablePatches: () => (/* binding */ T),
-/* harmony export */   finishDraft: () => (/* binding */ dn),
-/* harmony export */   freeze: () => (/* binding */ d),
-/* harmony export */   immerable: () => (/* binding */ L),
-/* harmony export */   isDraft: () => (/* binding */ r),
-/* harmony export */   isDraftable: () => (/* binding */ t),
-/* harmony export */   nothing: () => (/* binding */ H),
-/* harmony export */   original: () => (/* binding */ e),
-/* harmony export */   produce: () => (/* binding */ fn),
-/* harmony export */   produceWithPatches: () => (/* binding */ cn),
-/* harmony export */   setAutoFreeze: () => (/* binding */ sn),
-/* harmony export */   setUseProxies: () => (/* binding */ vn)
+/* harmony export */   Immer: function() { return /* binding */ un; },
+/* harmony export */   applyPatches: function() { return /* binding */ pn; },
+/* harmony export */   castDraft: function() { return /* binding */ K; },
+/* harmony export */   castImmutable: function() { return /* binding */ $; },
+/* harmony export */   createDraft: function() { return /* binding */ ln; },
+/* harmony export */   current: function() { return /* binding */ R; },
+/* harmony export */   enableAllPlugins: function() { return /* binding */ J; },
+/* harmony export */   enableES5: function() { return /* binding */ F; },
+/* harmony export */   enableMapSet: function() { return /* binding */ C; },
+/* harmony export */   enablePatches: function() { return /* binding */ T; },
+/* harmony export */   finishDraft: function() { return /* binding */ dn; },
+/* harmony export */   freeze: function() { return /* binding */ d; },
+/* harmony export */   immerable: function() { return /* binding */ L; },
+/* harmony export */   isDraft: function() { return /* binding */ r; },
+/* harmony export */   isDraftable: function() { return /* binding */ t; },
+/* harmony export */   nothing: function() { return /* binding */ H; },
+/* harmony export */   original: function() { return /* binding */ e; },
+/* harmony export */   produce: function() { return /* binding */ fn; },
+/* harmony export */   produceWithPatches: function() { return /* binding */ cn; },
+/* harmony export */   setAutoFreeze: function() { return /* binding */ sn; },
+/* harmony export */   setUseProxies: function() { return /* binding */ vn; }
 /* harmony export */ });
-function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=arguments[e];if(true){var i=Y[n],o=i?"function"==typeof i?i.apply(null,t):i:"unknown error nr: "+n;throw Error("[Immer] "+o)}throw Error("[Immer] minified error nr: "+n+(t.length?" "+t.map((function(n){return"'"+n+"'"})).join(","):"")+". Find the full error at: https://bit.ly/3cXEKWf")}function r(n){return!!n&&!!n[Q]}function t(n){var r;return!!n&&(function(n){if(!n||"object"!=typeof n)return!1;var r=Object.getPrototypeOf(n);if(null===r)return!0;var t=Object.hasOwnProperty.call(r,"constructor")&&r.constructor;return t===Object||"function"==typeof t&&Function.toString.call(t)===Z}(n)||Array.isArray(n)||!!n[L]||!!(null===(r=n.constructor)||void 0===r?void 0:r[L])||s(n)||v(n))}function e(t){return r(t)||n(23,t),t[Q].t}function i(n,r,t){void 0===t&&(t=!1),0===o(n)?(t?Object.keys:nn)(n).forEach((function(e){t&&"symbol"==typeof e||r(e,n[e],n)})):n.forEach((function(t,e){return r(e,t,n)}))}function o(n){var r=n[Q];return r?r.i>3?r.i-4:r.i:Array.isArray(n)?1:s(n)?2:v(n)?3:0}function u(n,r){return 2===o(n)?n.has(r):Object.prototype.hasOwnProperty.call(n,r)}function a(n,r){return 2===o(n)?n.get(r):n[r]}function f(n,r,t){var e=o(n);2===e?n.set(r,t):3===e?n.add(t):n[r]=t}function c(n,r){return n===r?0!==n||1/n==1/r:n!=n&&r!=r}function s(n){return X&&n instanceof Map}function v(n){return q&&n instanceof Set}function p(n){return n.o||n.t}function l(n){if(Array.isArray(n))return Array.prototype.slice.call(n);var r=rn(n);delete r[Q];for(var t=nn(r),e=0;e<t.length;e++){var i=t[e],o=r[i];!1===o.writable&&(o.writable=!0,o.configurable=!0),(o.get||o.set)&&(r[i]={configurable:!0,writable:!0,enumerable:o.enumerable,value:n[i]})}return Object.create(Object.getPrototypeOf(n),r)}function d(n,e){return void 0===e&&(e=!1),y(n)||r(n)||!t(n)||(o(n)>1&&(n.set=n.add=n.clear=n.delete=h),Object.freeze(n),e&&i(n,(function(n,r){return d(r,!0)}),!0)),n}function h(){n(2)}function y(n){return null==n||"object"!=typeof n||Object.isFrozen(n)}function b(r){var t=tn[r];return t||n(18,r),t}function m(n,r){tn[n]||(tn[n]=r)}function _(){return false||U||n(0),U}function j(n,r){r&&(b("Patches"),n.u=[],n.s=[],n.v=r)}function g(n){O(n),n.p.forEach(S),n.p=null}function O(n){n===U&&(U=n.l)}function w(n){return U={p:[],l:U,h:n,m:!0,_:0}}function S(n){var r=n[Q];0===r.i||1===r.i?r.j():r.g=!0}function P(r,e){e._=e.p.length;var i=e.p[0],o=void 0!==r&&r!==i;return e.h.O||b("ES5").S(e,r,o),o?(i[Q].P&&(g(e),n(4)),t(r)&&(r=M(e,r),e.l||x(e,r)),e.u&&b("Patches").M(i[Q].t,r,e.u,e.s)):r=M(e,i,[]),g(e),e.u&&e.v(e.u,e.s),r!==H?r:void 0}function M(n,r,t){if(y(r))return r;var e=r[Q];if(!e)return i(r,(function(i,o){return A(n,e,r,i,o,t)}),!0),r;if(e.A!==n)return r;if(!e.P)return x(n,e.t,!0),e.t;if(!e.I){e.I=!0,e.A._--;var o=4===e.i||5===e.i?e.o=l(e.k):e.o,u=o,a=!1;3===e.i&&(u=new Set(o),o.clear(),a=!0),i(u,(function(r,i){return A(n,e,o,r,i,t,a)})),x(n,o,!1),t&&n.u&&b("Patches").N(e,t,n.u,n.s)}return e.o}function A(e,i,o,a,c,s,v){if( true&&c===o&&n(5),r(c)){var p=M(e,c,s&&i&&3!==i.i&&!u(i.R,a)?s.concat(a):void 0);if(f(o,a,p),!r(p))return;e.m=!1}else v&&o.add(c);if(t(c)&&!y(c)){if(!e.h.D&&e._<1)return;M(e,c),i&&i.A.l||x(e,c)}}function x(n,r,t){void 0===t&&(t=!1),!n.l&&n.h.D&&n.m&&d(r,t)}function z(n,r){var t=n[Q];return(t?p(t):n)[r]}function I(n,r){if(r in n)for(var t=Object.getPrototypeOf(n);t;){var e=Object.getOwnPropertyDescriptor(t,r);if(e)return e;t=Object.getPrototypeOf(t)}}function k(n){n.P||(n.P=!0,n.l&&k(n.l))}function E(n){n.o||(n.o=l(n.t))}function N(n,r,t){var e=s(r)?b("MapSet").F(r,t):v(r)?b("MapSet").T(r,t):n.O?function(n,r){var t=Array.isArray(n),e={i:t?1:0,A:r?r.A:_(),P:!1,I:!1,R:{},l:r,t:n,k:null,o:null,j:null,C:!1},i=e,o=en;t&&(i=[e],o=on);var u=Proxy.revocable(i,o),a=u.revoke,f=u.proxy;return e.k=f,e.j=a,f}(r,t):b("ES5").J(r,t);return(t?t.A:_()).p.push(e),e}function R(e){return r(e)||n(22,e),function n(r){if(!t(r))return r;var e,u=r[Q],c=o(r);if(u){if(!u.P&&(u.i<4||!b("ES5").K(u)))return u.t;u.I=!0,e=D(r,c),u.I=!1}else e=D(r,c);return i(e,(function(r,t){u&&a(u.t,r)===t||f(e,r,n(t))})),3===c?new Set(e):e}(e)}function D(n,r){switch(r){case 2:return new Map(n);case 3:return Array.from(n)}return l(n)}function F(){function t(n,r){var t=s[n];return t?t.enumerable=r:s[n]=t={configurable:!0,enumerable:r,get:function(){var r=this[Q];return true&&f(r),en.get(r,n)},set:function(r){var t=this[Q]; true&&f(t),en.set(t,n,r)}},t}function e(n){for(var r=n.length-1;r>=0;r--){var t=n[r][Q];if(!t.P)switch(t.i){case 5:a(t)&&k(t);break;case 4:o(t)&&k(t)}}}function o(n){for(var r=n.t,t=n.k,e=nn(t),i=e.length-1;i>=0;i--){var o=e[i];if(o!==Q){var a=r[o];if(void 0===a&&!u(r,o))return!0;var f=t[o],s=f&&f[Q];if(s?s.t!==a:!c(f,a))return!0}}var v=!!r[Q];return e.length!==nn(r).length+(v?0:1)}function a(n){var r=n.k;if(r.length!==n.t.length)return!0;var t=Object.getOwnPropertyDescriptor(r,r.length-1);if(t&&!t.get)return!0;for(var e=0;e<r.length;e++)if(!r.hasOwnProperty(e))return!0;return!1}function f(r){r.g&&n(3,JSON.stringify(p(r)))}var s={};m("ES5",{J:function(n,r){var e=Array.isArray(n),i=function(n,r){if(n){for(var e=Array(r.length),i=0;i<r.length;i++)Object.defineProperty(e,""+i,t(i,!0));return e}var o=rn(r);delete o[Q];for(var u=nn(o),a=0;a<u.length;a++){var f=u[a];o[f]=t(f,n||!!o[f].enumerable)}return Object.create(Object.getPrototypeOf(r),o)}(e,n),o={i:e?5:4,A:r?r.A:_(),P:!1,I:!1,R:{},l:r,t:n,k:i,o:null,g:!1,C:!1};return Object.defineProperty(i,Q,{value:o,writable:!0}),i},S:function(n,t,o){o?r(t)&&t[Q].A===n&&e(n.p):(n.u&&function n(r){if(r&&"object"==typeof r){var t=r[Q];if(t){var e=t.t,o=t.k,f=t.R,c=t.i;if(4===c)i(o,(function(r){r!==Q&&(void 0!==e[r]||u(e,r)?f[r]||n(o[r]):(f[r]=!0,k(t)))})),i(e,(function(n){void 0!==o[n]||u(o,n)||(f[n]=!1,k(t))}));else if(5===c){if(a(t)&&(k(t),f.length=!0),o.length<e.length)for(var s=o.length;s<e.length;s++)f[s]=!1;else for(var v=e.length;v<o.length;v++)f[v]=!0;for(var p=Math.min(o.length,e.length),l=0;l<p;l++)o.hasOwnProperty(l)||(f[l]=!0),void 0===f[l]&&n(o[l])}}}}(n.p[0]),e(n.p))},K:function(n){return 4===n.i?o(n):a(n)}})}function T(){function e(n){if(!t(n))return n;if(Array.isArray(n))return n.map(e);if(s(n))return new Map(Array.from(n.entries()).map((function(n){return[n[0],e(n[1])]})));if(v(n))return new Set(Array.from(n).map(e));var r=Object.create(Object.getPrototypeOf(n));for(var i in n)r[i]=e(n[i]);return u(n,L)&&(r[L]=n[L]),r}function f(n){return r(n)?e(n):n}var c="add";m("Patches",{$:function(r,t){return t.forEach((function(t){for(var i=t.path,u=t.op,f=r,s=0;s<i.length-1;s++){var v=o(f),p=i[s];"string"!=typeof p&&"number"!=typeof p&&(p=""+p),0!==v&&1!==v||"__proto__"!==p&&"constructor"!==p||n(24),"function"==typeof f&&"prototype"===p&&n(24),"object"!=typeof(f=a(f,p))&&n(15,i.join("/"))}var l=o(f),d=e(t.value),h=i[i.length-1];switch(u){case"replace":switch(l){case 2:return f.set(h,d);case 3:n(16);default:return f[h]=d}case c:switch(l){case 1:return"-"===h?f.push(d):f.splice(h,0,d);case 2:return f.set(h,d);case 3:return f.add(d);default:return f[h]=d}case"remove":switch(l){case 1:return f.splice(h,1);case 2:return f.delete(h);case 3:return f.delete(t.value);default:return delete f[h]}default:n(17,u)}})),r},N:function(n,r,t,e){switch(n.i){case 0:case 4:case 2:return function(n,r,t,e){var o=n.t,s=n.o;i(n.R,(function(n,i){var v=a(o,n),p=a(s,n),l=i?u(o,n)?"replace":c:"remove";if(v!==p||"replace"!==l){var d=r.concat(n);t.push("remove"===l?{op:l,path:d}:{op:l,path:d,value:p}),e.push(l===c?{op:"remove",path:d}:"remove"===l?{op:c,path:d,value:f(v)}:{op:"replace",path:d,value:f(v)})}}))}(n,r,t,e);case 5:case 1:return function(n,r,t,e){var i=n.t,o=n.R,u=n.o;if(u.length<i.length){var a=[u,i];i=a[0],u=a[1];var s=[e,t];t=s[0],e=s[1]}for(var v=0;v<i.length;v++)if(o[v]&&u[v]!==i[v]){var p=r.concat([v]);t.push({op:"replace",path:p,value:f(u[v])}),e.push({op:"replace",path:p,value:f(i[v])})}for(var l=i.length;l<u.length;l++){var d=r.concat([l]);t.push({op:c,path:d,value:f(u[l])})}i.length<u.length&&e.push({op:"replace",path:r.concat(["length"]),value:i.length})}(n,r,t,e);case 3:return function(n,r,t,e){var i=n.t,o=n.o,u=0;i.forEach((function(n){if(!o.has(n)){var i=r.concat([u]);t.push({op:"remove",path:i,value:n}),e.unshift({op:c,path:i,value:n})}u++})),u=0,o.forEach((function(n){if(!i.has(n)){var o=r.concat([u]);t.push({op:c,path:o,value:n}),e.unshift({op:"remove",path:o,value:n})}u++}))}(n,r,t,e)}},M:function(n,r,t,e){t.push({op:"replace",path:[],value:r===H?void 0:r}),e.push({op:"replace",path:[],value:n})}})}function C(){function r(n,r){function t(){this.constructor=n}a(n,r),n.prototype=(t.prototype=r.prototype,new t)}function e(n){n.o||(n.R=new Map,n.o=new Map(n.t))}function o(n){n.o||(n.o=new Set,n.t.forEach((function(r){if(t(r)){var e=N(n.A.h,r,n);n.p.set(r,e),n.o.add(e)}else n.o.add(r)})))}function u(r){r.g&&n(3,JSON.stringify(p(r)))}var a=function(n,r){return(a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(n,r){n.__proto__=r}||function(n,r){for(var t in r)r.hasOwnProperty(t)&&(n[t]=r[t])})(n,r)},f=function(){function n(n,r){return this[Q]={i:2,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,R:void 0,t:n,k:this,C:!1,g:!1},this}r(n,Map);var o=n.prototype;return Object.defineProperty(o,"size",{get:function(){return p(this[Q]).size}}),o.has=function(n){return p(this[Q]).has(n)},o.set=function(n,r){var t=this[Q];return u(t),p(t).has(n)&&p(t).get(n)===r||(e(t),k(t),t.R.set(n,!0),t.o.set(n,r),t.R.set(n,!0)),this},o.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),e(r),k(r),r.t.has(n)?r.R.set(n,!1):r.R.delete(n),r.o.delete(n),!0},o.clear=function(){var n=this[Q];u(n),p(n).size&&(e(n),k(n),n.R=new Map,i(n.t,(function(r){n.R.set(r,!1)})),n.o.clear())},o.forEach=function(n,r){var t=this;p(this[Q]).forEach((function(e,i){n.call(r,t.get(i),i,t)}))},o.get=function(n){var r=this[Q];u(r);var i=p(r).get(n);if(r.I||!t(i))return i;if(i!==r.t.get(n))return i;var o=N(r.A.h,i,r);return e(r),r.o.set(n,o),o},o.keys=function(){return p(this[Q]).keys()},o.values=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.values()},n.next=function(){var n=t.next();return n.done?n:{done:!1,value:r.get(n.value)}},n},o.entries=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.entries()},n.next=function(){var n=t.next();if(n.done)return n;var e=r.get(n.value);return{done:!1,value:[n.value,e]}},n},o[V]=function(){return this.entries()},n}(),c=function(){function n(n,r){return this[Q]={i:3,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,t:n,k:this,p:new Map,g:!1,C:!1},this}r(n,Set);var t=n.prototype;return Object.defineProperty(t,"size",{get:function(){return p(this[Q]).size}}),t.has=function(n){var r=this[Q];return u(r),r.o?!!r.o.has(n)||!(!r.p.has(n)||!r.o.has(r.p.get(n))):r.t.has(n)},t.add=function(n){var r=this[Q];return u(r),this.has(n)||(o(r),k(r),r.o.add(n)),this},t.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),o(r),k(r),r.o.delete(n)||!!r.p.has(n)&&r.o.delete(r.p.get(n))},t.clear=function(){var n=this[Q];u(n),p(n).size&&(o(n),k(n),n.o.clear())},t.values=function(){var n=this[Q];return u(n),o(n),n.o.values()},t.entries=function(){var n=this[Q];return u(n),o(n),n.o.entries()},t.keys=function(){return this.values()},t[V]=function(){return this.values()},t.forEach=function(n,r){for(var t=this.values(),e=t.next();!e.done;)n.call(r,e.value,e.value,this),e=t.next()},n}();m("MapSet",{F:function(n,r){return new f(n,r)},T:function(n,r){return new c(n,r)}})}function J(){F(),C(),T()}function K(n){return n}function $(n){return n}var G,U,W="undefined"!=typeof Symbol&&"symbol"==typeof Symbol("x"),X="undefined"!=typeof Map,q="undefined"!=typeof Set,B="undefined"!=typeof Proxy&&void 0!==Proxy.revocable&&"undefined"!=typeof Reflect,H=W?Symbol.for("immer-nothing"):((G={})["immer-nothing"]=!0,G),L=W?Symbol.for("immer-draftable"):"__$immer_draftable",Q=W?Symbol.for("immer-state"):"__$immer_state",V="undefined"!=typeof Symbol&&Symbol.iterator||"@@iterator",Y={0:"Illegal state",1:"Immer drafts cannot have computed properties",2:"This object has been frozen and should not be mutated",3:function(n){return"Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? "+n},4:"An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.",5:"Immer forbids circular references",6:"The first or second argument to `produce` must be a function",7:"The third argument to `produce` must be a function or undefined",8:"First argument to `createDraft` must be a plain object, an array, or an immerable object",9:"First argument to `finishDraft` must be a draft returned by `createDraft`",10:"The given draft is already finalized",11:"Object.defineProperty() cannot be used on an Immer draft",12:"Object.setPrototypeOf() cannot be used on an Immer draft",13:"Immer only supports deleting array indices",14:"Immer only supports setting array indices and the 'length' property",15:function(n){return"Cannot apply patch, path doesn't resolve: "+n},16:'Sets cannot have "replace" patches.',17:function(n){return"Unsupported patch operation: "+n},18:function(n){return"The plugin for '"+n+"' has not been loaded into Immer. To enable the plugin, import and call `enable"+n+"()` when initializing your application."},20:"Cannot use proxies if Proxy, Proxy.revocable or Reflect are not available",21:function(n){return"produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '"+n+"'"},22:function(n){return"'current' expects a draft, got: "+n},23:function(n){return"'original' expects a draft, got: "+n},24:"Patching reserved attributes like __proto__, prototype and constructor is not allowed"},Z=""+Object.prototype.constructor,nn="undefined"!=typeof Reflect&&Reflect.ownKeys?Reflect.ownKeys:void 0!==Object.getOwnPropertySymbols?function(n){return Object.getOwnPropertyNames(n).concat(Object.getOwnPropertySymbols(n))}:Object.getOwnPropertyNames,rn=Object.getOwnPropertyDescriptors||function(n){var r={};return nn(n).forEach((function(t){r[t]=Object.getOwnPropertyDescriptor(n,t)})),r},tn={},en={get:function(n,r){if(r===Q)return n;var e=p(n);if(!u(e,r))return function(n,r,t){var e,i=I(r,t);return i?"value"in i?i.value:null===(e=i.get)||void 0===e?void 0:e.call(n.k):void 0}(n,e,r);var i=e[r];return n.I||!t(i)?i:i===z(n.t,r)?(E(n),n.o[r]=N(n.A.h,i,n)):i},has:function(n,r){return r in p(n)},ownKeys:function(n){return Reflect.ownKeys(p(n))},set:function(n,r,t){var e=I(p(n),r);if(null==e?void 0:e.set)return e.set.call(n.k,t),!0;if(!n.P){var i=z(p(n),r),o=null==i?void 0:i[Q];if(o&&o.t===t)return n.o[r]=t,n.R[r]=!1,!0;if(c(t,i)&&(void 0!==t||u(n.t,r)))return!0;E(n),k(n)}return n.o[r]===t&&(void 0!==t||r in n.o)||Number.isNaN(t)&&Number.isNaN(n.o[r])||(n.o[r]=t,n.R[r]=!0),!0},deleteProperty:function(n,r){return void 0!==z(n.t,r)||r in n.t?(n.R[r]=!1,E(n),k(n)):delete n.R[r],n.o&&delete n.o[r],!0},getOwnPropertyDescriptor:function(n,r){var t=p(n),e=Reflect.getOwnPropertyDescriptor(t,r);return e?{writable:!0,configurable:1!==n.i||"length"!==r,enumerable:e.enumerable,value:t[r]}:e},defineProperty:function(){n(11)},getPrototypeOf:function(n){return Object.getPrototypeOf(n.t)},setPrototypeOf:function(){n(12)}},on={};i(en,(function(n,r){on[n]=function(){return arguments[0]=arguments[0][0],r.apply(this,arguments)}})),on.deleteProperty=function(r,t){return true&&isNaN(parseInt(t))&&n(13),on.set.call(this,r,t,void 0)},on.set=function(r,t,e){return true&&"length"!==t&&isNaN(parseInt(t))&&n(14),en.set.call(this,r[0],t,e,r[0])};var un=function(){function e(r){var e=this;this.O=B,this.D=!0,this.produce=function(r,i,o){if("function"==typeof r&&"function"!=typeof i){var u=i;i=r;var a=e;return function(n){var r=this;void 0===n&&(n=u);for(var t=arguments.length,e=Array(t>1?t-1:0),o=1;o<t;o++)e[o-1]=arguments[o];return a.produce(n,(function(n){var t;return(t=i).call.apply(t,[r,n].concat(e))}))}}var f;if("function"!=typeof i&&n(6),void 0!==o&&"function"!=typeof o&&n(7),t(r)){var c=w(e),s=N(e,r,void 0),v=!0;try{f=i(s),v=!1}finally{v?g(c):O(c)}return"undefined"!=typeof Promise&&f instanceof Promise?f.then((function(n){return j(c,o),P(n,c)}),(function(n){throw g(c),n})):(j(c,o),P(f,c))}if(!r||"object"!=typeof r){if(void 0===(f=i(r))&&(f=r),f===H&&(f=void 0),e.D&&d(f,!0),o){var p=[],l=[];b("Patches").M(r,f,p,l),o(p,l)}return f}n(21,r)},this.produceWithPatches=function(n,r){if("function"==typeof n)return function(r){for(var t=arguments.length,i=Array(t>1?t-1:0),o=1;o<t;o++)i[o-1]=arguments[o];return e.produceWithPatches(r,(function(r){return n.apply(void 0,[r].concat(i))}))};var t,i,o=e.produce(n,r,(function(n,r){t=n,i=r}));return"undefined"!=typeof Promise&&o instanceof Promise?o.then((function(n){return[n,t,i]})):[o,t,i]},"boolean"==typeof(null==r?void 0:r.useProxies)&&this.setUseProxies(r.useProxies),"boolean"==typeof(null==r?void 0:r.autoFreeze)&&this.setAutoFreeze(r.autoFreeze)}var i=e.prototype;return i.createDraft=function(e){t(e)||n(8),r(e)&&(e=R(e));var i=w(this),o=N(this,e,void 0);return o[Q].C=!0,O(i),o},i.finishDraft=function(r,t){var e=r&&r[Q]; true&&(e&&e.C||n(9),e.I&&n(10));var i=e.A;return j(i,t),P(void 0,i)},i.setAutoFreeze=function(n){this.D=n},i.setUseProxies=function(r){r&&!B&&n(20),this.O=r},i.applyPatches=function(n,t){var e;for(e=t.length-1;e>=0;e--){var i=t[e];if(0===i.path.length&&"replace"===i.op){n=i.value;break}}e>-1&&(t=t.slice(e+1));var o=b("Patches").$;return r(n)?o(n,t):this.produce(n,(function(n){return o(n,t)}))},e}(),an=new un,fn=an.produce,cn=an.produceWithPatches.bind(an),sn=an.setAutoFreeze.bind(an),vn=an.setUseProxies.bind(an),pn=an.applyPatches.bind(an),ln=an.createDraft.bind(an),dn=an.finishDraft.bind(an);/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (fn);
+function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=arguments[e];if(true){var i=Y[n],o=i?"function"==typeof i?i.apply(null,t):i:"unknown error nr: "+n;throw Error("[Immer] "+o)}throw Error("[Immer] minified error nr: "+n+(t.length?" "+t.map((function(n){return"'"+n+"'"})).join(","):"")+". Find the full error at: https://bit.ly/3cXEKWf")}function r(n){return!!n&&!!n[Q]}function t(n){var r;return!!n&&(function(n){if(!n||"object"!=typeof n)return!1;var r=Object.getPrototypeOf(n);if(null===r)return!0;var t=Object.hasOwnProperty.call(r,"constructor")&&r.constructor;return t===Object||"function"==typeof t&&Function.toString.call(t)===Z}(n)||Array.isArray(n)||!!n[L]||!!(null===(r=n.constructor)||void 0===r?void 0:r[L])||s(n)||v(n))}function e(t){return r(t)||n(23,t),t[Q].t}function i(n,r,t){void 0===t&&(t=!1),0===o(n)?(t?Object.keys:nn)(n).forEach((function(e){t&&"symbol"==typeof e||r(e,n[e],n)})):n.forEach((function(t,e){return r(e,t,n)}))}function o(n){var r=n[Q];return r?r.i>3?r.i-4:r.i:Array.isArray(n)?1:s(n)?2:v(n)?3:0}function u(n,r){return 2===o(n)?n.has(r):Object.prototype.hasOwnProperty.call(n,r)}function a(n,r){return 2===o(n)?n.get(r):n[r]}function f(n,r,t){var e=o(n);2===e?n.set(r,t):3===e?n.add(t):n[r]=t}function c(n,r){return n===r?0!==n||1/n==1/r:n!=n&&r!=r}function s(n){return X&&n instanceof Map}function v(n){return q&&n instanceof Set}function p(n){return n.o||n.t}function l(n){if(Array.isArray(n))return Array.prototype.slice.call(n);var r=rn(n);delete r[Q];for(var t=nn(r),e=0;e<t.length;e++){var i=t[e],o=r[i];!1===o.writable&&(o.writable=!0,o.configurable=!0),(o.get||o.set)&&(r[i]={configurable:!0,writable:!0,enumerable:o.enumerable,value:n[i]})}return Object.create(Object.getPrototypeOf(n),r)}function d(n,e){return void 0===e&&(e=!1),y(n)||r(n)||!t(n)||(o(n)>1&&(n.set=n.add=n.clear=n.delete=h),Object.freeze(n),e&&i(n,(function(n,r){return d(r,!0)}),!0)),n}function h(){n(2)}function y(n){return null==n||"object"!=typeof n||Object.isFrozen(n)}function b(r){var t=tn[r];return t||n(18,r),t}function m(n,r){tn[n]||(tn[n]=r)}function _(){return false||U||n(0),U}function j(n,r){r&&(b("Patches"),n.u=[],n.s=[],n.v=r)}function g(n){O(n),n.p.forEach(S),n.p=null}function O(n){n===U&&(U=n.l)}function w(n){return U={p:[],l:U,h:n,m:!0,_:0}}function S(n){var r=n[Q];0===r.i||1===r.i?r.j():r.g=!0}function P(r,e){e._=e.p.length;var i=e.p[0],o=void 0!==r&&r!==i;return e.h.O||b("ES5").S(e,r,o),o?(i[Q].P&&(g(e),n(4)),t(r)&&(r=M(e,r),e.l||x(e,r)),e.u&&b("Patches").M(i[Q].t,r,e.u,e.s)):r=M(e,i,[]),g(e),e.u&&e.v(e.u,e.s),r!==H?r:void 0}function M(n,r,t){if(y(r))return r;var e=r[Q];if(!e)return i(r,(function(i,o){return A(n,e,r,i,o,t)}),!0),r;if(e.A!==n)return r;if(!e.P)return x(n,e.t,!0),e.t;if(!e.I){e.I=!0,e.A._--;var o=4===e.i||5===e.i?e.o=l(e.k):e.o,u=o,a=!1;3===e.i&&(u=new Set(o),o.clear(),a=!0),i(u,(function(r,i){return A(n,e,o,r,i,t,a)})),x(n,o,!1),t&&n.u&&b("Patches").N(e,t,n.u,n.s)}return e.o}function A(e,i,o,a,c,s,v){if( true&&c===o&&n(5),r(c)){var p=M(e,c,s&&i&&3!==i.i&&!u(i.R,a)?s.concat(a):void 0);if(f(o,a,p),!r(p))return;e.m=!1}else v&&o.add(c);if(t(c)&&!y(c)){if(!e.h.D&&e._<1)return;M(e,c),i&&i.A.l||x(e,c)}}function x(n,r,t){void 0===t&&(t=!1),!n.l&&n.h.D&&n.m&&d(r,t)}function z(n,r){var t=n[Q];return(t?p(t):n)[r]}function I(n,r){if(r in n)for(var t=Object.getPrototypeOf(n);t;){var e=Object.getOwnPropertyDescriptor(t,r);if(e)return e;t=Object.getPrototypeOf(t)}}function k(n){n.P||(n.P=!0,n.l&&k(n.l))}function E(n){n.o||(n.o=l(n.t))}function N(n,r,t){var e=s(r)?b("MapSet").F(r,t):v(r)?b("MapSet").T(r,t):n.O?function(n,r){var t=Array.isArray(n),e={i:t?1:0,A:r?r.A:_(),P:!1,I:!1,R:{},l:r,t:n,k:null,o:null,j:null,C:!1},i=e,o=en;t&&(i=[e],o=on);var u=Proxy.revocable(i,o),a=u.revoke,f=u.proxy;return e.k=f,e.j=a,f}(r,t):b("ES5").J(r,t);return(t?t.A:_()).p.push(e),e}function R(e){return r(e)||n(22,e),function n(r){if(!t(r))return r;var e,u=r[Q],c=o(r);if(u){if(!u.P&&(u.i<4||!b("ES5").K(u)))return u.t;u.I=!0,e=D(r,c),u.I=!1}else e=D(r,c);return i(e,(function(r,t){u&&a(u.t,r)===t||f(e,r,n(t))})),3===c?new Set(e):e}(e)}function D(n,r){switch(r){case 2:return new Map(n);case 3:return Array.from(n)}return l(n)}function F(){function t(n,r){var t=s[n];return t?t.enumerable=r:s[n]=t={configurable:!0,enumerable:r,get:function(){var r=this[Q];return true&&f(r),en.get(r,n)},set:function(r){var t=this[Q]; true&&f(t),en.set(t,n,r)}},t}function e(n){for(var r=n.length-1;r>=0;r--){var t=n[r][Q];if(!t.P)switch(t.i){case 5:a(t)&&k(t);break;case 4:o(t)&&k(t)}}}function o(n){for(var r=n.t,t=n.k,e=nn(t),i=e.length-1;i>=0;i--){var o=e[i];if(o!==Q){var a=r[o];if(void 0===a&&!u(r,o))return!0;var f=t[o],s=f&&f[Q];if(s?s.t!==a:!c(f,a))return!0}}var v=!!r[Q];return e.length!==nn(r).length+(v?0:1)}function a(n){var r=n.k;if(r.length!==n.t.length)return!0;var t=Object.getOwnPropertyDescriptor(r,r.length-1);if(t&&!t.get)return!0;for(var e=0;e<r.length;e++)if(!r.hasOwnProperty(e))return!0;return!1}function f(r){r.g&&n(3,JSON.stringify(p(r)))}var s={};m("ES5",{J:function(n,r){var e=Array.isArray(n),i=function(n,r){if(n){for(var e=Array(r.length),i=0;i<r.length;i++)Object.defineProperty(e,""+i,t(i,!0));return e}var o=rn(r);delete o[Q];for(var u=nn(o),a=0;a<u.length;a++){var f=u[a];o[f]=t(f,n||!!o[f].enumerable)}return Object.create(Object.getPrototypeOf(r),o)}(e,n),o={i:e?5:4,A:r?r.A:_(),P:!1,I:!1,R:{},l:r,t:n,k:i,o:null,g:!1,C:!1};return Object.defineProperty(i,Q,{value:o,writable:!0}),i},S:function(n,t,o){o?r(t)&&t[Q].A===n&&e(n.p):(n.u&&function n(r){if(r&&"object"==typeof r){var t=r[Q];if(t){var e=t.t,o=t.k,f=t.R,c=t.i;if(4===c)i(o,(function(r){r!==Q&&(void 0!==e[r]||u(e,r)?f[r]||n(o[r]):(f[r]=!0,k(t)))})),i(e,(function(n){void 0!==o[n]||u(o,n)||(f[n]=!1,k(t))}));else if(5===c){if(a(t)&&(k(t),f.length=!0),o.length<e.length)for(var s=o.length;s<e.length;s++)f[s]=!1;else for(var v=e.length;v<o.length;v++)f[v]=!0;for(var p=Math.min(o.length,e.length),l=0;l<p;l++)o.hasOwnProperty(l)||(f[l]=!0),void 0===f[l]&&n(o[l])}}}}(n.p[0]),e(n.p))},K:function(n){return 4===n.i?o(n):a(n)}})}function T(){function e(n){if(!t(n))return n;if(Array.isArray(n))return n.map(e);if(s(n))return new Map(Array.from(n.entries()).map((function(n){return[n[0],e(n[1])]})));if(v(n))return new Set(Array.from(n).map(e));var r=Object.create(Object.getPrototypeOf(n));for(var i in n)r[i]=e(n[i]);return u(n,L)&&(r[L]=n[L]),r}function f(n){return r(n)?e(n):n}var c="add";m("Patches",{$:function(r,t){return t.forEach((function(t){for(var i=t.path,u=t.op,f=r,s=0;s<i.length-1;s++){var v=o(f),p=i[s];"string"!=typeof p&&"number"!=typeof p&&(p=""+p),0!==v&&1!==v||"__proto__"!==p&&"constructor"!==p||n(24),"function"==typeof f&&"prototype"===p&&n(24),"object"!=typeof(f=a(f,p))&&n(15,i.join("/"))}var l=o(f),d=e(t.value),h=i[i.length-1];switch(u){case"replace":switch(l){case 2:return f.set(h,d);case 3:n(16);default:return f[h]=d}case c:switch(l){case 1:return"-"===h?f.push(d):f.splice(h,0,d);case 2:return f.set(h,d);case 3:return f.add(d);default:return f[h]=d}case"remove":switch(l){case 1:return f.splice(h,1);case 2:return f.delete(h);case 3:return f.delete(t.value);default:return delete f[h]}default:n(17,u)}})),r},N:function(n,r,t,e){switch(n.i){case 0:case 4:case 2:return function(n,r,t,e){var o=n.t,s=n.o;i(n.R,(function(n,i){var v=a(o,n),p=a(s,n),l=i?u(o,n)?"replace":c:"remove";if(v!==p||"replace"!==l){var d=r.concat(n);t.push("remove"===l?{op:l,path:d}:{op:l,path:d,value:p}),e.push(l===c?{op:"remove",path:d}:"remove"===l?{op:c,path:d,value:f(v)}:{op:"replace",path:d,value:f(v)})}}))}(n,r,t,e);case 5:case 1:return function(n,r,t,e){var i=n.t,o=n.R,u=n.o;if(u.length<i.length){var a=[u,i];i=a[0],u=a[1];var s=[e,t];t=s[0],e=s[1]}for(var v=0;v<i.length;v++)if(o[v]&&u[v]!==i[v]){var p=r.concat([v]);t.push({op:"replace",path:p,value:f(u[v])}),e.push({op:"replace",path:p,value:f(i[v])})}for(var l=i.length;l<u.length;l++){var d=r.concat([l]);t.push({op:c,path:d,value:f(u[l])})}i.length<u.length&&e.push({op:"replace",path:r.concat(["length"]),value:i.length})}(n,r,t,e);case 3:return function(n,r,t,e){var i=n.t,o=n.o,u=0;i.forEach((function(n){if(!o.has(n)){var i=r.concat([u]);t.push({op:"remove",path:i,value:n}),e.unshift({op:c,path:i,value:n})}u++})),u=0,o.forEach((function(n){if(!i.has(n)){var o=r.concat([u]);t.push({op:c,path:o,value:n}),e.unshift({op:"remove",path:o,value:n})}u++}))}(n,r,t,e)}},M:function(n,r,t,e){t.push({op:"replace",path:[],value:r===H?void 0:r}),e.push({op:"replace",path:[],value:n})}})}function C(){function r(n,r){function t(){this.constructor=n}a(n,r),n.prototype=(t.prototype=r.prototype,new t)}function e(n){n.o||(n.R=new Map,n.o=new Map(n.t))}function o(n){n.o||(n.o=new Set,n.t.forEach((function(r){if(t(r)){var e=N(n.A.h,r,n);n.p.set(r,e),n.o.add(e)}else n.o.add(r)})))}function u(r){r.g&&n(3,JSON.stringify(p(r)))}var a=function(n,r){return(a=Object.setPrototypeOf||{__proto__:[]}instanceof Array&&function(n,r){n.__proto__=r}||function(n,r){for(var t in r)r.hasOwnProperty(t)&&(n[t]=r[t])})(n,r)},f=function(){function n(n,r){return this[Q]={i:2,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,R:void 0,t:n,k:this,C:!1,g:!1},this}r(n,Map);var o=n.prototype;return Object.defineProperty(o,"size",{get:function(){return p(this[Q]).size}}),o.has=function(n){return p(this[Q]).has(n)},o.set=function(n,r){var t=this[Q];return u(t),p(t).has(n)&&p(t).get(n)===r||(e(t),k(t),t.R.set(n,!0),t.o.set(n,r),t.R.set(n,!0)),this},o.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),e(r),k(r),r.t.has(n)?r.R.set(n,!1):r.R.delete(n),r.o.delete(n),!0},o.clear=function(){var n=this[Q];u(n),p(n).size&&(e(n),k(n),n.R=new Map,i(n.t,(function(r){n.R.set(r,!1)})),n.o.clear())},o.forEach=function(n,r){var t=this;p(this[Q]).forEach((function(e,i){n.call(r,t.get(i),i,t)}))},o.get=function(n){var r=this[Q];u(r);var i=p(r).get(n);if(r.I||!t(i))return i;if(i!==r.t.get(n))return i;var o=N(r.A.h,i,r);return e(r),r.o.set(n,o),o},o.keys=function(){return p(this[Q]).keys()},o.values=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.values()},n.next=function(){var n=t.next();return n.done?n:{done:!1,value:r.get(n.value)}},n},o.entries=function(){var n,r=this,t=this.keys();return(n={})[V]=function(){return r.entries()},n.next=function(){var n=t.next();if(n.done)return n;var e=r.get(n.value);return{done:!1,value:[n.value,e]}},n},o[V]=function(){return this.entries()},n}(),c=function(){function n(n,r){return this[Q]={i:3,l:r,A:r?r.A:_(),P:!1,I:!1,o:void 0,t:n,k:this,p:new Map,g:!1,C:!1},this}r(n,Set);var t=n.prototype;return Object.defineProperty(t,"size",{get:function(){return p(this[Q]).size}}),t.has=function(n){var r=this[Q];return u(r),r.o?!!r.o.has(n)||!(!r.p.has(n)||!r.o.has(r.p.get(n))):r.t.has(n)},t.add=function(n){var r=this[Q];return u(r),this.has(n)||(o(r),k(r),r.o.add(n)),this},t.delete=function(n){if(!this.has(n))return!1;var r=this[Q];return u(r),o(r),k(r),r.o.delete(n)||!!r.p.has(n)&&r.o.delete(r.p.get(n))},t.clear=function(){var n=this[Q];u(n),p(n).size&&(o(n),k(n),n.o.clear())},t.values=function(){var n=this[Q];return u(n),o(n),n.o.values()},t.entries=function(){var n=this[Q];return u(n),o(n),n.o.entries()},t.keys=function(){return this.values()},t[V]=function(){return this.values()},t.forEach=function(n,r){for(var t=this.values(),e=t.next();!e.done;)n.call(r,e.value,e.value,this),e=t.next()},n}();m("MapSet",{F:function(n,r){return new f(n,r)},T:function(n,r){return new c(n,r)}})}function J(){F(),C(),T()}function K(n){return n}function $(n){return n}var G,U,W="undefined"!=typeof Symbol&&"symbol"==typeof Symbol("x"),X="undefined"!=typeof Map,q="undefined"!=typeof Set,B="undefined"!=typeof Proxy&&void 0!==Proxy.revocable&&"undefined"!=typeof Reflect,H=W?Symbol.for("immer-nothing"):((G={})["immer-nothing"]=!0,G),L=W?Symbol.for("immer-draftable"):"__$immer_draftable",Q=W?Symbol.for("immer-state"):"__$immer_state",V="undefined"!=typeof Symbol&&Symbol.iterator||"@@iterator",Y={0:"Illegal state",1:"Immer drafts cannot have computed properties",2:"This object has been frozen and should not be mutated",3:function(n){return"Cannot use a proxy that has been revoked. Did you pass an object from inside an immer function to an async process? "+n},4:"An immer producer returned a new value *and* modified its draft. Either return a new value *or* modify the draft.",5:"Immer forbids circular references",6:"The first or second argument to `produce` must be a function",7:"The third argument to `produce` must be a function or undefined",8:"First argument to `createDraft` must be a plain object, an array, or an immerable object",9:"First argument to `finishDraft` must be a draft returned by `createDraft`",10:"The given draft is already finalized",11:"Object.defineProperty() cannot be used on an Immer draft",12:"Object.setPrototypeOf() cannot be used on an Immer draft",13:"Immer only supports deleting array indices",14:"Immer only supports setting array indices and the 'length' property",15:function(n){return"Cannot apply patch, path doesn't resolve: "+n},16:'Sets cannot have "replace" patches.',17:function(n){return"Unsupported patch operation: "+n},18:function(n){return"The plugin for '"+n+"' has not been loaded into Immer. To enable the plugin, import and call `enable"+n+"()` when initializing your application."},20:"Cannot use proxies if Proxy, Proxy.revocable or Reflect are not available",21:function(n){return"produce can only be called on things that are draftable: plain objects, arrays, Map, Set or classes that are marked with '[immerable]: true'. Got '"+n+"'"},22:function(n){return"'current' expects a draft, got: "+n},23:function(n){return"'original' expects a draft, got: "+n},24:"Patching reserved attributes like __proto__, prototype and constructor is not allowed"},Z=""+Object.prototype.constructor,nn="undefined"!=typeof Reflect&&Reflect.ownKeys?Reflect.ownKeys:void 0!==Object.getOwnPropertySymbols?function(n){return Object.getOwnPropertyNames(n).concat(Object.getOwnPropertySymbols(n))}:Object.getOwnPropertyNames,rn=Object.getOwnPropertyDescriptors||function(n){var r={};return nn(n).forEach((function(t){r[t]=Object.getOwnPropertyDescriptor(n,t)})),r},tn={},en={get:function(n,r){if(r===Q)return n;var e=p(n);if(!u(e,r))return function(n,r,t){var e,i=I(r,t);return i?"value"in i?i.value:null===(e=i.get)||void 0===e?void 0:e.call(n.k):void 0}(n,e,r);var i=e[r];return n.I||!t(i)?i:i===z(n.t,r)?(E(n),n.o[r]=N(n.A.h,i,n)):i},has:function(n,r){return r in p(n)},ownKeys:function(n){return Reflect.ownKeys(p(n))},set:function(n,r,t){var e=I(p(n),r);if(null==e?void 0:e.set)return e.set.call(n.k,t),!0;if(!n.P){var i=z(p(n),r),o=null==i?void 0:i[Q];if(o&&o.t===t)return n.o[r]=t,n.R[r]=!1,!0;if(c(t,i)&&(void 0!==t||u(n.t,r)))return!0;E(n),k(n)}return n.o[r]===t&&(void 0!==t||r in n.o)||Number.isNaN(t)&&Number.isNaN(n.o[r])||(n.o[r]=t,n.R[r]=!0),!0},deleteProperty:function(n,r){return void 0!==z(n.t,r)||r in n.t?(n.R[r]=!1,E(n),k(n)):delete n.R[r],n.o&&delete n.o[r],!0},getOwnPropertyDescriptor:function(n,r){var t=p(n),e=Reflect.getOwnPropertyDescriptor(t,r);return e?{writable:!0,configurable:1!==n.i||"length"!==r,enumerable:e.enumerable,value:t[r]}:e},defineProperty:function(){n(11)},getPrototypeOf:function(n){return Object.getPrototypeOf(n.t)},setPrototypeOf:function(){n(12)}},on={};i(en,(function(n,r){on[n]=function(){return arguments[0]=arguments[0][0],r.apply(this,arguments)}})),on.deleteProperty=function(r,t){return true&&isNaN(parseInt(t))&&n(13),on.set.call(this,r,t,void 0)},on.set=function(r,t,e){return true&&"length"!==t&&isNaN(parseInt(t))&&n(14),en.set.call(this,r[0],t,e,r[0])};var un=function(){function e(r){var e=this;this.O=B,this.D=!0,this.produce=function(r,i,o){if("function"==typeof r&&"function"!=typeof i){var u=i;i=r;var a=e;return function(n){var r=this;void 0===n&&(n=u);for(var t=arguments.length,e=Array(t>1?t-1:0),o=1;o<t;o++)e[o-1]=arguments[o];return a.produce(n,(function(n){var t;return(t=i).call.apply(t,[r,n].concat(e))}))}}var f;if("function"!=typeof i&&n(6),void 0!==o&&"function"!=typeof o&&n(7),t(r)){var c=w(e),s=N(e,r,void 0),v=!0;try{f=i(s),v=!1}finally{v?g(c):O(c)}return"undefined"!=typeof Promise&&f instanceof Promise?f.then((function(n){return j(c,o),P(n,c)}),(function(n){throw g(c),n})):(j(c,o),P(f,c))}if(!r||"object"!=typeof r){if(void 0===(f=i(r))&&(f=r),f===H&&(f=void 0),e.D&&d(f,!0),o){var p=[],l=[];b("Patches").M(r,f,p,l),o(p,l)}return f}n(21,r)},this.produceWithPatches=function(n,r){if("function"==typeof n)return function(r){for(var t=arguments.length,i=Array(t>1?t-1:0),o=1;o<t;o++)i[o-1]=arguments[o];return e.produceWithPatches(r,(function(r){return n.apply(void 0,[r].concat(i))}))};var t,i,o=e.produce(n,r,(function(n,r){t=n,i=r}));return"undefined"!=typeof Promise&&o instanceof Promise?o.then((function(n){return[n,t,i]})):[o,t,i]},"boolean"==typeof(null==r?void 0:r.useProxies)&&this.setUseProxies(r.useProxies),"boolean"==typeof(null==r?void 0:r.autoFreeze)&&this.setAutoFreeze(r.autoFreeze)}var i=e.prototype;return i.createDraft=function(e){t(e)||n(8),r(e)&&(e=R(e));var i=w(this),o=N(this,e,void 0);return o[Q].C=!0,O(i),o},i.finishDraft=function(r,t){var e=r&&r[Q]; true&&(e&&e.C||n(9),e.I&&n(10));var i=e.A;return j(i,t),P(void 0,i)},i.setAutoFreeze=function(n){this.D=n},i.setUseProxies=function(r){r&&!B&&n(20),this.O=r},i.applyPatches=function(n,t){var e;for(e=t.length-1;e>=0;e--){var i=t[e];if(0===i.path.length&&"replace"===i.op){n=i.value;break}}e>-1&&(t=t.slice(e+1));var o=b("Patches").$;return r(n)?o(n,t):this.produce(n,(function(n){return o(n,t)}))},e}(),an=new un,fn=an.produce,cn=an.produceWithPatches.bind(an),sn=an.setAutoFreeze.bind(an),vn=an.setUseProxies.bind(an),pn=an.applyPatches.bind(an),ln=an.createDraft.bind(an),dn=an.finishDraft.bind(an);/* harmony default export */ __webpack_exports__["default"] = (fn);
 //# sourceMappingURL=immer.esm.js.map
 
 
@@ -18605,62 +19528,62 @@ function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=a
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__webpack_require__.n = (module) => {
+/******/ 		__webpack_require__.n = function(module) {
 /******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
 /******/ 			__webpack_require__.d(getter, { a: getter });
 /******/ 			return getter;
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define getter functions for harmony exports
-/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 		__webpack_require__.d = function(exports, definition) {
 /******/ 			for(var key in definition) {
 /******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/ensure chunk */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		__webpack_require__.f = {};
 /******/ 		// This file contains only the entry chunk.
 /******/ 		// The chunk loading function for additional chunks
-/******/ 		__webpack_require__.e = (chunkId) => {
-/******/ 			return Promise.all(Object.keys(__webpack_require__.f).reduce((promises, key) => {
+/******/ 		__webpack_require__.e = function(chunkId) {
+/******/ 			return Promise.all(Object.keys(__webpack_require__.f).reduce(function(promises, key) {
 /******/ 				__webpack_require__.f[key](chunkId, promises);
 /******/ 				return promises;
 /******/ 			}, []));
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/get javascript chunk filename */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// This function allow to reference async chunks
-/******/ 		__webpack_require__.u = (chunkId) => {
+/******/ 		__webpack_require__.u = function(chunkId) {
 /******/ 			// return url for filenames based on template
 /******/ 			return "" + chunkId + ".js";
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/get mini-css chunk filename */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// This function allow to reference async chunks
-/******/ 		__webpack_require__.miniCssF = (chunkId) => {
+/******/ 		__webpack_require__.miniCssF = function(chunkId) {
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		__webpack_require__.g = (function() {
 /******/ 			if (typeof globalThis === 'object') return globalThis;
 /******/ 			try {
@@ -18669,19 +19592,19 @@ function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=a
 /******/ 				if (typeof window === 'object') return window;
 /******/ 			}
 /******/ 		})();
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/load script */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		var inProgress = {};
 /******/ 		var dataWebpackPrefix = "orb-products-services:";
 /******/ 		// loadScript function to load a script via script tag
-/******/ 		__webpack_require__.l = (url, done, key, chunkId) => {
+/******/ 		__webpack_require__.l = function(url, done, key, chunkId) {
 /******/ 			if(inProgress[url]) { inProgress[url].push(done); return; }
 /******/ 			var script, needAttach;
 /******/ 			if(key !== undefined) {
@@ -18705,14 +19628,14 @@ function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=a
 /******/ 				script.src = url;
 /******/ 			}
 /******/ 			inProgress[url] = [done];
-/******/ 			var onScriptComplete = (prev, event) => {
+/******/ 			var onScriptComplete = function(prev, event) {
 /******/ 				// avoid mem leaks in IE.
 /******/ 				script.onerror = script.onload = null;
 /******/ 				clearTimeout(timeout);
 /******/ 				var doneFns = inProgress[url];
 /******/ 				delete inProgress[url];
 /******/ 				script.parentNode && script.parentNode.removeChild(script);
-/******/ 				doneFns && doneFns.forEach((fn) => (fn(event)));
+/******/ 				doneFns && doneFns.forEach(function(fn) { return fn(event); });
 /******/ 				if(prev) return prev(event);
 /******/ 			}
 /******/ 			var timeout = setTimeout(onScriptComplete.bind(null, undefined, { type: 'timeout', target: script }), 120000);
@@ -18720,21 +19643,21 @@ function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=a
 /******/ 			script.onload = onScriptComplete.bind(null, script.onload);
 /******/ 			needAttach && document.head.appendChild(script);
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// define __esModule on exports
-/******/ 		__webpack_require__.r = (exports) => {
+/******/ 		__webpack_require__.r = function(exports) {
 /******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/publicPath */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		var scriptUrl;
 /******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
 /******/ 		var document = __webpack_require__.g.document;
@@ -18754,10 +19677,10 @@ function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=a
 /******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
 /******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
 /******/ 		__webpack_require__.p = scriptUrl;
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/jsonp chunk loading */
-/******/ 	(() => {
+/******/ 	!function() {
 /******/ 		// no baseURI
 /******/ 		
 /******/ 		// object to store loaded and loading chunks
@@ -18767,7 +19690,7 @@ function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=a
 /******/ 			"index": 0
 /******/ 		};
 /******/ 		
-/******/ 		__webpack_require__.f.j = (chunkId, promises) => {
+/******/ 		__webpack_require__.f.j = function(chunkId, promises) {
 /******/ 				// JSONP chunk loading for javascript
 /******/ 				var installedChunkData = __webpack_require__.o(installedChunks, chunkId) ? installedChunks[chunkId] : undefined;
 /******/ 				if(installedChunkData !== 0) { // 0 means "already installed".
@@ -18778,14 +19701,14 @@ function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=a
 /******/ 					} else {
 /******/ 						if(true) { // all chunks have JS
 /******/ 							// setup Promise in chunk cache
-/******/ 							var promise = new Promise((resolve, reject) => (installedChunkData = installedChunks[chunkId] = [resolve, reject]));
+/******/ 							var promise = new Promise(function(resolve, reject) { installedChunkData = installedChunks[chunkId] = [resolve, reject]; });
 /******/ 							promises.push(installedChunkData[2] = promise);
 /******/ 		
 /******/ 							// start chunk loading
 /******/ 							var url = __webpack_require__.p + __webpack_require__.u(chunkId);
 /******/ 							// create error before stack unwound to get useful stacktrace later
 /******/ 							var error = new Error();
-/******/ 							var loadingEnded = (event) => {
+/******/ 							var loadingEnded = function(event) {
 /******/ 								if(__webpack_require__.o(installedChunks, chunkId)) {
 /******/ 									installedChunkData = installedChunks[chunkId];
 /******/ 									if(installedChunkData !== 0) installedChunks[chunkId] = undefined;
@@ -18817,14 +19740,14 @@ function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=a
 /******/ 		// no on chunks loaded
 /******/ 		
 /******/ 		// install a JSONP callback for chunk loading
-/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 		var webpackJsonpCallback = function(parentChunkLoadingFunction, data) {
 /******/ 			var chunkIds = data[0];
 /******/ 			var moreModules = data[1];
 /******/ 			var runtime = data[2];
 /******/ 			// add "moreModules" to the modules object,
 /******/ 			// then flag all "chunkIds" as loaded and fire callback
 /******/ 			var moduleId, chunkId, i = 0;
-/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 			if(chunkIds.some(function(id) { return installedChunks[id] !== 0; })) {
 /******/ 				for(moduleId in moreModules) {
 /******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
 /******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
@@ -18846,30 +19769,27 @@ function n(n){for(var r=arguments.length,t=Array(r>1?r-1:0),e=1;e<r;e++)t[e-1]=a
 /******/ 		var chunkLoadingGlobal = self["webpackChunkorb_products_services"] = self["webpackChunkorb_products_services"] || [];
 /******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
-/******/ 	})();
+/******/ 	}();
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
+!function() {
 "use strict";
 /*!***********************!*\
   !*** ./src/index.jsx ***!
   \***********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-Object(function webpackMissingModule() { var e = new Error("Cannot find module 'react-dom/client.js'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-/* harmony import */ var _App_jsx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./App.jsx */ "./src/App.jsx");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _model_store_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./model/store.js */ "./src/model/store.js");
-/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @stripe/react-stripe-js */ "./node_modules/@stripe/react-stripe-js/dist/react-stripe.umd.js");
-/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _stripe_stripe_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @stripe/stripe-js */ "./node_modules/@stripe/stripe-js/dist/stripe.esm.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "react-dom");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _App_jsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App.jsx */ "./src/App.jsx");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _model_store_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./model/store.js */ "./src/model/store.js");
+/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @stripe/react-stripe-js */ "./node_modules/@stripe/react-stripe-js/dist/react-stripe.umd.js");
+/* harmony import */ var _stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _stripe_stripe_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @stripe/stripe-js */ "./node_modules/@stripe/stripe-js/dist/stripe.esm.js");
 
 
 
@@ -18879,37 +19799,38 @@ Object(function webpackMissingModule() { var e = new Error("Cannot find module '
 
 
 
-const LoadingComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_loading_LoadingComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./loading/LoadingComponent.jsx */ "./src/loading/LoadingComponent.jsx")));
-const ScheduleComponent = (0,react__WEBPACK_IMPORTED_MODULE_1__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Schedule_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Schedule.jsx */ "./src/views/Schedule.jsx")));
+const LoadingComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_loading_LoadingComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./loading/LoadingComponent.jsx */ "./src/loading/LoadingComponent.jsx")));
+const ScheduleComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Schedule_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Schedule.jsx */ "./src/views/Schedule.jsx")));
 // Add to backend to make changes more easily
-const stripe = (0,_stripe_stripe_js__WEBPACK_IMPORTED_MODULE_7__.loadStripe)('pk_test_51NKFzqKNsWPbtVUMWvTJqD8nAWkpG0aaMrJtmkCLurHXMSwinKilB5yacy2OUUsoveCP7SednwlV0bKpXZIhadUI00SvobnJW7');
+const stripe = (0,_stripe_stripe_js__WEBPACK_IMPORTED_MODULE_6__.loadStripe)('pk_test_51NKFzqKNsWPbtVUMWvTJqD8nAWkpG0aaMrJtmkCLurHXMSwinKilB5yacy2OUUsoveCP7SednwlV0bKpXZIhadUI00SvobnJW7');
 const orbServicesContainer = document.getElementById('orb_services');
 if (orbServicesContainer) {
-  Object(function webpackMissingModule() { var e = new Error("Cannot find module 'react-dom/client.js'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(orbServicesContainer).render((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_1___default().StrictMode), null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_redux__WEBPACK_IMPORTED_MODULE_4__.Provider, {
-    store: _model_store_js__WEBPACK_IMPORTED_MODULE_5__["default"]
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_6__.Elements, {
+  react_dom__WEBPACK_IMPORTED_MODULE_1___default().createRoot(orbServicesContainer).render((0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_0___default().StrictMode), null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_redux__WEBPACK_IMPORTED_MODULE_3__.Provider, {
+    store: _model_store_js__WEBPACK_IMPORTED_MODULE_4__["default"]
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__.Elements, {
     stripe: stripe
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_App_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null)))));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_App_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], null)))));
 }
-const orbScheduleContainer = document.getElementById('orb_schedule');
-if (orbScheduleContainer) {
-  Object(function webpackMissingModule() { var e = new Error("Cannot find module 'react-dom/client.js'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(orbScheduleContainer).render((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_1___default().StrictMode), null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_redux__WEBPACK_IMPORTED_MODULE_4__.Provider, {
-    store: _model_store_js__WEBPACK_IMPORTED_MODULE_5__["default"]
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.BrowserRouter, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_1__.Suspense, {
-    fallback: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(LoadingComponent, null)
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Routes, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
-    path: "/",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ScheduleComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
-    path: "/about",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ScheduleComponent, null)
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
-    path: "/schedule",
-    element: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ScheduleComponent, null)
-  })))))));
-}
-})();
 
+// const orbScheduleContainer = document.getElementById('orb_schedule');
+// if (orbScheduleContainer) {
+//   ReactDOM.createRoot(orbScheduleContainer).render(
+//     <React.StrictMode>
+//       <Provider store={store}>
+//         <Router>
+//           <Suspense fallback={<LoadingComponent />}>
+//             <Routes>
+//               <Route path="/" element={<ScheduleComponent />} />
+//               <Route path="/about" element={<ScheduleComponent />} />
+//               <Route path="/schedule" element={<ScheduleComponent />} />
+//             </Routes>
+//           </Suspense>
+//         </Router>
+//       </Provider>
+//     </React.StrictMode>
+//   );
+// }
+}();
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map

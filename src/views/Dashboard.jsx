@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import UserScheduleComponent from './dashboard/UserSchedule';
+import UserScheduleComponent from './schedule/UserSchedule';
 
 function DashboardComponent() {
   return (

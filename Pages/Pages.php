@@ -21,7 +21,6 @@ class Pages
             'FAQ',
             'SUPPORT',
             'CONTACT',
-            'SCHEDULE'
         ];
 
         foreach ($page_titles as $page_title) {
@@ -173,12 +172,10 @@ class Pages
 
     public function react_rewrite_rules()
     {
-        $schedule_page_id = get_page_by_path('schedule')->ID;
         $contact_page_id = get_page_by_path('contact')->ID;
         $support_page_id = get_page_by_path('support')->ID;
 
-        if ($schedule_page_id && $contact_page_id && $support_page_id) {
-            add_rewrite_rule('^schedule/?$', 'index.php?page_id=' . $schedule_page_id . '&id=$matches[1]', 'top');
+        if ($contact_page_id && $support_page_id) {
             add_rewrite_rule('^contact/?$', 'index.php?page_id=' . $contact_page_id . '&id=$matches[1]', 'top');
             add_rewrite_rule('^support/?$', 'index.php?page_id=' . $support_page_id . '&id=$matches[1]', 'top');
         }
@@ -210,11 +207,11 @@ class Pages
         }
 
         $card_page_id = get_page_by_path('billing/payment/card')->ID;
-        $mobile_page_id = get_page_by_path('billing/payment/mobile')->ID;
+        $wallet_page_id = get_page_by_path('billing/payment/wallet')->ID;
 
-        if ($card_page_id && $mobile_page_id) {
+        if ($card_page_id && $wallet_page_id) {
             add_rewrite_rule('^billing/payment/card/([0-9]+)/?$', 'index.php?page_id=' . $card_page_id . '&id=$matches[1]', 'top');
-            add_rewrite_rule('^billing/payment/mobile/([0-9]+)/([^/]+)/?$', 'index.php?page_id=' . $mobile_page_id . '&custom_route=payment&id=$matches[1]&extra_param=$matches[2]', 'top');
+            add_rewrite_rule('^billing/payment/wallet/([0-9]+)/([^/]+)/?$', 'index.php?page_id=' . $wallet_page_id . '&custom_route=payment&id=$matches[1]&extra_param=$matches[2]', 'top');
         }
     }
 

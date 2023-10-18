@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import PaymentNavigationComponent from './payment/Navigation.jsx';
+import PaymentNavigationComponent from './components/PaymentNavigation.jsx';
 
 import { getClient } from '../controllers/clientSlice.js';
 import { getStripeCustomer } from '../controllers/customerSlice.js';
