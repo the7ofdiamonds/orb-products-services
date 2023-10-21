@@ -101,7 +101,7 @@ class Pages
 
         $page_titles = [
             'CARD',
-            'MOBILE',
+            'WALLET',
         ];
 
         foreach ($page_titles as $page_title) {

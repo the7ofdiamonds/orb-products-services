@@ -101,7 +101,7 @@ class JS
     {
         $post_types = [
             'services',
-            'products'
+            'products',
         ];
 
         foreach ($post_types as $post_type) {
