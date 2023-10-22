@@ -52,6 +52,8 @@
 }
 .hero-animation-service h3 {
   text-transform: uppercase;
+  letter-spacing: 0;
+  margin-right: 0;
 }
 
 @keyframes cycle {
