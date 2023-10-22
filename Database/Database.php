@@ -17,7 +17,6 @@ class Database
 
         new DatabaseClient();
         new DatabaseCustomer();
-        new DatabaseEvent();
         new DatabaseInvoice();
         new DatabaseQuote();
         new DatabaseReceipt();

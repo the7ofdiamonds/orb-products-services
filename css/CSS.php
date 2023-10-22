@@ -2,45 +2,77 @@
 
 namespace ORB_Products_Services\CSS;
 
-use ORB_Products_Services\CSS\Customizer\Customizer;
+use ORB_Products_Services\Pages\Pages;
+use ORB_Products_Services\Post_Types\Post_Types;
 
 class CSS
 {
+    private $handle_prefix;
+    private $cssFolderPath;
+    private $cssFolderPathURL;
+    private $cssFileName;
+    private $filePath;
+    private $page_titles;
+    private $react_pages;
+    private $post_types;
 
     public function __construct()
     {
-        add_action('wp_head', [$this, 'load_css']);
+        add_action('wp_head', [$this, 'load_front_page_css']);
+        add_action('wp_head', [$this, 'load_pages_css']);
 
-        new Customizer;
+        $this->handle_prefix = 'orb_products_services_';
+        $this->cssFolderPath = ORB_PRODUCTS_SERVICES . 'CSS/';
+        $this->cssFolderPathURL = ORB_PRODUCTS_SERVICES_URL . 'CSS/';
+        $this->cssFileName = 'orb-products-services.css';
+
+        $this->filePath = $this->cssFolderPath . $this->cssFileName;
+
+        $pages = new Pages;
+        $posttypes = new Post_Types;
+
+        $this->react_pages = $pages->react_pages;
+        $this->post_types = $posttypes->post_types;
     }
 
-    function load_css()
+    function load_front_page_css()
     {
-        $pages = [
-            'about',
-            'billing/quote',
-            'billing/invoice',
-            'billing/payment',
-            'billing/payment/card',
-            'billing/payment/mobile',
-            'billing/receipt',
-            'client/start',
-            'client/selections',
-            'contact',
-            'contact/success',
-            'dashboard',
-            'faq',
-            'schedule',
-            'support',
-            'support/success'
-        ];
+        if (is_front_page()) {
+            if ($this->filePath) {
+                error_log('front page');
+                wp_register_style($this->handle_prefix . 'css',  $this->cssFolderPathURL . $this->cssFileName, array(), false, 'all');
+                wp_enqueue_style($this->handle_prefix . 'css');
+            } else {
+                error_log('CSS file is missing at :' . $this->filePath);
+            }
+        }
+    }
 
-        if (
-            is_front_page() ||
-            is_post_type_archive('services') || is_singular('services') ||
-            is_page($pages)
-        ) {
-            wp_enqueue_style('orb-products-services',  ORB_PRODUCTS_SERVICES_URL . 'CSS/orb-products-services.css', array(), false, 'all', 'orb-services');
+    function load_pages_css()
+    {
+        foreach ($this->react_pages as $page) {
+            if (is_page($page)) {
+                if ($this->filePath) {
+                    wp_register_style($this->handle_prefix . 'css',  $this->cssFolderPathURL . $this->cssFileName, array(), false, 'all');
+                    wp_enqueue_style($this->handle_prefix . 'css');
+                } else {
+                    error_log('CSS file is missing at :' . $this->filePath);
+                }
+            }
+        }
+    }
+
+    function load_post_types_css()
+    {
+        foreach ($this->post_types as $post_type) {
+            if (is_post_type_archive($post_type['name']) || is_singular($post_type['name'])) {
+                if ($this->filePath) {
+                    wp_register_style($this->handle_prefix . 'css',  $this->cssFolderPathURL . $this->cssFileName, array(), false, 'all');
+                    wp_enqueue_style($this->handle_prefix . 'css');
+                } else {
+                    error_log('CSS file is missing at :' . $this->filePath);
+                }
+            }
         }
     }
 }

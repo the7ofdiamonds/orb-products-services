@@ -1,5 +1,7 @@
-<?php get_header(); ?>
+<?php
 
-<?php include ORB_PRODUCTS_SERVICES . 'includes/section-service.php'; ?>
+get_header();
 
-<?php get_footer(); ?>
+include ORB_PRODUCTS_SERVICES . 'includes/section-service.php';
+
+get_footer();

@@ -54,7 +54,7 @@ use ORB_Products_Services\JS\JS;
 use ORB_Products_Services\Menus\Menus;
 use ORB_Products_Services\Pages\Pages;
 use ORB_Products_Services\PDF\PDF;
-use ORB_Products_Services\Post_Types\PostTypes;
+use ORB_Products_Services\Post_Types\Post_Types;
 use ORB_Products_Services\Roles\Roles;
 use ORB_Products_Services\Shortcodes\Shortcodes;
 use ORB_Products_Services\Database\Database;
@@ -78,6 +78,7 @@ class ORB_Products_Services
         new CSS;
         new JS;
         new Pages;
+        new Post_Types;
         new Roles;
         new Shortcodes;
         new Database;
@@ -141,7 +142,6 @@ class ORB_Products_Services
             StripeAPI::setApiKey($stripeSecretKey);
             $stripeClient = new StripeClient($stripeSecretKey);
 
-            new PostTypes($stripeClient);
             new Email($stripeClient, $mailer);
 
             new Stripe($stripeClient);
@@ -205,6 +205,3 @@ register_activation_hook(__FILE__, [$orb_services_pages, 'add_billing_subpages']
 register_activation_hook(__FILE__, [$orb_services_pages, 'add_payment_subpages']);
 register_activation_hook(__FILE__, [$orb_services_pages, 'add_client_subpages']);
 register_activation_hook(__FILE__, [$orb_services_pages, 'add_contact_subpage']);
-
-$orb_services_menus = new Menus();
-register_activation_hook(__FILE__, [$orb_services_menus, 'create_mobile_menu']);

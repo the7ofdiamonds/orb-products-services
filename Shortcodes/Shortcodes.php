@@ -8,7 +8,7 @@ class Shortcodes
     {
         add_shortcode('orb-services-hero', [$this, 'orb_services_hero_shortcode']);
         add_shortcode('orb-services', [$this, 'orb_services_shortcode']);
-        add_shortcode('orb-services-support', [$this, 'orb_services_support_shortcode']);
+        // Testimonials
     }
 
     function orb_services_hero_shortcode()

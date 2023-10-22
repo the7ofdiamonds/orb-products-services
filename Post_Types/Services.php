@@ -6,15 +6,13 @@ use ORB_Products_Services\Post_Types\Meta;
 
 class Services
 {    
-    public function __construct($stripeClient)
+    public function __construct()
     {
-        add_action('init', [$this, 'services_custom_post_type']);
-        
-        new Meta($stripeClient);
-    }
+        // add_action('init', [$this, 'services_custom_post_type']);
+        }
 
     public function services_custom_post_type()
-    {
+    {error_log('services');
         $labels = array(
             'name' => 'SERVICES',
             'singular_name' => 'Service',

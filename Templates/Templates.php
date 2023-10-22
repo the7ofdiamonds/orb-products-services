@@ -2,58 +2,85 @@
 
 namespace ORB_Products_Services\Templates;
 
+use ORB_Products_Services\CSS\CSS;
+use ORB_Products_Services\JS\JS;
+use ORB_Products_Services\Pages\Pages;
+use ORB_Products_Services\Post_Types\Post_Types;
+
 class Templates
 {
 
+    private $page_titles;
+    private $post_types;
+    private $css_file;
+    private $js_file;
+
     public function __construct()
     {
-        add_filter('archive_template', [$this, 'get_archive_page_template']);
-        add_filter('single_template', [$this, 'get_single_page_template']);
-        add_filter('page_template', [$this, 'get_custom_client_page_template']);
-        add_filter('page_template', [$this, 'get_custom_start_page_template']);
-        add_filter('page_template', [$this, 'get_custom_selections_page_template']);
-        add_filter('page_template', [$this, 'get_custom_billing_page_template']);
-        add_filter('page_template', [$this, 'get_custom_quote_page_template']);
-        add_filter('page_template', [$this, 'get_custom_invoice_page_template']);
-        add_filter('page_template', [$this, 'get_custom_payment_page_template']);
-        add_filter('page_template', [$this, 'get_custom_card_page_template']);
-        add_filter('page_template', [$this, 'get_custom_wallet_page_template']);
-        add_filter('page_template', [$this, 'get_custom_receipt_page_template']);
-        add_filter('page_template', [$this, 'get_custom_faq_page_template']);
-        add_filter('page_template', [$this, 'get_custom_support_page_template']);
-        add_filter('page_template', [$this, 'get_custom_contact_page_template']);
-        add_filter('page_template', [$this, 'get_custom_contact_success_page_template']);
+        add_filter('archive_template', [$this, 'get_archive_page_template'], 10, 1);
+        add_filter('single_template', [$this, 'get_single_page_template'], 10, 1);
+        add_filter('page_template', [$this, 'get_custom_client_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_start_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_selections_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_billing_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_quote_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_invoice_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_payment_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_card_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_wallet_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_receipt_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_faq_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_support_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_contact_page_template'], 1, 1);
+        add_filter('page_template', [$this, 'get_custom_contact_success_page_template'], 1, 1);
+    
+        $pages = new Pages;
+        $posttypes = new Post_Types();
+
+        $this->page_titles = $pages->page_titles;
+        $this->post_types = $posttypes->post_types;
+        $this->css_file = new CSS;
+        $this->js_file = new JS;
     }
 
     function get_archive_page_template($archive_template)
     {
-        if (is_post_type_archive('services')) {
-            $archive_template = ORB_PRODUCTS_SERVICES . 'Post_Types/Services/archive-services.php';
+        foreach ($this->post_types as $post_type) {
 
-            if (file_exists($archive_template)) {
-                return $archive_template;
-            } else {
-                error_log('Services Post Type Archive Template does not exist.');
+            if (is_post_type_archive($post_type['name'])) {
+                $archive_template = ORB_PRODUCTS_SERVICES . 'Post_Types/' . $post_type['plural'] . '/archive-' . $post_type['name'] . '.php';
+
+                if (file_exists($archive_template)) {
+                    add_action('wp_head', [$this->css_file, 'load_post_types_css']);
+                    add_action('wp_footer', [$this->js_file, 'load_post_types_archive_react']);
+
+                    return $archive_template;
+                } else {
+                    error_log('Post Type ' . $post_type['name'] . ' archive template not found.');
+                }
             }
         }
-
-        return $archive_template;
     }
 
     function get_single_page_template($single_template)
     {
-        if (is_singular('services')) {
-            $single_template = ORB_PRODUCTS_SERVICES . 'Post_Types/Services/single-services.php';
+        foreach ($this->post_types as $post_type) {
 
-            if (file_exists($single_template)) {
-                return $single_template;
-            } else {
-                error_log('Services Post Type Single Template does not exist.');
+            if (is_singular($post_type['name'])) {
+                $single_template = ORB_PRODUCTS_SERVICES . 'Post_Types/' . $post_type['plural'] . '/single-' . $post_type['name'] . '.php';
+
+                if (file_exists($single_template)) {
+                    add_action('wp_head', [$this->css_file, 'load_post_types_css']);
+                    add_action('wp_footer', [$this->js_file, 'load_post_types_single_react']);
+
+                    return $single_template;
+                } else {
+                    error_log('Post Type ' . $post_type['name'] . ' single template not found.');
+                }
             }
         }
-
-        return $single_template;
     }
+
 
     function get_custom_client_page_template($page_template)
     {
