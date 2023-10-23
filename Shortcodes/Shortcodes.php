@@ -18,7 +18,7 @@ class Shortcodes
 
     function orb_services_shortcode()
     {
-        include ORB_PRODUCTS_SERVICES . 'includes/section-services.php';
+        include ORB_PRODUCTS_SERVICES . 'includes/react.php';
     }
 
     function orb_services_support_shortcode()

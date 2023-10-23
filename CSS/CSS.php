@@ -2,8 +2,10 @@
 
 namespace ORB_Products_Services\CSS;
 
+use ORB_Products_Services\ORB_Products_Services;
 use ORB_Products_Services\Pages\Pages;
 use ORB_Products_Services\Post_Types\Post_Types;
+use ORB_Products_Services\CSS\Customizer\Customizer;
 
 class CSS
 {
@@ -31,6 +33,8 @@ class CSS
 
         $this->page_titles = $pages->page_titles;
         $this->post_types = $posttypes->post_types;
+
+        new Customizer;
     }
 
     function load_front_page_css()
