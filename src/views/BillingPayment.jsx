@@ -27,7 +27,9 @@ function PaymentComponent() {
   const { stripe_invoice_id, status, amount_remaining } = useSelector(
     (state) => state.invoice
   );
-  const { paymentLoading, paymentError } = useSelector((state) => state.payment);
+  const { paymentLoading, paymentError } = useSelector(
+    (state) => state.payment
+  );
   const { receipt_id } = useSelector((state) => state.receipt);
 
   const dispatch = useDispatch();
@@ -120,19 +122,21 @@ function PaymentComponent() {
 
   return (
     <>
-      <h2 className="title">PAYMENT</h2>
+      <section className="payment">
+        <h2 className="title">PAYMENT</h2>
 
-      {status === 'open' ? <PaymentNavigationComponent /> : ''}
+        {status === 'open' ? <PaymentNavigationComponent /> : ''}
 
-      <StatusBar message={message} messageType={messageType} />
+        <StatusBar message={message} messageType={messageType} />
 
-      {receipt_id && status == 'paid' ? (
-        <button onClick={handleClick}>
-          <h3>RECEIPT</h3>
-        </button>
-      ) : (
-        ''
-      )}
+        {receipt_id && status == 'paid' ? (
+          <button onClick={handleClick}>
+            <h3>RECEIPT</h3>
+          </button>
+        ) : (
+          ''
+        )}
+      </section>
     </>
   );
 }

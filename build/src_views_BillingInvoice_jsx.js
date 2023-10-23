@@ -219,7 +219,9 @@ function InvoiceComponent() {
       error: invoiceError
     });
   }
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "invoice"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
   }, "INVOICE"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "invoice-card card"
@@ -321,7 +323,7 @@ function InvoiceComponent() {
     messageType: messageType
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
-  }, status === 'paid' && receipt_id || paymentStatus === 'succeeded' && receipt_id ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "RECEIPT") : status === 'open' && client_secret ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "PAYMENT") : ''));
+  }, status === 'paid' && receipt_id || paymentStatus === 'succeeded' && receipt_id ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "RECEIPT") : status === 'open' && client_secret ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "PAYMENT") : '')));
 }
 /* harmony default export */ __webpack_exports__["default"] = (InvoiceComponent);
 

@@ -6,8 +6,9 @@ import UserScheduleComponent from './schedule/UserSchedule';
 function DashboardComponent() {
   return (
     <>
-      <UserScheduleComponent />
-      
+      <main className="dashboard">
+        <UserScheduleComponent />
+      </main>
     </>
   );
 }

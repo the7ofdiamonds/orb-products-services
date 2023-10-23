@@ -319,7 +319,9 @@ const CardPaymentComponent = () => {
       error: paymentError
     });
   }
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_PaymentNavigation__WEBPACK_IMPORTED_MODULE_2__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "payment"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_PaymentNavigation__WEBPACK_IMPORTED_MODULE_2__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "debit-credit-card card"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "front"
@@ -389,7 +391,7 @@ const CardPaymentComponent = () => {
   }), amount_due ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "Amount: ", (0,_utils_FormatCurrency__WEBPACK_IMPORTED_MODULE_10__.FormatCurrency)(amount_due, account_country, currency)) : '', (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     type: "submit",
     onClick: handleSubmit
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "PAY")));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "PAY"))));
 };
 /* harmony default export */ __webpack_exports__["default"] = (CardPaymentComponent);
 

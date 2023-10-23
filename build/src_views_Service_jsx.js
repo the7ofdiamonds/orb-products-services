@@ -96,7 +96,9 @@ function ServiceComponent() {
       error: serviceError
     });
   }
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "service"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "service-icon"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
     className: icon
@@ -123,7 +125,7 @@ function ServiceComponent() {
     onClick: handleClick
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
     class: "fas fa-power-off"
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "START")));
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "START"))));
 }
 /* harmony default export */ __webpack_exports__["default"] = (ServiceComponent);
 

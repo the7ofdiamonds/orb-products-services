@@ -35,10 +35,12 @@ const WalletComponent = () => {
 
   return (
     <>
-      <PaymentNavigationComponent />
-      {paymentRequest && (
-        <PaymentRequestButtonElement options={{ paymentRequest }} />
-      )}
+      <section className="payment">
+        <PaymentNavigationComponent />
+        {paymentRequest && (
+          <PaymentRequestButtonElement options={{ paymentRequest }} />
+        )}
+      </section>
     </>
   );
 };

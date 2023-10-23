@@ -9932,8 +9932,17 @@ function App() {
     path: "client/selections",
     element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(SelectionsComponent, null)
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "billing",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(BillingComponent, null)
+    path: "billing/payment/card/:id",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CardPaymentComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "billing/payment/wallet/:id",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(WalletComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "billing/payment/:id",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PaymentComponent, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "billing/receipt/:id",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ReceiptComponent, null)
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "billing/quote/:id",
     element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(QuoteComponent, null)
@@ -9941,17 +9950,8 @@ function App() {
     path: "billing/invoice/:id",
     element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InvoiceComponent, null)
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "billing/payment/:id",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PaymentComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "billing/payment/card/:id",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CardPaymentComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "billing/payment/wallet/:id",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(WalletComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "billing/receipt/:id",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ReceiptComponent, null)
+    path: "billing",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(BillingComponent, null)
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "faq",
     element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(FAQComponent, null)
@@ -19776,9 +19776,9 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 !function() {
 "use strict";
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
+/*!***********************!*\
+  !*** ./src/index.jsx ***!
+  \***********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -19794,42 +19794,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- // Import Router components
 
 
 
 
 const LoadingComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_loading_LoadingComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./loading/LoadingComponent.jsx */ "./src/loading/LoadingComponent.jsx")));
-const ScheduleComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Schedule_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Schedule.jsx */ "./src/views/Schedule.jsx")));
+
 // Add to backend to make changes more easily
 const stripe = (0,_stripe_stripe_js__WEBPACK_IMPORTED_MODULE_6__.loadStripe)('pk_test_51NKFzqKNsWPbtVUMWvTJqD8nAWkpG0aaMrJtmkCLurHXMSwinKilB5yacy2OUUsoveCP7SednwlV0bKpXZIhadUI00SvobnJW7');
-const orbServicesContainer = document.getElementById('orb_services');
-if (orbServicesContainer) {
-  react_dom__WEBPACK_IMPORTED_MODULE_1___default().createRoot(orbServicesContainer).render((0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_0___default().StrictMode), null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_redux__WEBPACK_IMPORTED_MODULE_3__.Provider, {
+const orb = document.getElementById('orb_products_services');
+if (orb) {
+  react_dom__WEBPACK_IMPORTED_MODULE_1___default().createRoot(orb).render((0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_0___default().StrictMode), null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_redux__WEBPACK_IMPORTED_MODULE_3__.Provider, {
     store: _model_store_js__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_stripe_react_stripe_js__WEBPACK_IMPORTED_MODULE_5__.Elements, {
     stripe: stripe
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_App_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], null)))));
 }
-
-// const orbScheduleContainer = document.getElementById('orb_schedule');
-// if (orbScheduleContainer) {
-//   ReactDOM.createRoot(orbScheduleContainer).render(
-//     <React.StrictMode>
-//       <Provider store={store}>
-//         <Router>
-//           <Suspense fallback={<LoadingComponent />}>
-//             <Routes>
-//               <Route path="/" element={<ScheduleComponent />} />
-//               <Route path="/about" element={<ScheduleComponent />} />
-//               <Route path="/schedule" element={<ScheduleComponent />} />
-//             </Routes>
-//           </Suspense>
-//         </Router>
-//       </Provider>
-//     </React.StrictMode>
-//   );
-// }
 }();
 /******/ })()
 ;

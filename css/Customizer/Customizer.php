@@ -1,5 +1,5 @@
 <?php
-namespace ORB_Products_Services\CSS\Customizer;
+namespace ORB_Products_Services\CSS;
 
 use ORB_Products_Services\CSS\Customizer\HeroCustomizer;
 use ORB_Products_Services\CSS\Customizer\ServicesCustomizer;

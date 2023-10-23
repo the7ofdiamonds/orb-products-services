@@ -6,14 +6,16 @@ function ContactSuccessComponent() {
   const email = urlParams.get('email');
 
   return (
-    <div className="status-bar card success">
-      <span>
-        <h4>
-          Thank You, {firstName}. Your message has been sent, and a reply will
-          be sent to {email}.
-        </h4>
-      </span>
-    </div>
+    <main className="contact-success">
+      <div className="status-bar card success">
+        <span>
+          <h4>
+            Thank You, {firstName}. Your message has been sent, and a reply will
+            be sent to {email}.
+          </h4>
+        </span>
+      </div>
+    </main>
   );
 }
 

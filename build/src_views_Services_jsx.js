@@ -84,7 +84,9 @@ function ServicesComponent() {
   const handleServiceClick = serviceId => {
     window.location.href = `/services/${serviceId}`;
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "services"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
   }, "SERVICES"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "services-list"
@@ -119,7 +121,7 @@ function ServicesComponent() {
     className: "services-btn"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
     className: service.icon
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, service.action_word))))))) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "No services found.")));
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, service.action_word))))))) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "No services found."))));
 }
 /* harmony default export */ __webpack_exports__["default"] = (ServicesComponent);
 

@@ -19,9 +19,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function Billing() {
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "billing"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
-  }, "billing"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_billing_UserReceipt__WEBPACK_IMPORTED_MODULE_1__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_billing_UserInvoice__WEBPACK_IMPORTED_MODULE_2__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_billing_UserQuote__WEBPACK_IMPORTED_MODULE_3__["default"], null));
+  }, "billing"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_billing_UserReceipt__WEBPACK_IMPORTED_MODULE_1__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_billing_UserInvoice__WEBPACK_IMPORTED_MODULE_2__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_billing_UserQuote__WEBPACK_IMPORTED_MODULE_3__["default"], null)));
 }
 /* harmony default export */ __webpack_exports__["default"] = (Billing);
 

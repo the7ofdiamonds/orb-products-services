@@ -189,7 +189,9 @@ function QuoteComponent() {
       error: quoteError
     });
   }
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "quote"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
   }, "QUOTE"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "quote-card card"
@@ -228,7 +230,7 @@ function QuoteComponent() {
     onClick: handleInvoice
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "INVOICE")) : status === 'canceled' ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleSelections
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SELECTIONS")) : null));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SELECTIONS")) : null)));
 }
 /* harmony default export */ __webpack_exports__["default"] = (QuoteComponent);
 

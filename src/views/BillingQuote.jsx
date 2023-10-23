@@ -149,74 +149,78 @@ function QuoteComponent() {
 
   return (
     <>
-      <h2 className="title">QUOTE</h2>
+      <section className="quote">
+        <h2 className="title">QUOTE</h2>
 
-      <div className="quote-card card">
-        <table>
-          <thead>
-            <tr>
-              <th>
-                <h4>Quote</h4>
-              </th>
-            </tr>
-            <tr>
-              <th>
-                <h4 className="number-label">NO.</h4>
-              </th>
-              <th colSpan={4}>
-                <h4 className="description-label">DESCRIPTION</h4>
-              </th>
-              <th>
-                <h4 className="total-label">TOTAL</h4>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {selections &&
-              selections.length > 0 &&
-              selections.map((item) => (
-                <tr id="quote_option">
-                  <td className="feature-id">{item.id}</td>
-                  <td className="feature-name" id="feature_name" colSpan={4}>
-                    {item.description}
-                  </td>
-                  <td className="feature-cost  table-number" id="feature_cost">
-                    <h4>
-                      {new Intl.NumberFormat('us', {
-                        style: 'currency',
-                        currency: 'USD',
-                      }).format(item.cost)}
-                    </h4>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+        <div className="quote-card card">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <h4>Quote</h4>
+                </th>
+              </tr>
+              <tr>
+                <th>
+                  <h4 className="number-label">NO.</h4>
+                </th>
+                <th colSpan={4}>
+                  <h4 className="description-label">DESCRIPTION</h4>
+                </th>
+                <th>
+                  <h4 className="total-label">TOTAL</h4>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {selections &&
+                selections.length > 0 &&
+                selections.map((item) => (
+                  <tr id="quote_option">
+                    <td className="feature-id">{item.id}</td>
+                    <td className="feature-name" id="feature_name" colSpan={4}>
+                      {item.description}
+                    </td>
+                    <td
+                      className="feature-cost  table-number"
+                      id="feature_cost">
+                      <h4>
+                        {new Intl.NumberFormat('us', {
+                          style: 'currency',
+                          currency: 'USD',
+                        }).format(item.cost)}
+                      </h4>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
 
-      <StatusBar message={message} messageType={messageType} />
+        <StatusBar message={message} messageType={messageType} />
 
-      <div className="actions">
-        {status && status === 'open' ? (
-          <>
-            <button onClick={handleCancel}>
-              <h3>CANCEL</h3>
+        <div className="actions">
+          {status && status === 'open' ? (
+            <>
+              <button onClick={handleCancel}>
+                <h3>CANCEL</h3>
+              </button>
+
+              <button onClick={handleAccept}>
+                <h3>ACCEPT</h3>
+              </button>
+            </>
+          ) : status === 'accepted' ? (
+            <button onClick={handleInvoice}>
+              <h3>INVOICE</h3>
             </button>
-
-            <button onClick={handleAccept}>
-              <h3>ACCEPT</h3>
+          ) : status === 'canceled' ? (
+            <button onClick={handleSelections}>
+              <h3>SELECTIONS</h3>
             </button>
-          </>
-        ) : status === 'accepted' ? (
-          <button onClick={handleInvoice}>
-            <h3>INVOICE</h3>
-          </button>
-        ) : status === 'canceled' ? (
-          <button onClick={handleSelections}>
-            <h3>SELECTIONS</h3>
-          </button>
-        ) : null}
-      </div>
+          ) : null}
+        </div>
+      </section>
     </>
   );
 }

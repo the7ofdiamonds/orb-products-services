@@ -31,61 +31,63 @@ function ServicesComponent() {
 
   return (
     <>
-      <h2 className="title">SERVICES</h2>
+      <section className="services">
+        <h2 className="title">SERVICES</h2>
 
-      <div className="services-list">
-        {services && services.length ? (
-          <React.Fragment>
-            {services.map((service) => (
-              <>
-                <div className="service">
-                  <div className="services-card card" key={service.price_id}>
-                    <div className="services-title">
-                      <div className="services-icon">
-                        <i className={service.icon}></i>
+        <div className="services-list">
+          {services && services.length ? (
+            <React.Fragment>
+              {services.map((service) => (
+                <>
+                  <div className="service">
+                    <div className="services-card card" key={service.price_id}>
+                      <div className="services-title">
+                        <div className="services-icon">
+                          <i className={service.icon}></i>
+                        </div>
+                        <h3 className="services-name title">{service.title}</h3>
                       </div>
-                      <h3 className="services-name title">{service.title}</h3>
+
+                      <div className="services-features">
+                        {Array.isArray(service.features) && (
+                          <ul>
+                            {service.features.map((feature) => (
+                              <li key={feature.id}>{feature.name}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+
+                      <div className="services-pricing">
+                        <h4>
+                          Starting at{' '}
+                          {new Intl.NumberFormat('us', {
+                            style: 'currency',
+                            currency: 'USD',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(service.cost)}
+                        </h4>
+                      </div>
                     </div>
 
-                    <div className="services-features">
-                      {Array.isArray(service.features) && (
-                        <ul>
-                          {service.features.map((feature) => (
-                            <li key={feature.id}>{feature.name}</li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-
-                    <div className="services-pricing">
-                      <h4>
-                        Starting at{' '}
-                        {new Intl.NumberFormat('us', {
-                          style: 'currency',
-                          currency: 'USD',
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 0,
-                        }).format(service.cost)}
-                      </h4>
+                    <div className="services-action">
+                      <button
+                        onClick={() => handleServiceClick(service.slug)}
+                        className="services-btn">
+                        <i className={service.icon}></i>
+                        <h3>{service.action_word}</h3>
+                      </button>
                     </div>
                   </div>
-
-                  <div className="services-action">
-                    <button
-                      onClick={() => handleServiceClick(service.slug)}
-                      className="services-btn">
-                      <i className={service.icon}></i>
-                      <h3>{service.action_word}</h3>
-                    </button>
-                  </div>
-                </div>
-              </>
-            ))}
-          </React.Fragment>
-        ) : (
-          <h3>No services found.</h3>
-        )}
-      </div>
+                </>
+              ))}
+            </React.Fragment>
+          ) : (
+            <h3>No services found.</h3>
+          )}
+        </div>
+      </section>
     </>
   );
 }

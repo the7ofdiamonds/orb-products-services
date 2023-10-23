@@ -196,7 +196,9 @@ function SelectionsComponent() {
   if (servicesLoading) {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent_jsx__WEBPACK_IMPORTED_MODULE_5__["default"], null);
   }
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, "SELECTIONS"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "selections"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, "SELECTIONS"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "quote-card card"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("thead", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("th", {
     colSpan: 2
@@ -245,7 +247,7 @@ function SelectionsComponent() {
     messageType: messageType
   }), quote_id && (status === 'open' || status === 'accepted') ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "QUOTE")) : '');
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "QUOTE")) : ''));
 }
 /* harmony default export */ __webpack_exports__["default"] = (SelectionsComponent);
 

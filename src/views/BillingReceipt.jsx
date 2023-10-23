@@ -139,191 +139,194 @@ function ReceiptComponent() {
 
   return (
     <>
-      <h2 className="title">RECEIPT</h2>
-      <div className="receipt-card card">
-        <div className="thead">
-          <div className="tr receipt-number">
-            <div className="th">
-              <h4>RECEIPT NUMBER</h4>
+      <section className="receipt">
+        <h2 className="title">RECEIPT</h2>
+
+        <div className="receipt-card card">
+          <div className="thead">
+            <div className="tr receipt-number">
+              <div className="th">
+                <h4>RECEIPT NUMBER</h4>
+              </div>
+              <div className="td">
+                <h5>{id}</h5>
+              </div>
             </div>
-            <div className="td">
-              <h5>{id}</h5>
+            <div className="tr payment-date">
+              <div className="th">
+                <h4>PAYMENT DATE</h4>
+              </div>
+              <div className="td">
+                <h5>{paymentDate.toLocaleString()}</h5>
+              </div>
+            </div>
+            <div className="tr payment-method">
+              <div className="th">
+                <h4>PAYMENT TYPE</h4>
+              </div>
+              <div className="td">
+                <h5>{payment_method}</h5>
+              </div>
+            </div>
+            <div className="tr client-details">
+              <div className="th">
+                <h4>PAID BY</h4>
+              </div>
+              <div className="td">
+                <h5>
+                  {first_name} {last_name} O/B/O {company_name}
+                </h5>
+              </div>
+              <div className="tr address-line-1">
+                <div className="td">
+                  <h5>{address_line_1}</h5>
+                </div>
+                <div className="td">
+                  <h5>{address_line_2}</h5>
+                </div>
+              </div>
+              <div className="tr address-line-2">
+                <div className="td">
+                  <h5>{`${city},`}</h5>
+                </div>
+                <div className="td">
+                  <h5>{state}</h5>
+                </div>
+                <div className="td">
+                  <h5>{zipcode}</h5>
+                </div>
+              </div>
+              <div className="tr phone">
+                <div className="td">
+                  <a href={`tel:${phone}`}>
+                    <h5>{formattedPhone}</h5>
+                  </a>
+                </div>
+              </div>
+              <div className="tr email">
+                <div className="td">
+                  <h5>{user_email}</h5>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="tr payment-date">
-            <div className="th">
-              <h4>PAYMENT DATE</h4>
-            </div>
-            <div className="td">
-              <h5>{paymentDate.toLocaleString()}</h5>
-            </div>
-          </div>
-          <div className="tr payment-method">
-            <div className="th">
-              <h4>PAYMENT TYPE</h4>
-            </div>
-            <div className="td">
-              <h5>{payment_method}</h5>
-            </div>
-          </div>
-          <div className="tr client-details">
-            <div className="th">
-              <h4>PAID BY</h4>
-            </div>
-            <div className="td">
-              <h5>
-                {first_name} {last_name} O/B/O {company_name}
-              </h5>
-            </div>
-            <div className="tr address-line-1">
-              <div className="td">
-                <h5>{address_line_1}</h5>
+
+          <table>
+            <thead>
+              <th>
+                <h4>NO.</h4>
+              </th>
+              <th>
+                <h4>DESCRIPTION</h4>
+              </th>
+              <th>
+                <h4>TOTAL</h4>
+              </th>
+            </thead>
+            <tbody>
+              {selections &&
+                selections.length > 0 &&
+                selections.map((selection) => (
+                  <tr>
+                    <td>
+                      <h5>{selection.id}</h5>
+                    </td>
+                    <td>
+                      <h5>{selection.description}</h5>
+                    </td>
+                    <td className="selections-cost">
+                      <h5>
+                        {new Intl.NumberFormat('us', {
+                          style: 'currency',
+                          currency: 'USD',
+                        }).format(selection.cost)}
+                      </h5>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+
+          <div className="tfoot">
+            <div className="tr subtotal">
+              <div className="th subtotal-label">
+                <h4>SUBTOTAL</h4>
               </div>
-              <div className="td">
-                <h5>{address_line_2}</h5>
+              <div className="td subtotal-number">
+                <h5>
+                  {new Intl.NumberFormat('us', {
+                    style: 'currency',
+                    currency: 'USD',
+                  }).format(Subtotal)}
+                </h5>
               </div>
             </div>
-            <div className="tr address-line-2">
-              <div className="td">
-                <h5>{`${city},`}</h5>
+            <div className="tr tax">
+              <div className="th tax-label">
+                <h4>TAX</h4>
               </div>
-              <div className="td">
-                <h5>{state}</h5>
-              </div>
-              <div className="td">
-                <h5>{zipcode}</h5>
-              </div>
-            </div>
-            <div className="tr phone">
-              <div className="td">
-                <a href={`tel:${phone}`}>
-                  <h5>{formattedPhone}</h5>
-                </a>
+              <div className="td tax-number">
+                <h5>
+                  {new Intl.NumberFormat('us', {
+                    style: 'currency',
+                    currency: 'USD',
+                  }).format(Tax)}
+                </h5>
               </div>
             </div>
-            <div className="tr email">
-              <div className="td">
-                <h5>{user_email}</h5>
+            <div className="tr grand-total">
+              <div className="th grand-total-label">
+                <h4>GRAND TOTAL</h4>
+              </div>
+              <div className="td grand-total-number">
+                <h5>
+                  {new Intl.NumberFormat('us', {
+                    style: 'currency',
+                    currency: 'USD',
+                  }).format(amountDue)}
+                </h5>
+              </div>
+            </div>
+            <div className="tr amount-paid">
+              <div className="th amount-paid-label">
+                <h4>AMOUNT PAID</h4>
+              </div>
+              <div className="td amount-paid-number">
+                <h5>
+                  {new Intl.NumberFormat('us', {
+                    style: 'currency',
+                    currency: 'USD',
+                  }).format(amountPaid)}
+                </h5>
+              </div>
+            </div>
+            <div className="tr balance">
+              <div className="th balance-label">
+                <h4>BALANCE</h4>
+              </div>
+              <div className="td balance-number">
+                <h5>
+                  {new Intl.NumberFormat('us', {
+                    style: 'currency',
+                    currency: 'USD',
+                  }).format(Balance)}
+                </h5>
               </div>
             </div>
           </div>
         </div>
 
-        <table>
-          <thead>
-            <th>
-              <h4>NO.</h4>
-            </th>
-            <th>
-              <h4>DESCRIPTION</h4>
-            </th>
-            <th>
-              <h4>TOTAL</h4>
-            </th>
-          </thead>
-          <tbody>
-            {selections &&
-              selections.length > 0 &&
-              selections.map((selection) => (
-                <tr>
-                  <td>
-                    <h5>{selection.id}</h5>
-                  </td>
-                  <td>
-                    <h5>{selection.description}</h5>
-                  </td>
-                  <td className="selections-cost">
-                    <h5>
-                      {new Intl.NumberFormat('us', {
-                        style: 'currency',
-                        currency: 'USD',
-                      }).format(selection.cost)}
-                    </h5>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <StatusBar message={message} messageType={messageType} />
 
-        <div className="tfoot">
-          <div className="tr subtotal">
-            <div className="th subtotal-label">
-              <h4>SUBTOTAL</h4>
-            </div>
-            <div className="td subtotal-number">
-              <h5>
-                {new Intl.NumberFormat('us', {
-                  style: 'currency',
-                  currency: 'USD',
-                }).format(Subtotal)}
-              </h5>
-            </div>
-          </div>
-          <div className="tr tax">
-            <div className="th tax-label">
-              <h4>TAX</h4>
-            </div>
-            <div className="td tax-number">
-              <h5>
-                {new Intl.NumberFormat('us', {
-                  style: 'currency',
-                  currency: 'USD',
-                }).format(Tax)}
-              </h5>
-            </div>
-          </div>
-          <div className="tr grand-total">
-            <div className="th grand-total-label">
-              <h4>GRAND TOTAL</h4>
-            </div>
-            <div className="td grand-total-number">
-              <h5>
-                {new Intl.NumberFormat('us', {
-                  style: 'currency',
-                  currency: 'USD',
-                }).format(amountDue)}
-              </h5>
-            </div>
-          </div>
-          <div className="tr amount-paid">
-            <div className="th amount-paid-label">
-              <h4>AMOUNT PAID</h4>
-            </div>
-            <div className="td amount-paid-number">
-              <h5>
-                {new Intl.NumberFormat('us', {
-                  style: 'currency',
-                  currency: 'USD',
-                }).format(amountPaid)}
-              </h5>
-            </div>
-          </div>
-          <div className="tr balance">
-            <div className="th balance-label">
-              <h4>BALANCE</h4>
-            </div>
-            <div className="td balance-number">
-              <h5>
-                {new Intl.NumberFormat('us', {
-                  style: 'currency',
-                  currency: 'USD',
-                }).format(Balance)}
-              </h5>
-            </div>
-          </div>
+        <div className="actions">
+          <button onClick={handleClickDashboard}>
+            <h3>DASHBOARD</h3>
+          </button>
+          <button onClick={handleClickBilling}>
+            <h3>BILLING</h3>
+          </button>
         </div>
-      </div>
-
-      <StatusBar message={message} messageType={messageType} />
-
-      <div className="actions">
-        <button onClick={handleClickDashboard}>
-          <h3>DASHBOARD</h3>
-        </button>
-        <button onClick={handleClickBilling}>
-          <h3>BILLING</h3>
-        </button>
-      </div>
+      </section>
     </>
   );
 }

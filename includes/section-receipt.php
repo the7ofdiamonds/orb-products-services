@@ -1,1 +1,0 @@
-<section class='receipt' id="orb_services"></section>

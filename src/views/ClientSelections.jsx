@@ -95,7 +95,7 @@ function SelectionsComponent() {
                 console.error(response.error.message);
                 setMessageType('error');
                 setMessage(response.error.message);
-              } 
+              }
             });
           }
         });
@@ -192,95 +192,97 @@ function SelectionsComponent() {
 
   return (
     <>
-      <h2>SELECTIONS</h2>
+      <section className="selections">
+        <h2>SELECTIONS</h2>
 
-      <div className="quote-card card">
-        <table>
-          <thead>
-            <tr>
-              <th colSpan={2}>
-                <h4 className="description-label">DESCRIPTION</h4>
-              </th>
-              <th>
-                <h4 className="cost-label">COST</h4>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {services && services.length ? (
-              <React.Fragment>
-                {services.map((service) => {
-                  const { id, price_id, description, cost } = service;
-
-                  return (
-                    <tr key={price_id} id="quote_option">
-                      <td>
-                        <input
-                          className="input selection feature-selection"
-                          type="checkbox"
-                          name="quote[checkbox][]"
-                          checked={checkedItems.some(
-                            (item) => item.price_id === price_id
-                          )}
-                          onChange={(event) =>
-                            handleCheckboxChange(
-                              event,
-                              id,
-                              price_id,
-                              description,
-                              cost
-                            )
-                          }
-                        />
-                      </td>
-                      <td className="feature-description">{description}</td>
-                      <td
-                        className="feature-cost table-number"
-                        id="feature_cost">
-                        {new Intl.NumberFormat('us', {
-                          style: 'currency',
-                          currency: 'USD',
-                        }).format(cost)}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </React.Fragment>
-            ) : (
+        <div className="quote-card card">
+          <table>
+            <thead>
               <tr>
-                <td colSpan={3}>
-                  <h3>No features to show yet</h3>
-                </td>
+                <th colSpan={2}>
+                  <h4 className="description-label">DESCRIPTION</h4>
+                </th>
+                <th>
+                  <h4 className="cost-label">COST</h4>
+                </th>
               </tr>
-            )}
-          </tbody>
-          <tfoot>
-            <tr>
-              <th colSpan={2}>
-                <h4 className="subtotal-label">TOTAL</h4>
-              </th>
-              <th>
-                <h4 className="subtotal">
-                  {new Intl.NumberFormat('us', {
-                    style: 'currency',
-                    currency: 'USD',
-                  }).format(total)}
-                </h4>
-              </th>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {services && services.length ? (
+                <React.Fragment>
+                  {services.map((service) => {
+                    const { id, price_id, description, cost } = service;
 
-      <StatusBar message={message} messageType={messageType} />
+                    return (
+                      <tr key={price_id} id="quote_option">
+                        <td>
+                          <input
+                            className="input selection feature-selection"
+                            type="checkbox"
+                            name="quote[checkbox][]"
+                            checked={checkedItems.some(
+                              (item) => item.price_id === price_id
+                            )}
+                            onChange={(event) =>
+                              handleCheckboxChange(
+                                event,
+                                id,
+                                price_id,
+                                description,
+                                cost
+                              )
+                            }
+                          />
+                        </td>
+                        <td className="feature-description">{description}</td>
+                        <td
+                          className="feature-cost table-number"
+                          id="feature_cost">
+                          {new Intl.NumberFormat('us', {
+                            style: 'currency',
+                            currency: 'USD',
+                          }).format(cost)}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </React.Fragment>
+              ) : (
+                <tr>
+                  <td colSpan={3}>
+                    <h3>No features to show yet</h3>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colSpan={2}>
+                  <h4 className="subtotal-label">TOTAL</h4>
+                </th>
+                <th>
+                  <h4 className="subtotal">
+                    {new Intl.NumberFormat('us', {
+                      style: 'currency',
+                      currency: 'USD',
+                    }).format(total)}
+                  </h4>
+                </th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
 
-      {quote_id && (status === 'open' || status === 'accepted') ? (
-        <button onClick={handleClick}>
-          <h3>QUOTE</h3>
-        </button>
-      ) : (
-        ''
-      )}
+        <StatusBar message={message} messageType={messageType} />
+
+        {quote_id && (status === 'open' || status === 'accepted') ? (
+          <button onClick={handleClick}>
+            <h3>QUOTE</h3>
+          </button>
+        ) : (
+          ''
+        )}
+      </section>
     </>
   );
 }

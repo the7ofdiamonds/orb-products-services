@@ -74,7 +74,9 @@ function SupportComponent() {
       throw error.message;
     }
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "support"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "support-card card"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
     type: "text",
@@ -136,7 +138,7 @@ function SupportComponent() {
     onClick: handleSubmit
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SEND")))))))), message && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: `status-bar card ${messageType}`
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message)));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message))));
 }
 /* harmony default export */ __webpack_exports__["default"] = (SupportComponent);
 

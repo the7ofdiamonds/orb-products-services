@@ -13,12 +13,10 @@ class CSS
     private $cssFileName;
     private $filePath;
     private $page_titles;
-    private $react_pages;
     private $post_types;
 
     public function __construct()
     {
-        add_action('wp_head', [$this, 'load_front_page_css']);
         add_action('wp_head', [$this, 'load_pages_css']);
 
         $this->handle_prefix = 'orb_products_services_';
@@ -31,7 +29,7 @@ class CSS
         $pages = new Pages;
         $posttypes = new Post_Types;
 
-        $this->react_pages = $pages->react_pages;
+        $this->page_titles = $pages->page_titles;
         $this->post_types = $posttypes->post_types;
     }
 
@@ -39,7 +37,6 @@ class CSS
     {
         if (is_front_page()) {
             if ($this->filePath) {
-                error_log('front page');
                 wp_register_style($this->handle_prefix . 'css',  $this->cssFolderPathURL . $this->cssFileName, array(), false, 'all');
                 wp_enqueue_style($this->handle_prefix . 'css');
             } else {
@@ -50,7 +47,7 @@ class CSS
 
     function load_pages_css()
     {
-        foreach ($this->react_pages as $page) {
+        foreach ($this->page_titles as $page) {
             if (is_page($page)) {
                 if ($this->filePath) {
                     wp_register_style($this->handle_prefix . 'css',  $this->cssFolderPathURL . $this->cssFileName, array(), false, 'all');

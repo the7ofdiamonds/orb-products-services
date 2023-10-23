@@ -7,11 +7,13 @@ import UserQuoteComponent from './billing/UserQuote';
 function Billing() {
   return (
     <>
-      <h2 className="title">billing</h2>
+      <section className="billing">
+        <h2 className="title">billing</h2>
 
-      <UserReceiptComponent />
-      <UserInvoiceComponent />
-      <UserQuoteComponent />
+        <UserReceiptComponent />
+        <UserInvoiceComponent />
+        <UserQuoteComponent />
+      </section>
     </>
   );
 }

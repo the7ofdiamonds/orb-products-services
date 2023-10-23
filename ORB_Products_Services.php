@@ -200,8 +200,8 @@ register_activation_hook(__FILE__, [$orb_services, 'activate']);
 // register_deactivation_hook( __FILE__, [ $thfw, 'deactivate' ]);
 
 $orb_services_pages = new Pages();
-register_activation_hook(__FILE__, [$orb_services_pages, 'add_pages']);
-register_activation_hook(__FILE__, [$orb_services_pages, 'add_billing_subpages']);
-register_activation_hook(__FILE__, [$orb_services_pages, 'add_payment_subpages']);
-register_activation_hook(__FILE__, [$orb_services_pages, 'add_client_subpages']);
-register_activation_hook(__FILE__, [$orb_services_pages, 'add_contact_subpage']);
+// register_activation_hook(__FILE__, [$orb_services_pages, 'add_pages']);
+// register_activation_hook(__FILE__, [$orb_services_pages, 'add_billing_subpages']);
+// register_activation_hook(__FILE__, [$orb_services_pages, 'add_payment_subpages']);
+// register_activation_hook(__FILE__, [$orb_services_pages, 'add_client_subpages']);
+// register_activation_hook(__FILE__, [$orb_services_pages, 'add_contact_subpage']);

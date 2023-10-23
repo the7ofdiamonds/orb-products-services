@@ -1,1 +1,0 @@
-<section class="quote" id="orb_services"></section>

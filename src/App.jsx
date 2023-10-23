@@ -46,13 +46,6 @@ function App() {
             <Route path="client" element={<ClientComponent />} />
             <Route path="client/start" element={<StartComponent />} />
             <Route path="client/selections" element={<SelectionsComponent />} />
-            <Route path="billing" element={<BillingComponent />} />
-            <Route path="billing/quote/:id" element={<QuoteComponent />} />
-            <Route path="billing/invoice/:id" element={<InvoiceComponent />} />
-            <Route
-              path="billing/payment/:id"
-              element={<PaymentComponent />}
-            />
             <Route
               path="billing/payment/card/:id"
               element={<CardPaymentComponent />}
@@ -61,7 +54,14 @@ function App() {
               path="billing/payment/wallet/:id"
               element={<WalletComponent />}
             />
+            <Route
+              path="billing/payment/:id"
+              element={<PaymentComponent />}
+            />
             <Route path="billing/receipt/:id" element={<ReceiptComponent />} />
+            <Route path="billing/quote/:id" element={<QuoteComponent />} />
+            <Route path="billing/invoice/:id" element={<InvoiceComponent />} />
+            <Route path="billing" element={<BillingComponent />} />
             <Route path="faq" element={<FAQComponent />} />
             <Route path="contact" element={<ContactComponent />} />
             <Route

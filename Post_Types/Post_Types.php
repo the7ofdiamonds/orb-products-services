@@ -42,7 +42,7 @@ class Post_Types{
                 'new_item' => 'New ' . $post_type['singular'],
                 'view_item' => 'View ' . $post_type['singular'],
                 'search_item' => 'Search ' . $post_type['plural'],
-                'not_found' => $post_type['singular'] . ' Not Found',
+                'not_found' => 'No ' . $post_type['plural'] . ' were Found',
                 'not_found_in_trash' => 'No ' . $post_type['singular'] . ' found in trash',
                 'parent_item_colon' => 'Parent ' . $post_type['singular']
             );

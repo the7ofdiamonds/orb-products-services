@@ -173,14 +173,16 @@ function PaymentComponent() {
       error: paymentError
     });
   }
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "payment"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
   }, "PAYMENT"), status === 'open' ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_PaymentNavigation_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], null) : '', (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_StatusBar_jsx__WEBPACK_IMPORTED_MODULE_10__["default"], {
     message: message,
     messageType: messageType
   }), receipt_id && status == 'paid' ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClick
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "RECEIPT")) : '');
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "RECEIPT")) : ''));
 }
 /* harmony default export */ __webpack_exports__["default"] = (PaymentComponent);
 

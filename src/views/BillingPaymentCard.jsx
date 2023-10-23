@@ -157,89 +157,93 @@ const CardPaymentComponent = () => {
 
   return (
     <>
-      <PaymentNavigationComponent />
+      <section className="payment">
+        <PaymentNavigationComponent />
 
-      <div className="debit-credit-card card">
-        <div className="front">
-          <div className="image">
-            <img src="" alt="" />
-            <img src="" alt="" />
-          </div>
-          <div className="card-number-box">
-            {cardNumber ? cardNumber : '0000 0000 0000 0000'}
-          </div>
-          <div className="flexbox">
-            <div className="box">
-              <div className="card-holder-name">
-                {first_name} {last_name}
+        <div className="debit-credit-card card">
+          <div className="front">
+            <div className="image">
+              <img src="" alt="" />
+              <img src="" alt="" />
+            </div>
+            <div className="card-number-box">
+              {cardNumber ? cardNumber : '0000 0000 0000 0000'}
+            </div>
+            <div className="flexbox">
+              <div className="box">
+                <div className="card-holder-name">
+                  {first_name} {last_name}
+                </div>
+              </div>
+
+              <div className="box">
+                <div className="expiration">
+                  <h5>{expMonth ? expMonth : '00'}</h5>/
+                  <h5>{expYear ? expYear : '0000'}</h5>
+                </div>
               </div>
             </div>
+          </div>
 
+          <div className="back">
             <div className="box">
-              <div className="expiration">
-                <h5>{expMonth ? expMonth : '00'}</h5>/
-                <h5>{expYear ? expYear : '0000'}</h5>
-              </div>
+              <span>CVC</span>
+              <div className="cvv-box">{CVC ? CVC : '0000'}</div>
+              <img src="" alt="" />
             </div>
           </div>
         </div>
 
-        <div className="back">
-          <div className="box">
-            <span>CVC</span>
-            <div className="cvv-box">{CVC ? CVC : '0000'}</div>
-            <img src="" alt="" />
-          </div>
-        </div>
-      </div>
+        <form className="payment-card-form">
+          <input
+            id="credit-card-input"
+            type="text"
+            size={16}
+            maxLength={19}
+            placeholder="0000 0000 0000 0000"
+            onChange={handleCardNumberChange}
+            value={cardNumber}
+          />
+          <input
+            type="text"
+            size={1}
+            maxLength={2}
+            placeholder="00"
+            onChange={handleExpMonthChange}
+            value={expMonth}
+          />
+          <input
+            type="text"
+            size={3}
+            maxLength={4}
+            placeholder="0000"
+            onChange={handleExpYearChange}
+            value={expYear}
+          />
+          <input
+            type="text"
+            size={3}
+            maxLength={4}
+            placeholder="CVC"
+            onChange={handleCVCChange}
+            value={CVC}
+          />
+        </form>
 
-      <form className="payment-card-form">
-        <input
-          id="credit-card-input"
-          type="text"
-          size={16}
-          maxLength={19}
-          placeholder="0000 0000 0000 0000"
-          onChange={handleCardNumberChange}
-          value={cardNumber}
-        />
-        <input
-          type="text"
-          size={1}
-          maxLength={2}
-          placeholder="00"
-          onChange={handleExpMonthChange}
-          value={expMonth}
-        />
-        <input
-          type="text"
-          size={3}
-          maxLength={4}
-          placeholder="0000"
-          onChange={handleExpYearChange}
-          value={expYear}
-        />
-        <input
-          type="text"
-          size={3}
-          maxLength={4}
-          placeholder="CVC"
-          onChange={handleCVCChange}
-          value={CVC}
-        />
-      </form>
+        <StatusBar message={message} messageType={messageType} />
 
-      <StatusBar message={message} messageType={messageType} />
+        {amount_due ? (
+          <h3>
+            Amount: {FormatCurrency(amount_due, account_country, currency)}
+          </h3>
+        ) : (
+          ''
+        )}
 
-      {amount_due ? (
-        <h3>Amount: {FormatCurrency(amount_due, account_country, currency)}</h3>
-      ) : (
-        ''
-      )}
-
-      <button type="submit" onClick={handleSubmit}>
-        <h3>PAY</h3>
-      </button>
+        <button type="submit" onClick={handleSubmit}>
+          <h3>PAY</h3>
+        </button>
+      </section>
     </>
   );
 };

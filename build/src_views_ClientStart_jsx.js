@@ -164,7 +164,9 @@ function ClientComponent() {
   if (customerLoading) {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent__WEBPACK_IMPORTED_MODULE_4__["default"], null);
   }
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "start"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
   }, "CLIENT DETAILS"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "client-details card",
@@ -249,7 +251,7 @@ function ClientComponent() {
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     id: "selections_button",
     onClick: handleClick
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "selections")));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "selections"))));
 }
 /* harmony default export */ __webpack_exports__["default"] = (ClientComponent);
 

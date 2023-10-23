@@ -74,7 +74,9 @@ function ContactComponent() {
       throw error.message;
     }
   };
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", {
+    className: "contact"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
   }, "CONTACT"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "contact-card card"
@@ -138,7 +140,7 @@ function ContactComponent() {
     onClick: handleSubmit
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SEND")))))))), message && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: `status-bar card ${messageType}`
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message)));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message))));
 }
 /* harmony default export */ __webpack_exports__["default"] = (ContactComponent);
 

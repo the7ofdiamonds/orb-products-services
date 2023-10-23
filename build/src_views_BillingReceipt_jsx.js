@@ -189,7 +189,9 @@ function ReceiptComponent() {
   if (loading) {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent_jsx__WEBPACK_IMPORTED_MODULE_8__["default"], null);
   }
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
+    className: "receipt"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
   }, "RECEIPT"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "receipt-card card"
@@ -304,7 +306,7 @@ function ReceiptComponent() {
     onClick: handleClickDashboard
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "DASHBOARD")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     onClick: handleClickBilling
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "BILLING"))));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "BILLING")))));
 }
 /* harmony default export */ __webpack_exports__["default"] = (ReceiptComponent);
 
