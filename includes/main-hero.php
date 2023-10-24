@@ -1,12 +1,6 @@
 <main class="hero">
 
   <h2><?php echo get_bloginfo('description'); ?></h2>
-
-  <div class="mission-statement-card card">
-    <h4 class='mission-statement'><q>
-        <?php echo get_option('hero-pitch'); ?>
-      </q></h4>
-  </div>
   
   <div class="hero-card card">
 
