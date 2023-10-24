@@ -11,19 +11,6 @@ use ORB_Products_Services\API\Stripe\StripeProducts;
 use ORB_Products_Services\API\Stripe\StripePrices;
 use ORB_Products_Services\API\Stripe\StripeCustomers;
 
-use ORB_Products_Services\Database\DatabaseClient;
-use ORB_Products_Services\Database\DatabaseCustomer;
-use ORB_Products_Services\Database\DatabaseQuote;
-use ORB_Products_Services\Database\DatabaseInvoice;
-use ORB_Products_Services\Database\DatabaseReceipt;
-
-use ORB_Products_Services\Email\Email;
-use ORB_Products_Services\Email\EmailContact;
-use ORB_Products_Services\Email\EmailSupport;
-use ORB_Products_Services\Email\EmailSchedule;
-use ORB_Products_Services\Email\EmailQuote;
-use ORB_Products_Services\Email\EmailInvoice;
-use ORB_Products_Services\Email\EmailReceipt;
 
 use ORB_Products_Services\API\Service;
 use ORB_Products_Services\API\Services;
@@ -36,12 +23,18 @@ use ORB_Products_Services\API\Invoice;
 use ORB_Products_Services\API\Payment;
 use ORB_Products_Services\API\Receipt;
 
+use ORB_Products_Services\Post_Types\Products\Products as PT_Products;
+use ORB_Products_Services\Post_Types\Services\Services as PT_Services;
+
 use PHPMailer\PHPMailer\PHPMailer;
 
 class Stripe
 {
     public function __construct($stripeClient)
     {
+        new PT_Products($stripeClient);
+        new PT_Services($stripeClient);
+
         $stripe_payment_intent = new StripePaymentIntents($stripeClient);
         $stripe_charges = new StripeCharges($stripeClient);
         $stripe_payment_methods = new StripePaymentMethods($stripeClient);

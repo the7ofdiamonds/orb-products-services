@@ -78,7 +78,6 @@ class ORB_Products_Services
         new CSS;
         new JS;
         new Pages;
-        new Post_Types;
         new Roles;
         new Shortcodes;
         new Database;

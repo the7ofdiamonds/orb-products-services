@@ -2,7 +2,8 @@
 
 namespace ORB_Products_Services\Post_Types;
 
-class Post_Types{
+class Post_Types
+{
     public $post_types;
 
     public function __construct()
@@ -10,6 +11,8 @@ class Post_Types{
         $this->post_types = [
             [
                 'name' => 'services',
+                'menu_icon' => '',
+                'menu_position' => 13,
                 'title' => 'SERVICES',
                 'singular' => 'Service',
                 'plural' => 'Services',
@@ -18,6 +21,8 @@ class Post_Types{
             ],
             [
                 'name' => 'products',
+                'menu_icon' => '',
+                'menu_position' => 14,
                 'title' => 'PRODUCTS',
                 'singular' => 'Product',
                 'plural' => 'Products',
@@ -50,7 +55,7 @@ class Post_Types{
             $args = array(
                 'labels' => $labels,
                 'show_ui' => true,
-                'menu_icon' => 'dashicons-groups',
+                'menu_icon' => $post_type['menu_icon'],
                 'show_in_rest' => true,
                 'show_in_nav_menus' => true,
                 'public' => true,
@@ -72,7 +77,7 @@ class Post_Types{
                     'page-attributes',
                 ],
                 'taxonomies' => array('category', 'post_tag'),
-                'menu_position' => 7,
+                'menu_position' => $post_type['menu_position'],
                 'exclude_from_search' => false
             );
 
