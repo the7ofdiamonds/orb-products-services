@@ -1,19 +1,19 @@
 .status-bar.card {
-  background-color: var(--orb-color-primary);
+  background-color: var(--orb-products-services-color-primary);
   &.info {
-    background-color: var(--orb-color-info);
+    background-color: var(--orb-products-services-color-info);
   }
   &.caution {
-    background-color: var(--orb-color-caution);
+    background-color: var(--orb-products-services-color-caution);
   }
   &.error {
-    background-color: var(--orb-color-error);
+    background-color: var(--orb-products-services-color-error);
   }
   &.success {
-    background-color: var(--orb-color-success);
+    background-color: var(--orb-products-services-color-success);
   }
   span {
-    color: var(--orb-color-secondary);
+    color: var(--orb-products-services-color-secondary);
 
     h4 {
       padding: 0.5em;

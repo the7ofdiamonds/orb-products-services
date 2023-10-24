@@ -2,23 +2,16 @@
 
 namespace ORB_Products_Services\CSS\Customizer;
 
-class ServicesCustomizer
+class Services
 {
-
     public function __construct()
     {
-        add_action('customize_register', array($this, 'register_orb_services_customize_section'));
+        add_action('customize_register', array($this, 'orb_products_services_section'));
         add_action('wp_head', [$this, 'load_css']);
     }
 
-    public function register_orb_services_customize_section($wp_customize)
+   function orb_products_services_section($wp_customize)
     {
-        $this->orb_services_section($wp_customize);
-    }
-
-    private function orb_services_section($wp_customize)
-    {
-
         $wp_customize->add_section(
             'services_settings',
             array(
@@ -27,7 +20,7 @@ class ServicesCustomizer
                 'theme_supports' => '',
                 'title'          => __('Services', 'the-house-forever-wins'),
                 'description'    =>  __('Services Section Options', 'the-house-forever-wins'),
-                'panel'  => 'theme_options',
+                'panel'  => 'orb_products_services_settings',
             )
         );
 
@@ -187,54 +180,41 @@ class ServicesCustomizer
 ?>
         <style>
             .services-card.card {
-                background-color: <?php if (!get_theme_mod('services_card_background_color')) {
-                                        echo 'var(--orb-color-secondary)';
+                background-color: <?php if (empty(get_theme_mod('services_card_background_color'))) {
+                                        echo esc_html('white');
                                     } else {
                                         echo esc_html(get_theme_mod('services_card_background_color'));
                                     } ?>;
 
-                color: <?php if (!get_theme_mod('services_card_text_color')) {
-                            echo 'var(--orb-color-primary)';
+                color: <?php if (empty(get_theme_mod('services_card_text_color'))) {
+                            echo esc_html('black');
                         } else {
                             echo esc_html(get_theme_mod('services_card_text_color'));
                         } ?>;
-
-                box-shadow: <?php if (!get_theme_mod('services_card_box_shadow')) {
-                                echo 'var(--orb-box-shadow)';
-                            } else {
-                                echo esc_html(get_theme_mod('services_card_box_shadow'));
-                            } ?>;
-
-                border-radius: <?php if (!get_theme_mod('services_card_border_radius')) {
-                                    echo 'var(--orb-border-radius)';
-                                } else {
-                                    echo esc_html(get_theme_mod('services_card_border_radius'));
-                                } ?>;
-
             }
 
             .services-btn {
-                background-color: <?php if (!get_theme_mod('services_button_background_color')) {
-                                        echo 'var(--orb-color-primary)';
+                background-color: <?php if (empty(get_theme_mod('services_button_background_color'))) {
+                                        echo esc_html('black');
                                     } else {
                                         echo esc_html(get_theme_mod('services_button_background_color'));
                                     } ?>;
 
-                color: <?php if (!get_theme_mod('services_button_text_color')) {
-                            echo 'var(--orb-color-secondary)';
+                color: <?php if (empty(get_theme_mod('services_button_text_color'))) {
+                            echo esc_html('white');
                         } else {
                             echo esc_html(get_theme_mod('services_button_text_color'));
                         } ?>;
             }
 
             .services-btn:hover {
-                background-color: <?php if (!get_theme_mod('services_button_background_color_hover')) {
-                                        echo 'var(--orb-color-primary)';
+                background-color: <?php if (empty(get_theme_mod('services_button_background_color_hover'))) {
+                                        echo esc_html('black');
                                     } else {
                                         echo esc_html(get_theme_mod('services_button_background_color_hover'));
                                     } ?>;
-                color: <?php if (!get_theme_mod('services_button_text_color_hover')) {
-                            echo 'var(--orb-color-secondary)';
+                color: <?php if (empty(get_theme_mod('services_button_text_color_hover'))) {
+                            echo esc_html('white');
                         } else {
                             echo esc_html(get_theme_mod('services_button_text_color_hover'));
                         } ?>;
@@ -242,15 +222,15 @@ class ServicesCustomizer
             }
 
             .services-btn i {
-                color: <?php if (!get_theme_mod('services_button_icon_color')) {
-                            echo 'var(--orb-color-secondary)';
+                color: <?php if (empty(get_theme_mod('services_button_icon_color'))) {
+                            echo esc_html('white');
                         } else {
                             echo esc_html(get_theme_mod('services_button_icon_color'));
                         } ?>;
             }
 
             .services-btn:hover i {
-                color: <?php if (!get_theme_mod('services_button_icon_color_hover')) {
+                color: <?php if (empty(get_theme_mod('services_button_icon_color_hover'))) {
                             echo 'unset';
                         } else {
                             echo esc_html(get_theme_mod('services_button_icon_color_hover'));

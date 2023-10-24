@@ -2,6 +2,6 @@
 
 get_header();
 
-include ORB_PRODUCTS_SERVICES . 'includes/section-service.php';
+include ORB_PRODUCTS_SERVICES . 'includes/react.php';
 
 get_footer();
