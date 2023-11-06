@@ -209,9 +209,17 @@ class Hero
 
             .start-btn i {
                 color: <?php if (empty(get_theme_mod('hero_button_icon_color'))) {
-                            echo esc_html('red');;
+                            echo esc_html('lime');;
                         } else {
                             echo esc_html(get_theme_mod('hero_button_icon_color'));
+                        } ?>;
+            }
+
+            .start-btn i:hover {
+                color: <?php if (empty(get_theme_mod('hero_button_icon_color_hover'))) {
+                            echo esc_html('lime');;
+                        } else {
+                            echo esc_html(get_theme_mod('hero_button_icon_color_hover'));
                         } ?>;
             }
         </style>

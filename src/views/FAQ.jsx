@@ -1,6 +1,6 @@
 import React from 'react';
 
-function FAQ() {
+function Faq() {
   return (
     <>
       <section className="faq">
@@ -10,4 +10,4 @@ function FAQ() {
   );
 }
 
-export default FAQ;
+export default Faq;

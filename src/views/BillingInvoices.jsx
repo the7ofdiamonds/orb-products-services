@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getClient } from '../../controllers/clientSlice';
+import { getClient } from '../controllers/clientSlice';
 import {
   getClientInvoices,
   deleteInvoice,
-} from '../../controllers/invoiceSlice';
+} from '../controllers/invoiceSlice';
 
-function UserInvoiceComponent() {
+function BillingInvoices() {
   const dispatch = useDispatch();
 
   const { user_email, stripe_customer_id } = useSelector(
@@ -148,4 +148,4 @@ function UserInvoiceComponent() {
   );
 }
 
-export default UserInvoiceComponent;
+export default BillingInvoices;

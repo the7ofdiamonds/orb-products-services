@@ -11,7 +11,6 @@ use ORB_Products_Services\Admin\AdminEmailInvoice;
 use ORB_Products_Services\Admin\AdminEmailReceipt;
 use ORB_Products_Services\Admin\AdminHero;
 use ORB_Products_Services\Admin\AdminLocation;
-use ORB_Products_Services\Admin\AdminOfficeHours;
 use ORB_Products_Services\Admin\AdminCommunication;
 use ORB_Products_Services\Admin\AdminStripe;
 
@@ -31,7 +30,6 @@ class Admin
         new AdminEmailInvoice;
         new AdminEmailReceipt;
         new AdminHero;
-        new AdminOfficeHours;
         new AdminLocation;
         new AdminCommunication;
         new AdminStripe;

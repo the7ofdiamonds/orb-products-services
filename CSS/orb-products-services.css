@@ -5,10 +5,10 @@
   --animation-duration: calc(var(--total-services) * 1.5s);
 }
 
-.hero-card {
+.hero-card.card {
   gap: 1.5rem;
 }
-.hero-card .hero-animation {
+.hero-card.card .hero-animation {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -17,21 +17,21 @@
   height: 4rem;
   overflow: hidden;
 }
-.hero-card .hero-animation .hero-icons {
+.hero-card.card .hero-animation .hero-icons {
   display: flex;
   align-items: center;
   justify-content: center;
   width: fit-content;
   gap: 1rem;
 }
-.hero-card .hero-animation .hero-icons i {
+.hero-card.card .hero-animation .hero-icons i {
   font-size: 3rem;
   padding: 0;
 }
-.hero-card .hero-animation .hero-icons i.fa-lightbulb {
-  color: var(--orb-color-caution);
+.hero-card.card .hero-animation .hero-icons i.fa-lightbulb {
+  color: var(--orb-products-services-color-caution);
 }
-.hero-card .hero-animation .hero-icons i.fa-plus, .hero-card .hero-animation .hero-icons i.fa-equals {
+.hero-card.card .hero-animation .hero-icons i.fa-plus, .hero-card.card .hero-animation .hero-icons i.fa-equals {
   font-size: 1.5rem;
 }
 
@@ -61,26 +61,23 @@
     transform: translateY(-50%);
   }
 }
-.start-btn:hover {
-  box-shadow: unset;
-}
-.start-btn:hover i {
-  color: lime;
-}
-
 .start-btn {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-  box-shadow: 0 0 1em rgba(0, 0, 0, 0.85);
 }
 .start-btn i {
   padding-right: 0;
 }
 .start-btn h3 {
   padding-left: 0;
+}
+
+.start-btn:hover {
+  border-radius: --orb-products-services-border-radius;
+  box-shadow: --orb-products-services-btn-shadow-hover;
 }
 
 i {
@@ -655,6 +652,10 @@ section.invoice {
   text-transform: uppercase;
   padding-left: 0;
 }
+.services .services-list .service .services-action .services-btn:hover {
+  box-shadow: var(--orb-products-services-btn-shadow-hover);
+  border-radius: var(--orb-products-services-border-radius-hover);
+}
 
 .receipt-card.card {
   display: grid;
@@ -898,7 +899,7 @@ td {
   padding: 0.5em;
 }
 
-button h3 {
+button.services-btn h3 {
   text-transform: uppercase;
 }
 

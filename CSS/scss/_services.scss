@@ -91,6 +91,11 @@
             padding-left: 0;
           }
         }
+
+        .services-btn:hover{
+          box-shadow: var(--orb-products-services-btn-shadow-hover);
+          border-radius: var(--orb-products-services-border-radius-hover);
+        }
       }
     }
   }

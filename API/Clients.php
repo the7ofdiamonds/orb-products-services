@@ -181,7 +181,7 @@ class Clients
             $user = get_user_by('email', $user_email);
             $user_id = $user->id;
             $client = $this->database_client->getClient($user_id);
-
+error_log($user_email);
             return rest_ensure_response($client);
         } catch (Exception $e) {
             $error_message = $e->getMessage();

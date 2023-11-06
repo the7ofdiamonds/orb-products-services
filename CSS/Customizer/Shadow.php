@@ -57,18 +57,24 @@ class Shadow
         <style>
             :root {
                 --orb-products-services-card-shadow: <?php
-                                            if (empty(get_theme_mod('orb_products_services_card_shadow'))) {
-                                                echo esc_html('0 0 0.5em rgba(0, 0, 0, 0.85)');
-                                            } else {
-                                                error_log(get_theme_mod('orb_products_services_card_shadow'));
-                                                echo esc_html(get_theme_mod('orb_products_services_card_shadow'));
-                                            } ?>;
+                                                        if (empty(get_theme_mod('orb_products_services_card_shadow'))) {
+                                                            echo esc_html('0 0 0.5em rgba(0, 0, 0, 0.85)');
+                                                        } else {
+                                                            error_log(get_theme_mod('orb_products_services_card_shadow'));
+                                                            echo esc_html(get_theme_mod('orb_products_services_card_shadow'));
+                                                        } ?>;
                 --orb-products-services-btn-shadow: <?php
-                                            if (empty(get_theme_mod('orb_products_services_button_shadow'))) {
-                                                echo esc_html('0 0 0.5em rgba(0, 0, 0, 0.85)');
-                                            } else {
-                                                echo esc_html(get_theme_mod('orb_products_services_button_shadow'));
-                                            } ?>;
+                                                    if (empty(get_theme_mod('orb_products_services_button_shadow'))) {
+                                                        echo esc_html('0 0 0.5em rgba(0, 0, 0, 0.85)');
+                                                    } else {
+                                                        echo esc_html(get_theme_mod('orb_products_services_button_shadow'));
+                                                    } ?>;
+                --orb-products-services-btn-shadow-hover: <?php
+                                                    if (empty(get_theme_mod('orb_products_services_button_shadow_hover'))) {
+                                                        echo esc_html('unset');
+                                                    } else {
+                                                        echo esc_html(get_theme_mod('orb_products_services_button_shadow_hover'));
+                                                    } ?>;
             }
         </style>
 <?php

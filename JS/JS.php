@@ -31,7 +31,10 @@ class JS
         $pages = new Pages;
         $posttypes = new Post_Types;
 
-        $this->page_titles = $pages->page_titles;
+        $this->page_titles = [
+            ...$pages->pages,
+            ...$pages->protected_pages
+        ];
         $this->front_page_react = $pages->front_page_react;
         $this->post_types = $posttypes->post_types;
     }

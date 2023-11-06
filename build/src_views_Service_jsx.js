@@ -65,7 +65,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function ServiceComponent() {
+function Service() {
   const location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useLocation)();
   const servicePath = location.pathname.split('/')[2];
   const {
@@ -85,9 +85,6 @@ function ServiceComponent() {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     dispatch((0,_controllers_serviceSlice_js__WEBPACK_IMPORTED_MODULE_2__.fetchService)(servicePath));
   }, [dispatch, servicePath]);
-  const handleClick = () => {
-    window.location.href = '/client/start';
-  };
   if (serviceLoading) {
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_loading_LoadingComponent_jsx__WEBPACK_IMPORTED_MODULE_3__["default"], null);
   }
@@ -96,6 +93,9 @@ function ServiceComponent() {
       error: serviceError
     });
   }
+  const handleClick = () => {
+    window.location.href = '/client/start';
+  };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", {
     className: "service"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -125,9 +125,9 @@ function ServiceComponent() {
     onClick: handleClick
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
     class: "fas fa-power-off"
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "START"))));
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, action_word))));
 }
-/* harmony default export */ __webpack_exports__["default"] = (ServiceComponent);
+/* harmony default export */ __webpack_exports__["default"] = (Service);
 
 /***/ })
 

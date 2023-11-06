@@ -1,8 +1,8 @@
 import React from 'react';
 
-import UserReceiptComponent from './billing/UserReceipt';
-import UserInvoiceComponent from './billing/UserInvoice';
-import UserQuoteComponent from './billing/UserQuote';
+import BillingReceipt from './BillingReceipts';
+import BillingInvoice from './BillingInvoices';
+import BillingQuote from './BillingQuotes';
 
 function Billing() {
   return (
@@ -10,9 +10,9 @@ function Billing() {
       <section className="billing">
         <h2 className="title">billing</h2>
 
-        <UserReceiptComponent />
-        <UserInvoiceComponent />
-        <UserQuoteComponent />
+        <BillingReceipt />
+        <BillingInvoice />
+        <BillingQuote />
       </section>
     </>
   );

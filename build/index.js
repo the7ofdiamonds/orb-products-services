@@ -9886,24 +9886,28 @@ __webpack_require__.r(__webpack_exports__);
 
 const LoadingComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_loading_LoadingComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./loading/LoadingComponent.jsx */ "./src/loading/LoadingComponent.jsx")));
 const ErrorComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_error_ErrorComponent_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./error/ErrorComponent.jsx */ "./src/error/ErrorComponent.jsx")));
-const ServicesComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Services_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Services.jsx */ "./src/views/Services.jsx")));
-const ServiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Service_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Service.jsx */ "./src/views/Service.jsx")));
-const BillingComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Billing_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Billing.jsx */ "./src/views/Billing.jsx")));
-const QuoteComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingQuote_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingQuote.jsx */ "./src/views/BillingQuote.jsx")));
-const InvoiceComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingInvoice_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingInvoice.jsx */ "./src/views/BillingInvoice.jsx")));
-const PaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPayment_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPayment.jsx */ "./src/views/BillingPayment.jsx")));
-const CardPaymentComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPaymentCard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPaymentCard.jsx */ "./src/views/BillingPaymentCard.jsx")));
-const WalletComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPaymentWallet_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPaymentWallet.jsx */ "./src/views/BillingPaymentWallet.jsx")));
-const ReceiptComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingReceipt_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingReceipt.jsx */ "./src/views/BillingReceipt.jsx")));
-const ClientComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Client_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Client.jsx */ "./src/views/Client.jsx")));
-const StartComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ClientStart_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ClientStart.jsx */ "./src/views/ClientStart.jsx")));
-const SelectionsComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ClientSelections_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ClientSelections.jsx */ "./src/views/ClientSelections.jsx")));
-const DashboardComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Dashboard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Dashboard.jsx */ "./src/views/Dashboard.jsx")));
-const FAQComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_FAQ_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/FAQ.jsx */ "./src/views/FAQ.jsx")));
-const SupportComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Support_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Support.jsx */ "./src/views/Support.jsx")));
-const SupportSuccessComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_SupportSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/SupportSuccess.jsx */ "./src/views/SupportSuccess.jsx")));
-const ContactComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Contact_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Contact.jsx */ "./src/views/Contact.jsx")));
-const ContactSuccessComponent = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ContactSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ContactSuccess.jsx */ "./src/views/ContactSuccess.jsx")));
+const Frontpage = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Frontpage_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Frontpage.jsx */ "./src/views/Frontpage.jsx")));
+const Services = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Services_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Services.jsx */ "./src/views/Services.jsx")));
+const Service = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Service_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Service.jsx */ "./src/views/Service.jsx")));
+const Billing = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Billing_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Billing.jsx */ "./src/views/Billing.jsx")));
+const Quote = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingQuote_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingQuote.jsx */ "./src/views/BillingQuote.jsx")));
+const Quotes = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingQuotes_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingQuotes.jsx */ "./src/views/BillingQuotes.jsx")));
+const Invoice = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingInvoice_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingInvoice.jsx */ "./src/views/BillingInvoice.jsx")));
+const Invoices = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingInvoices_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingInvoices.jsx */ "./src/views/BillingInvoices.jsx")));
+const Payment = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPayment_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPayment.jsx */ "./src/views/BillingPayment.jsx")));
+const CardPayment = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPaymentCard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPaymentCard.jsx */ "./src/views/BillingPaymentCard.jsx")));
+const Wallet = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingPaymentWallet_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingPaymentWallet.jsx */ "./src/views/BillingPaymentWallet.jsx")));
+const Receipt = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingReceipt_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingReceipt.jsx */ "./src/views/BillingReceipt.jsx")));
+const Receipts = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_BillingReceipts_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/BillingReceipts.jsx */ "./src/views/BillingReceipts.jsx")));
+const Client = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Client_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Client.jsx */ "./src/views/Client.jsx")));
+const Start = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ClientStart_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ClientStart.jsx */ "./src/views/ClientStart.jsx")));
+const Selections = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ClientSelections_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ClientSelections.jsx */ "./src/views/ClientSelections.jsx")));
+const Dashboard = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Dashboard_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Dashboard.jsx */ "./src/views/Dashboard.jsx")));
+const FAQ = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Faq_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Faq.jsx */ "./src/views/Faq.jsx")));
+const Support = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Support_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Support.jsx */ "./src/views/Support.jsx")));
+const SupportSuccess = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_SupportSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/SupportSuccess.jsx */ "./src/views/SupportSuccess.jsx")));
+const Contact = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_Contact_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/Contact.jsx */ "./src/views/Contact.jsx")));
+const ContactSuccess = (0,react__WEBPACK_IMPORTED_MODULE_0__.lazy)(() => __webpack_require__.e(/*! import() */ "src_views_ContactSuccess_jsx").then(__webpack_require__.bind(__webpack_require__, /*! ./views/ContactSuccess.jsx */ "./src/views/ContactSuccess.jsx")));
 function App() {
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.BrowserRouter, {
     basename: "/"
@@ -9912,61 +9916,64 @@ function App() {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Routes, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     index: true,
     path: "/",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "services",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServicesComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "dashboard",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(DashboardComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "services/:service",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ServiceComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "client",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ClientComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "client/start",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(StartComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "client/selections",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(SelectionsComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "billing/payment/card/:id",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CardPaymentComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "billing/payment/wallet/:id",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(WalletComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "billing/payment/:id",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PaymentComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "billing/receipt/:id",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ReceiptComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "billing/quote/:id",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(QuoteComponent, null)
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "billing/invoice/:id",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InvoiceComponent, null)
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Frontpage, null)
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "billing",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(BillingComponent, null)
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Billing, null)
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "faq",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(FAQComponent, null)
+    path: "billing/invoice/:id",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Invoice, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "billing/invoices",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Invoices, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "billing/payment/:id",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Payment, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "billing/payment/card/:id",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CardPayment, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "billing/payment/wallet/:id",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Wallet, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "billing/quote/:id",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Quote, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "billing/receipt/:id",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Receipt, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "client",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Client, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "client/selections",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Selections, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "client/start",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Start, null)
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "contact",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactComponent, null)
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Contact, null)
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "contact/success",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactSuccessComponent, null)
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(ContactSuccess, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "dashboard",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Dashboard, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "faq",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(FAQ, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "services",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Services, null)
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "services/:service",
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Service, null)
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "support",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(SupportComponent, null)
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Support, null)
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "support/success",
-    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(SupportSuccessComponent, null)
+    element: (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(SupportSuccess, null)
   })))));
 }
 /* harmony default export */ __webpack_exports__["default"] = (App);
@@ -9986,10 +9993,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   clientSlice: function() { return /* binding */ clientSlice; },
 /* harmony export */   getClient: function() { return /* binding */ getClient; }
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
-
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 
 const initialState = {
   clientLoading: false,
@@ -10000,7 +10004,7 @@ const initialState = {
   first_name: '',
   last_name: ''
 };
-const addClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('client/addClient', async (_, {
+const addClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('client/addClient', async (_, {
   getState
 }) => {
   const {
@@ -10051,7 +10055,7 @@ const addClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncTh
     throw error;
   }
 });
-const getClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('client/getClient', async (_, {
+const getClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('client/getClient', async (_, {
   getState
 }) => {
   const {
@@ -10076,7 +10080,7 @@ const getClient = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncTh
     throw error;
   }
 });
-const clientSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
+const clientSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
   name: 'client',
   initialState,
   extraReducers: builder => {
@@ -12249,7 +12253,7 @@ const fetchServices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsy
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 const getAvailableServices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('services/getAvailableServices', async () => {
@@ -12268,7 +12272,7 @@ const getAvailableServices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.cr
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 const servicesSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
@@ -12280,6 +12284,7 @@ const servicesSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSli
       state.servicesError = null;
     }).addCase(fetchServices.fulfilled, (state, action) => {
       state.servicesLoading = false;
+      state.servicesError = '';
       state.services = action.payload;
     }).addCase(fetchServices.rejected, (state, action) => {
       state.servicesLoading = false;

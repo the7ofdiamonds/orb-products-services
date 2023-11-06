@@ -6,10 +6,12 @@ import { fetchServices } from '../controllers/servicesSlice.js';
 import LoadingComponent from '../loading/LoadingComponent.jsx';
 import ErrorComponent from '../error/ErrorComponent.jsx';
 
-function ServicesComponent() {
+function Services(props) {
   const { servicesLoading, servicesError, services } = useSelector(
     (state) => state.services
   );
+  
+  const servicesToRender = props.services || services;
 
   const dispatch = useDispatch();
 
@@ -35,9 +37,10 @@ function ServicesComponent() {
         <h2 className="title">SERVICES</h2>
 
         <div className="services-list">
-          {services && services.length ? (
+          {(props.services && props.services) ||
+          (services && services.length) ? (
             <React.Fragment>
-              {services.map((service) => (
+              {servicesToRender.map((service) => (
                 <>
                   <div className="service">
                     <div className="services-card card" key={service.price_id}>
@@ -92,4 +95,4 @@ function ServicesComponent() {
   );
 }
 
-export default ServicesComponent;
+export default Services;

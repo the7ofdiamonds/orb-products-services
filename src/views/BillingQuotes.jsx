@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getClient } from '../../controllers/clientSlice';
-import { getClientQuotes } from '../../controllers/quoteSlice';
+import { getClient } from '../controllers/clientSlice';
+import { getClientQuotes } from '../controllers/quoteSlice';
 
-function UserQuoteComponent() {
+function BillingQuotes() {
   const dispatch = useDispatch();
 
   const { user_email, stripe_customer_id } = useSelector(
@@ -111,4 +111,4 @@ function UserQuoteComponent() {
   );
 }
 
-export default UserQuoteComponent;
+export default BillingQuotes;

@@ -30,7 +30,10 @@ class CSS
         $pages = new Pages;
         $posttypes = new Post_Types;
 
-        $this->page_titles = $pages->page_titles;
+        $this->page_titles = [
+            ...$pages->pages,
+            ...$pages->protected_pages
+        ];
         $this->post_types = $posttypes->post_types;
 
         new Customizer;

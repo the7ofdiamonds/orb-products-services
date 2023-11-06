@@ -4,7 +4,7 @@
   --animation-duration: calc(var(--total-services) * 1.5s);
 }
 
-.hero-card {
+.hero-card.card {
   gap: 1.5rem;
 
   .hero-animation {
@@ -28,7 +28,7 @@
         padding: 0;
 
         &.fa-lightbulb {
-          color: var(--orb-color-caution);
+          color: var(--orb-products-services-color-caution);
         }
 
         &.fa-plus,
@@ -68,21 +68,12 @@
   }
 }
 
-.start-btn:hover {
-  box-shadow: unset;
-
-  i {
-    color: lime;
-  }
-}
-
 .start-btn {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-  box-shadow: 0 0 1em rgba(0, 0, 0, 0.85);
 
   i {
     padding-right: 0;
@@ -91,4 +82,9 @@
   h3 {
     padding-left: 0;
   }
+}
+
+.start-btn:hover {
+  border-radius: --orb-products-services-border-radius;
+  box-shadow: --orb-products-services-btn-shadow-hover;
 }

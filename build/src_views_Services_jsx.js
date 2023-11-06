@@ -63,12 +63,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function ServicesComponent() {
+function Services(props) {
   const {
     servicesLoading,
     servicesError,
     services
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(state => state.services);
+  const servicesToRender = props.services || services;
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     dispatch((0,_controllers_servicesSlice_js__WEBPACK_IMPORTED_MODULE_2__.fetchServices)());
@@ -90,7 +91,7 @@ function ServicesComponent() {
     className: "title"
   }, "SERVICES"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "services-list"
-  }, services && services.length ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, services.map(service => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, props.services && props.services || services && services.length ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, servicesToRender.map(service => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "service"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "services-card card",
@@ -123,7 +124,7 @@ function ServicesComponent() {
     className: service.icon
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, service.action_word))))))) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "No services found."))));
 }
-/* harmony default export */ __webpack_exports__["default"] = (ServicesComponent);
+/* harmony default export */ __webpack_exports__["default"] = (Services);
 
 /***/ })
 

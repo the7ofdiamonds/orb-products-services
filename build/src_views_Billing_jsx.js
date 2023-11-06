@@ -10,9 +10,9 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _billing_UserReceipt__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./billing/UserReceipt */ "./src/views/billing/UserReceipt.jsx");
-/* harmony import */ var _billing_UserInvoice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./billing/UserInvoice */ "./src/views/billing/UserInvoice.jsx");
-/* harmony import */ var _billing_UserQuote__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./billing/UserQuote */ "./src/views/billing/UserQuote.jsx");
+/* harmony import */ var _BillingReceipts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BillingReceipts */ "./src/views/BillingReceipts.jsx");
+/* harmony import */ var _BillingInvoices__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BillingInvoices */ "./src/views/BillingInvoices.jsx");
+/* harmony import */ var _BillingQuotes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./BillingQuotes */ "./src/views/BillingQuotes.jsx");
 
 
 
@@ -23,30 +23,30 @@ function Billing() {
     className: "billing"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
     className: "title"
-  }, "billing"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_billing_UserReceipt__WEBPACK_IMPORTED_MODULE_1__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_billing_UserInvoice__WEBPACK_IMPORTED_MODULE_2__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_billing_UserQuote__WEBPACK_IMPORTED_MODULE_3__["default"], null)));
+  }, "billing"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_BillingReceipts__WEBPACK_IMPORTED_MODULE_1__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_BillingInvoices__WEBPACK_IMPORTED_MODULE_2__["default"], null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_BillingQuotes__WEBPACK_IMPORTED_MODULE_3__["default"], null)));
 }
 /* harmony default export */ __webpack_exports__["default"] = (Billing);
 
 /***/ }),
 
-/***/ "./src/views/billing/UserInvoice.jsx":
-/*!*******************************************!*\
-  !*** ./src/views/billing/UserInvoice.jsx ***!
-  \*******************************************/
+/***/ "./src/views/BillingInvoices.jsx":
+/*!***************************************!*\
+  !*** ./src/views/BillingInvoices.jsx ***!
+  \***************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../controllers/clientSlice */ "./src/controllers/clientSlice.js");
-/* harmony import */ var _controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../controllers/invoiceSlice */ "./src/controllers/invoiceSlice.js");
+/* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../controllers/clientSlice */ "./src/controllers/clientSlice.js");
+/* harmony import */ var _controllers_invoiceSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/invoiceSlice */ "./src/controllers/invoiceSlice.js");
 
 
 
 
 
-function UserInvoiceComponent() {
+function BillingInvoices() {
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   const {
     user_email,
@@ -99,28 +99,28 @@ function UserInvoiceComponent() {
     })
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", null, "Delete")))))))))) : '');
 }
-/* harmony default export */ __webpack_exports__["default"] = (UserInvoiceComponent);
+/* harmony default export */ __webpack_exports__["default"] = (BillingInvoices);
 
 /***/ }),
 
-/***/ "./src/views/billing/UserQuote.jsx":
-/*!*****************************************!*\
-  !*** ./src/views/billing/UserQuote.jsx ***!
-  \*****************************************/
+/***/ "./src/views/BillingQuotes.jsx":
+/*!*************************************!*\
+  !*** ./src/views/BillingQuotes.jsx ***!
+  \*************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../controllers/clientSlice */ "./src/controllers/clientSlice.js");
-/* harmony import */ var _controllers_quoteSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../controllers/quoteSlice */ "./src/controllers/quoteSlice.js");
+/* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../controllers/clientSlice */ "./src/controllers/clientSlice.js");
+/* harmony import */ var _controllers_quoteSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/quoteSlice */ "./src/controllers/quoteSlice.js");
 
 
 
 
 
-function UserQuoteComponent() {
+function BillingQuotes() {
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   const {
     user_email,
@@ -168,28 +168,28 @@ function UserQuoteComponent() {
     href: `/services/quote/${quote.id}`
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", null, "Confirm"))))))))) : '');
 }
-/* harmony default export */ __webpack_exports__["default"] = (UserQuoteComponent);
+/* harmony default export */ __webpack_exports__["default"] = (BillingQuotes);
 
 /***/ }),
 
-/***/ "./src/views/billing/UserReceipt.jsx":
-/*!*******************************************!*\
-  !*** ./src/views/billing/UserReceipt.jsx ***!
-  \*******************************************/
+/***/ "./src/views/BillingReceipts.jsx":
+/*!***************************************!*\
+  !*** ./src/views/BillingReceipts.jsx ***!
+  \***************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../controllers/clientSlice */ "./src/controllers/clientSlice.js");
-/* harmony import */ var _controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../controllers/receiptSlice */ "./src/controllers/receiptSlice.js");
+/* harmony import */ var _controllers_clientSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../controllers/clientSlice */ "./src/controllers/clientSlice.js");
+/* harmony import */ var _controllers_receiptSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../controllers/receiptSlice */ "./src/controllers/receiptSlice.js");
 
 
 
 
 
-function UserReceiptComponent() {
+function BillingReceipts() {
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   const {
     user_email,
@@ -242,7 +242,7 @@ function UserReceiptComponent() {
     target: "_blank"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h5", null, "Download")))))))))) : '');
 }
-/* harmony default export */ __webpack_exports__["default"] = (UserReceiptComponent);
+/* harmony default export */ __webpack_exports__["default"] = (BillingReceipts);
 
 /***/ })
 

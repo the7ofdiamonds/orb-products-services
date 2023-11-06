@@ -9,8 +9,8 @@ use ORB_Products_Services\Post_Types\Post_Types;
 
 class Templates
 {
-
-    private $page_titles;
+    private $pages;
+    private $protected_pages;
     private $post_types;
     private $css_file;
     private $js_file;
@@ -18,26 +18,19 @@ class Templates
     public function __construct()
     {
         add_filter('frontpage_template', [$this, 'get_custom_front_page']);
-
-        add_filter('page_template', [$this, 'get_custom_client_page_template']);
-        add_filter('page_template', [$this, 'get_custom_start_page_template']);
-        add_filter('page_template', [$this, 'get_custom_selections_page_template']);
-
-        add_filter('page_template', [$this, 'get_custom_faq_page_template']);
-        add_filter('page_template', [$this, 'get_custom_support_page_template']);
-        add_filter('page_template', [$this, 'get_custom_contact_page_template']);
-        add_filter('page_template', [$this, 'get_custom_contact_success_page_template']);
+        add_filter('template_include', [$this, 'get_custom_page_templates']);
+        add_filter('template_include', [$this, 'get_custom_protected_page_templates']);
+        add_filter('archive_template', [$this, 'get_archive_page_template']);
+        add_filter('single_template', [$this, 'get_single_page_template']);
 
         $pages = new Pages;
         $posttypes = new Post_Types();
-
-        $this->page_titles = $pages->page_titles;
-        $this->post_types = $posttypes->post_types;
         $this->css_file = new CSS;
         $this->js_file = new JS;
 
-        new Templates_Post_types;
-        new Templates_Billing;
+        $this->pages = $pages->pages;
+        $this->protected_pages = $pages->protected_pages;
+        $this->post_types = $posttypes->post_types;
     }
 
     function get_custom_front_page($frontpage_template)
@@ -50,134 +43,116 @@ class Templates
         return $frontpage_template;
     }
 
-    function get_custom_client_page_template($page_template)
+    function get_custom_page_templates($template)
     {
-        $start_page = get_page_by_path('client');
+        if (is_array($this->pages)) {
+            foreach ($this->pages as $page) {
+                $full_url = explode('/', $page);
+                $full_path = explode('/', $_SERVER['REQUEST_URI']);
 
-        if ($start_page && is_page($start_page->ID)) {
-            $page_template = ORB_PRODUCTS_SERVICES . 'Pages/page-protected.php';
+                $full_url = array_filter($full_url, function ($value) {
+                    return $value !== "";
+                });
 
-            if (file_exists($page_template)) {
-                add_action('wp_head', [$this->css_file, 'load_pages_css']);
-                add_action('wp_footer', [$this->js_file, 'load_pages_react']);
+                $full_path = array_filter($full_path, function ($value) {
+                    return $value !== "";
+                });
 
-                return $page_template;
-            } else {
-                error_log('Client Page Template does not exist.');
+                $full_url = array_values($full_url);
+                $full_path = array_values($full_path);
+
+                $differences = array_diff($full_url, $full_path);
+
+                if (empty($differences)) {
+                    $template = ORB_PRODUCTS_SERVICES . 'Pages/page.php';;
+
+                    if (file_exists($template)) {
+                        add_action('wp_head', [$this->css_file, 'load_pages_css']);
+                        add_action('wp_footer', [$this->js_file, 'load_pages_react']);
+
+                        return $template;
+                    } else {
+                        error_log('Page Template does not exist.');
+                    }
+                }
             }
         }
 
-        return $page_template;
+        return $template;
     }
 
-    function get_custom_start_page_template($page_template)
+    function get_custom_protected_page_templates($template)
     {
-        $start_page = get_page_by_path('client/start');
+        if (is_array($this->protected_pages)) {
+            foreach ($this->protected_pages as $page) {
+                $full_url = explode('/', $page);
+                $full_path = explode('/', $_SERVER['REQUEST_URI']);
 
-        if ($start_page && is_page($start_page->ID)) {
-            $page_template = ORB_PRODUCTS_SERVICES . 'Pages/page-protected.php';
+                $full_url = array_filter($full_url, function ($value) {
+                    return $value !== "";
+                });
 
-            if (file_exists($page_template)) {
-                add_action('wp_head', [$this->css_file, 'load_pages_css']);
-                add_action('wp_footer', [$this->js_file, 'load_pages_react']);
+                $full_path = array_filter($full_path, function ($value) {
+                    return $value !== "";
+                });
 
-                return $page_template;
-            } else {
-                error_log('Start Page Template does not exist.');
+                $full_url = array_values($full_url);
+                $full_path = array_values($full_path);
+
+                $differences = array_diff($full_url, $full_path);
+
+                if (empty($differences)) {
+                    $template = ORB_PRODUCTS_SERVICES . 'Pages/page-protected.php';
+
+                    if (file_exists($template)) {
+                        add_action('wp_head', [$this->css_file, 'load_pages_css']);
+                        add_action('wp_footer', [$this->js_file, 'load_pages_react']);
+                        return $template;
+                    } else {
+                        error_log('Protected Page Template does not exist.');
+                    }
+                }
             }
         }
 
-        return $page_template;
+        return $template;
     }
 
-    function get_custom_selections_page_template($page_template)
+    function get_archive_page_template($archive_template)
     {
-        $selections_page = get_page_by_path('client/selections');
+        foreach ($this->post_types as $post_type) {
 
-        if ($selections_page && is_page($selections_page->ID)) {
-            $page_template = ORB_PRODUCTS_SERVICES . 'Pages/page-protected.php';
+            if (is_post_type_archive($post_type['name'])) {
+                $archive_template = ORB_PRODUCTS_SERVICES . 'Post_Types/' . $post_type['plural'] . '/archive-' . $post_type['name'] . '.php';
 
-            if (file_exists($page_template)) {
-                add_action('wp_head', [$this->css_file, 'load_pages_css']);
-                add_action('wp_footer', [$this->js_file, 'load_pages_react']);
+                if (file_exists($archive_template)) {
+                    add_action('wp_head', [$this->css_file, 'load_post_types_css']);
+                    add_action('wp_footer', [$this->js_file, 'load_post_types_archive_react']);
 
-                return $page_template;
-            } else {
-                error_log('Selections Page Template does not exist.');
+                    return $archive_template;
+                } else {
+                    error_log('Post Type ' . $post_type['name'] . ' archive template not found.');
+                }
             }
         }
-
-        return $page_template;
     }
 
-    function get_custom_faq_page_template($page_template)
+    function get_single_page_template($single_template)
     {
+        foreach ($this->post_types as $post_type) {
 
-        if (is_page('faq')) {
-            $page_template = ORB_PRODUCTS_SERVICES . 'Pages/page.php';
+            if (is_singular($post_type['name'])) {
+                $single_template = ORB_PRODUCTS_SERVICES . 'Post_Types/' . $post_type['plural'] . '/single-' . $post_type['name'] . '.php';
 
-            if (file_exists($page_template)) {
-                add_action('wp_head', [$this->css_file, 'load_pages_css']);
-                add_action('wp_footer', [$this->js_file, 'load_pages_react']);
+                if (file_exists($single_template)) {
+                    add_action('wp_head', [$this->css_file, 'load_post_types_css']);
+                    add_action('wp_footer', [$this->js_file, 'load_post_types_single_react']);
 
-                return $page_template;
-            } else {
-                error_log('Faq Page Template does not exist.');
+                    return $single_template;
+                } else {
+                    error_log('Post Type ' . $post_type['name'] . ' single template not found.');
+                }
             }
         }
-
-        return $page_template;
-    }
-
-    function get_custom_support_page_template($page_template)
-    {
-
-        if (is_page('support')) {
-            $page_template = ORB_PRODUCTS_SERVICES . 'Pages/page.php';
-
-            if (file_exists($page_template)) {
-                add_action('wp_head', [$this->css_file, 'load_pages_css']);
-                add_action('wp_footer', [$this->js_file, 'load_pages_react']);
-
-                return $page_template;
-            } else {
-                error_log('Support Page Template does not exist.');
-            }
-        }
-
-        return $page_template;
-    }
-
-
-    function get_custom_contact_page_template($page_template)
-    {
-
-        if (is_page('contact')) {
-            $page_template = ORB_PRODUCTS_SERVICES . 'Pages/page.php';
-
-            if (file_exists($page_template)) {
-                return $page_template;
-            } else {
-                error_log('Contact Page Template does not exist.');
-            }
-        }
-
-        return $page_template;
-    }
-
-    function get_custom_contact_success_page_template($page_template)
-    {
-
-        if (is_page('contact/success')) {
-            $page_template = ORB_PRODUCTS_SERVICES . 'Pages/page.php';
-
-            if (file_exists($page_template)) {
-                return $page_template;
-            } else {
-                error_log('Contact Success Page Template does not exist.');
-            }
-        }
-
-        return $page_template;
     }
 }

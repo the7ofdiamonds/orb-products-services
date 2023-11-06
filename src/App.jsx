@@ -4,32 +4,41 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 const LoadingComponent = lazy(() => import('./loading/LoadingComponent.jsx'));
 const ErrorComponent = lazy(() => import('./error/ErrorComponent.jsx'));
 
-const ServicesComponent = lazy(() => import('./views/Services.jsx'));
-const ServiceComponent = lazy(() => import('./views/Service.jsx'));
+const Frontpage = lazy(() => import('./views/Frontpage.jsx'));
 
-const BillingComponent = lazy(() => import('./views/Billing.jsx'));
-const QuoteComponent = lazy(() => import('./views/BillingQuote.jsx'));
-const InvoiceComponent = lazy(() => import('./views/BillingInvoice.jsx'));
-const PaymentComponent = lazy(() => import('./views/BillingPayment.jsx'));
-const CardPaymentComponent = lazy(() =>
+const Services = lazy(() => import('./views/Services.jsx'));
+const Service = lazy(() => import('./views/Service.jsx'));
+
+const Billing = lazy(() => import('./views/Billing.jsx'));
+
+const Quote = lazy(() => import('./views/BillingQuote.jsx'));
+const Quotes = lazy(() => import('./views/BillingQuotes.jsx'));
+
+const Invoice = lazy(() => import('./views/BillingInvoice.jsx'));
+const Invoices = lazy(() => import('./views/BillingInvoices.jsx'));
+
+const Payment = lazy(() => import('./views/BillingPayment.jsx'));
+const CardPayment = lazy(() =>
   import('./views/BillingPaymentCard.jsx')
 );
-const WalletComponent = lazy(() => import('./views/BillingPaymentWallet.jsx'));
-const ReceiptComponent = lazy(() => import('./views/BillingReceipt.jsx'));
+const Wallet = lazy(() => import('./views/BillingPaymentWallet.jsx'));
 
-const ClientComponent = lazy(() => import('./views/Client.jsx'));
-const StartComponent = lazy(() => import('./views/ClientStart.jsx'));
-const SelectionsComponent = lazy(() => import('./views/ClientSelections.jsx'));
+const Receipt = lazy(() => import('./views/BillingReceipt.jsx'));
+const Receipts = lazy(() => import('./views/BillingReceipts.jsx'));
 
-const DashboardComponent = lazy(() => import('./views/Dashboard.jsx'));
+const Client = lazy(() => import('./views/Client.jsx'));
+const Start = lazy(() => import('./views/ClientStart.jsx'));
+const Selections = lazy(() => import('./views/ClientSelections.jsx'));
 
-const FAQComponent = lazy(() => import('./views/FAQ.jsx'));
-const SupportComponent = lazy(() => import('./views/Support.jsx'));
-const SupportSuccessComponent = lazy(() =>
+const Dashboard = lazy(() => import('./views/Dashboard.jsx'));
+
+const FAQ = lazy(() => import('./views/Faq.jsx'));
+const Support = lazy(() => import('./views/Support.jsx'));
+const SupportSuccess = lazy(() =>
   import('./views/SupportSuccess.jsx')
 );
-const ContactComponent = lazy(() => import('./views/Contact.jsx'));
-const ContactSuccessComponent = lazy(() =>
+const Contact = lazy(() => import('./views/Contact.jsx'));
+const ContactSuccess = lazy(() =>
   import('./views/ContactSuccess.jsx')
 );
 
@@ -39,39 +48,39 @@ function App() {
       <Router basename="/">
         <Suspense fallback={<LoadingComponent />}>
           <Routes>
-            <Route index path="/" element={<ServicesComponent />} />
-            <Route path="services" element={<ServicesComponent />} />
-            <Route path="dashboard" element={<DashboardComponent />} />
-            <Route path="services/:service" element={<ServiceComponent />} />
-            <Route path="client" element={<ClientComponent />} />
-            <Route path="client/start" element={<StartComponent />} />
-            <Route path="client/selections" element={<SelectionsComponent />} />
+            <Route index path="/" element={<Frontpage />} />
+            <Route path="billing" element={<Billing />} />
+            <Route path="billing/invoice/:id" element={<Invoice />} />
+            <Route path="billing/invoices" element={<Invoices />} />
+            <Route path="billing/payment/:id" element={<Payment />} />
             <Route
               path="billing/payment/card/:id"
-              element={<CardPaymentComponent />}
+              element={<CardPayment />}
             />
             <Route
               path="billing/payment/wallet/:id"
-              element={<WalletComponent />}
+              element={<Wallet />}
             />
-            <Route
-              path="billing/payment/:id"
-              element={<PaymentComponent />}
-            />
-            <Route path="billing/receipt/:id" element={<ReceiptComponent />} />
-            <Route path="billing/quote/:id" element={<QuoteComponent />} />
-            <Route path="billing/invoice/:id" element={<InvoiceComponent />} />
-            <Route path="billing" element={<BillingComponent />} />
-            <Route path="faq" element={<FAQComponent />} />
-            <Route path="contact" element={<ContactComponent />} />
+            <Route path="billing/quote/:id" element={<Quote />} />
+            {/* <Route path="billing/quotes" element={<Quotes />} /> */}
+            <Route path="billing/receipt/:id" element={<Receipt />} />
+            {/* <Route path="billing/receipts" element={<Receipts />} /> */}
+            <Route path="client" element={<Client />} />
+            <Route path="client/selections" element={<Selections />} />
+            <Route path="client/start" element={<Start />} />
+            <Route path="contact" element={<Contact />} />
             <Route
               path="contact/success"
-              element={<ContactSuccessComponent />}
+              element={<ContactSuccess />}
             />
-            <Route path="support" element={<SupportComponent />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="faq" element={<FAQ />} />
+            <Route path="services" element={<Services />} />
+            <Route path="services/:service" element={<Service />} />
+            <Route path="support" element={<Support />} />
             <Route
               path="support/success"
-              element={<SupportSuccessComponent />}
+              element={<SupportSuccess />}
             />
           </Routes>
         </Suspense>

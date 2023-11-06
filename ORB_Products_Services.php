@@ -51,10 +51,8 @@ use ORB_Products_Services\Email\EmailOnboarding;
 use ORB_Products_Services\Email\EmailSchedule;
 use ORB_Products_Services\Email\EmailSupport;
 use ORB_Products_Services\JS\JS;
-use ORB_Products_Services\Menus\Menus;
 use ORB_Products_Services\Pages\Pages;
 use ORB_Products_Services\PDF\PDF;
-use ORB_Products_Services\Post_Types\Post_Types;
 use ORB_Products_Services\Roles\Roles;
 use ORB_Products_Services\Shortcodes\Shortcodes;
 use ORB_Products_Services\Database\Database;
@@ -82,40 +80,6 @@ class ORB_Products_Services
         new Shortcodes;
         new Database;
         new Templates;
-
-        // $credentialsPath = ORB_PRODUCTS_SERVICES . 'serviceAccount.json';
-
-        // if (file_exists($credentialsPath)) {
-        //     $jsonFileContents = file_get_contents($credentialsPath);
-
-        //     if ($jsonFileContents !== false) {
-        //         $decodedData = json_decode($jsonFileContents, true);
-
-        //         if (json_last_error() === JSON_ERROR_NONE && is_array($decodedData)) {
-        //             if (
-        //                 isset($decodedData['type']) && $decodedData['type'] === 'service_account' &&
-        //                 isset($decodedData['project_id']) &&
-        //                 isset($decodedData['private_key_id']) &&
-        //                 isset($decodedData['private_key']) &&
-        //                 isset($decodedData['client_email'])
-        //             ) {
-        //                 $credentialsPath = ORB_PRODUCTS_SERVICES . 'serviceAccount.json';
-        //             } else {
-        //                 error_log('This is not a valid service account JSON');
-        //                 $credentialsPath = null;
-        //             }
-        //         } else {
-        //             error_log('Failed to decode JSON');
-        //             $credentialsPath = null;
-        //         }
-        //     } else {
-        //         error_log('Failed to read file contents');
-        //         $credentialsPath = null;
-        //     }
-        // } else {
-        //     error_log('File does not exist');
-        //     $credentialsPath = null;
-        // }
 
         $dotenv = Dotenv::createImmutable(ORB_PRODUCTS_SERVICES);
         $dotenv->load(__DIR__);
@@ -172,12 +136,6 @@ class ORB_Products_Services
         } else {
             error_log('Stripe Secret Key is required.');
         }
-
-        // if ($credentialsPath !== null) {
-        //     new Google($credentialsPath);
-        // } else {
-        //     error_log('A path to the Google Service Account file is required.');
-        // }
     }
 
     public function activate()
@@ -197,10 +155,3 @@ class ORB_Products_Services
 $orb_services = new ORB_Products_Services();
 register_activation_hook(__FILE__, [$orb_services, 'activate']);
 // register_deactivation_hook( __FILE__, [ $thfw, 'deactivate' ]);
-
-$orb_services_pages = new Pages();
-// register_activation_hook(__FILE__, [$orb_services_pages, 'add_pages']);
-// register_activation_hook(__FILE__, [$orb_services_pages, 'add_billing_subpages']);
-// register_activation_hook(__FILE__, [$orb_services_pages, 'add_payment_subpages']);
-// register_activation_hook(__FILE__, [$orb_services_pages, 'add_client_subpages']);
-// register_activation_hook(__FILE__, [$orb_services_pages, 'add_contact_subpage']);

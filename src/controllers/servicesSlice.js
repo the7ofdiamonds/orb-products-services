@@ -25,7 +25,7 @@ export const fetchServices = createAsyncThunk('services/fetchServices', async ()
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 
@@ -48,7 +48,7 @@ export const getAvailableServices = createAsyncThunk('services/getAvailableServi
     const responseData = await response.json();
     return responseData;
   } catch (error) {
-    throw error.message;
+    throw error;
   }
 });
 
@@ -63,6 +63,7 @@ export const servicesSlice = createSlice({
       })
       .addCase(fetchServices.fulfilled, (state, action) => {
         state.servicesLoading = false
+        state.servicesError = ''
         state.services = action.payload
       })
       .addCase(fetchServices.rejected, (state, action) => {

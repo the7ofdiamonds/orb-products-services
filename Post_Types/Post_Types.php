@@ -27,7 +27,7 @@ class Post_Types
                 'singular' => 'Product',
                 'plural' => 'Products',
                 'archive_page' => 'products',
-                'single_page' => 'service'
+                'single_page' => 'product'
             ],
         ];
 

@@ -7,7 +7,7 @@ import { fetchService } from '../controllers/serviceSlice.js';
 import LoadingComponent from '../loading/LoadingComponent.jsx';
 import ErrorComponent from '../error/ErrorComponent.jsx';
 
-function ServiceComponent() {
+function Service() {
   const location = useLocation();
   const servicePath = location.pathname.split('/')[2];
 
@@ -23,10 +23,6 @@ function ServiceComponent() {
     dispatch(fetchService(servicePath));
   }, [dispatch, servicePath]);
 
-  const handleClick = () => {
-    window.location.href = '/client/start';
-  };
-
   if (serviceLoading) {
     return <LoadingComponent />;
   }
@@ -34,6 +30,10 @@ function ServiceComponent() {
   if (serviceError) {
     return <ErrorComponent error={serviceError} />;
   }
+
+  const handleClick = () => {
+    window.location.href = '/client/start';
+  };
 
   return (
     <>
@@ -85,10 +85,11 @@ function ServiceComponent() {
 
         <button className="start-btn" onClick={handleClick}>
           <i class="fas fa-power-off"></i>
-          <h3>START</h3>
+          <h3>{action_word}</h3>
         </button>
       </section>
     </>
   );
 }
-export default ServiceComponent;
+
+export default Service;

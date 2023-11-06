@@ -37,31 +37,31 @@ class Services
     {
         $args = array(
             'post_type' => $this->post_type,
-            'posts_per_page' => -1,
+            'posts_per_page' => 10,
         );
-        $services = new WP_Query($args);
 
-        if ($services->have_posts()) {
+        $query = new WP_Query($args);
+        $services = $query->posts;
+
+        if ($services) {
             $post_data = array();
 
-            while ($services->have_posts()) {
-                $services->the_post();
-
-                $description = get_post_meta(get_the_ID(), '_service_description', true);
-                $cost = get_post_meta(get_the_ID(), '_service_cost', true);
+            foreach ($services as $service) {
+                $description = get_post_meta($service->ID, '_service_description', true);
+                $cost = get_post_meta($service->ID, '_service_cost', true);
 
                 if (!empty($description) && is_numeric($cost)) {
                     $post_data[] = array(
-                        'id' => get_the_ID(),
+                        'id' => $service->ID,
                         'description' => $description,
                         'cost' => floatval($cost),
-                        'title' => get_the_title(),
+                        'title' => get_the_title($service->ID),
                         'content' => get_the_content(),
-                        'features' => get_post_meta(get_the_ID(), '_service_features', true),
-                        'icon' => get_post_meta(get_the_ID(), '_service_icon', true),
-                        'action_word' => get_post_meta(get_the_ID(), '_services_button', true),
-                        'slug' => get_post_field('post_name', get_the_ID()),
-                        'price_id' => get_post_meta(get_the_ID(), '_service_price_id', true),
+                        'features' => get_post_meta($service->ID, '_service_features', true),
+                        'icon' => get_post_meta($service->ID, '_service_icon', true),
+                        'action_word' => get_post_meta($service->ID, '_services_button', true),
+                        'slug' => get_post_field('post_name', $service->ID),
+                        'price_id' => get_post_meta($service->ID, '_service_price_id', true),
                     );
                 }
             }

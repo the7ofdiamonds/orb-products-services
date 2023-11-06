@@ -36,6 +36,19 @@ class BorderRadius
                 'section' => 'orb_products_services_border_radius_settings',
             )
         );
+
+        $wp_customize->add_setting('orb_products_services_border_radius_hover', array(
+            'sanitize_callback' => 'sanitize_text_field',
+        ));
+
+        $wp_customize->add_control(
+            'orb_products_services_border_radius_hover',
+            array(
+                'type' => 'input',
+                'label' => __('Border Radius Hover', 'the-house-forever-wins'),
+                'section' => 'orb_products_services_border_radius_settings',
+            )
+        );
     }
 
     function load_css()
@@ -49,6 +62,12 @@ class BorderRadius
                                                         } else {
                                                             echo esc_html(get_theme_mod('orb_products_services_border_radius'));
                                                         } ?>;
+                --orb-products-services-border-radius-hover: <?php
+                                                                if (empty(get_theme_mod('orb_products_services_border_radius_hover'))) {
+                                                                    echo esc_html('0.25em');
+                                                                } else {
+                                                                    echo esc_html(get_theme_mod('orb_products_services_border_radius_hover'));
+                                                                } ?>;
             }
         </style>
 <?php
