@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Products_Services\Pages;
+namespace ORB\Products_Services\Pages;
 
 class Pages
 {
@@ -26,21 +26,7 @@ class Pages
             'contact',
         ];
 
-        $this->protected_pages = [
-            'billing',
-            'billing/invoice',
-            'billing/invoices',
-            'billing/payment',
-            'billing/payment/card',
-            'billing/payment/wallet',
-            'billing/quote',
-            'billing/quotes',
-            'billing/receipt',
-            'billing/receipts',
-            'client',
-            'client/selections',
-            'client/start'
-        ];
+        $this->protected_pages = [];
 
         $this->page_titles = [
             ...$this->pages,
@@ -50,6 +36,8 @@ class Pages
         add_action('init', [$this, 'react_rewrite_rules']);
 
         add_filter('query_vars', [$this, 'add_query_vars']);
+
+        add_action('init', [$this, 'is_user_logged_in']);
     }
 
     function react_rewrite_rules()
@@ -61,7 +49,7 @@ class Pages
                 $segment = count($url) - 1;
 
                 if (isset($url[$segment])) {
-                    add_rewrite_rule('^' . $page_title, 'index.php?' . $segment . '=$1', 'top');
+                    add_rewrite_rule('^' . $page_title, 'index.php?' . $url[$segment] . '=$1', 'top');
                 }
             }
         }

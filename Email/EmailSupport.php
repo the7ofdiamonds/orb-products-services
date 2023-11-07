@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Products_Services\Email;
+namespace ORB\Products_Services\Email;
 
 use PHPMailer\PHPMailer\Exception;
 

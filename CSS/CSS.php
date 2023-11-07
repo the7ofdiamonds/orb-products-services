@@ -1,14 +1,16 @@
 <?php
 
-namespace ORB_Products_Services\CSS;
+namespace ORB\Products_Services\CSS;
 
-use ORB_Products_Services\Pages\Pages;
-use ORB_Products_Services\Post_Types\Post_Types;
-use ORB_Products_Services\CSS\Customizer\Customizer;
+use ORB\Products_Services\Pages\Pages;
+use ORB\Products_Services\Post_Types\Post_Types;
+use ORB\Products_Services\CSS\Customizer\Customizer;
 
 class CSS
 {
     private $handle_prefix;
+    private $dir;
+    private $dirURL;
     private $cssFolderPath;
     private $cssFolderPathURL;
     private $cssFileName;
@@ -21,9 +23,12 @@ class CSS
         add_action('wp_head', [$this, 'load_pages_css']);
 
         $this->handle_prefix = 'orb_products_services_';
-        $this->cssFolderPath = ORB_PRODUCTS_SERVICES . 'CSS/';
-        $this->cssFolderPathURL = ORB_PRODUCTS_SERVICES_URL . 'CSS/';
+        $this->dir = ORB_PRODUCTS_SERVICES;
+        $this->dirURL = ORB_PRODUCTS_SERVICES_URL;
         $this->cssFileName = 'orb-products-services.css';
+
+        $this->cssFolderPath = $this->dir . 'CSS/';
+        $this->cssFolderPathURL = $this->dirURL . 'CSS/';
 
         $this->filePath = $this->cssFolderPath . $this->cssFileName;
 

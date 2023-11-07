@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Products_Services\PDF;
+namespace ORB\Products_Services\PDF;
 
 // use Mpdf\Mpdf;
 

@@ -1,18 +1,12 @@
 <?php
 
-namespace ORB_Products_Services\Admin;
+namespace ORB\Products_Services\Admin;
 
-use ORB_Products_Services\Admin\AdminEmail;
-use ORB_Products_Services\Admin\AdminEmailContact;
-use ORB_Products_Services\Admin\AdminEmailSupport;
-use ORB_Products_Services\Admin\AdminEmailSchedule;
-use ORB_Products_Services\Admin\AdminEmailQuote;
-use ORB_Products_Services\Admin\AdminEmailInvoice;
-use ORB_Products_Services\Admin\AdminEmailReceipt;
-use ORB_Products_Services\Admin\AdminHero;
-use ORB_Products_Services\Admin\AdminLocation;
-use ORB_Products_Services\Admin\AdminCommunication;
-use ORB_Products_Services\Admin\AdminStripe;
+use ORB\Products_Services\Admin\AdminEmail;
+use ORB\Products_Services\Admin\AdminEmailContact;
+use ORB\Products_Services\Admin\AdminEmailSupport;
+use ORB\Products_Services\Admin\AdminHero;
+use ORB\Products_Services\Admin\AdminStripe;
 
 class Admin
 {
@@ -25,13 +19,7 @@ class Admin
         new AdminEmail;
         new AdminEmailContact;
         new AdminEmailSupport;
-        new AdminEmailSchedule;
-        new AdminEmailQuote;
-        new AdminEmailInvoice;
-        new AdminEmailReceipt;
         new AdminHero;
-        new AdminLocation;
-        new AdminCommunication;
         new AdminStripe;
     }
 

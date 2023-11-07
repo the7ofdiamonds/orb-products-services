@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Products_Services\Post_Types\Products;
+namespace ORB\Products_Services\Post_Types\Products;
 
 class Products
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Products_Services\CSS\Customizer;
+namespace ORB\Products_Services\CSS\Customizer;
 
 class Hero
 {

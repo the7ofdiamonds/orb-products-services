@@ -1,11 +1,11 @@
 <?php
 
-namespace ORB_Products_Services\API\Google;
+namespace ORB\Products_Services\API\Google;
 
-use ORB_Products_Services\API\Google\GoogleCalendar;
-use ORB_Products_Services\API\Calendar;
-use ORB_Products_Services\API\Event;
-use ORB_Products_Services\API\Schedule;
+use ORB\Products_Services\API\Google\GoogleCalendar;
+use ORB\Products_Services\API\Calendar;
+use ORB\Products_Services\API\Event;
+use ORB\Products_Services\API\Schedule;
 
 use Google\Client;
 use Google\Service\Calendar as GCalendar;

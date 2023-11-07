@@ -1,5 +1,5 @@
 <?php
-namespace ORB_Products_Services\Shortcodes;
+namespace ORB\Products_Services\Shortcodes;
 
 class Shortcodes
 {

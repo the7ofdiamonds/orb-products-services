@@ -14,7 +14,7 @@ License:
 Text Domain: seven-tech
 */
 
-namespace ORB_Products_Services;
+namespace ORB\Products_Services;
 
 require_once 'vendor/autoload.php';
 
@@ -24,39 +24,29 @@ define('ORB_PRODUCTS_SERVICES_URL', WP_PLUGIN_URL . '/orb-products-services/');
 
 use Dotenv\Dotenv;
 
-use ORB_Products_Services\Admin\Admin;
-use ORB_Products_Services\API\Email;
-use ORB_Products_Services\API\Clients;
-use ORB_Products_Services\API\Customers;
-use ORB_Products_Services\API\Product;
-use ORB_Products_Services\API\Products;
-use ORB_Products_Services\API\Service;
-use ORB_Products_Services\API\Services;
-use ORB_Products_Services\API\Quote;
-use ORB_Products_Services\API\Invoice;
-use ORB_Products_Services\API\Receipt;
-use ORB_Products_Services\API\Payment;
-use ORB_Products_Services\API\Stripe\Stripe;
-use ORB_Products_Services\API\Stripe\StripeCharges;
-use ORB_Products_Services\API\Stripe\StripeProducts;
-use ORB_Products_Services\API\Stripe\StripePrices;
-use ORB_Products_Services\API\Stripe\StripePaymentMethods;
-use ORB_Products_Services\API\Stripe\StripePaymentIntents;
-use ORB_Products_Services\CSS\CSS;
-use ORB_Products_Services\Email\EmailContact;
-use ORB_Products_Services\Email\EmailInvoice;
-use ORB_Products_Services\Email\EmailQuote;
-use ORB_Products_Services\Email\EmailReceipt;
-use ORB_Products_Services\Email\EmailOnboarding;
-use ORB_Products_Services\Email\EmailSchedule;
-use ORB_Products_Services\Email\EmailSupport;
-use ORB_Products_Services\JS\JS;
-use ORB_Products_Services\Pages\Pages;
-use ORB_Products_Services\PDF\PDF;
-use ORB_Products_Services\Roles\Roles;
-use ORB_Products_Services\Shortcodes\Shortcodes;
-use ORB_Products_Services\Database\Database;
-use ORB_Products_Services\Templates\Templates;
+use ORB\Products_Services\Admin\Admin;
+use ORB\Products_Services\API\Email;
+use ORB\Products_Services\API\Product;
+use ORB\Products_Services\API\Products;
+use ORB\Products_Services\API\Service;
+use ORB\Products_Services\API\Services;
+use ORB\Products_Services\API\Payment;
+use ORB\Products_Services\API\Stripe\Stripe;
+use ORB\Products_Services\API\Stripe\StripeCharges;
+use ORB\Products_Services\API\Stripe\StripeProducts;
+use ORB\Products_Services\API\Stripe\StripePrices;
+use ORB\Products_Services\API\Stripe\StripePaymentMethods;
+use ORB\Products_Services\API\Stripe\StripePaymentIntents;
+use ORB\Products_Services\CSS\CSS;
+use ORB\Products_Services\Email\EmailContact;
+use ORB\Products_Services\Email\EmailSupport;
+use ORB\Products_Services\JS\JS;
+use ORB\Products_Services\Pages\Pages;
+use ORB\Products_Services\PDF\PDF;
+use ORB\Products_Services\Roles\Roles;
+use ORB\Products_Services\Shortcodes\Shortcodes;
+use ORB\Products_Services\Database\Database;
+use ORB\Products_Services\Templates\Templates;
 
 use Stripe\Stripe as StripeAPI;
 use Stripe\StripeClient;
@@ -99,7 +89,6 @@ class ORB_Products_Services
         $mailer = new PHPMailer();
         new EmailContact($mailer);
         new EmailSupport($mailer);
-        new EmailSchedule($mailer);
 
         if ($stripeSecretKey !== null) {
             StripeAPI::setApiKey($stripeSecretKey);
@@ -115,24 +104,12 @@ class ORB_Products_Services
             $stripe_products = new StripeProducts($stripeClient);
             $stripe_prices = new StripePrices($stripeClient);
 
-            new Payment($stripe_payment_intent, $stripe_payment_methods);
-
             new Service($stripe_products, $stripe_prices);
             new Services($stripe_products, $stripe_prices);
             new Product($stripe_products, $stripe_prices);
             new Products($stripe_products, $stripe_prices);
 
-            new Clients($stripeClient);
-            new Customers($stripeClient);
-            new Quote($stripeClient);
-            new Invoice($stripeClient);
-            new Receipt($stripeClient);
-
             $pdf = new PDF;
-            new EmailQuote($stripeClient, $mailer);
-            new EmailInvoice($stripeClient, $mailer);
-            new EmailReceipt($stripeClient, $mailer);
-            new EmailOnboarding($stripeClient, $mailer);
         } else {
             error_log('Stripe Secret Key is required.');
         }

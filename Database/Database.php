@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Products_Services\Database;
+namespace ORB\Products_Services\Database;
 
 require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
@@ -15,11 +15,8 @@ class Database
 
         $this->createTables();
 
-        new DatabaseClient();
-        new DatabaseCustomer();
-        new DatabaseInvoice();
-        new DatabaseQuote();
-        new DatabaseReceipt();
+        new DatabaseServices();
+        new DatabaseProducts();
     }
 
     function createTables()

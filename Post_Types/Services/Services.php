@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Products_Services\Post_Types\Services;
+namespace ORB\Products_Services\Post_Types\Services;
 
 use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\InvalidRequestException;

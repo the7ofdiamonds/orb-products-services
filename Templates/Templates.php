@@ -1,11 +1,11 @@
 <?php
 
-namespace ORB_Products_Services\Templates;
+namespace ORB\Products_Services\Templates;
 
-use ORB_Products_Services\CSS\CSS;
-use ORB_Products_Services\JS\JS;
-use ORB_Products_Services\Pages\Pages;
-use ORB_Products_Services\Post_Types\Post_Types;
+use ORB\Products_Services\CSS\CSS;
+use ORB\Products_Services\JS\JS;
+use ORB\Products_Services\Pages\Pages;
+use ORB\Products_Services\Post_Types\Post_Types;
 
 class Templates
 {

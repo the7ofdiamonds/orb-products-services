@@ -1,6 +1,6 @@
 <?php
 
-namespace ORB_Products_Services\Roles;
+namespace ORB\Products_Services\Roles;
 
 class Roles
 {
