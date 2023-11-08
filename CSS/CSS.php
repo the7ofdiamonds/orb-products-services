@@ -20,8 +20,6 @@ class CSS
 
     public function __construct()
     {
-        add_action('wp_head', [$this, 'load_pages_css']);
-
         $this->handle_prefix = 'orb_products_services_';
         $this->dir = ORB_PRODUCTS_SERVICES;
         $this->dirURL = ORB_PRODUCTS_SERVICES_URL;

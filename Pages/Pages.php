@@ -68,6 +68,8 @@ class Pages
 
             return $query_vars;
         }
+
+        return $query_vars;
     }
 
     function is_user_logged_in()

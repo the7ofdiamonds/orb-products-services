@@ -27,7 +27,7 @@ class JS
 
         $this->buildDir = $this->dir . 'build/';
         $this->buildDirURL = $this->dirURL . 'build/';
-        $this->buildFilePrefix = $this->buildDirURL . 'src_views_';
+        $this->buildFilePrefix = $this->buildDir . 'src_views_';
         $this->buildFilePrefixURL = $this->buildDirURL . 'src_views_';
 
         $pages = new Pages;
