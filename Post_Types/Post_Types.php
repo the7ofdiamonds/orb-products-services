@@ -31,10 +31,10 @@ class Post_Types
             ],
         ];
 
-        add_action('init', [$this, 'custom_post_type']);
+        add_action('init', [$this, 'custom_post_types']);
     }
 
-    function custom_post_type()
+    function custom_post_types()
     {
         foreach ($this->post_types as $post_type) {
             $labels = array(
