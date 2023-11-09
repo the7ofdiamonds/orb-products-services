@@ -40,10 +40,15 @@ class Database
         $sql = "CREATE TABLE {$table_name} (
             id INT NOT NULL AUTO_INCREMENT,
             created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            post_id VARCHAR(255) DEFAULT NULL,
-            features VARCHAR(255) DEFAULT NULL,
-            unit_amount VARCHAR(255) DEFAULT NULL,
+            service_id VARCHAR(255) DEFAULT NULL,
+            name VARCHAR(255) DEFAULT NULL,
+            price VARCHAR(255) DEFAULT NULL,
             description VARCHAR(255) DEFAULT NULL,
+            features_list TEXT DEFAULT NULL,
+            onboarding_link VARCHAR(255) DEFAULT NULL,
+            service_button VARCHAR(255) DEFAULT NULL,
+            service_icon VARCHAR(255) DEFAULT NULL,
+            stripe_price_id VARCHAR(255) DEFAULT NULL,
             PRIMARY KEY (id)
         ) $charset_collate;";
 

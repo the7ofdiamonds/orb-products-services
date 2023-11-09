@@ -16,9 +16,9 @@ class StripeProducts
     public function createProduct(
         $id,
         $name,
+        $description = '',
         $active = '',
         $default_price_data = '',
-        $description = '',
         $features = '',
         $images = '',
         $package_dimensions = '',
@@ -87,10 +87,10 @@ class StripeProducts
 
     public function updateProduct(
         $stripe_product_id,
-        $active = '',
-        $default_price = '',
         $description = '',
         $features = '',
+        $active = '',
+        $default_price = '',
         $images = '',
         $package_dimensions = '',
         $shippable = '',

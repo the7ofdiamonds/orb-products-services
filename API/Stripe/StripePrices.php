@@ -97,6 +97,7 @@ class StripePrices
 
     public function updatePrice(
         $stripe_price_id,
+        $unit_amount,
         $active = '',
         $currency_options = '',
         $lookup_key = '',
@@ -108,6 +109,7 @@ class StripePrices
             $updated_price = $this->stripeClient->prices->update(
                 $stripe_price_id,
                 [
+                    'unit_amount' => $unit_amount,
                     'active' => $active,
                     'currency_options' => $currency_options,
                     'lookup_key' => $lookup_key,

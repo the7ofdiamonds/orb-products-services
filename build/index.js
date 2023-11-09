@@ -9954,7 +9954,16 @@ __webpack_require__.r(__webpack_exports__);
 const initialState = {
   serviceLoading: false,
   serviceError: '',
-  service: []
+  service_id: '',
+  title: '',
+  price: '',
+  description: '',
+  content: '',
+  features: '',
+  onboarding_link: '',
+  icon: '',
+  action_word: '',
+  slug: ''
 };
 const fetchService = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('service/serviceSlice', async serviceSlug => {
   try {
@@ -9970,11 +9979,20 @@ const serviceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlic
   extraReducers: builder => {
     builder.addCase(fetchService.pending, state => {
       state.serviceLoading = true;
-      state.serviceError = '';
+      state.serviceError = null;
     }).addCase(fetchService.fulfilled, (state, action) => {
       state.serviceLoading = false;
-      state.serviceError = null;
-      state.service = action.payload;
+      state.serviceError = '';
+      state.service_id = action.payload.service_id;
+      state.title = action.payload.title;
+      state.price = action.payload.price;
+      state.description = action.payload.description;
+      state.content = action.payload.content;
+      state.features = action.payload.features;
+      state.onboarding_link = action.payload.onboarding_link;
+      state.icon = action.payload.icon;
+      state.action_word = action.payload.action_word;
+      state.slug = action.payload.slug;
     }).addCase(fetchService.rejected, (state, action) => {
       state.serviceLoading = false;
       state.serviceError = action.error.message;

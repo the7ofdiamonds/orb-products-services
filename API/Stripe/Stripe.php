@@ -24,7 +24,7 @@ use ORB\Products_Services\API\Payment;
 use ORB\Products_Services\API\Receipt;
 
 use ORB\Products_Services\Post_Types\Products\Products as PT_Products;
-use ORB\Products_Services\Post_Types\Services\Services as PT_Services;
+use ORB\Products_Services\Post_Types\Services\ServicesService;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -33,7 +33,7 @@ class Stripe
     public function __construct($stripeClient)
     {
         new PT_Products($stripeClient);
-        new PT_Services($stripeClient);
+        new ServicesService($stripeClient);
 
         $stripe_payment_intent = new StripePaymentIntents($stripeClient);
         $stripe_charges = new StripeCharges($stripeClient);

@@ -14,8 +14,8 @@ function Service() {
   const { serviceLoading, serviceError } = useSelector(
     (state) => state.service
   );
-  const { title, description, features, action_word, content, cost, icon } =
-    useSelector((state) => state.service.service);
+  const { title, description, features, action_word, content, price, icon } =
+    useSelector((state) => state.service);
 
   const dispatch = useDispatch();
 
@@ -79,7 +79,7 @@ function Service() {
               currency: 'USD',
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
-            }).format(cost)}
+            }).format(price)}
           </h4>
         </div>
 

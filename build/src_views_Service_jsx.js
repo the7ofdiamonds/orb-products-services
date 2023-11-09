@@ -78,9 +78,9 @@ function Service() {
     features,
     action_word,
     content,
-    cost,
+    price,
     icon
-  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(state => state.service.service);
+  } = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(state => state.service);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     dispatch((0,_controllers_serviceSlice_js__WEBPACK_IMPORTED_MODULE_2__.fetchService)(servicePath));
@@ -120,7 +120,7 @@ function Service() {
     currency: 'USD',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
-  }).format(cost))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+  }).format(price))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     className: "start-btn",
     onClick: handleClick
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("i", {
