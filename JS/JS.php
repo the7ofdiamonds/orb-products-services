@@ -46,7 +46,7 @@ class JS
     function load_front_page_react()
     {
         if (is_front_page()) {
-            if (is_array($this->front_page_react) && !empty($this->front_page_react)) {
+            if (!empty($this->front_page_react) && is_array($this->front_page_react) && count($this->front_page_react) > 0) {
                 foreach ($this->front_page_react as $section) {
                     $fileName = ucwords($section);
                     $filePath = $this->buildFilePrefix . $fileName . '_jsx.js';
@@ -62,9 +62,7 @@ class JS
 
                     wp_enqueue_script($this->handle_prefix . 'react_index', $this->buildDirURL . 'index.js', ['wp-element'], '1.0', true);
                 }
-            } else {
-                error_log('There are no front page react files to load at ' . $this->dir . ' Pages');
-            }
+            } 
         }
     }
 

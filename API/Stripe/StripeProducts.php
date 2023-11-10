@@ -2,6 +2,8 @@
 
 namespace ORB\Products_Services\API\Stripe;
 
+use Exception;
+
 use Stripe\Exception\ApiErrorException;
 
 class StripeProducts
@@ -16,8 +18,8 @@ class StripeProducts
     public function createProduct(
         $id,
         $name,
-        $description = '',
-        $active = '',
+        $description,
+        $active = true,
         $default_price_data = '',
         $features = '',
         $images = '',
@@ -33,54 +35,58 @@ class StripeProducts
                 'id' => $id,
                 'name' => $name,
                 'active' => $active,
-                'default_price_data' => $default_price_data,
+                // 'default_price_data' => $default_price_data,
                 'description' => $description,
-                'features' => $features,
-                'images' => $images,
-                'package_dimensions' => $package_dimensions,
-                'shippable' => $shippable,
-                'statement_descriptor' => $statement_descriptor,
-                'tax_code' => $tax_code,
-                'unit_label' => $unit_label,
-                'url' => $url,
+                // 'features' => $features,
+                // 'images' => $images,
+                // 'package_dimensions' => $package_dimensions,
+                // 'shippable' => $shippable,
+                // 'statement_descriptor' => $statement_descriptor,
+                // 'tax_code' => $tax_code,
+                // 'unit_label' => $unit_label,
+                // 'url' => $url,
             ]);
 
             return $product;
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();
-            $response_data = [
-                'message' => $error_message,
-                'status' => $status_code
-            ];
+            $response = $error_message . ' ' . $status_code;
 
-            $response = rest_ensure_response($response_data);
-            $response->set_status($status_code);
+            error_log($response . ' at createProduct');
+            return $response;
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getCode();
+            $response = $error_message . ' ' . $status_code;
 
+            error_log($response . ' at createProduct');
             return $response;
         }
     }
 
-    public function getProduct($stripe_payment_intent_id)
+    public function getProduct($stripe_product_id)
     {
         try {
             $product = $this->stripeClient->products->retrieve(
-                $stripe_payment_intent_id,
-                []
+                $stripe_product_id,
+                ['expand' => ['default_price']]
             );
 
             return $product;
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();
-            $response_data = [
-                'message' => $error_message,
-                'status' => $status_code
-            ];
+            $response = $error_message . ' ' . $status_code;
 
-            $response = rest_ensure_response($response_data);
-            $response->set_status($status_code);
+            error_log($response . ' at getProduct');
+            return $response;
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getCode();
+            $response = $error_message . ' ' . $status_code;
 
+            error_log($response . ' at getProduct');
             return $response;
         }
     }
@@ -89,7 +95,7 @@ class StripeProducts
         $stripe_product_id,
         $description = '',
         $features = '',
-        $active = '',
+        $active = true,
         $default_price = '',
         $images = '',
         $package_dimensions = '',
@@ -103,32 +109,34 @@ class StripeProducts
             $updated_product = $this->stripeClient->products->update(
                 $stripe_product_id,
                 [
-                    'active' => $active,
-                    'default_price' => $default_price,
+                    // 'active' => $active,
+                    // 'default_price' => $default_price,
                     'description' => $description,
-                    'features' => $features,
-                    'images' => $images,
-                    'package_dimensions' => $package_dimensions,
-                    'shippable' => $shippable,
-                    'statement_descriptor' => $statement_descriptor,
-                    'tax_code' => $tax_code,
-                    'unit_label' => $unit_label,
-                    'url' => $url,
+                    // 'features' => $features,
+                    // 'images' => $images,
+                    // 'package_dimensions' => $package_dimensions,
+                    // 'shippable' => $shippable,
+                    // 'statement_descriptor' => $statement_descriptor,
+                    // 'tax_code' => $tax_code,
+                    // 'unit_label' => $unit_label,
+                    // 'url' => $url,
                 ]
             );
-
+            error_log(print_r($updated_product, true));
             return $updated_product;
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();
-            $response_data = [
-                'message' => $error_message,
-                'status' => $status_code
-            ];
+            $response = $error_message . ' ' . $status_code;
 
-            $response = rest_ensure_response($response_data);
-            $response->set_status($status_code);
+            error_log($response . ' at updateProduct');
+            return $response;
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getCode();
+            $response = $error_message . ' ' . $status_code;
 
+            error_log($response . ' at updateProduct');
             return $response;
         }
     }
@@ -142,14 +150,16 @@ class StripeProducts
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();
-            $response_data = [
-                'message' => $error_message,
-                'status' => $status_code
-            ];
+            $response = $error_message . ' ' . $status_code;
 
-            $response = rest_ensure_response($response_data);
-            $response->set_status($status_code);
+            error_log($response . ' at getProducts');
+            return $response;
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getCode();
+            $response = $error_message . ' ' . $status_code;
 
+            error_log($response . ' at getProducts');
             return $response;
         }
     }
@@ -166,14 +176,16 @@ class StripeProducts
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();
-            $response_data = [
-                'message' => $error_message,
-                'status' => $status_code
-            ];
+            $response = $error_message . ' ' . $status_code;
 
-            $response = rest_ensure_response($response_data);
-            $response->set_status($status_code);
+            error_log($response . ' at deleteProduct');
+            return $response;
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getCode();
+            $response = $error_message . ' ' . $status_code;
 
+            error_log($response . ' at deleteProduct');
             return $response;
         }
     }
@@ -189,14 +201,16 @@ class StripeProducts
         } catch (ApiErrorException $e) {
             $error_message = $e->getMessage();
             $status_code = $e->getHttpStatus();
-            $response_data = [
-                'message' => $error_message,
-                'status' => $status_code
-            ];
+            $response = $error_message . ' ' . $status_code;
 
-            $response = rest_ensure_response($response_data);
-            $response->set_status($status_code);
+            error_log($response . ' at searchProducts');
+            return $response;
+        } catch (Exception $e) {
+            $error_message = $e->getMessage();
+            $status_code = $e->getCode();
+            $response = $error_message . ' ' . $status_code;
 
+            error_log($response . ' at searchProducts');
             return $response;
         }
     }

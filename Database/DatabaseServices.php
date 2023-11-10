@@ -24,11 +24,13 @@ class DatabaseServices
                 'service_id' => isset($service['service_id']) ? sanitize_text_field($service['service_id']) : '',
                 'name' => isset($service['name']) ? sanitize_text_field($service['name']) : '',
                 'price' => isset($service['price']) ? sanitize_text_field($service['price']) : '',
+                'currency' => isset($service['currency']) ? sanitize_text_field($service['currency']) : '',
                 'description' => isset($service['description']) ? sanitize_text_field($service['description']) : '',
                 'features_list' => isset($service['features_list']) ? sanitize_text_field($service['features_list']) : '',
                 'onboarding_link' => isset($service['onboarding_link']) ? sanitize_text_field($service['onboarding_link']) : '',
                 'service_button' => isset($service['service_button']) ? sanitize_text_field($service['service_button']) : '',
-                'service_icon' => isset($service['service_icon']) ? sanitize_text_field($service['service_icon']) : ''
+                'service_icon' => isset($service['service_icon']) ? sanitize_text_field($service['service_icon']) : '',
+                'stripe_price_id' => isset($service['stripe_price_id']) ? sanitize_text_field($service['stripe_price_id']) : '',
             ]
         );
 
@@ -61,6 +63,7 @@ class DatabaseServices
                 'service_id' => $service->service_id,
                 'name' => $service->name,
                 'price' => $service->price,
+                'currency' => $service->currency,
                 'description' => $service->description,
                 'features_list' => $service->features_list,
                 'onboarding_link' => $service->onboarding_link,
@@ -85,6 +88,7 @@ class DatabaseServices
             $data = array(
                 'name' => $service['name'],
                 'price' => $service['price'],
+                'currency' => $service['currency'],
                 'description' => $service['description'],
                 'features_list' => serialize($service['features_list']),
                 'onboarding_link' => $service['onboarding_link'],

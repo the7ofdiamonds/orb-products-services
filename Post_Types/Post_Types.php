@@ -2,9 +2,6 @@
 
 namespace ORB\Products_Services\Post_Types;
 
-use ORB\Products_Services\Post_Types\Products\Products;
-use ORB\Products_Services\Post_Types\Services\Services;
-
 class Post_Types
 {
     public $post_types;
@@ -35,9 +32,6 @@ class Post_Types
         ];
 
         add_action('init', [$this, 'custom_post_types']);
-
-        // new Products;
-        new Services;
     }
 
     function custom_post_types()

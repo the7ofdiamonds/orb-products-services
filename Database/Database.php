@@ -22,14 +22,14 @@ class Database
     function createTables()
     {
         $this->create_services_table();
-        $this->create_client_table();
-        $this->create_customer_table();
-        $this->create_quote_table();
-        $this->create_invoice_table();
-        $this->create_receipt_table();
-        $this->create_accounts_receivable();
-        $this->create_schedule_table();
-        $this->create_communication_types_table();
+        // $this->create_client_table();
+        // $this->create_customer_table();
+        // $this->create_quote_table();
+        // $this->create_invoice_table();
+        // $this->create_receipt_table();
+        // $this->create_accounts_receivable();
+        // $this->create_schedule_table();
+        // $this->create_communication_types_table();
     }
 
     function create_services_table()
@@ -43,13 +43,16 @@ class Database
             service_id VARCHAR(255) DEFAULT NULL,
             name VARCHAR(255) DEFAULT NULL,
             price VARCHAR(255) DEFAULT NULL,
+            currency VARCHAR(255) DEFAULT NULL,
             description VARCHAR(255) DEFAULT NULL,
             features_list TEXT DEFAULT NULL,
             onboarding_link VARCHAR(255) DEFAULT NULL,
             service_button VARCHAR(255) DEFAULT NULL,
             service_icon VARCHAR(255) DEFAULT NULL,
             stripe_price_id VARCHAR(255) DEFAULT NULL,
-            PRIMARY KEY (id)
+            PRIMARY KEY (id),
+            UNIQUE KEY unique_service_id (service_id),
+            UNIQUE KEY unique_service_name (name)
         ) $charset_collate;";
 
         dbDelta($sql);

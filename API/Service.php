@@ -2,9 +2,10 @@
 
 namespace ORB\Products_Services\API;
 
-use ORB\Products_Services\Database\DatabaseServices;
 use WP_REST_Request;
 use WP_Query;
+
+use ORB\Products_Services\Database\DatabaseServices;
 
 class Service
 {

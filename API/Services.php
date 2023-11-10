@@ -4,15 +4,19 @@ namespace ORB\Products_Services\API;
 
 use WP_Query;
 
+use ORB\Products_Services\Database\DatabaseServices;
+
 class Services
 {
     private $post_type;
+    private $services_database;
     private $stripe_products;
     private $stripe_prices;
 
     public function __construct($stripe_products, $stripe_prices)
     {
         $this->post_type = 'services';
+        $this->services_database = new DatabaseServices;
         $this->stripe_products = $stripe_products;
         $this->stripe_prices = $stripe_prices;
 
@@ -47,22 +51,21 @@ class Services
             $post_data = array();
 
             foreach ($services as $service) {
-                $description = get_post_meta($service->ID, '_service_description', true);
-                $cost = get_post_meta($service->ID, '_service_cost', true);
+                $id = $service->ID;
+                $service = $this->services_database->getService($id);
 
-                if (!empty($description) && is_numeric($cost)) {
+                if (!empty($service['description']) && is_numeric($service['price'])) {
                     $post_data[] = array(
-                        'id' => $service->ID,
-                        'description' => $description,
-                        'cost' => floatval($cost),
-                        'title' => get_the_title($service->ID),
-                        'content' => get_the_content(),
-                        'features' => get_post_meta($service->ID, '_service_features', true),
-                        'icon' => get_post_meta($service->ID, '_service_icon', true),
-                        'action_word' => get_post_meta($service->ID, '_services_button', true),
-                        'slug' => get_post_field('post_name', $service->ID),
-                        'price_id' => get_post_meta($service->ID, '_service_price_id', true),
-                    );
+                        'id' => $id,
+                        'title' => get_the_title($id),
+                        'price' => isset($service['price']) ? $service['price'] : '',
+                        'description' => isset($service['description']) ? $service['description'] : '',
+                        'content' => strip_tags(strip_shortcodes(get_the_content())),
+                        'features' => isset($service['features_list']) ? unserialize($service['features_list']) : '',
+                        'onboarding_link' => isset($service['onboarding_link']) ? $service['onboarding_link'] : '',
+                        'icon' => isset($service['service_icon']) ? $service['service_icon'] : '',
+                        'action_word' => isset($service['service_button']) ? $service['service_button'] : '',
+                        'slug' => get_post_field('post_name', $id),                    );
                 }
             }
 

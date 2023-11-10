@@ -11,9 +11,7 @@ class Pages
 
     public function __construct()
     {
-        $this->front_page_react = [
-            'frontpage',
-        ];
+        $this->front_page_react = [];
 
         $this->pages = [
             'contact',
