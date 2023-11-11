@@ -239,12 +239,10 @@ class Services
                 ];
 
                 if (!empty($stripe_price_id)) {
-                    error_log('sripe price id set ' . $stripe_price_id);
                     $this->services_database->updateService($post_id, $service);
 
                     if (!empty($this->service_stripe->description) && !empty($service_description) && $this->service_stripe->description !== $service_description) {
                         $this->services_stripe->update_service_at_stripe($post_id, $service_description);
-                        error_log('description change ' . $this->service_stripe->description . ' does not equal ' . $service_description);
                     }
 
                     if (!empty($this->service_prices[0]->unit_amount) && !empty($service_price) && intval($this->service_prices[0]->unit_amount) === intval($service_price)) {
@@ -252,11 +250,9 @@ class Services
                             $this->services_stripe->update_service_price_at_stripe($stripe_price_id, $service_price, $service_currency);
                         }
                     } else {
-                        error_log('price change ' . $this->service_prices[0]->unit_amount . ' does not equal ' . $service_price);
                         $this->services_stripe->add_service_price_to_stripe($post_id, $service_price, $service_currency);
                     }
                 } else {
-                    error_log('sripe price id not set');
                     $this->services_stripe->add_service_to_stripe($post_id, $service_name, $service_description);
                     $this->services_stripe->add_service_price_to_stripe($post_id, $service_price, $service_currency);
                     $this->services_database->updateService($post_id, $service);

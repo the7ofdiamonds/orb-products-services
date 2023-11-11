@@ -17,12 +17,6 @@ class Templates
 
     public function __construct()
     {
-        add_filter('frontpage_template', [$this, 'get_custom_front_page']);
-        add_filter('template_include', [$this, 'get_custom_page_templates']);
-        add_filter('template_include', [$this, 'get_custom_protected_page_templates']);
-        add_filter('archive_template', [$this, 'get_archive_page_template']);
-        add_filter('single_template', [$this, 'get_single_page_template']);
-
         $pages = new Pages;
         $posttypes = new Post_Types();
         $this->css_file = new CSS;
@@ -31,59 +25,17 @@ class Templates
         $this->pages = $pages->pages;
         $this->protected_pages = $pages->protected_pages;
         $this->post_types = $posttypes->post_types;
+
+        $this->load_page();
     }
 
-    function get_custom_front_page($frontpage_template)
+    function load_page()
     {
-        if (is_front_page()) {
-            add_action('wp_head', [$this->css_file, 'load_front_page_css']);
-            add_action('wp_footer', [$this->js_file, 'load_front_page_react']);
+        if ($_SERVER['REQUEST_URI'] === '/') {
+            add_filter('frontpage_template', [$this, 'get_custom_front_page']);
         }
 
-        return $frontpage_template;
-    }
-
-    function get_custom_page_templates($template)
-    {
-        if (is_array($this->pages)) {
-            foreach ($this->pages as $page) {
-                $full_url = explode('/', $page);
-                $full_path = explode('/', $_SERVER['REQUEST_URI']);
-
-                $full_url = array_filter($full_url, function ($value) {
-                    return $value !== "";
-                });
-
-                $full_path = array_filter($full_path, function ($value) {
-                    return $value !== "";
-                });
-
-                $full_url = array_values($full_url);
-                $full_path = array_values($full_path);
-
-                $differences = array_diff($full_url, $full_path);
-
-                if (empty($differences)) {
-                    $template = ORB_PRODUCTS_SERVICES . 'Pages/page.php';;
-
-                    if (file_exists($template)) {
-                        add_action('wp_head', [$this->css_file, 'load_pages_css']);
-                        add_action('wp_footer', [$this->js_file, 'load_pages_react']);
-
-                        return $template;
-                    } else {
-                        error_log('Page Template does not exist.');
-                    }
-                }
-            }
-        }
-
-        return $template;
-    }
-
-    function get_custom_protected_page_templates($template)
-    {
-        if (is_array($this->protected_pages)) {
+        if (!empty($this->protected_pages)) {
             foreach ($this->protected_pages as $page) {
                 $full_url = explode('/', $page);
                 $full_path = explode('/', $_SERVER['REQUEST_URI']);
@@ -102,17 +54,77 @@ class Templates
                 $differences = array_diff($full_url, $full_path);
 
                 if (empty($differences)) {
-                    $template = ORB_PRODUCTS_SERVICES . 'Pages/page-protected.php';
-
-                    if (file_exists($template)) {
-                        add_action('wp_head', [$this->css_file, 'load_pages_css']);
-                        add_action('wp_footer', [$this->js_file, 'load_pages_react']);
-                        return $template;
-                    } else {
-                        error_log('Protected Page Template does not exist.');
-                    }
+                    add_filter('template_include', [$this, 'get_custom_protected_page_templates']);
                 }
             }
+        }
+
+        if (!empty($this->pages)) {
+            foreach ($this->pages as $page) {
+                $full_url = explode('/', $page);
+                $full_path = explode('/', $_SERVER['REQUEST_URI']);
+
+                $full_url = array_filter($full_url, function ($value) {
+                    return $value !== "";
+                });
+
+                $full_path = array_filter($full_path, function ($value) {
+                    return $value !== "";
+                });
+
+                $full_url = array_values($full_url);
+                $full_path = array_values($full_path);
+
+                $differences = array_diff($full_url, $full_path);
+
+                if (empty($differences)) {
+                    add_filter('template_include', [$this, 'get_custom_page_templates']);
+                }
+            }
+        }
+
+        if (!empty($this->post_types)) {
+            add_filter('archive_template', [$this, 'get_archive_page_template']);
+            add_filter('single_template', [$this, 'get_single_page_template']);
+        }
+    }
+
+    function get_custom_front_page($frontpage_template)
+    {
+        if ($_SERVER['REQUEST_URI'] === '/') {
+            add_action('wp_head', [$this->css_file, 'load_front_page_css']);
+            add_action('wp_footer', [$this->js_file, 'load_front_page_react']);
+        }
+
+        return $frontpage_template;
+    }
+
+    function get_custom_page_templates($template)
+    {
+        $template = ORB_PRODUCTS_SERVICES . 'Pages/page.php';;
+
+        if (file_exists($template)) {
+            add_action('wp_head', [$this->css_file, 'load_pages_css']);
+            add_action('wp_footer', [$this->js_file, 'load_pages_react']);
+
+            return $template;
+        } else {
+            error_log('Page Template does not exist.');
+        }
+
+        return $template;
+    }
+
+    function get_custom_protected_page_templates($template)
+    {
+        $template = ORB_PRODUCTS_SERVICES . 'Pages/page-protected.php';
+
+        if (file_exists($template)) {
+            add_action('wp_head', [$this->css_file, 'load_pages_css']);
+            add_action('wp_footer', [$this->js_file, 'load_pages_react']);
+            return $template;
+        } else {
+            error_log('Protected Page Template does not exist.');
         }
 
         return $template;

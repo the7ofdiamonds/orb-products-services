@@ -21,16 +21,16 @@ class DatabaseServices
         $result = $this->wpdb->insert(
             $this->table_name,
             [
-                'service_id' => isset($service['service_id']) ? sanitize_text_field($service['service_id']) : '',
-                'name' => isset($service['name']) ? sanitize_text_field($service['name']) : '',
-                'price' => isset($service['price']) ? sanitize_text_field($service['price']) : '',
-                'currency' => isset($service['currency']) ? sanitize_text_field($service['currency']) : '',
-                'description' => isset($service['description']) ? sanitize_text_field($service['description']) : '',
-                'features_list' => isset($service['features_list']) ? sanitize_text_field($service['features_list']) : '',
-                'onboarding_link' => isset($service['onboarding_link']) ? sanitize_text_field($service['onboarding_link']) : '',
-                'service_button' => isset($service['service_button']) ? sanitize_text_field($service['service_button']) : '',
-                'service_icon' => isset($service['service_icon']) ? sanitize_text_field($service['service_icon']) : '',
-                'stripe_price_id' => isset($service['stripe_price_id']) ? sanitize_text_field($service['stripe_price_id']) : '',
+                'service_id' => !empty($service['service_id']) ? sanitize_text_field($service['service_id']) : '',
+                'name' => !empty($service['name']) ? sanitize_text_field($service['name']) : '',
+                'price' => !empty($service['price']) ? sanitize_text_field($service['price']) : '',
+                'currency' => !empty($service['currency']) ? sanitize_text_field($service['currency']) : '',
+                'description' => !empty($service['description']) ? sanitize_text_field($service['description']) : '',
+                'features_list' => !empty($service['features_list']) ? sanitize_text_field($service['features_list']) : '',
+                'onboarding_link' => !empty($service['onboarding_link']) ? sanitize_text_field($service['onboarding_link']) : '',
+                'service_button' => !empty($service['service_button']) ? sanitize_text_field($service['service_button']) : '',
+                'service_icon' => !empty($service['service_icon']) ? sanitize_text_field($service['service_icon']) : '',
+                'stripe_price_id' => !empty($service['stripe_price_id']) ? sanitize_text_field($service['stripe_price_id']) : '',
             ]
         );
 
@@ -84,7 +84,7 @@ class DatabaseServices
 
     function updateService($service_id, $service)
     {
-        if (isset($service) && is_array($service) && count($service) > 0) {
+        if (!empty($service) && is_array($service) && count($service) > 0) {
             $data = array(
                 'name' => $service['name'],
                 'price' => $service['price'],
@@ -93,7 +93,8 @@ class DatabaseServices
                 'features_list' => serialize($service['features_list']),
                 'onboarding_link' => $service['onboarding_link'],
                 'service_button' => $service['service_button'],
-                'service_icon' => $service['service_icon']
+                'service_icon' => $service['service_icon'],
+                'stripe_price_id' => $service['stripe_price_id']
             );
         } else {
             throw new Exception('Invalid Project Data', 400);
