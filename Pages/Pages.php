@@ -5,49 +5,86 @@ namespace ORB\Products_Services\Pages;
 class Pages
 {
     public $front_page_react;
+    public $custom_pages_list;
+    public $protected_pages_list;
+    public $pages_list;
     public $pages;
-    public $protected_pages;
     public $page_titles;
 
     public function __construct()
     {
-        $this->front_page_react = [];
+
+        $this->front_page_react = [
+            'Frontpage'
+        ];
+
+        $this->pages_list = [];
+
+        $this->custom_pages_list = [
+            [
+                'url' => 'contact',
+                'regex' => '#^/contact#',
+                'file_name' => 'Contact',
+                'title' => 'CONTACT',
+                'name' => 'contact'
+            ],
+            [
+                'url' => 'contact/success',
+                'regex' => '#^/contact/success#',
+                'file_name' => 'ContactSuccess',
+                'title' => 'CONTACT SUCCESS',
+                'name' => 'contact-success'
+            ],
+            [
+                'url' => 'support',
+                'regex' => '#^/support#',
+                'file_name' => 'Support',
+                'title' => 'SUPPORT',
+                'name' => 'support'
+            ],
+            [
+                'url' => 'support/success',
+                'regex' => '#^/support/success#',
+                'file_name' => 'SupportSuccess',
+                'title' => 'SUPPORT SUCCESS',
+                'name' => 'support-success'
+            ],
+        ];
+
+        $this->protected_pages_list = [];
+
+        $this->pages_list = [];
 
         $this->pages = [
-            'contact',
-            'contact/success',
-            'faq',
-            'service',
-            'services',
-            'support',
-            'support/success',
-            'contact',
+            ['title' => 'FAQ']
         ];
-
-        $this->protected_pages = [];
 
         $this->page_titles = [
-            ...$this->pages,
-            ...$this->protected_pages
+            ...$this->custom_pages_list,
+            ...$this->protected_pages_list,
+            ...$this->pages_list,
         ];
-
-        add_action('init', [$this, 'react_rewrite_rules']);
-
-        add_filter('query_vars', [$this, 'add_query_vars']);
-
-        add_action('init', [$this, 'is_user_logged_in']);
     }
 
-    function react_rewrite_rules()
+    function add_pages()
     {
-        if (is_array($this->page_titles) && count($this->page_titles) > 0) {
+        global $wpdb;
 
-            foreach ($this->page_titles as $page_title) {
-                $url = explode('/', $page_title);
-                $segment = count($url) - 1;
+        foreach ($this->pages as $page) {
+            if (!empty($page['title'])) {
+                $page_exists = $wpdb->get_var($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_title = %s AND post_type = 'page'", $page['title']));
 
-                if (isset($url[$segment])) {
-                    add_rewrite_rule('^' . $page_title, 'index.php?' . $url[$segment] . '=$1', 'top');
+                if (!$page_exists) {
+                    $page_data = array(
+                        'post_title'   => $page['title'],
+                        'post_type'    => 'page',
+                        'post_content' => '',
+                        'post_status'  => 'publish',
+                    );
+
+                    wp_insert_post($page_data);
+
+                    error_log($page['title'] . ' page added.');
                 }
             }
         }
@@ -58,13 +95,17 @@ class Pages
         if (is_array($this->page_titles) && count($this->page_titles) > 0) {
 
             foreach ($this->page_titles as $page_title) {
-                $url = explode('/', $page_title);
+                $url = explode('/', $page_title['url']);
                 $segment = count($url) - 1;
 
-                $query_vars[] = $url[$segment];
+                if (!in_array($url[$segment], $query_vars)) {
+                    $query_vars[] = $url[$segment];
+                } else {
+                    continue;
+                }
             }
 
-            return $query_vars;
+            return array_unique($query_vars);
         }
 
         return $query_vars;

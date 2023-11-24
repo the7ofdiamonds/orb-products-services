@@ -2,70 +2,46 @@
 
 namespace ORB\Products_Services\API;
 
+use ORB\Products_Services\API\Email as EmailAPI;
+use ORB\Products_Services\API\Stripe\Stripe;
+
+use Dotenv\Dotenv;
+
+use PHPMailer\PHPMailer\PHPMailer;
+
+use Stripe\Stripe as StripeAPI;
+use Stripe\StripeClient;
+
 class API
 {
     public function __construct()
     {
-        add_action('rest_api_init', [$this, 'add_to_rest_api']);
-        add_action('rest_api_init', [$this, 'allow_cors_headers']);
-    }
+        $dotenv = Dotenv::createImmutable(ORB_PRODUCTS_SERVICES);
+        $dotenv->load(__DIR__);
+        $envFilePath = ORB_PRODUCTS_SERVICES . '.env';
+        $envContents = file_get_contents($envFilePath);
+        $lines = explode("\n", $envContents);
+        $stripeSecretKey = null;
 
-    public function add_to_rest_api()
-    {
-        register_meta(
-            'post',
-            '_service_cost',
-            [
-                'type' => 'number',
-                'description' => 'Service Cost',
-                'single' => true,
-                'show_in_rest' => true
-            ]
-        );
+        foreach ($lines as $line) {
+            $parts = explode('=', $line, 2);
+            if (count($parts) === 2 && $parts[0] === 'STRIPE_SECRET_KEY') {
+                $stripeSecretKey = trim($parts[1]);
+                break;
+            }
+        }
 
-        register_meta(
-            'post',
-            '_service_features',
-            [
-                'type' => 'string',
-                'description' => 'Service Features',
-                'single' => true,
-                'show_in_rest' => true
-            ]
-        );
+        if ($stripeSecretKey !== null) {
+            StripeAPI::setApiKey($stripeSecretKey);
+            $stripeClient = new StripeClient($stripeSecretKey);
+            $mailer = new PHPMailer();
 
-        register_meta(
-            'post',
-            '_service_description',
-            [
-                'type' => 'string',
-                'description' => 'Service Description',
-                'single' => true,
-                'show_in_rest' => true
-            ]
-        );
+            new EmailAPI($stripeClient, $mailer);
 
-        register_meta(
-            'post',
-            '_service_features',
-            [
-                'type' => 'string',
-                'description' => 'Service Features',
-                'single' => true,
-                'show_in_rest' => true
-            ]
-        );
-
-        register_meta(
-            'post',
-            '_service_price_id',
-            [
-                'type' => 'string',
-                'description' => 'Service Price ID',
-                'single' => true,
-                'show_in_rest' => true
-            ]
-        );
+            new Stripe($stripeClient);
+        } else {
+            error_log('Stripe Secret Key is required.');
+        }
     }
 
     public function allow_cors_headers()

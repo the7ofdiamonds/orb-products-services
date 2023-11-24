@@ -4,6 +4,8 @@ namespace ORB\Products_Services\Email;
 
 use Exception;
 
+use PHPMailer\PHPMailer\PHPMailer;
+
 class Email
 {
     private $web_address;
@@ -21,6 +23,11 @@ class Email
 
     public function __construct()
     {
+        $mailer = new PHPMailer();
+
+        new EmailContact($mailer);
+        new EmailSupport($mailer);
+
         $custom_logo_id = get_theme_mod('custom_logo');
         $logo = wp_get_attachment_image_src($custom_logo_id, 'full');
         $this->web_address = esc_url(home_url());

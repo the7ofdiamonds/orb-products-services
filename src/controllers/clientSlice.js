@@ -27,7 +27,7 @@ export const addClient = createAsyncThunk('client/addClient', async (_, { getSta
     } = getState().customer;
 
     try {
-        const response = await fetch('/wp-json/orb/v1/users/clients', {
+        const response = await fetch('/wp-json/orb/services/v1/users/clients', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ export const getClient = createAsyncThunk('client/getClient', async (_, { getSta
     const encodedEmail = encodeURIComponent(user_email);
 
     try {
-        const response = await fetch(`/wp-json/orb/v1/users/client/${encodedEmail}`, {
+        const response = await fetch(`/wp-json/orb/services/v1/users/client/${encodedEmail}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

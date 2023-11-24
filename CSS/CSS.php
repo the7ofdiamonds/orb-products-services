@@ -35,12 +35,11 @@ class CSS
         $posttypes = new Post_Types;
 
         $this->page_titles = [
-            ...$pages->pages,
-            ...$pages->protected_pages
+            ...$pages->custom_pages_list,
+            ...$pages->protected_pages_list,
+            ...$pages->pages_list,
         ];
         $this->post_types = $posttypes->post_types;
-
-        new Customizer;
     }
 
     function load_front_page_css()
@@ -58,7 +57,7 @@ class CSS
     function load_pages_css()
     {
         foreach ($this->page_titles as $page) {
-            $full_url = explode('/', $page);
+            $full_url = explode('/', $page['url']);
             $full_path = explode('/', $_SERVER['REQUEST_URI']);
 
             $full_url = array_filter($full_url, function ($value) {

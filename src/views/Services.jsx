@@ -10,7 +10,7 @@ function Services(props) {
   const { servicesLoading, servicesError, services } = useSelector(
     (state) => state.services
   );
-  console.log(services);
+
   const servicesToRender = props.services || services;
 
   const dispatch = useDispatch();

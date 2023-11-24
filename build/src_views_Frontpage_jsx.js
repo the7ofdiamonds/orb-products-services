@@ -167,7 +167,6 @@ function Services(props) {
     servicesError,
     services
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(state => state.services);
-  console.log(services);
   const servicesToRender = props.services || services;
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {

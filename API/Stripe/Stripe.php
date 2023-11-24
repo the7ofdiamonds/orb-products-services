@@ -43,9 +43,22 @@ class Stripe
         $stripe_products = new StripeProducts($stripeClient);
         $stripe_prices = new StripePrices($stripeClient);
 
-        new Service($stripe_products, $stripe_prices);
-        new Services($stripe_products, $stripe_prices);
-        new Product($stripe_products, $stripe_prices);
-        new Products($stripe_products, $stripe_prices);
+        $clients = new Clients($stripeClient);
+        $service = new Service($stripe_products, $stripe_prices);
+        $services = new Services($stripe_products, $stripe_prices);
+        $product = new Product($stripe_products, $stripe_prices);
+        $products = new Products($stripe_products, $stripe_prices);
+
+        register_rest_route('orb/services/v1', '/users/clients', [
+            'methods' => 'POST',
+            'callback' => [$clients, 'add_client'],
+            'permission_callback' => '__return_true',
+        ]);
+
+        register_rest_route('orb/services/v1', '/users/client/(?P<slug>[a-zA-Z0-9-_%.]+)', [
+            'methods' => 'GET',
+            'callback' => [$clients, 'get_client'],
+            'permission_callback' => '__return_true',
+        ]);
     }
 }
