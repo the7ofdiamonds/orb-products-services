@@ -9967,7 +9967,7 @@ const initialState = {
 };
 const fetchService = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('service/serviceSlice', async serviceSlug => {
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/services/v1/${serviceSlug}`);
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/service/v1/${serviceSlug}`);
     return response.data;
   } catch (error) {
     throw error;

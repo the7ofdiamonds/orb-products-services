@@ -25,6 +25,8 @@ define('ORB_PRODUCTS_SERVICES_URL', WP_PLUGIN_URL . '/orb-products-services/');
 use ORB\Products_Services\Admin\Admin;
 use ORB\Products_Services\API\API;
 use ORB\Products_Services\CSS\Customizer\Customizer;
+use ORB\Products_Services\CSS\CSS;
+use ORB\Products_Services\JS\JS;
 use ORB\Products_Services\Database\Database;
 use ORB\Products_Services\Pages\Pages;
 use ORB\Products_Services\Post_Types\Post_Types;
@@ -38,6 +40,8 @@ class ORB_Products_Services
 {
     public $pages;
     public $plugin;
+    public $css;
+    public $js;
     public $posttypes;
     public $router;
     public $templates;
@@ -56,17 +60,24 @@ class ORB_Products_Services
             (new API())->allow_cors_headers();
         });
 
+        $this->css = new CSS;
+        $this->js = new JS;
+
         add_action('init', function () {
-            $pages = new Pages;
             $posttypes = new Post_Types;
-            $posttypes->services_post_type();
-            $templates = new Templates;
-            $router = new Router($pages, $posttypes, $templates);
+            $posttypes->custom_post_types();
+            $pages = new Pages;
+            $templates = new Templates(
+                $this->css,
+                $this->js,
+                $pages,
+                $posttypes
+            );
+            $router = new Router($templates);
             $router->load_page();
             $router->react_rewrite_rules();
             new Shortcodes;
             // (new Taxonomies)->custom_taxonomy();
-            $templates;
         });
 
         add_action('customize_register', [(new Customizer), 'register_customizer_panel']);

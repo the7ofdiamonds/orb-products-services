@@ -17,8 +17,6 @@ class Pages
             'Frontpage'
         ];
 
-        $this->pages_list = [];
-
         $this->custom_pages_list = [
             [
                 'url' => 'contact',
