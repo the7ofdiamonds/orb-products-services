@@ -23,7 +23,7 @@ export const getPaymentIntent = createAsyncThunk('payment/getPaymentIntent', asy
   const { payment_intent_id } = getState().invoice;
 
   try {
-    const response = await fetch(`/wp-json/orb/v1/stripe/payment_intents/${paymentIntentID ? paymentIntentID : payment_intent_id}`, {
+    const response = await fetch(`/wp-json/orb/payment_intents/v1/stripe/${paymentIntentID ? paymentIntentID : payment_intent_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

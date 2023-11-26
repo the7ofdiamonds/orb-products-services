@@ -13,7 +13,6 @@ class Pages
 
     public function __construct()
     {
-
         $this->front_page_react = [
             'Frontpage'
         ];

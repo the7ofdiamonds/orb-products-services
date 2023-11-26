@@ -16,31 +16,6 @@ class Email
 
     public function __construct($stripeClient, $mailer)
     {
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/email/contact', [
-                'methods' => 'POST',
-                'callback' => [$this, 'send_contact_email'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
-
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/email/support', [
-                'methods' => 'POST',
-                'callback' => [$this, 'send_support_email'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
-
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/email/schedule', [
-                'methods' => 'POST',
-                'callback' => [$this, 'send_schedule_email'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
-
-
         $this->stripeClient = $stripeClient;
         $this->mailer = $mailer;
     }

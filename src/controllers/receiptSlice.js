@@ -29,7 +29,7 @@ export const updateReceiptID = (receiptID) => {
 
 export const getPaymentMethod = createAsyncThunk('receipt/getPaymentMethod', async (payment_method_id) => {
   try {
-    const response = await fetch(`/wp-json/orb/v1/stripe/payment_methods/${payment_method_id}`, {
+    const response = await fetch(`/wp-json/orb/payment_methods/v1/stripe/${payment_method_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -75,7 +75,7 @@ export const postReceipt = createAsyncThunk('receipt/postReceipt', async (_, { g
   };
 
   try {
-    const response = await axios.post('/wp-json/orb/v1/receipt', payment);
+    const response = await axios.post('/wp-json/orb/receipts/v1/', payment);
     return response.data;
   } catch (error) {
     throw new Error(error.message);
@@ -88,7 +88,7 @@ export const getReceipt = createAsyncThunk('receipt/getReceipt', async (_, { get
   const { stripe_invoice_id } = getState().invoice;
 
   try {
-    const response = await fetch(`/wp-json/orb/v1/receipt/${stripe_invoice_id}`, {
+    const response = await fetch(`/wp-json/orb/receipts/v1/${stripe_invoice_id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -115,7 +115,7 @@ export const getReceiptByID = createAsyncThunk('receipt/getReceiptByID', async (
   const { stripe_customer_id } = getState().client;
 
   try {
-    const response = await fetch(`/wp-json/orb/v1/receipt/${id}/id`, {
+    const response = await fetch(`/wp-json/orb/receipts/v1/${id}/id`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -142,7 +142,7 @@ export const getClientReceipts = createAsyncThunk('receipt/getClientReceipts', a
   const { stripe_customer_id } = getState().client;
 
   try {
-    const response = await fetch(`/wp-json/orb/v1/receipts/client/${stripe_customer_id}`, {
+    const response = await fetch(`/wp-json/orb/receipts/v1/client/${stripe_customer_id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

@@ -55,7 +55,7 @@ export const addStripeCustomer = createAsyncThunk('customer/addStripeCustomer', 
     };
 
     try {
-        const response = await axios.post('/wp-json/orb/v1/stripe/customers', customer_data);
+        const response = await axios.post('/wp-json/orb/customers/v1/stripe', customer_data);
         return response.data;
     } catch (error) {
         throw error;
@@ -66,7 +66,7 @@ export const getStripeCustomer = createAsyncThunk('customer/getStripeCustomer', 
     const { stripe_customer_id } = getState().client;
 
     try {
-        const response = await axios.get(`/wp-json/orb/v1/stripe/customers/${stripeCustomerID ? stripeCustomerID : stripe_customer_id}`);
+        const response = await axios.get(`/wp-json/orb/customers/v1/stripe/${stripeCustomerID ? stripeCustomerID : stripe_customer_id}`);
         return response.data;
     } catch (error) {
         throw error;
@@ -94,7 +94,7 @@ export const updateStripeCustomer = createAsyncThunk('customer/updateStripeCusto
     } = getState().customer;
 
     try {
-        const response = await fetch(`/wp-json/orb/v1/stripe/customers/${stripe_customer_id}`, {
+        const response = await fetch(`/wp-json/orb/customers/v1/stripe/${stripe_customer_id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

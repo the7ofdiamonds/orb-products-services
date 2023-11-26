@@ -1,0 +1,150 @@
+"use strict";
+(self["webpackChunkorb_products_services"] = self["webpackChunkorb_products_services"] || []).push([["src_views_Contact_jsx"],{
+
+/***/ "./src/views/Contact.jsx":
+/*!*******************************!*\
+  !*** ./src/views/Contact.jsx ***!
+  \*******************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function ContactComponent() {
+  const [messageType, setMessageType] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const [formData, setFormData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    first_name: '',
+    last_name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const {
+    first_name,
+    last_name,
+    email,
+    subject,
+    msg
+  } = formData;
+  const handleInputChange = e => {
+    const {
+      name,
+      value
+    } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('/wp-json/orb/v1/email/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          first_name: first_name,
+          last_name: last_name,
+          email: email,
+          subject: subject,
+          message: msg
+        })
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage = errorData.message;
+        setMessage(errorMessage);
+        setMessageType('error');
+        throw new Error(errorMessage);
+      }
+      const responseData = await response.json();
+      setMessage(responseData.message);
+      setMessageType('success');
+      setTimeout(() => {
+        window.location.href = `/contact/success?first_name=${encodeURIComponent(first_name)}&email=${encodeURIComponent(email)}`;
+      }, 3000);
+      return responseData;
+    } catch (error) {
+      setMessage(error.message);
+      setMessageType('error');
+      throw error.message;
+    }
+  };
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("main", {
+    className: "contact"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
+    className: "title"
+  }, "CONTACT"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "contact-card card"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("form", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "text",
+    name: "first_name",
+    className: "input",
+    id: "first_name",
+    placeholder: "First Name",
+    onChange: handleInputChange,
+    value: first_name
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "text",
+    name: "last_name",
+    className: "input",
+    id: "last_name",
+    placeholder: "Last Name",
+    onChange: handleInputChange,
+    value: last_name
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    colSpan: 2
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    name: "email",
+    type: "email",
+    id: "contact_email",
+    className: "input",
+    placeholder: "Email",
+    onChange: handleInputChange,
+    value: email
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    colSpan: 2
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    name: "subject",
+    type: "text",
+    id: "contact_subject",
+    className: "input",
+    placeholder: "Subject",
+    onChange: handleInputChange,
+    value: subject
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    colSpan: 2
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("textarea", {
+    name: "msg",
+    type: "text",
+    id: "contact_message",
+    placeholder: "Message",
+    onChange: handleInputChange,
+    value: msg
+  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    colSpan: 2
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "hidden",
+    name: "action",
+    value: "thfw_email_contact"
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "sendmsg",
+    id: "contact_submit",
+    name: "submit",
+    type: "button",
+    value: "submit",
+    onClick: handleSubmit
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, "SEND")))))))), message && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `status-bar card ${messageType}`
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, message))));
+}
+/* harmony default export */ __webpack_exports__["default"] = (ContactComponent);
+
+/***/ })
+
+}]);
+//# sourceMappingURL=src_views_Contact_jsx.js.map

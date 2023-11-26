@@ -9967,7 +9967,7 @@ const initialState = {
 };
 const fetchService = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('service/serviceSlice', async serviceSlug => {
   try {
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/services/v1/${serviceSlug}`);
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(`/wp-json/orb/v1/service/${serviceSlug}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -10026,7 +10026,7 @@ const initialState = {
 };
 const fetchServices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('services/fetchServices', async () => {
   try {
-    const response = await fetch(`/wp-json/orb/services/v1/all`, {
+    const response = await fetch(`/wp-json/orb/v1/services`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -10045,7 +10045,7 @@ const fetchServices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsy
 });
 const getAvailableServices = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('services/getAvailableServices', async () => {
   try {
-    const response = await fetch(`/wp-json/orb/services/v1/available`, {
+    const response = await fetch(`/wp-json/orb/v1/services/available`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

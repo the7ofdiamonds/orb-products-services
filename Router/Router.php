@@ -5,6 +5,7 @@ namespace ORB\Products_Services\Router;
 use Exception;
 
 use ORB\Products_Services\Pages\Pages;
+use ORB\Products_Services\Post_Types\Post_Types;
 use ORB\Products_Services\Templates\Templates;
 
 class Router
@@ -13,15 +14,20 @@ class Router
     private $protected_pages_list;
     private $pages_list;
     private $templates;
+    private $post_types;
 
-    public function __construct()
-    {
-        $pages = new Pages;
-        $this->templates = new Templates;
-
+    public function __construct(
+        Pages $pages,
+        Post_Types $posttypes,
+        Templates $templates
+    ) {
         $this->custom_pages_list = $pages->custom_pages_list;
         $this->protected_pages_list = $pages->protected_pages_list;
         $this->pages_list = $pages->pages_list;
+
+        $this->post_types = $posttypes->post_types;
+
+        $this->templates = $templates;
     }
 
     function load_page()
@@ -29,9 +35,24 @@ class Router
         try {
             $path = $_SERVER['REQUEST_URI'];
 
-            if ($path === '/') {
+            if (is_front_page()) {
                 add_filter('frontpage_template', [$this->templates, 'get_front_page_template']);
                 return;
+            }
+
+            if (!empty($this->post_types)) {
+                foreach ($this->post_types as $post_type) {
+error_log($post_type['name']);
+                    if (is_post_type_archive($post_type['name'])) {
+                        return $this->templates->get_archive_page_template($post_type);
+                    }
+
+                    if (is_singular($post_type['name'])) {
+                        $template = apply_filters('custom_single_template', $post_type);
+
+                        return $template;
+                    }
+                }
             }
 
             if (!empty($this->custom_pages_list)) {

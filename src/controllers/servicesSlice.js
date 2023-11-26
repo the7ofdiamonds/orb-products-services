@@ -9,7 +9,7 @@ const initialState = {
 
 export const fetchServices = createAsyncThunk('services/fetchServices', async () => {
   try {
-    const response = await fetch(`/wp-json/orb/v1/services`, {
+    const response = await fetch(`/wp-json/orb/services/v1/all`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ export const fetchServices = createAsyncThunk('services/fetchServices', async ()
 export const getAvailableServices = createAsyncThunk('services/getAvailableServices', async () => {
 
   try {
-    const response = await fetch(`/wp-json/orb/v1/services/available`, {
+    const response = await fetch(`/wp-json/orb/services/v1/available`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

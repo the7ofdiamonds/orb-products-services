@@ -30,60 +30,54 @@ class Post_Types
                 'single_page' => 'product'
             ],
         ];
-
-        add_action('init', [$this, 'custom_post_types']);
     }
 
-    function custom_post_types()
+    function services_post_type()
     {
-        if (!empty($this->post_types)) {
-            foreach ($this->post_types as $post_type) {
-                $labels = array(
-                    'name' => $post_type['title'],
-                    'singular_name' => $post_type['singular'],
-                    'add_new' => 'Add ' . $post_type['singular'],
-                    'all_items' => $post_type['plural'],
-                    'add_new_item' => 'Add New ' . $post_type['singular'],
-                    'edit_item' => 'Edit ' . $post_type['singular'],
-                    'new_item' => 'New ' . $post_type['singular'],
-                    'view_item' => 'View ' . $post_type['singular'],
-                    'search_item' => 'Search ' . $post_type['plural'],
-                    'not_found' => 'No ' . $post_type['plural'] . ' were Found',
-                    'not_found_in_trash' => 'No ' . $post_type['singular'] . ' found in trash',
-                    'parent_item_colon' => 'Parent ' . $post_type['singular']
-                );
+        $labels = array(
+            'name' => 'SERVICES',
+            'singular_name' => 'Service',
+            'add_new' => 'Add ' . 'Service',
+            'all_items' => 'Services',
+            'add_new_item' => 'Add New ' . 'Service',
+            'edit_item' => 'Edit ' . 'Service',
+            'new_item' => 'New ' . 'Service',
+            'view_item' => 'View ' . 'Service',
+            'search_item' => 'Search ' . 'Services',
+            'not_found' => 'No ' . 'Services' . ' were Found',
+            'not_found_in_trash' => 'No ' . 'Service' . ' found in trash',
+            'parent_item_colon' => 'Parent ' . 'Service'
+        );
 
-                $args = array(
-                    'labels' => $labels,
-                    'show_ui' => true,
-                    'menu_icon' => $post_type['menu_icon'],
-                    'show_in_rest' => true,
-                    'show_in_nav_menus' => true,
-                    'public' => true,
-                    'has_archive' => true,
-                    'publicly_queryable' => true,
-                    'query_var' => true,
-                    'rewrite' => array(
-                        'with_front' => false,
-                        'slug'       => $post_type['archive_page']
-                    ),
-                    'hierarchical' => true,
-                    'supports' => [
-                        'title',
-                        'editor',
-                        'excerpt',
-                        'thumbnail',
-                        'custom-fields',
-                        'revisions',
-                        'page-attributes',
-                    ],
-                    'taxonomies' => array('category', 'post_tag'),
-                    'menu_position' => $post_type['menu_position'],
-                    'exclude_from_search' => false
-                );
+        $args = array(
+            'labels' => $labels,
+            'show_ui' => true,
+            'menu_icon' => '',
+            'show_in_rest' => true,
+            'show_in_nav_menus' => true,
+            'public' => true,
+            'has_archive' => true,
+            'publicly_queryable' => true,
+            'query_var' => true,
+            'rewrite' => array(
+                'with_front' => false,
+                'slug'       => 'services'
+            ),
+            'hierarchical' => true,
+            'supports' => [
+                'title',
+                'editor',
+                'excerpt',
+                'thumbnail',
+                'custom-fields',
+                'revisions',
+                'page-attributes',
+            ],
+            'taxonomies' => array('category', 'post_tag'),
+            'menu_position' => 13,
+            'exclude_from_search' => false
+        );
 
-                register_post_type($post_type['name'], $args);
-            }
-        }
+        register_post_type('services', $args);
     }
 }

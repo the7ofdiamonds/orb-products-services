@@ -19,22 +19,6 @@ class Services
         $this->services_database = new DatabaseServices;
         $this->stripe_products = $stripe_products;
         $this->stripe_prices = $stripe_prices;
-
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/services', [
-                'methods' => 'GET',
-                'callback' => [$this, 'get_services'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
-
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/services/available', [
-                'methods' => 'GET',
-                'callback' => [$this, 'get_services_available'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
     }
 
     function get_services()

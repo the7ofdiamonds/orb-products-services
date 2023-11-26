@@ -21,6 +21,8 @@ class Templates
         $this->post_types = $posttypes->post_types;
 
         add_filter('template_include', [$this, 'get_custom_page_template']);
+        add_filter('custom_archive_template', [$this, 'get_archive_page_template'], 10, 2);
+        add_filter('single_template', [$this, 'get_single_page_template'], 10, 2);
     }
 
     function get_front_page_template($frontpage_template)
@@ -43,8 +45,6 @@ class Templates
 
             return $custom_template;
         } else {
-            error_log('get_custom_page_template');
-
             return ORB_PRODUCTS_SERVICES . "Pages/page.php";
         }
     }
@@ -81,46 +81,27 @@ class Templates
         return $template;
     }
 
-    function get_archive_page_template($archive_template)
+    function get_archive_page_template($post_type)
     {
-        if (!empty($this->post_types)) {
-            foreach ($this->post_types as $post_type) {
+        error_log(print_r($post_type, true));
+        $custom_archive_template = ORB_PRODUCTS_SERVICES . 'Post_Types/' . $post_type['plural'] . '/archive-' . $post_type['name'] . '.php';
 
-                if (is_post_type_archive($post_type['name'])) {
-                    $archive_template = ORB_PRODUCTS_SERVICES . 'Post_Types/' . $post_type['plural'] . '/archive-' . $post_type['name'] . '.php';
-
-                    if (file_exists($archive_template)) {
-                        add_action('wp_head', [$this->css_file, 'load_post_types_css']);
-                        add_action('wp_footer', [$this->js_file, 'load_post_types_archive_react']);
-
-                        return $archive_template;
-                    }
-
-                    break;
-                }
-            }
+        if (file_exists($custom_archive_template)) {
+            add_action('wp_head', [$this->css_file, 'load_post_types_css']);
+            add_action('wp_footer', [$this->js_file, 'load_post_types_archive_react']);
+            error_log('get_archive_page_template');
+            return $custom_archive_template;
         }
-
-        return $archive_template;
     }
 
 
-    function get_single_page_template($single_template)
+    function get_single_page_template($post_type)
     {
-        if (!empty($this->post_types)) {
-            foreach ($this->post_types as $post_type) {
+        $single_template = ORB_PRODUCTS_SERVICES . 'Post_Types/' . $post_type['plural'] . '/single-' . $post_type['name'] . '.php';
 
-                if (is_singular($post_type['name'])) {
-                    $single_template = ORB_PRODUCTS_SERVICES . 'Post_Types/' . $post_type['plural'] . '/single-' . $post_type['name'] . '.php';
-
-                    if (file_exists($single_template)) {
-                        add_action('wp_head', [$this->css_file, 'load_post_types_css']);
-                        add_action('wp_footer', [$this->js_file, 'load_post_types_single_react']);
-                    }
-
-                    break;
-                }
-            }
+        if (file_exists($single_template)) {
+            add_action('wp_head', [$this->css_file, 'load_post_types_css']);
+            add_action('wp_footer', [$this->js_file, 'load_post_types_single_react']);
         }
 
         return $single_template;

@@ -1,42 +1,18 @@
 <?php
 
-namespace ORB_Services\API;
+namespace ORB\Products_Services\API;
 
 use WP_REST_Request;
 
 use Stripe\Exception\ApiErrorException;
 
-class Customers
+class Customer
 {
     private $stripeClient;
 
     public function __construct($stripeClient)
     {
         $this->stripeClient = $stripeClient;
-
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/stripe/customers', [
-                'methods' => 'POST',
-                'callback' => [$this, 'add_stripe_customer'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
-
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/stripe/customers/(?P<slug>[a-zA-Z0-9-_]+)', [
-                'methods' => 'GET',
-                'callback' => [$this, 'get_stripe_customer'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
-
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/stripe/customers/(?P<slug>[a-zA-Z0-9-_]+)', [
-                'methods' => 'PATCH',
-                'callback' => [$this, 'update_stripe_customer'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
     }
 
     public function add_stripe_customer(WP_REST_Request $request)

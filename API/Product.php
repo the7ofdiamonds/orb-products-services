@@ -16,22 +16,6 @@ class Product
         $this->post_type = 'products';
         $this->stripe_products = $stripe_products;
         $this->stripe_prices = $stripe_prices;
-
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/product', [
-                'methods' => 'GET',
-                'callback' => [$this, 'add_product'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
-
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/product/available', [
-                'methods' => 'GET',
-                'callback' => [$this, 'get_product'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
     }
 
     //Create service at the backend ???

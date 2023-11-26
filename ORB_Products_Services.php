@@ -28,6 +28,7 @@ use ORB\Products_Services\CSS\Customizer\Customizer;
 use ORB\Products_Services\Database\Database;
 use ORB\Products_Services\Pages\Pages;
 use ORB\Products_Services\Post_Types\Post_Types;
+use ORB\Products_Services\Post_Types\Post_Types_Services;
 use ORB\Products_Services\Roles\Roles;
 use ORB\Products_Services\Router\Router;
 use ORB\Products_Services\Shortcodes\Shortcodes;
@@ -35,7 +36,11 @@ use ORB\Products_Services\Templates\Templates;
 
 class ORB_Products_Services
 {
+    public $pages;
     public $plugin;
+    public $posttypes;
+    public $router;
+    public $templates;
 
     public function __construct()
     {
@@ -52,12 +57,16 @@ class ORB_Products_Services
         });
 
         add_action('init', function () {
-            (new Post_Types)->custom_post_types();
-            (new Router)->load_page();
-            (new Router)->react_rewrite_rules();
+            $pages = new Pages;
+            $posttypes = new Post_Types;
+            $posttypes->services_post_type();
+            $templates = new Templates;
+            $router = new Router($pages, $posttypes, $templates);
+            $router->load_page();
+            $router->react_rewrite_rules();
             new Shortcodes;
             // (new Taxonomies)->custom_taxonomy();
-            new Templates;
+            $templates;
         });
 
         add_action('customize_register', [(new Customizer), 'register_customizer_panel']);

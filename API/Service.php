@@ -20,14 +20,6 @@ class Service
         $this->services_database = new DatabaseServices;
         $this->stripe_products = $stripe_products;
         $this->stripe_prices = $stripe_prices;
-
-        add_action('rest_api_init', function () {
-            register_rest_route('orb/v1', '/service/(?P<slug>[a-z0-9-]+)', [
-                'methods' => 'GET',
-                'callback' => [$this, 'get_service'],
-                'permission_callback' => '__return_true',
-            ]);
-        });
     }
 
     function get_service(WP_REST_Request $request)
