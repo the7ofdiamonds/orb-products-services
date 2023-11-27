@@ -17,7 +17,11 @@ class Pages
             'Frontpage'
         ];
 
-        $this->custom_pages_list = [
+        $this->custom_pages_list = [];
+
+        $this->protected_pages_list = [];
+
+        $this->pages_list = [
             [
                 'url' => 'contact',
                 'regex' => '#^/contact#',
@@ -48,18 +52,14 @@ class Pages
             ],
         ];
 
-        $this->protected_pages_list = [];
-
-        $this->pages_list = [];
-
-        $this->pages = [
-            ['title' => 'FAQ']
-        ];
-
         $this->page_titles = [
             ...$this->custom_pages_list,
             ...$this->protected_pages_list,
             ...$this->pages_list,
+        ];
+
+        $this->pages = [
+            ['title' => 'FAQ']
         ];
     }
 

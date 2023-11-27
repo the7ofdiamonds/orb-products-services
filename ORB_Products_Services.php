@@ -30,10 +30,10 @@ use ORB\Products_Services\JS\JS;
 use ORB\Products_Services\Database\Database;
 use ORB\Products_Services\Pages\Pages;
 use ORB\Products_Services\Post_Types\Post_Types;
-use ORB\Products_Services\Post_Types\Post_Types_Services;
 use ORB\Products_Services\Roles\Roles;
 use ORB\Products_Services\Router\Router;
 use ORB\Products_Services\Shortcodes\Shortcodes;
+use ORB\Products_Services\Taxonomies\Taxonomies;
 use ORB\Products_Services\Templates\Templates;
 
 class ORB_Products_Services
@@ -60,36 +60,38 @@ class ORB_Products_Services
             (new API())->allow_cors_headers();
         });
 
-        $this->css = new CSS;
-        $this->js = new JS;
+        $css = new CSS;
+        $js = new JS;
+        $this->pages = new Pages;
 
-        add_action('init', function () {
+        add_action('init', function () use ($css, $js) {
             $posttypes = new Post_Types;
             $posttypes->custom_post_types();
-            $pages = new Pages;
+            $taxonomies = new Taxonomies;
+            $taxonomies->custom_taxonomy();
             $templates = new Templates(
-                $this->css,
-                $this->js,
-                $pages,
-                $posttypes
+                $css,
+                $js,
+                $this->pages,
+                $posttypes,
+                $taxonomies
             );
             $router = new Router($templates);
             $router->load_page();
             $router->react_rewrite_rules();
             new Shortcodes;
-            // (new Taxonomies)->custom_taxonomy();
         });
 
         add_action('customize_register', [(new Customizer), 'register_customizer_panel']);
 
-        add_filter('query_vars', [(new Pages), 'add_query_vars']);
+        add_filter('query_vars', [$this->pages, 'add_query_vars']);
     }
 
     public function activate()
     {
         flush_rewrite_rules();
         (new Database)->createTables();
-        (new Pages)->add_pages();
+        $this->pages->add_pages();
         // (new Roles)->add_roles();
     }
 
