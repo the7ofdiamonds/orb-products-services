@@ -4,11 +4,11 @@ namespace ORB\Products_Services\Post_Types;
 
 class Post_Types
 {
-    public $post_types;
+    public $post_types_list;
 
     public function __construct()
     {
-        $this->post_types = [
+        $this->post_types_list = [
             [
                 'name' => 'services',
                 'menu_icon' => '',
@@ -34,8 +34,8 @@ class Post_Types
 
     function custom_post_types()
     {
-        if (is_array($this->post_types)) {
-            foreach ($this->post_types as $post_type) {
+        if (is_array($this->post_types_list)) {
+            foreach ($this->post_types_list as $post_type) {
                 $labels = array(
                     'name' => $post_type['title'],
                     'singular_name' => $post_type['singular'],

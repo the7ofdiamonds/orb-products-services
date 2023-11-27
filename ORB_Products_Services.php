@@ -85,8 +85,6 @@ class ORB_Products_Services
         });
 
         add_action('customize_register', [(new Customizer), 'register_customizer_panel']);
-
-        add_filter('query_vars', [$this->pages, 'add_query_vars']);
     }
 
     public function activate()

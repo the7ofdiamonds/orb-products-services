@@ -15,7 +15,7 @@ class Router
     private $custom_pages_list;
     private $protected_pages_list;
     private $pages_list;
-    private $post_types;
+    private $post_types_list;
     private $taxonomies_list;
     private $templates;
 
@@ -30,7 +30,7 @@ class Router
         $this->protected_pages_list = $pages->protected_pages_list;
         $this->pages_list = $pages->pages_list;
 
-        $this->post_types = $posttypes->post_types;
+        $this->post_types_list = $posttypes->post_types_list;
         $this->taxonomies_list = $taxonomies->taxonomies_list;
 
         $this->templates = $templates;
@@ -87,16 +87,16 @@ class Router
                 }
             }
 
-            if (!empty($this->post_types)) {
-                foreach ($this->post_types as $post_type) {
+            if (!empty($this->post_types_list)) {
+                foreach ($this->post_types_list as $post_type) {
                     add_filter('archive_template', function ($archive_template) use ($post_type) {
                         return $this->templates->get_archive_page_template($archive_template, $post_type);
                     });
                 }
             }
 
-            if (!empty($this->post_types)) {
-                foreach ($this->post_types as $post_type) {
+            if (!empty($this->post_types_list)) {
+                foreach ($this->post_types_list as $post_type) {
                     add_filter('single_template', function ($single_template) use ($post_type) {
                         return $this->templates->get_single_page_template($single_template, $post_type);
                     });
