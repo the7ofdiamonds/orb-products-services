@@ -32,8 +32,8 @@ class JS
     function load_front_page_react($section)
     {
         try {
-            if (!empty($section) && is_array($section)) {
-                $filePath = $this->buildFilePrefix . $section['filename'] . '_jsx.js';
+            if (!empty($section)) {
+                $filePath = $this->buildFilePrefix . $section . '_jsx.js';
                 $filePathURL = $this->buildFilePrefixURL . $section . '_jsx.js';
 
                 wp_enqueue_script('wp-element', $this->includes_url . 'js/dist/element.min.js', [], null, true);

@@ -30,7 +30,7 @@ class CSS
     function load_front_page_css($section)
     {
         try {
-            if (!empty($section) && is_array($section)) {
+            if (!empty($section)) {
                 if ($this->filePath) {
                     wp_register_style($this->handle_prefix . 'css',  $this->cssFolderPathURL . $this->cssFileName, array(), false, 'all');
                     wp_enqueue_style($this->handle_prefix . 'css');

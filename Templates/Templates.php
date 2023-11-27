@@ -22,14 +22,16 @@ class Templates
 
     function get_front_page_template($frontpage_template, $section)
     {
-        add_action('wp_head', function () use ($section) {
-            $this->css->load_front_page_css($section);
-        });
-        add_action('wp_footer', function () use ($section) {
-            $this->js->load_front_page_react($section);
-        });
+        if (is_front_page()) {
+            add_action('wp_head', function () use ($section) {
+                $this->css->load_front_page_css($section);
+            });
+            add_action('wp_footer', function () use ($section) {
+                $this->js->load_front_page_react($section);
+            });
 
-        return $frontpage_template;
+            return $frontpage_template;
+        }
     }
 
 
