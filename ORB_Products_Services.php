@@ -72,11 +72,13 @@ class ORB_Products_Services
             $templates = new Templates(
                 $css,
                 $js,
+            );
+            $router = new Router(
                 $this->pages,
                 $posttypes,
-                $taxonomies
+                $taxonomies,
+                $templates
             );
-            $router = new Router($templates);
             $router->load_page();
             $router->react_rewrite_rules();
             new Shortcodes;
