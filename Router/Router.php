@@ -41,11 +41,13 @@ class Router
         try {
             $path = $_SERVER['REQUEST_URI'];
 
-            if (!empty($this->front_page_react)) {
-                foreach ($this->front_page_react as $section) {
-                    add_filter('frontpage_template', function ($frontpage_template) use ($section) {
-                        return $this->templates->get_front_page_template($frontpage_template, $section);
-                    });
+            if (preg_match('#^/$|^/index\.php(?:\?|$)#', $path)) {
+                if (!empty($this->front_page_react)) {
+                    foreach ($this->front_page_react as $section) {
+                        add_filter('frontpage_template', function ($frontpage_template) use ($section) {
+                            return $this->templates->get_front_page_template($frontpage_template, $section);
+                        });
+                    }
                 }
             }
 

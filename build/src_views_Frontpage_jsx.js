@@ -74,7 +74,7 @@ __webpack_require__.r(__webpack_exports__);
 function Frontpage() {
   const description = 'Business in your hand';
   const heroButtonText = 'start';
-  const heroButtonLink = '/start';
+  const heroButtonLink = '/client/start';
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   const {
     servicesLoading,

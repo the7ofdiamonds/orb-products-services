@@ -14,7 +14,7 @@ import Products from './Products';
 function Frontpage() {
   const description = 'Business in your hand';
   const heroButtonText = 'start';
-  const heroButtonLink = '/start';
+  const heroButtonLink = '/client/start';
 
   const dispatch = useDispatch();
 
