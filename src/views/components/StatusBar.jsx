@@ -5,7 +5,9 @@ function StatusBarComponent(props) {
     <>
       {message && (
         <div className={`status-bar card ${messageType}`}>
-          <span>{message}</span>
+          <span>
+            <h4>{message}</h4>
+          </span>
         </div>
       )}
     </>

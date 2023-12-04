@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 const initialState = {
@@ -16,13 +15,48 @@ const initialState = {
   slug: ''
 }
 
-
-export const fetchService = createAsyncThunk('service/serviceSlice', async (serviceSlug) => {
+export const fetchService = createAsyncThunk('service/fetchService', async () => {
   try {
-    const response = await axios.get(`/wp-json/orb/service/v1/${serviceSlug}`);
-    return response.data;
+    const response = await fetch(`/wp-json/orb/service/v1/${serviceSlug}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
-    throw error;
+    throw error.message;
+  }
+});
+
+
+export const fetchServices = createAsyncThunk('service/fetchServices', async () => {
+  try {
+    const response = await fetch(`/wp-json/orb/service/v1/all`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      const errorMessage = errorData.message;
+      throw new Error(errorMessage);
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    throw error.message;
   }
 });
 

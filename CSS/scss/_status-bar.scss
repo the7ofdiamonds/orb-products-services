@@ -1,22 +1,46 @@
 .status-bar.card {
-  background-color: var(--orb-products-services-color-primary);
-  &.info {
-    background-color: var(--orb-products-services-color-info);
-  }
-  &.caution {
-    background-color: var(--orb-products-services-color-caution);
-  }
-  &.error {
-    background-color: var(--orb-products-services-color-error);
-  }
-  &.success {
-    background-color: var(--orb-products-services-color-success);
-  }
+  background-color: var(--orb-color-primary);
   span {
-    color: var(--orb-products-services-color-secondary);
+    color: var(--orb-color-secondary);
 
     h4 {
       padding: 0.5em;
+    }
+  }
+
+  &.info {
+    background-color: var(--orb-color-info);
+    span {
+      h4 {
+        color: var(--orb-color-info-text);
+      }
+    }
+  }
+
+  &.caution {
+    background-color: var(--orb-color-caution);
+    span {
+      h4 {
+        color: var(--orb-color-caution-text);
+      }
+    }
+  }
+
+  &.error {
+    background-color: var(--orb-color-error);
+    span {
+      h4 {
+        color: var(--orb-color-error-text);
+      }
+    }
+  }
+
+  &.success {
+    background-color: var(--orb-color-success);
+    span {
+      h4 {
+        color: var(--orb-color-success-text);
+      }
     }
   }
 }
