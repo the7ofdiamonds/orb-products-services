@@ -18,8 +18,8 @@ class Hero
                 'priority'       => 2,
                 'capability'     => 'edit_theme_options',
                 'theme_supports' => '',
-                'title'          => __('Hero', 'the-house-forever-wins'),
-                'description'    =>  __('Hero Section Options', 'the-house-forever-wins'),
+                'title'          => __('Hero', 'orb-products-services'),
+                'description'    =>  __('Hero Section Options', 'orb-products-services'),
                 'panel'  => 'orb_products_services_settings',
             )
         );
@@ -33,7 +33,7 @@ class Hero
                 $wp_customize,
                 'hero_card_background_color',
                 [
-                    'label' => __('Hero Card Background Color', 'the-house-forever-wins'),
+                    'label' => __('Hero Card Background Color', 'orb-products-services'),
                     'section' => 'hero_settings',
                 ]
             )
@@ -48,7 +48,7 @@ class Hero
                 $wp_customize,
                 'hero_card_background_color_hover',
                 [
-                    'label' => __('Hero Card Background Color Hover', 'the-house-forever-wins'),
+                    'label' => __('Hero Card Background Color Hover', 'orb-products-services'),
                     'section' => 'hero_settings',
                 ]
             )
@@ -63,7 +63,7 @@ class Hero
                 $wp_customize,
                 'hero_card_text_color',
                 [
-                    'label' => __('Hero Card Text Color', 'the-house-forever-wins'),
+                    'label' => __('Hero Card Text Color', 'orb-products-services'),
                     'section' => 'hero_settings',
                 ]
             )
@@ -78,7 +78,7 @@ class Hero
                 $wp_customize,
                 'hero_card_text_color_hover',
                 [
-                    'label' => __('Hero Card Text Color Hover', 'the-house-forever-wins'),
+                    'label' => __('Hero Card Text Color Hover', 'orb-products-services'),
                     'section' => 'hero_settings',
                 ]
             )
@@ -93,7 +93,7 @@ class Hero
                 $wp_customize,
                 'hero_button_background_color',
                 [
-                    'label' => __('Hero Button Background Color', 'the-house-forever-wins'),
+                    'label' => __('Hero Button Background Color', 'orb-products-services'),
                     'section' => 'hero_settings',
                 ]
             )
@@ -108,7 +108,7 @@ class Hero
                 $wp_customize,
                 'hero_button_background_color_hover',
                 [
-                    'label' => __('Hero Button Background Color Hover', 'the-house-forever-wins'),
+                    'label' => __('Hero Button Background Color Hover', 'orb-products-services'),
                     'section' => 'hero_settings',
                 ]
             )
@@ -123,7 +123,7 @@ class Hero
                 $wp_customize,
                 'hero_button_text_color',
                 [
-                    'label' => __('Hero Button Text Color', 'the-house-forever-wins'),
+                    'label' => __('Hero Button Text Color', 'orb-products-services'),
                     'section' => 'hero_settings',
                 ]
             )
@@ -138,7 +138,7 @@ class Hero
                 $wp_customize,
                 'hero_button_text_color_hover',
                 [
-                    'label' => __('Hero Button Text Color Hover', 'the-house-forever-wins'),
+                    'label' => __('Hero Button Text Color Hover', 'orb-products-services'),
                     'section' => 'hero_settings',
                 ]
             )
@@ -153,7 +153,7 @@ class Hero
                 $wp_customize,
                 'hero_button_icon_color',
                 [
-                    'label' => __('Hero Button Icon Color', 'the-house-forever-wins'),
+                    'label' => __('Hero Button Icon Color', 'orb-products-services'),
                     'section' => 'hero_settings',
                 ]
             )
@@ -168,7 +168,7 @@ class Hero
                 $wp_customize,
                 'hero_button_icon_color_hover',
                 [
-                    'label' => __('Hero Button Icon Color Hover', 'the-house-forever-wins'),
+                    'label' => __('Hero Button Icon Color Hover', 'orb-products-services'),
                     'section' => 'hero_settings',
                 ]
             )

@@ -18,8 +18,8 @@ class BorderRadius
                 'priority'       => 9,
                 'capability'     => 'edit_theme_options',
                 'theme_supports' => '',
-                'title'          => __('Border Radius', 'the-house-forever-wins'),
-                'description'    =>  __('Border Radius Settings', 'the-house-forever-wins'),
+                'title'          => __('Border Radius', 'orb-products-services'),
+                'description'    =>  __('Border Radius Settings', 'orb-products-services'),
                 'panel'  => 'orb_products_services_settings',
             )
         );
@@ -32,7 +32,7 @@ class BorderRadius
             'orb_products_services_border_radius',
             array(
                 'type' => 'input',
-                'label' => __('Border Radius', 'the-house-forever-wins'),
+                'label' => __('Border Radius', 'orb-products-services'),
                 'section' => 'orb_products_services_border_radius_settings',
             )
         );
@@ -45,7 +45,7 @@ class BorderRadius
             'orb_products_services_border_radius_hover',
             array(
                 'type' => 'input',
-                'label' => __('Border Radius Hover', 'the-house-forever-wins'),
+                'label' => __('Border Radius Hover', 'orb-products-services'),
                 'section' => 'orb_products_services_border_radius_settings',
             )
         );

@@ -24,7 +24,7 @@ class Customizer
 		$wp_customize->add_panel(
 			'orb_products_services_settings',
 			array(
-				'title' => __('ORB Products & Services Settings', 'the-house-forever-wins'),
+				'title' => __('ORB Products & Services Settings', 'orb-products-services'),
 				'priority' => 10,
 			)
 		);

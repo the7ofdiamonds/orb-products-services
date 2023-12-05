@@ -18,8 +18,8 @@ class Services
                 'priority'       => 2,
                 'capability'     => 'edit_theme_options',
                 'theme_supports' => '',
-                'title'          => __('Services', 'the-house-forever-wins'),
-                'description'    =>  __('Services Section Options', 'the-house-forever-wins'),
+                'title'          => __('Services', 'orb-products-services'),
+                'description'    =>  __('Services Section Options', 'orb-products-services'),
                 'panel'  => 'orb_products_services_settings',
             )
         );
@@ -33,7 +33,7 @@ class Services
                 $wp_customize,
                 'services_card_background_color',
                 [
-                    'label' => __('Services Card Background Color', 'the-house-forever-wins'),
+                    'label' => __('Services Card Background Color', 'orb-products-services'),
                     'section' => 'services_settings',
                 ]
             )
@@ -48,7 +48,7 @@ class Services
                 $wp_customize,
                 'services_card_background_color_hover',
                 [
-                    'label' => __('Services Card Background Color Hover', 'the-house-forever-wins'),
+                    'label' => __('Services Card Background Color Hover', 'orb-products-services'),
                     'section' => 'services_settings',
                 ]
             )
@@ -63,7 +63,7 @@ class Services
                 $wp_customize,
                 'services_card_text_color',
                 [
-                    'label' => __('Services Card Text Color', 'the-house-forever-wins'),
+                    'label' => __('Services Card Text Color', 'orb-products-services'),
                     'section' => 'services_settings',
                 ]
             )
@@ -78,7 +78,7 @@ class Services
                 $wp_customize,
                 'services_card_text_color_hover',
                 [
-                    'label' => __('Services Card Text Color Hover', 'the-house-forever-wins'),
+                    'label' => __('Services Card Text Color Hover', 'orb-products-services'),
                     'section' => 'services_settings',
                 ]
             )
@@ -93,7 +93,7 @@ class Services
                 $wp_customize,
                 'services_button_background_color',
                 [
-                    'label' => __('Services Button Background Color', 'the-house-forever-wins'),
+                    'label' => __('Services Button Background Color', 'orb-products-services'),
                     'section' => 'services_settings',
                 ]
             )
@@ -108,7 +108,7 @@ class Services
                 $wp_customize,
                 'services_button_background_color_hover',
                 [
-                    'label' => __('Services Button Background Color Hover', 'the-house-forever-wins'),
+                    'label' => __('Services Button Background Color Hover', 'orb-products-services'),
                     'section' => 'services_settings',
                 ]
             )
@@ -123,7 +123,7 @@ class Services
                 $wp_customize,
                 'services_button_text_color',
                 [
-                    'label' => __('Services Button Text Color', 'the-house-forever-wins'),
+                    'label' => __('Services Button Text Color', 'orb-products-services'),
                     'section' => 'services_settings',
                 ]
             )
@@ -138,7 +138,7 @@ class Services
                 $wp_customize,
                 'services_button_text_color_hover',
                 [
-                    'label' => __('Services Button Text Color Hover', 'the-house-forever-wins'),
+                    'label' => __('Services Button Text Color Hover', 'orb-products-services'),
                     'section' => 'services_settings',
                 ]
             )
@@ -153,7 +153,7 @@ class Services
                 $wp_customize,
                 'services_button_icon_color',
                 [
-                    'label' => __('Services Button Icon Color', 'the-house-forever-wins'),
+                    'label' => __('Services Button Icon Color', 'orb-products-services'),
                     'section' => 'services_settings',
                 ]
             )
@@ -168,7 +168,7 @@ class Services
                 $wp_customize,
                 'services_button_icon_color_hover',
                 [
-                    'label' => __('Services Button Icon Color Hover', 'the-house-forever-wins'),
+                    'label' => __('Services Button Icon Color Hover', 'orb-products-services'),
                     'section' => 'services_settings',
                 ]
             )

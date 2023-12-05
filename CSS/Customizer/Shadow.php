@@ -18,8 +18,8 @@ class Shadow
                 'priority'       => 9,
                 'capability'     => 'edit_theme_options',
                 'theme_supports' => '',
-                'title'          => __('Shadows', 'the-house-forever-wins'),
-                'description'    =>  __('Shadow Settings', 'the-house-forever-wins'),
+                'title'          => __('Shadows', 'orb-products-services'),
+                'description'    =>  __('Shadow Settings', 'orb-products-services'),
                 'panel'  => 'orb_products_services_settings',
             )
         );
@@ -32,7 +32,7 @@ class Shadow
             'orb_products_services_card_shadow',
             array(
                 'type' => 'input',
-                'label' => __('Card Box Shadow', 'the-house-forever-wins'),
+                'label' => __('Card Box Shadow', 'orb-products-services'),
                 'section' => 'orb_products_services_shadow_settings',
             )
         );
@@ -45,7 +45,7 @@ class Shadow
             'orb_products_services_button_shadow',
             array(
                 'type' => 'input',
-                'label' => __('Button Box Shadow', 'the-house-forever-wins'),
+                'label' => __('Button Box Shadow', 'orb-products-services'),
                 'section' => 'orb_products_services_shadow_settings',
             )
         );
