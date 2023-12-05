@@ -134,15 +134,15 @@ class API
             'permission_callback' => '__return_true',
         ));
 
-        register_rest_route('orb/service/v1', '/(?P<slug>[a-z0-9-]+)', array(
-            'methods' => 'GET',
-            'callback' => array($service, 'get_service'),
-            'permission_callback' => '__return_true',
-        ));
-
         register_rest_route('orb/services/v1', '/all', array(
             'methods' => 'GET',
             'callback' => array($services, 'get_services'),
+            'permission_callback' => '__return_true',
+        ));
+
+        register_rest_route('orb/service/v1', '/(?P<slug>[a-z0-9-]+)', array(
+            'methods' => 'GET',
+            'callback' => array($service, 'get_service'),
             'permission_callback' => '__return_true',
         ));
 
