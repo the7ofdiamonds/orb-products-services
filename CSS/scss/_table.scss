@@ -1,251 +1,65 @@
-.receipt-card.card {
-  display: grid;
-  gap: 0.25em;
-  min-width: 25rem;
-  width: 100%;
-  overflow: hidden;
-
-  .th,
-  th {
-    h4 {
-      padding: 0.25em 0;
-      background-color: var(--orb-color-primary);
-      color: var(--orb-color-secondary);
-    }
-  }
-
-  .td,
-  td {
-    h5 {
-      padding: 0.25em;
-    }
-  }
-
-  .thead,
-  .tbody,
-  .tfoot {
-    width: 100%;
-  }
-
-  .thead {
-    .address-line-1,
-    .address-line-2 {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-    }
-
-    .tr {
-      &.payment-method {
-        grid-area: payment-method;
-      }
-
-      &.receipt-number {
-        grid-area: receipt-number;
-      }
-
-      &.client-details {
-        grid-area: client-details;
-      }
-
-      &.payment-date {
-        grid-area: payment-date;
-      }
-    }
-  }
-
-  table {
-    display: none;
-
-    th {
-      text-align: center;
-    }
-
-    tbody {
-      td.selections-cost {
-        text-align: end;
-      }
-    }
-  }
-
-  .tfoot {
-    .tr {
-      &.subtotal {
-        grid-area: subtotal;
-      }
-
-      &.tax {
-        grid-area: tax;
-      }
-
-      &.grand-total {
-        grid-area: grand-total;
-      }
-
-      &.amount-paid {
-        grid-area: amount-paid;
-      }
-
-      &.balance {
-        grid-area: balance;
-      }
-    }
-  }
-}
-
-@media (min-width: 700px) {
-  .receipt-card.card {
-    .tr {
-      width: fit-content;
-    }
-    .thead {
-      display: grid;
-      grid-template-areas:
-        'receipt-number receipt-number'
-        'payment-date payment-date'
-        'payment-method payment-method'
-        'client-details client-details';
-      gap: 0.25em;
-
-      .receipt-number,
-      .payment-date,
-      .payment-method {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: 0.25em;
-
-        h4 {
-          padding: 0.25em;
-        }
-      }
-
-      .client-details {
-        width: 100%;
-
-        .address-line-1,
-        .address-line-2,
-        .phone,
-        .email {
-          width: 100%;
-        }
-      }
-    }
-
-    .tfoot {
-      display: grid;
-      grid-template-areas:
-        'subtotal-label subtotal-number'
-        'tax-label tax-number'
-        'grand-total-label grand-total-number'
-        'amount-paid-label amount-paid-number'
-        'balance-label balance-number';
-      justify-content: end;
-      gap: 0.25em;
-
-      .subtotal,
-      .tax,
-      .grand-total,
-      .amount-paid,
-      .balance {
-        display: contents;
-      }
-
-      .th {
-        display: flex;
-        align-items: center;
-        justify-content: end;
-
-        h4 {
-          padding: 0.25em;
-        }
-
-        &.subtotal-label {
-          grid-area: subtotal-label;
-        }
-        &.tax-label {
-          grid-area: tax-label;
-        }
-        &.grand-total-label {
-          grid-area: grand-total-label;
-        }
-        &.amount-paid-label {
-          grid-area: amount-paid-label;
-        }
-        &.balance-label {
-          grid-area: balance-label;
-        }
-      }
-
-      .td {
-        display: flex;
-        align-items: center;
-        justify-content: end;
-
-        &.subtotal-number {
-          grid-area: subtotal-number;
-        }
-        &.tax-number {
-          grid-area: tax-number;
-        }
-        &.grand-total-number {
-          grid-area: grand-total-number;
-        }
-        &.amount-paid-number {
-          grid-area: amount-paid-number;
-        }
-        &.balance-number {
-          grid-area: balance-number;
-        }
-      }
-    }
-  }
-}
-
-@media (min-width: 900px) {
-  .receipt-card.card {
-    .thead {
-      grid-template-areas:
-        'receipt-number receipt-number'
-        'payment-date payment-date'
-        'payment-method payment-method'
-        'client-details';
-      gap: 0.25em;
-
-      .payment-date {
-        align-items: start;
-
-        td {
-          align-items: center;
-        }
-      }
-    }
-
-    table {
-      display: quote-table;
-    }
-  }
-}
-
 table {
   border-spacing: 0.375em;
   border-collapse: collapse;
-}
 
-thead,
-tfoot {
+  thead {
+    tr {
+      th {
+        background-color: var(--orb-products-services-table-color);
+        h4 {
+          padding: 0.25em 0;
+          margin: 0;
+          color: var(--orb-products-services-table-color-text);
+        }
+      }
+    }
+  }
+
   th {
+    border-right: 0.375em solid var(--orb-products-services-table-border-color);
+  }
+
+  th,
+  td {
+    padding: 0.375em;
+  }
+
+  th:last-child {
+    border-right: none;
+  }
+
+  td {
+    text-transform: capitalize;
+    h5 {
+      letter-spacing: unset;
+      color: var(--orb-products-services-table-body-color-text);
+    }
     h4 {
-      background-color: var(--orb-color-primary);
-      color: var(--orb-color-secondary);
-      padding: 0.375em;
+      color: var(--orb-products-services-table-body-color-text);
+    }
+  }
+
+  tr {
+    border-bottom: 0.05em solid var(--orb-products-services-table-body-border-color);
+  }
+
+  tbody {
+    background-color: var(--orb-products-services-table-body-color);
+  }
+
+  tfoot {
+    tr {
+      th {
+        background-color: var(--orb-products-services-table-color);
+        h4 {
+          padding: 0.25em 0;
+          margin: 0;
+          color: var(--orb-products-services-table-color-text);
+        }
+      }
+    }
+    tr:last-child {
+      border-bottom: none;
     }
   }
 }
-
-td {
-  padding: 0.375em;
-  text-transform: capitalize;
-}
-

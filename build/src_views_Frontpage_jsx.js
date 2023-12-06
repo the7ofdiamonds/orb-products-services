@@ -19,7 +19,7 @@ function ErrorComponent(props) {
     className: "error"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "status-bar card error"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, error)));
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, error))));
 }
 /* harmony default export */ __webpack_exports__["default"] = (ErrorComponent);
 

@@ -6,7 +6,6 @@ class Shadow
 {
     public function __construct()
     {
-        add_action('customize_register', [$this, 'orb_products_services_shadow_section']);
     }
 
     function orb_products_services_shadow_section($wp_customize)

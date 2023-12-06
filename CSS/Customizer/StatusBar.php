@@ -6,7 +6,6 @@ class StatusBar
 {
     public function __construct()
     {
-        add_action('customize_register', [$this, 'orb_products_services_status_bar_section']);
     }
 
     function orb_products_services_status_bar_section($wp_customize)

@@ -24,8 +24,16 @@ define('ORB_PRODUCTS_SERVICES_URL', WP_PLUGIN_URL . '/orb-products-services/');
 
 use ORB\Products_Services\Admin\Admin;
 use ORB\Products_Services\API\API;
-use ORB\Products_Services\CSS\Customizer\Customizer;
 use ORB\Products_Services\CSS\CSS;
+use ORB\Products_Services\CSS\Customizer\Customizer;
+use ORB\Products_Services\CSS\Customizer\BorderRadius;
+use ORB\Products_Services\CSS\Customizer\Color;
+use ORB\Products_Services\CSS\Customizer\Hero;
+use ORB\Products_Services\CSS\Customizer\Products;
+use ORB\Products_Services\CSS\Customizer\Services;
+use ORB\Products_Services\CSS\Customizer\Shadow;
+use ORB\Products_Services\CSS\Customizer\StatusBar;
+use ORB\Products_Services\CSS\Customizer\Table;
 use ORB\Products_Services\JS\JS;
 use ORB\Products_Services\Database\Database;
 use ORB\Products_Services\Pages\Pages;
@@ -84,7 +92,18 @@ class ORB_Products_Services
             new Shortcodes;
         });
 
-        add_action('customize_register', [(new Customizer), 'register_customizer_panel']);
+        add_action('customize_register', function ($wp_customize) {
+            (new Customizer)->register_customizer_panel($wp_customize);
+            (new BorderRadius)->orb_products_services_border_radius_section($wp_customize);
+            (new Color)->orb_products_services_color_section($wp_customize);
+            (new Hero)->orb_products_services_hero_section($wp_customize);
+            // (new Products)->orb_products_section($wp_customize);
+            (new Services)->orb_services_section($wp_customize);
+            (new Shadow)->orb_products_services_shadow_section($wp_customize);
+            (new StatusBar)->orb_products_services_status_bar_section($wp_customize);
+            (new Table)->orb_products_services_table_section($wp_customize);
+
+        });
     }
 
     public function activate()

@@ -40,8 +40,7 @@ class CSS
     {
         (new BorderRadius)->load_css();
         (new Color)->load_css();
-        (new Hero)->load_css();
-        // (new Products)->load_css();
+        (new Products)->load_css();
         (new Services)->load_css();
         (new Shadow)->load_css();
         (new StatusBar)->load_css();
@@ -52,6 +51,7 @@ class CSS
     {
         try {
             if (!empty($section)) {
+                (new Hero)->load_css();
                 $this->load_customization_css();
 
                 if ($this->filePath) {

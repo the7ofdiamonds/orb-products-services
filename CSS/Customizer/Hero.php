@@ -6,7 +6,6 @@ class Hero
 {
     public function __construct()
     {
-        add_action('customize_register', array($this, 'orb_products_services_hero_section'));
     }
 
     function orb_products_services_hero_section($wp_customize)
