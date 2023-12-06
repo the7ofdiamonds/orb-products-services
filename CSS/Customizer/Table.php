@@ -4,8 +4,11 @@ namespace ORB\Products_Services\CSS\Customizer;
 
 class Table
 {
+    private $customizer;
+
     public function __construct()
     {
+        $this->customizer = new Customizer;
     }
 
     function orb_products_services_table_section($wp_customize)
@@ -101,33 +104,6 @@ class Table
         );
     }
 
-    function calculate_lightness($hue, $lightness)
-    {
-        if ($hue == 0 && $lightness == 0) {
-            return 100;
-        }
-
-        if ($hue == 0 && $lightness == 100) {
-            return 0;
-        }
-
-        if ($hue >= 40 && $hue <= 180) {
-            if (10 > ($lightness - 40)) {
-                return 10;
-            }
-
-            return $lightness - 40;
-        }
-
-        if ($hue < 40 || $hue > 180) {
-            if (90 < ($lightness + 40)) {
-                return 90;
-            }
-
-            return $lightness + 40;
-        }
-    }
-
     function load_css()
     {
 ?>
@@ -145,7 +121,7 @@ class Table
                                                     $hue = !empty(get_theme_mod('orb_products_services_table_color_hue')) ? get_theme_mod('orb_products_services_table_color_hue') : 0;
                                                     $lightness = !empty(get_theme_mod('orb_products_services_table_color_lightness')) ? get_theme_mod('orb_products_services_table_color_lightness') : 0;
 
-                                                    $l = $this->calculate_lightness($hue, $lightness);
+                                                    $l = $this->customizer->calculate_lightness($hue, $lightness);
 
                                                     echo "hsl({$h}, {$s}%, {$l}%)";
                                                     ?>;
@@ -166,7 +142,7 @@ class Table
                                                         $hue = !empty(get_theme_mod('orb_products_services_table_body_color_hue')) ? get_theme_mod('orb_products_services_table_body_color_hue') : 0;
                                                         $lightness = !empty(get_theme_mod('orb_products_services_table_body_color_lightness')) ? get_theme_mod('orb_products_services_table_body_color_lightness') : 100;
 
-                                                        $l = $this->calculate_lightness($hue, $lightness);
+                                                        $l = $this->customizer->calculate_lightness($hue, $lightness);
 
                                                         echo "hsl({$h}, {$s}%, {$l}%)";
                                                         ?>;
@@ -175,7 +151,7 @@ class Table
                                                         $hue = !empty(get_theme_mod('orb_products_services_table_body_color_hue')) ? get_theme_mod('orb_products_services_table_body_color_hue') : 0;
                                                         $lightness = !empty(get_theme_mod('orb_products_services_table_body_color_lightness')) ? get_theme_mod('orb_products_services_table_body_color_lightness') : 100;
 
-                                                        $l = $this->calculate_lightness($hue, $lightness);
+                                                        $l = $this->customizer->calculate_lightness($hue, $lightness);
 
                                                         echo "hsl({$h}, {$s}%, {$l}%)";
                                                         ?>;

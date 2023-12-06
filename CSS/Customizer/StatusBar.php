@@ -4,8 +4,11 @@ namespace ORB\Products_Services\CSS\Customizer;
 
 class StatusBar
 {
+    private $customizer;
+
     public function __construct()
     {
+        $this->customizer = new Customizer;
     }
 
     function orb_products_services_status_bar_section($wp_customize)
@@ -81,68 +84,60 @@ class StatusBar
         <style>
             :root {
                 --orb-products-services-color-success: <?php
-                                                $h = !empty(get_theme_mod('orb_products_services_success_color_hue')) ? get_theme_mod('orb_products_services_success_color_hue') : 120;
-                                                $s = !empty(get_theme_mod('orb_products_services_success_color_saturation')) ? get_theme_mod('orb_products_services_success_color_saturation') : 100;
-                                                $l = !empty(get_theme_mod('orb_products_services_success_color_lightness')) ? get_theme_mod('orb_products_services_success_color_lightness') : 30;
+                                                        $h = !empty(get_theme_mod('orb_products_services_success_color_hue')) ? get_theme_mod('orb_products_services_success_color_hue') : 120;
+                                                        $s = !empty(get_theme_mod('orb_products_services_success_color_saturation')) ? get_theme_mod('orb_products_services_success_color_saturation') : 100;
+                                                        $l = !empty(get_theme_mod('orb_products_services_success_color_lightness')) ? get_theme_mod('orb_products_services_success_color_lightness') : 30;
 
-                                                echo "hsl({$h}, {$s}%, {$l}%)";
-                                                ?>;
+                                                        echo "hsl({$h}, {$s}%, {$l}%)";
+                                                        ?>;
 
                 --orb-products-services-color-success-text: <?php
-                                                    $h = !empty(get_theme_mod('orb_products_services_success_color_hue')) ? get_theme_mod('orb_products_services_success_color_hue') : 120;
-                                                    $s = !empty(get_theme_mod('orb_products_services_success_color_saturation')) ? get_theme_mod('orb_products_services_success_color_saturation') : 100;
-                                                    $l = 90;
+                                                            $lightness = $this->customizer->calculate_lightness($h, $l);
 
-                                                    echo "hsl({$h}, {$s}%, {$l}%)";
-                                                    ?>;
+                                                            echo "hsl({$h}, {$s}%, {$lightness}%)";
+                                                            ?>;
 
                 --orb-products-services-color-error: <?php
-                                            $h = !empty(get_theme_mod('orb_products_services_error_color_hue')) ? get_theme_mod('orb_products_services_error_color_hue') : 0;
-                                            $s = !empty(get_theme_mod('orb_products_services_error_color_saturation')) ? get_theme_mod('orb_products_services_error_color_saturation') : 100;
-                                            $l = !empty(get_theme_mod('orb_products_services_error_color_lightness')) ? get_theme_mod('orb_products_services_error_color_lightness') : 50;
+                                                        $h = !empty(get_theme_mod('orb_products_services_error_color_hue')) ? get_theme_mod('orb_products_services_error_color_hue') : 0;
+                                                        $s = !empty(get_theme_mod('orb_products_services_error_color_saturation')) ? get_theme_mod('orb_products_services_error_color_saturation') : 100;
+                                                        $l = !empty(get_theme_mod('orb_products_services_error_color_lightness')) ? get_theme_mod('orb_products_services_error_color_lightness') : 50;
 
-                                            echo "hsl({$h}, {$s}%, {$l}%)";
-                                            ?>;
+                                                        echo "hsl({$h}, {$s}%, {$l}%)";
+                                                        ?>;
 
                 --orb-products-services-color-error-text: <?php
-                                                    $h = !empty(get_theme_mod('orb_products_services_error_color_hue')) ? get_theme_mod('orb_products_services_error_color_hue') : 0;
-                                                    $s = !empty(get_theme_mod('orb_products_services_error_color_saturation')) ? get_theme_mod('orb_products_services_error_color_saturation') : 100;
-                                                    $l = 90;
+                                                            $lightness = $this->customizer->calculate_lightness($h, $l);
 
-                                                    echo "hsl({$h}, {$s}%, {$l}%)";
-                                                    ?>;
+                                                            echo "hsl({$h}, {$s}%, {$lightness}%)";
+                                                            ?>;
 
                 --orb-products-services-color-caution: <?php
-                                                $h = !empty(get_theme_mod('orb_products_services_caution_color_hue')) ? get_theme_mod('orb_products_services_caution_color_hue') : 60;
-                                                $s = !empty(get_theme_mod('orb_products_services_caution_color_saturation')) ? get_theme_mod('orb_products_services_caution_color_saturation') : 100;
-                                                $l = !empty(get_theme_mod('orb_products_services_caution_color_lightness')) ? get_theme_mod('orb_products_services_caution_color_lightness') : 50;
+                                                        $h = !empty(get_theme_mod('orb_products_services_caution_color_hue')) ? get_theme_mod('orb_products_services_caution_color_hue') : 60;
+                                                        $s = !empty(get_theme_mod('orb_products_services_caution_color_saturation')) ? get_theme_mod('orb_products_services_caution_color_saturation') : 100;
+                                                        $l = !empty(get_theme_mod('orb_products_services_caution_color_lightness')) ? get_theme_mod('orb_products_services_caution_color_lightness') : 50;
 
-                                                echo "hsl({$h}, {$s}%, {$l}%)";
-                                                ?>;
+                                                        echo "hsl({$h}, {$s}%, {$l}%)";
+                                                        ?>;
 
                 --orb-products-services-color-caution-text: <?php
-                                                    $h = !empty(get_theme_mod('orb_products_services_caution_color_hue')) ? get_theme_mod('orb_products_services_caution_color_hue') : 60;
-                                                    $s = !empty(get_theme_mod('orb_products_services_caution_color_saturation')) ? get_theme_mod('orb_products_services_caution_color_saturation') : 100;
-                                                    $l = 10;
+                                                            $lightness = $this->customizer->calculate_lightness($h, $l);
+
+                                                            echo "hsl({$h}, {$s}%, {$lightness}%)";
+                                                            ?>;
+
+                --orb-products-services-color-info: <?php
+                                                    $h = !empty(get_theme_mod('orb_products_services_info_color_hue')) ? get_theme_mod('orb_products_services_info_color_hue') : 240;
+                                                    $s = !empty(get_theme_mod('orb_products_services_info_color_saturation')) ? get_theme_mod('orb_products_services_info_color_saturation') : 100;
+                                                    $l = !empty(get_theme_mod('orb_products_services_info_color_lightness')) ? get_theme_mod('orb_products_services_info_color_lightness') : 50;
 
                                                     echo "hsl({$h}, {$s}%, {$l}%)";
                                                     ?>;
 
-                --orb-products-services-color-info: <?php
-                                            $h = !empty(get_theme_mod('orb_products_services_info_color_hue')) ? get_theme_mod('orb_products_services_info_color_hue') : 240;
-                                            $s = !empty(get_theme_mod('orb_products_services_info_color_saturation')) ? get_theme_mod('orb_products_services_info_color_saturation') : 100;
-                                            $l = !empty(get_theme_mod('orb_products_services_info_color_lightness')) ? get_theme_mod('orb_products_services_info_color_lightness') : 50;
-
-                                            echo "hsl({$h}, {$s}%, {$l}%)";
-                                            ?>;
-
                 --orb-products-services-color-info-text: <?php
-                                                $h = !empty(get_theme_mod('orb_products_services_info_color_hue')) ? get_theme_mod('orb_products_services_info_color_hue') : 240;
-                                                $s = !empty(get_theme_mod('orb_products_services_info_color_saturation')) ? get_theme_mod('orb_products_services_info_color_saturation') : 100;
-                                                $l = 90;
+                                                            $lightness = $this->customizer->calculate_lightness($h, $l);
 
-                                                echo "hsl({$h}, {$s}%, {$l}%)";
-                                                ?>;
+                                                            echo "hsl({$h}, {$s}%, {$lightness}%)";
+                                                            ?>;
             }
         </style>
 <?php
