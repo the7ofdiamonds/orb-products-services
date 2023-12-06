@@ -1,45 +1,46 @@
 .status-bar.card {
-  background-color: var(--orb-color-primary);
+  background-color: var(--orb-products-services-color-secondary);
   span {
-    color: var(--orb-color-secondary);
+    color: var(--orb-products-services-color-primary);
 
     h4 {
       padding: 0.5em;
+      letter-spacing: unset;
     }
   }
 
   &.info {
-    background-color: var(--orb-color-info);
+    background-color: var(--orb-products-services-color-info);
     span {
       h4 {
-        color: var(--orb-color-info-text);
+        color: var(--orb-products-services-color-info-text);
       }
     }
   }
 
   &.caution {
-    background-color: var(--orb-color-caution);
+    background-color: var(--orb-products-services-color-caution);
     span {
       h4 {
-        color: var(--orb-color-caution-text);
+        color: var(--orb-products-services-color-caution-text);
       }
     }
   }
 
   &.error {
-    background-color: var(--orb-color-error);
+    background-color: var(--orb-products-services-color-error);
     span {
       h4 {
-        color: var(--orb-color-error-text);
+        color: var(--orb-products-services-color-error-text);
       }
     }
   }
 
   &.success {
-    background-color: var(--orb-color-success);
+    background-color: var(--orb-products-services-color-success);
     span {
       h4 {
-        color: var(--orb-color-success-text);
+        color: var(--orb-products-services-color-success-text);
       }
     }
   }

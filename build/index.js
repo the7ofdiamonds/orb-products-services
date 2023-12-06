@@ -7809,7 +7809,7 @@ const initialState = {
   action_word: '',
   slug: ''
 };
-const fetchService = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('service/fetchService', async () => {
+const fetchService = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createAsyncThunk)('service/fetchService', async serviceSlug => {
   try {
     const response = await fetch(`/wp-json/orb/service/v1/${serviceSlug}`, {
       method: 'GET',

@@ -7,7 +7,6 @@ class Services
     public function __construct()
     {
         add_action('customize_register', array($this, 'orb_products_services_section'));
-        add_action('wp_head', [$this, 'load_css']);
     }
 
    function orb_products_services_section($wp_customize)

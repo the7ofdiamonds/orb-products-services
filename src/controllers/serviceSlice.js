@@ -15,7 +15,7 @@ const initialState = {
   slug: ''
 }
 
-export const fetchService = createAsyncThunk('service/fetchService', async () => {
+export const fetchService = createAsyncThunk('service/fetchService', async (serviceSlug) => {
   try {
     const response = await fetch(`/wp-json/orb/service/v1/${serviceSlug}`, {
       method: 'GET',

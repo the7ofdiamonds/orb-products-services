@@ -4,6 +4,15 @@ namespace ORB\Products_Services\CSS;
 
 use Exception;
 
+use ORB\Products_Services\CSS\Customizer\BorderRadius;
+use ORB\Products_Services\CSS\Customizer\Color;
+use ORB\Products_Services\CSS\Customizer\Hero;
+use ORB\Products_Services\CSS\Customizer\Products;
+use ORB\Products_Services\CSS\Customizer\Services;
+use ORB\Products_Services\CSS\Customizer\Shadow;
+use ORB\Products_Services\CSS\Customizer\StatusBar;
+use ORB\Products_Services\CSS\Customizer\Table;
+
 class CSS
 {
     private $handle_prefix;
@@ -27,10 +36,24 @@ class CSS
         $this->filePath = $this->cssFolderPath . $this->cssFileName;
     }
 
+    function load_customization_css()
+    {
+        (new BorderRadius)->load_css();
+        (new Color)->load_css();
+        (new Hero)->load_css();
+        // (new Products)->load_css();
+        (new Services)->load_css();
+        (new Shadow)->load_css();
+        (new StatusBar)->load_css();
+        (new Table)->load_css();
+    }
+
     function load_front_page_css($section)
     {
         try {
             if (!empty($section)) {
+                $this->load_customization_css();
+
                 if ($this->filePath) {
                     wp_register_style($this->handle_prefix . 'css',  $this->cssFolderPathURL . $this->cssFileName, array(), false, 'all');
                     wp_enqueue_style($this->handle_prefix . 'css');
@@ -53,6 +76,8 @@ class CSS
     {
         try {
             if (!empty($page)) {
+                $this->load_customization_css();
+
                 if ($this->filePath) {
                     wp_register_style($this->handle_prefix . 'css',  $this->cssFolderPathURL . $this->cssFileName, array(), false, 'all');
                     wp_enqueue_style($this->handle_prefix . 'css');
@@ -75,6 +100,8 @@ class CSS
     {
         try {
             if (!empty($taxonomy['name']) && is_tax($taxonomy['name'])) {
+                $this->load_customization_css();
+
                 if ($this->filePath) {
                     wp_register_style($this->handle_prefix . 'css',  $this->cssFolderPathURL . $this->cssFileName, array(), false, 'all');
                     wp_enqueue_style($this->handle_prefix . 'css');
@@ -97,6 +124,8 @@ class CSS
     {
         try {
             if (!empty($post_type) && (is_array($post_type) || is_object($post_type)) && (is_post_type_archive($post_type) || is_singular($post_type))) {
+                $this->load_customization_css();
+
                 if ($this->filePath) {
                     wp_register_style($this->handle_prefix . 'css',  $this->cssFolderPathURL . $this->cssFileName, array(), false, 'all');
                     wp_enqueue_style($this->handle_prefix . 'css');
