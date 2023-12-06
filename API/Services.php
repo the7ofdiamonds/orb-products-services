@@ -49,7 +49,9 @@ class Services
                         'onboarding_link' => isset($service['onboarding_link']) ? $service['onboarding_link'] : '',
                         'icon' => isset($service['service_icon']) ? $service['service_icon'] : '',
                         'action_word' => isset($service['service_button']) ? $service['service_button'] : '',
-                        'slug' => get_post_field('post_name', $id),                    );
+                        'slug' => get_post_field('post_name', $id),
+                        'price_id' =>  isset($service['stripe_price_id']) ? $service['stripe_price_id'] : ''
+                    );
                 }
             }
 
